@@ -864,8 +864,8 @@ function Footer({ onStart }) {
 // ── PAGE ASSEMBLY ─────────────────────────────────────────────
 export default function Homepage() {
   // In Lovable, this would use useNavigate() to go to /create
+  const navigate = (await import('react-router-dom')).useNavigate ? undefined : undefined;
   const handleStart = () => {
-    // Replace with: navigate('/create')
     window.location.href = "/create";
   };
 
