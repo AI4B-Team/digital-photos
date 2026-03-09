@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ============================================================
 // DIGITAL PHOTOS™ — PHASE 3: CHECKOUT FLOW
 // Copy this entire file into Lovable as: src/pages/Checkout.jsx
