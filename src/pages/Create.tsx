@@ -15,6 +15,7 @@
 // ============================================================
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Heart, Baby, Crown, Users, Star, Gift, Sparkles, Wand2,
   Upload, Camera, Image, X, Check, ChevronRight, ChevronLeft,
