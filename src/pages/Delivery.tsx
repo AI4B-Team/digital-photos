@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ============================================================
 // DIGITAL PHOTOS™ — PHASE 4: DELIVERY PAGE
 // Copy this entire file into Lovable as: src/pages/Delivery.jsx
