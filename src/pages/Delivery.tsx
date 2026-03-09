@@ -14,6 +14,7 @@
 // ============================================================
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Check, Download, Share2, Instagram, Twitter, Facebook,
   FrameIcon, Gift, Star, ArrowRight, Copy, Mail,
