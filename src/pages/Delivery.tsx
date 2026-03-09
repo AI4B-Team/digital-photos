@@ -518,7 +518,7 @@ export default function DeliveryPage() {
         {/* Top nav */}
         <div style={{ position:"sticky", top:0, zIndex:100, background:"rgba(8,7,5,0.97)", backdropFilter:"blur(18px)", borderBottom:`1px solid ${C.border}`, padding:"0 40px" }}>
           <div style={{ maxWidth:1280, margin:"0 auto", height:64, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:C.cream, cursor:"pointer" }} onClick={() => window.location.href="/"}>
+            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:C.cream, cursor:"pointer" }} onClick={() => navigate("/")}>
               Digital<span style={{ color:C.gold }}>Photos</span><span style={{ fontSize:9, verticalAlign:"super", color:C.goldDim }}>™</span>
             </div>
             <div style={{ display:"flex", gap:12, alignItems:"center" }}>
