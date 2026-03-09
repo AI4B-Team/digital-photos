@@ -364,7 +364,7 @@ export default function DigitalPhotos() {
   const s = {
     // Nav
     nav: {
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      position: "fixed" as const, top: 0, left: 0, right: 0, zIndex: 100,
       background: navScrolled ? "rgba(8,7,5,0.96)" : "transparent",
       backdropFilter: navScrolled ? "blur(16px)" : "none",
       borderBottom: navScrolled ? `1px solid ${COLORS.border}` : "none",
@@ -393,21 +393,21 @@ export default function DigitalPhotos() {
 
     // Hero
     hero: {
-      minHeight: "100vh", position: "relative", overflow: "hidden",
+      minHeight: "100vh", position: "relative" as const, overflow: "hidden" as const,
       display: "flex", alignItems: "center", justifyContent: "center",
       background: `radial-gradient(ellipse 80% 60% at 50% 40%, rgba(100,70,20,0.25) 0%, transparent 70%), ${COLORS.bg}`,
     },
     heroLines: {
-      position: "absolute", inset: 0, opacity: 0.06,
+      position: "absolute" as const, inset: 0, opacity: 0.06,
       backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(196,150,58,0.5) 80px, rgba(196,150,58,0.5) 81px)`,
     },
     heroContent: {
-      textAlign: "center", maxWidth: 900, padding: "0 24px",
-      position: "relative", zIndex: 2,
+      textAlign: "center" as const, maxWidth: 900, padding: "0 24px",
+      position: "relative" as const, zIndex: 2,
     },
     eyebrow: {
       display: "inline-flex", alignItems: "center", gap: 10,
-      fontSize: 10, letterSpacing: "0.35em", textTransform: "uppercase",
+      fontSize: 10, letterSpacing: "0.35em", textTransform: "uppercase" as const,
       color: COLORS.gold, fontWeight: 500, marginBottom: 32,
       border: `1px solid rgba(196,150,58,0.25)`, padding: "8px 20px",
     },
@@ -422,12 +422,12 @@ export default function DigitalPhotos() {
       fontSize: 16, color: COLORS.creamMuted, lineHeight: 1.7,
       maxWidth: 560, margin: "0 auto 48px", fontWeight: 300,
     },
-    heroBtns: { display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" },
+    heroBtns: { display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" as const },
 
     // Sections
     section: { padding: "120px 40px", maxWidth: 1280, margin: "0 auto" },
     sectionFull: { padding: "120px 0" },
-    sectionHeader: { textAlign: "center", marginBottom: 80 },
+    sectionHeader: { textAlign: "center" as const, marginBottom: 80 },
     h2: {
       fontFamily: "'Cormorant Garamond', serif",
       fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 300,
@@ -442,13 +442,13 @@ export default function DigitalPhotos() {
     // Category tabs
     catTabs: {
       display: "flex", gap: 0, borderBottom: `1px solid ${COLORS.border}`,
-      marginBottom: 60, overflowX: "auto",
+      marginBottom: 60, overflowX: "auto" as const,
     },
     catTab: {
       padding: "16px 32px", cursor: "pointer", fontSize: 12,
-      letterSpacing: "0.15em", textTransform: "uppercase",
+      letterSpacing: "0.15em", textTransform: "uppercase" as const,
       color: COLORS.creamMuted, borderBottom: "2px solid transparent",
-      transition: "all 0.3s", whiteSpace: "nowrap", fontWeight: 400,
+      transition: "all 0.3s", whiteSpace: "nowrap" as const, fontWeight: 400,
       background: "none", border: "none", fontFamily: "'Outfit', sans-serif",
     },
     catTabActive: {
@@ -460,13 +460,13 @@ export default function DigitalPhotos() {
     card: {
       background: COLORS.bgCard,
       border: `1px solid ${COLORS.border}`,
-      overflow: "hidden",
+      overflow: "hidden" as const,
     },
     pricingCard: {
       background: COLORS.bgCard,
       border: `1px solid ${COLORS.border}`,
       padding: "40px 32px",
-      position: "relative",
+      position: "relative" as const,
     },
 
     // Pricing
@@ -501,7 +501,7 @@ export default function DigitalPhotos() {
       gap: 20,
     },
     commCard: {
-      position: "relative", overflow: "hidden", cursor: "pointer",
+      position: "relative" as const, overflow: "hidden" as const, cursor: "pointer",
     },
 
     // Modal
@@ -509,8 +509,8 @@ export default function DigitalPhotos() {
       background: COLORS.bgCard,
       border: `1px solid ${COLORS.borderLight}`,
       width: "100%", maxWidth: 680,
-      maxHeight: "90vh", overflow: "auto",
-      position: "relative",
+      maxHeight: "90vh", overflow: "auto" as const,
+      position: "relative" as const,
     },
 
     // Steps (how it works)
