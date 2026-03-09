@@ -497,6 +497,7 @@ function FrameModal({ portrait, onClose }) {
 
 // ── MAIN DELIVERY PAGE ─────────────────────────────────────────
 export default function DeliveryPage() {
+  const navigate = useNavigate();
   const [frameModal, setFrameModal] = useState(null);
   const [cartMessage, setCartMessage] = useState("");
 
