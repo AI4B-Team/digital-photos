@@ -414,8 +414,9 @@ function FrameUpsellSection({ onAddToCart }) {
 
 // ── CREATE AGAIN SECTION ───────────────────────────────────────
 function CreateAgainSection() {
-  const goCreate = () => { window.location.href = "/create"; };
-  const goGift = () => { window.location.href = "/gift"; };
+  const navigate = useNavigate();
+  const goCreate = () => navigate('/create');
+  const goGift = () => navigate('/create');
 
   return (
     <div style={{ maxWidth:1280, margin:"0 auto", padding:"0 40px 80px" }}>
