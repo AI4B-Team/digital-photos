@@ -523,7 +523,7 @@ export default function DeliveryPage() {
             </div>
             <div style={{ display:"flex", gap:12, alignItems:"center" }}>
               <span style={{ fontSize:11, color:C.creamMuted }}>Order #{orderNumber}</span>
-              <button className="btn-ghost" style={{ padding:"8px 16px" }} onClick={() => window.location.href="/"}>
+              <button className="btn-ghost" style={{ padding:"8px 16px" }} onClick={() => navigate("/")}>
                 Back to Home
               </button>
             </div>

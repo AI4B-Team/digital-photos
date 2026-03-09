@@ -816,14 +816,14 @@ function PreviewStep({ onUnlock, onBack, category }) {
 
 // ── MAIN CREATION FLOW ─────────────────────────────────────────
 export default function CreateFlow() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [category, setCategory] = useState(null);
   const [photos, setPhotos] = useState([]);
-  const [selectedStyles, setSelectedStyles] = useState(STYLES.map(s => s.id)); // all by default
+  const [selectedStyles, setSelectedStyles] = useState(STYLES.map(s => s.id));
 
-  // In Lovable, replace with: const navigate = useNavigate()
-  const goToCheckout = () => { window.location.href = "/checkout"; };
-  const goHome = () => { window.location.href = "/"; };
+  const goToCheckout = () => navigate('/checkout');
+  const goHome = () => navigate('/');
 
   const nextStep = () => { setStep(s => s + 1); window.scrollTo({top:0,behavior:"smooth"}); };
   const prevStep = () => { setStep(s => s - 1); window.scrollTo({top:0,behavior:"smooth"}); };

@@ -749,14 +749,14 @@ function OTOModal({ product, onAccept, onDecline }) {
 
 // ── MAIN CHECKOUT PAGE ────────────────────────────────────────
 export default function CheckoutPage() {
-  const [screen, setScreen] = useState(1);       // 1=product, 2=payment, 3=oto
+  const navigate = useNavigate();
+  const [screen, setScreen] = useState(1);
   const [product, setProduct] = useState("print");
   const [bumps, setBumps] = useState([]);
   const [showOTO, setShowOTO] = useState(false);
 
-  // In Lovable, replace with: const navigate = useNavigate()
-  const goDelivery = () => { window.location.href = "/delivery"; };
-  const goBack = () => { window.location.href = "/create/preview"; };
+  const goDelivery = () => navigate('/delivery');
+  const goBack = () => navigate('/create');
 
   const handlePaymentComplete = () => {
     setShowOTO(true);
