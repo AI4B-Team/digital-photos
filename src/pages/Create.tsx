@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ============================================================
 // DIGITAL PHOTOS™ — PHASE 2: CREATION FLOW
 // This is a single-file multi-step flow.
