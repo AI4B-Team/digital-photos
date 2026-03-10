@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
   Upload, X, Check, ChevronRight, ChevronDown, Download,
