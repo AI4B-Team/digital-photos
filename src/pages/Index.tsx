@@ -1011,7 +1011,7 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
           {PLANS.map(p => (
             <div key={p.id} className={`pcard ${p.featured?"featured":""} ${planSel===p.id?"sel":""}`}
               style={{ borderRadius:8, padding:"20px 16px", background:p.featured?T.goldBg:T.sur }}
-              onClick={() => setPlanSel(p.id)}>
+              onClick={() => handlePlanSelect(p.id)}>
               {p.badge ? (
                 <div style={{ background:T.gold, color:T.bg, fontSize:9, fontWeight:700,
                   letterSpacing:".14em", padding:"3px 10px", borderRadius:50,
