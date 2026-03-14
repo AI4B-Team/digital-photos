@@ -795,7 +795,19 @@ function GenScreen({ selectedStyles, onDone }) {
    PREVIEW PAGE  — Gallery Unlock Model
 ═══════════════════════════════════════════════════════════ */
 function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
+  const navigate              = useNavigate();
+  const { setSession }        = useSession();
   const [planSel,    setPlanSel]    = useState("bundle");
+
+  const handlePlanSelect = (id) => {
+    setPlanSel(id);
+    setSession({ selectedPlan: id });
+  };
+
+  const goToCheckout = () => {
+    setSession({ selectedPlan: planSel, cat, photo, styles: selectedStyles });
+    navigate("/checkout");
+  };
   const [timer,      setTimer]      = useState(23 * 60 + 47);
   const [focusedPort,setFocusedPort]= useState(null);
   const [showShare,  setShowShare]  = useState(false);
