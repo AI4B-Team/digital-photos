@@ -14,6 +14,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSession } from "@/context/SessionContext";
 import {
   Check, X, ChevronRight, ChevronLeft, Shield, Lock,
   Truck, Clock, RefreshCw, Star, Gift, Sparkles, Image,
@@ -750,15 +751,26 @@ function OTOModal({ product, onAccept, onDecline }) {
 // ── MAIN CHECKOUT PAGE ────────────────────────────────────────
 export default function CheckoutPage() {
   const navigate = useNavigate();
+  const { session, setSession } = useSession();
+
   const [screen, setScreen] = useState(1);
-  const [product, setProduct] = useState("print");
+  const [product, setProduct] = useState(session.selectedPlan === "canvas" ? "canvas"
+                                        : session.selectedPlan === "digital" ? "digital"
+                                        : "print");
   const [bumps, setBumps] = useState([]);
   const [showOTO, setShowOTO] = useState(false);
 
+  const orderId = useState(() => "DP-" + Math.random().toString(36).slice(2,8).toUpperCase())[0];
+
   const goDelivery = () => navigate('/delivery');
-  const goBack = () => navigate('/create');
+  const goBack = () => navigate('/');
 
   const handlePaymentComplete = () => {
+    setSession({
+      orderId,
+      orderProduct: product,
+      addedBumps: bumps,
+    });
     setShowOTO(true);
   };
 

@@ -1,5 +1,7 @@
 // @ts-nocheck
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate }  from "react-router-dom";
+import { useSession }   from "@/context/SessionContext";
 import {
   Upload, X, Check, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Share2, Heart, Truck, RefreshCw,
@@ -793,7 +795,19 @@ function GenScreen({ selectedStyles, onDone }) {
    PREVIEW PAGE  — Gallery Unlock Model
 ═══════════════════════════════════════════════════════════ */
 function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
+  const navigate              = useNavigate();
+  const { setSession }        = useSession();
   const [planSel,    setPlanSel]    = useState("bundle");
+
+  const handlePlanSelect = (id) => {
+    setPlanSel(id);
+    setSession({ selectedPlan: id });
+  };
+
+  const goToCheckout = () => {
+    setSession({ selectedPlan: planSel, cat, photo, styles: selectedStyles });
+    navigate("/checkout");
+  };
   const [timer,      setTimer]      = useState(23 * 60 + 47);
   const [focusedPort,setFocusedPort]= useState(null);
   const [showShare,  setShowShare]  = useState(false);
@@ -997,7 +1011,7 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
           {PLANS.map(p => (
             <div key={p.id} className={`pcard ${p.featured?"featured":""} ${planSel===p.id?"sel":""}`}
               style={{ borderRadius:8, padding:"20px 16px", background:p.featured?T.goldBg:T.sur }}
-              onClick={() => setPlanSel(p.id)}>
+              onClick={() => handlePlanSelect(p.id)}>
               {p.badge ? (
                 <div style={{ background:T.gold, color:T.bg, fontSize:9, fontWeight:700,
                   letterSpacing:".14em", padding:"3px 10px", borderRadius:50,
@@ -1021,7 +1035,8 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
 
               {p.features.map(f => <CheckRow key={f} label={f} gold={p.featured}/>)}
 
-              <button className="btn-gold" style={{ width:"100%", padding:"12px", borderRadius:5, fontSize:12, marginTop:14 }}>
+              <button className="btn-gold" style={{ width:"100%", padding:"12px", borderRadius:5, fontSize:12, marginTop:14 }}
+                onClick={() => { handlePlanSelect(p.id); goToCheckout(); }}>
                 {p.cta}
               </button>
 
@@ -1126,7 +1141,8 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
             <Share2 size={12}/>
           </button>
           <button className="btn-gold" style={{ padding:"12px 22px", borderRadius:7, fontSize:13,
-            display:"flex", gap:7, alignItems:"center", animation:"glow 2s infinite" }}>
+            display:"flex", gap:7, alignItems:"center", animation:"glow 2s infinite" }}
+            onClick={goToCheckout}>
             <Lock size={13}/>Unlock Collection
           </button>
         </div>
@@ -1139,21 +1155,23 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
    ROOT
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
-  const [screen,  setScreen]  = useState("home");
-  const [session, setSession] = useState({ cat:"", photo:null, styles:[] });
+  const [screen,      setScreen]   = useState("home");
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, styles:[] });
+  const { setSession }             = useSession();
 
   const handleGenerate = useCallback(({ cat, photo, styles }) => {
+    setLocal({ cat, photo, styles });
     setSession({ cat, photo, styles });
     setScreen("gen");
-  }, []);
+  }, [setSession]);
 
   return (
     <>
       <style>{G}</style>
       {screen==="home"    && <HomePage    onGenerate={handleGenerate}/>}
-      {screen==="gen"     && <GenScreen   selectedStyles={session.styles} onDone={() => setScreen("preview")}/>}
-      {screen==="preview" && <PreviewScreen cat={session.cat} photo={session.photo}
-                               selectedStyles={session.styles} onBack={() => setScreen("home")}/>}
+      {screen==="gen"     && <GenScreen   selectedStyles={localSession.styles} onDone={() => setScreen("preview")}/>}
+      {screen==="preview" && <PreviewScreen cat={localSession.cat} photo={localSession.photo}
+                               selectedStyles={localSession.styles} onBack={() => setScreen("home")}/>}
     </>
   );
 }

@@ -15,6 +15,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSession } from "@/context/SessionContext";
 import {
   Check, Download, Share2, Instagram, Twitter, Facebook,
   FrameIcon, Gift, Star, ArrowRight, Copy, Mail,
@@ -498,12 +499,12 @@ function FrameModal({ portrait, onClose }) {
 // ── MAIN DELIVERY PAGE ─────────────────────────────────────────
 export default function DeliveryPage() {
   const navigate = useNavigate();
+  const { session, clearSession } = useSession();
   const [frameModal, setFrameModal] = useState(null);
   const [cartMessage, setCartMessage] = useState("");
 
-  // In production: get these from route state or API
-  const orderProduct = "digital";
-  const orderNumber = "DP-2025-" + Math.random().toString(36).slice(2,8).toUpperCase();
+  const orderProduct = session.orderProduct || "digital";
+  const orderNumber = session.orderId || "DP-" + Math.random().toString(36).slice(2,8).toUpperCase();
 
   const handleAddToCart = (frame) => {
     setCartMessage(`${frame.name} added to your order!`);
