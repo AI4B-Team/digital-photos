@@ -1141,7 +1141,8 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
             <Share2 size={12}/>
           </button>
           <button className="btn-gold" style={{ padding:"12px 22px", borderRadius:7, fontSize:13,
-            display:"flex", gap:7, alignItems:"center", animation:"glow 2s infinite" }}>
+            display:"flex", gap:7, alignItems:"center", animation:"glow 2s infinite" }}
+            onClick={goToCheckout}>
             <Lock size={13}/>Unlock Collection
           </button>
         </div>
