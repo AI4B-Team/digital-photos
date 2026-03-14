@@ -1155,21 +1155,23 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
    ROOT
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
-  const [screen,  setScreen]  = useState("home");
-  const [session, setSession] = useState({ cat:"", photo:null, styles:[] });
+  const [screen,      setScreen]   = useState("home");
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, styles:[] });
+  const { setSession }             = useSession();
 
   const handleGenerate = useCallback(({ cat, photo, styles }) => {
+    setLocal({ cat, photo, styles });
     setSession({ cat, photo, styles });
     setScreen("gen");
-  }, []);
+  }, [setSession]);
 
   return (
     <>
       <style>{G}</style>
       {screen==="home"    && <HomePage    onGenerate={handleGenerate}/>}
-      {screen==="gen"     && <GenScreen   selectedStyles={session.styles} onDone={() => setScreen("preview")}/>}
-      {screen==="preview" && <PreviewScreen cat={session.cat} photo={session.photo}
-                               selectedStyles={session.styles} onBack={() => setScreen("home")}/>}
+      {screen==="gen"     && <GenScreen   selectedStyles={localSession.styles} onDone={() => setScreen("preview")}/>}
+      {screen==="preview" && <PreviewScreen cat={localSession.cat} photo={localSession.photo}
+                               selectedStyles={localSession.styles} onBack={() => setScreen("home")}/>}
     </>
   );
 }
