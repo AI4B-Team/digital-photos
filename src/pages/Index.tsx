@@ -1035,7 +1035,8 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
 
               {p.features.map(f => <CheckRow key={f} label={f} gold={p.featured}/>)}
 
-              <button className="btn-gold" style={{ width:"100%", padding:"12px", borderRadius:5, fontSize:12, marginTop:14 }}>
+              <button className="btn-gold" style={{ width:"100%", padding:"12px", borderRadius:5, fontSize:12, marginTop:14 }}
+                onClick={() => { handlePlanSelect(p.id); goToCheckout(); }}>
                 {p.cta}
               </button>
 
