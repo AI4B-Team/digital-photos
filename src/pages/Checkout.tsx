@@ -14,6 +14,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSession } from "@/context/SessionContext";
 import {
   Check, X, ChevronRight, ChevronLeft, Shield, Lock,
   Truck, Clock, RefreshCw, Star, Gift, Sparkles, Image,
