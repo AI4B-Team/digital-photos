@@ -1,5 +1,7 @@
 // @ts-nocheck
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate }  from "react-router-dom";
+import { useSession }   from "@/context/SessionContext";
 import {
   Upload, X, Check, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Share2, Heart, Truck, RefreshCw,
