@@ -14,7 +14,80 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      portraits: {
+        Row: {
+          created_at: string | null
+          id: string
+          session_id: string | null
+          style: string | null
+          url: string | null
+          url_hd: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          session_id?: string | null
+          style?: string | null
+          url?: string | null
+          url_hd?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          session_id?: string | null
+          style?: string | null
+          url?: string | null
+          url_hd?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portraits_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sessions: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          id: string
+          order_id: string | null
+          order_product: string | null
+          photo_url: string | null
+          status: string | null
+          stripe_session_id: string | null
+          styles: string[] | null
+          user_email: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          order_id?: string | null
+          order_product?: string | null
+          photo_url?: string | null
+          status?: string | null
+          stripe_session_id?: string | null
+          styles?: string[] | null
+          user_email?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          order_id?: string | null
+          order_product?: string | null
+          photo_url?: string | null
+          status?: string | null
+          stripe_session_id?: string | null
+          styles?: string[] | null
+          user_email?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
