@@ -1,26 +1,14 @@
 // @ts-nocheck
-// ============================================================
-// DIGITAL PHOTOS™ — PHASE 4: DELIVERY PAGE
-// Copy this entire file into Lovable as: src/pages/Delivery.jsx
-//
-// This is the post-purchase page. Users see:
-//   • Confirmation + order summary
-//   • Unlocked portrait grid (watermark-free)
-//   • Download buttons per portrait
-//   • Share to social
-//   • Print upsell (if they only bought digital)
-//   • Referral offer
-//   • Community share invitation
-// ============================================================
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
+import { verifyPayment } from "@/lib/stripe";
 import {
   Check, Download, Share2, Instagram, Twitter, Facebook,
   FrameIcon, Gift, Star, ArrowRight, Copy, Mail,
   Heart, Sparkles, Crown, Package, Truck, ChevronRight,
-  ExternalLink, RefreshCw, Users, Globe, Image, Award
+  ExternalLink, RefreshCw, Users, Globe, Image, Award,
+  Loader2
 } from "lucide-react";
 
 // ── DESIGN TOKENS ───────────────────────────────────────────
@@ -499,17 +487,76 @@ function FrameModal({ portrait, onClose }) {
 // ── MAIN DELIVERY PAGE ─────────────────────────────────────────
 export default function DeliveryPage() {
   const navigate = useNavigate();
-  const { session, clearSession } = useSession();
+  const [searchParams] = useSearchParams();
+  const { session, setSession, clearSession } = useSession();
   const [frameModal, setFrameModal] = useState(null);
   const [cartMessage, setCartMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [portraits, setPortraits] = useState([]);
+  const [orderProduct, setOrderProduct] = useState(session.orderProduct || "digital");
+  const [orderNumber, setOrderNumber] = useState(session.orderId || "");
 
-  const orderProduct = session.orderProduct || "digital";
-  const orderNumber = session.orderId || "DP-" + Math.random().toString(36).slice(2,8).toUpperCase();
+  // On mount, verify payment and fetch portraits
+  useEffect(() => {
+    const stripeSessionId = searchParams.get("session_id");
+    if (!stripeSessionId) {
+      // No stripe session — use mock data or context
+      setPortraits(UNLOCKED_PORTRAITS);
+      setLoading(false);
+      return;
+    }
+
+    (async () => {
+      try {
+        const result = await verifyPayment(stripeSessionId);
+        if (result.verified) {
+          setOrderProduct(result.orderProduct || "digital");
+          if (result.sessionId) setOrderNumber(result.sessionId);
+          setSession({ orderProduct: result.orderProduct, orderId: result.sessionId });
+
+          if (result.portraits?.length) {
+            // Map DB portraits to display format
+            const mapped = result.portraits.map((p, i) => ({
+              id: i + 1,
+              style: p.style || `Style ${i + 1}`,
+              img: p.url_hd || p.url || UNLOCKED_PORTRAITS[i % UNLOCKED_PORTRAITS.length].img,
+              featured: i === 0,
+            }));
+            setPortraits(mapped);
+          } else {
+            // Fallback to mock portraits if none generated yet
+            setPortraits(UNLOCKED_PORTRAITS);
+          }
+        } else {
+          // Payment not verified — still show page but with notice
+          setPortraits(UNLOCKED_PORTRAITS);
+        }
+      } catch (err) {
+        console.error("Payment verification failed:", err);
+        setPortraits(UNLOCKED_PORTRAITS);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   const handleAddToCart = (frame) => {
     setCartMessage(`${frame.name} added to your order!`);
     setTimeout(() => setCartMessage(""), 3000);
   };
+
+  if (loading) {
+    return (
+      <>
+        <style>{CSS}</style>
+        <div style={{ background:C.bg, minHeight:"100vh", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
+          <Loader2 size={32} color={C.gold} style={{ animation:"spin 1s linear infinite" }}/>
+          <p style={{ color:C.creamMuted, marginTop:16, fontSize:14 }}>Verifying your purchase…</p>
+          <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -523,7 +570,7 @@ export default function DeliveryPage() {
               Digital<span style={{ color:C.gold }}>Photos</span><span style={{ fontSize:9, verticalAlign:"super", color:C.goldDim }}>™</span>
             </div>
             <div style={{ display:"flex", gap:12, alignItems:"center" }}>
-              <span style={{ fontSize:11, color:C.creamMuted }}>Order #{orderNumber}</span>
+              {orderNumber && <span style={{ fontSize:11, color:C.creamMuted }}>Order #{orderNumber.slice(0,8)}</span>}
               <button className="btn-ghost" style={{ padding:"8px 16px" }} onClick={() => navigate("/")}>
                 Back to Home
               </button>
@@ -544,7 +591,7 @@ export default function DeliveryPage() {
 
         {/* Portrait grid */}
         <PortraitGrid
-          portraits={UNLOCKED_PORTRAITS}
+          portraits={portraits}
           onFrameClick={p => setFrameModal(p)}
         />
 
