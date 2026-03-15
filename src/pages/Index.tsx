@@ -310,11 +310,11 @@ function LiveTeaser({ activeCat, onCatClick }) {
    HOME PAGE
 ═══════════════════════════════════════════════════════════ */
 function HomePage({ onGenerate }) {
+  const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
   const [cat,     setCat]     = useState("");
-  const [photo,   setPhoto]   = useState(null);
   const [styles,  setStyles]  = useState([]);
   const [drag,    setDrag]    = useState(false);
-  const [err,     setErr]     = useState("");
+  const err = uploadErr;
   const [scrolled,setScrolled]= useState(false);
   const [baX,     setBaX]     = useState(50);
   const [baDown,  setBaDown]  = useState(false);
@@ -327,14 +327,6 @@ function HomePage({ onGenerate }) {
     const fn = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  const loadFile = useCallback(f => {
-    if (!f?.type?.startsWith("image/")) { setErr("Please upload an image file."); return; }
-    setErr("");
-    const r = new FileReader();
-    r.onload = e => setPhoto(e.target.result);
-    r.readAsDataURL(f);
   }, []);
 
   const toggleStyle = id => setStyles(p => p.includes(id) ? p.filter(s=>s!==id) : [...p, id]);
