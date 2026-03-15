@@ -835,6 +835,7 @@ export default function CheckoutPage() {
               setBumps={setBumps}
               onComplete={handlePaymentComplete}
               onBack={() => setScreen(1)}
+              sessionId={session.orderId}
             />
           )}
         </div>
