@@ -4,6 +4,7 @@ import { useNavigate }  from "react-router-dom";
 import { useSession }   from "@/context/SessionContext";
 import { useUpload }    from "@/hooks/useUpload";
 import { createSession } from "@/lib/supabaseHelpers";
+import { supabase }     from "@/integrations/supabase/client";
 import {
   Upload, X, Check, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Share2, Heart, Truck, RefreshCw,
@@ -528,7 +529,7 @@ function HomePage({ onGenerate }) {
                 style={{ width:"100%", padding:"15px", fontSize:13, borderRadius:6,
                   display:"flex", alignItems:"center", justifyContent:"center", gap:9,
                   animation:canGo?"glow 2s infinite":"none" }}
-                onClick={() => onGenerate({ cat, photo, styles })}>
+                onClick={() => onGenerate({ cat, photo, styles, uploadedUrl })}>
                 <Wand2 size={15}/>{genLabel()}
               </button>
 
@@ -716,24 +717,55 @@ function HomePage({ onGenerate }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   GENERATING SCREEN
+   GENERATING SCREEN — Real AI generation
 ═══════════════════════════════════════════════════════════ */
-function GenScreen({ selectedStyles, onDone }) {
+function GenScreen({ selectedStyles, sessionId, photoUrl, category, onDone }) {
   const [pct,  setPct]  = useState(0);
   const [msg,  setMsg]  = useState(0);
   const [done, setDone] = useState([]);
+  const [error, setError] = useState(null);
   const active = STYLES.filter(s => selectedStyles.includes(s.id));
+  const startedRef = useRef(false);
 
   useEffect(() => {
-    const total = 9000, tick = 85; let t = 0;
+    if (startedRef.current) return;
+    startedRef.current = true;
+
+    // Start a progress animation that ticks slowly
+    let fakePct = 0;
+    const total = active.length;
     const iv = setInterval(() => {
-      t += tick;
-      const p = Math.min((t / total) * 100, 100);
-      setPct(p);
-      setMsg(Math.min(Math.floor((p/100) * GEN_MSGS.length), GEN_MSGS.length-1));
-      setDone(active.slice(0, Math.floor((p/100) * active.length)));
-      if (p >= 100) { clearInterval(iv); setTimeout(onDone, 700); }
-    }, tick);
+      // Slowly increment but never reach 100 until real completion
+      fakePct = Math.min(fakePct + 0.3, 92);
+      setPct(fakePct);
+      setMsg(Math.min(Math.floor((fakePct/100) * GEN_MSGS.length), GEN_MSGS.length-1));
+    }, 200);
+
+    // Call the edge function
+    (async () => {
+      try {
+        const { data, error: fnError } = await supabase.functions.invoke("generate-portraits", {
+          body: { sessionId, photoUrl, styles: selectedStyles, category },
+        });
+
+        clearInterval(iv);
+
+        if (fnError) throw new Error(fnError.message || "Generation failed");
+        if (!data?.portraits?.length) throw new Error("No portraits were generated");
+
+        // Show completion
+        setPct(100);
+        setMsg(GEN_MSGS.length - 1);
+        setDone(active);
+
+        setTimeout(() => onDone(data.portraits), 700);
+      } catch (err) {
+        clearInterval(iv);
+        console.error("Generation error:", err);
+        setError(err.message || "Something went wrong generating your portraits.");
+      }
+    })();
+
     return () => clearInterval(iv);
   }, []);
 
@@ -744,42 +776,43 @@ function GenScreen({ selectedStyles, onDone }) {
         Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
       </div>
 
-      <div style={{ position:"relative", width:62, height:62, marginBottom:24 }}>
-        <div style={{ position:"absolute", inset:0, border:`1.5px solid ${T.border}`, borderRadius:"50%" }}/>
-        <div className="spn" style={{ position:"absolute", inset:0, border:"2px solid transparent", borderTopColor:T.gold, borderRadius:"50%" }}/>
-        <div style={{ position:"absolute", inset:9, display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <Wand2 size={18} color={T.gold}/>
+      {error ? (
+        <div style={{ textAlign:"center", maxWidth:440 }}>
+          <AlertCircle size={42} color="#E06060" style={{ marginBottom:16 }}/>
+          <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:28, color:T.cream, marginBottom:12 }}>Generation Failed</h2>
+          <p style={{ color:T.muted, fontSize:14, marginBottom:24, lineHeight:1.7 }}>{error}</p>
+          <button className="btn-gold" style={{ padding:"14px 36px", borderRadius:6, fontSize:13 }}
+            onClick={() => window.location.reload()}>
+            Try Again
+          </button>
         </div>
-      </div>
-
-      <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(24px,5vw,42px)",
-        fontWeight:700, fontStyle:"italic", color:T.cream, textAlign:"center", marginBottom:8 }}>
-        Creating Your Portrait Collection
-      </h2>
-      <p style={{ color:T.muted, fontSize:13, marginBottom:34, textAlign:"center", minHeight:20 }}>{GEN_MSGS[msg]}</p>
-
-      <div style={{ width:"100%", maxWidth:400, height:2, background:T.border,
-        borderRadius:2, overflow:"hidden", marginBottom:6 }}>
-        <div style={{ height:"100%", background:`linear-gradient(90deg,${T.gold},${T.goldLt})`,
-          width:`${pct}%`, transition:"width .15s ease" }}/>
-      </div>
-      <p style={{ fontSize:12, color:T.gold, marginBottom:38 }}>{Math.round(pct)}%</p>
-
-      {done.length > 0 && (
-        <div style={{ display:"flex", gap:7, flexWrap:"wrap", justifyContent:"center", maxWidth:520 }}>
-          {done.map((s, i) => (
-            <div key={i} className="bi" style={{ animationDelay:`${i*.07}s`, width:70, height:90,
-              borderRadius:5, overflow:"hidden", border:`1px solid ${T.border}`, position:"relative", flexShrink:0 }}>
-              <img src={s.preview} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", opacity:.44, display:"block" }}/>
-              <div style={{ position:"absolute", bottom:0, left:0, right:0, background:"rgba(7,6,10,.9)",
-                padding:"3px 4px", textAlign:"center", fontSize:7, color:"rgba(255,255,255,.44)" }}>{s.label}</div>
-              <div style={{ position:"absolute", top:4, right:4, width:13, height:13, background:T.gold,
-                borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <Check size={7} color={T.bg}/>
-              </div>
+      ) : (
+        <>
+          <div style={{ position:"relative", width:62, height:62, marginBottom:24 }}>
+            <div style={{ position:"absolute", inset:0, border:`1.5px solid ${T.border}`, borderRadius:"50%" }}/>
+            <div className="spn" style={{ position:"absolute", inset:0, border:"2px solid transparent", borderTopColor:T.gold, borderRadius:"50%" }}/>
+            <div style={{ position:"absolute", inset:9, display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <Wand2 size={18} color={T.gold}/>
             </div>
-          ))}
-        </div>
+          </div>
+
+          <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(24px,5vw,42px)",
+            fontWeight:700, fontStyle:"italic", color:T.cream, textAlign:"center", marginBottom:8 }}>
+            Creating Your Portrait Collection
+          </h2>
+          <p style={{ color:T.muted, fontSize:13, marginBottom:34, textAlign:"center", minHeight:20 }}>{GEN_MSGS[msg]}</p>
+
+          <div style={{ width:"100%", maxWidth:400, height:2, background:T.border,
+            borderRadius:2, overflow:"hidden", marginBottom:6 }}>
+            <div style={{ height:"100%", background:`linear-gradient(90deg,${T.gold},${T.goldLt})`,
+              width:`${pct}%`, transition:"width .15s ease" }}/>
+          </div>
+          <p style={{ fontSize:12, color:T.gold, marginBottom:38 }}>{Math.round(pct)}%</p>
+
+          <p style={{ fontSize:11, color:T.dim, textAlign:"center", maxWidth:360 }}>
+            AI is generating {active.length} unique portrait{active.length>1?"s":""} from your photo. This may take 1–3 minutes.
+          </p>
+        </>
       )}
     </div>
   );
@@ -788,7 +821,7 @@ function GenScreen({ selectedStyles, onDone }) {
 /* ═══════════════════════════════════════════════════════════
    PREVIEW PAGE  — Gallery Unlock Model
 ═══════════════════════════════════════════════════════════ */
-function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
+function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], onBack }) {
   const navigate              = useNavigate();
   const { setSession }        = useSession();
   const [planSel,    setPlanSel]    = useState("bundle");
@@ -888,7 +921,10 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
 
         {/* ── GALLERY GRID (watermarked) ── */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8, marginBottom:11 }} className="pg3">
-          {active.map((s, i) => (
+          {active.map((s, i) => {
+            const genPortrait = generatedPortraits.find(p => p.style === s.id);
+            const imgSrc = genPortrait ? genPortrait.url : (photo || s.preview);
+            return (
             <div key={s.id}
               onMouseEnter={() => setFocusedPort(i)}
               onMouseLeave={() => setFocusedPort(null)}
@@ -896,7 +932,7 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
                 height:i===0||i===1 ? 270 : 220,
                 border:`1.5px solid ${focusedPort===i ? T.bGold : T.border}`,
                 cursor:"pointer", transition:"border-color .22s" }}>
-              <img src={photo || s.preview} alt={s.label}
+              <img src={imgSrc} alt={s.label}
                 style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
                   filter:"brightness(.8) saturate(1.08)" }}/>
               <Watermark/>
@@ -926,7 +962,8 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
                 </button>
               )}
             </div>
-          ))}
+          );
+          })}
         </div>
 
         {/* gallery meta + share cta */}
@@ -1150,17 +1187,19 @@ function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, styles:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, styles:[], sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
 
-  const handleGenerate = useCallback(async ({ cat, photo, styles }) => {
-    setLocal({ cat, photo, styles });
+  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl }) => {
+    let sessionId = null;
+    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles }));
     setSession({ cat, photo, styles });
 
     // Create a Supabase session record to track generation
     try {
-      const sessionId = await createSession({ category: cat, styles, photoUrl: photo || "" });
+      sessionId = await createSession({ category: cat, styles, photoUrl: uploadedUrl || photo || "" });
       setSession({ cat, photo, styles, orderId: sessionId });
+      setLocal(prev => ({ ...prev, sessionId }));
     } catch (err) {
       console.warn("Could not create session record:", err);
     }
@@ -1168,13 +1207,25 @@ export default function App() {
     setScreen("gen");
   }, [setSession]);
 
+  const handleGenDone = useCallback((portraits) => {
+    setLocal(prev => ({ ...prev, generatedPortraits: portraits }));
+    setSession({ generatedPortraits: portraits.map(p => ({ style: p.style, url: p.url })) });
+    setScreen("preview");
+  }, [setSession]);
+
   return (
     <>
       <style>{G}</style>
       {screen==="home"    && <HomePage    onGenerate={handleGenerate}/>}
-      {screen==="gen"     && <GenScreen   selectedStyles={localSession.styles} onDone={() => setScreen("preview")}/>}
+      {screen==="gen"     && <GenScreen   selectedStyles={localSession.styles}
+                                sessionId={localSession.sessionId}
+                                photoUrl={localSession.photoUrl || localSession.photo}
+                                category={localSession.cat}
+                                onDone={handleGenDone}/>}
       {screen==="preview" && <PreviewScreen cat={localSession.cat} photo={localSession.photo}
-                               selectedStyles={localSession.styles} onBack={() => setScreen("home")}/>}
+                                selectedStyles={localSession.styles}
+                                generatedPortraits={localSession.generatedPortraits}
+                                onBack={() => setScreen("home")}/>}
     </>
   );
 }
