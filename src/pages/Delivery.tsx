@@ -192,10 +192,25 @@ function PortraitGrid({ portraits, onFrameClick }) {
   const [copied, setCopied] = useState(null);
   const [favorited, setFavorited] = useState([]);
 
-  const handleDownload = (portrait) => {
+  const handleDownload = async (portrait) => {
     setDownloading(portrait.id);
-    // In production: trigger actual file download from signed URL
-    setTimeout(() => setDownloading(null), 1500);
+    try {
+      // Direct download via fetch + blob
+      const response = await fetch(portrait.img);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `portrait-${portrait.style?.replace(/\s+/g, "-").toLowerCase() || portrait.id}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed:", err);
+    } finally {
+      setDownloading(null);
+    }
   };
 
   const handleCopyLink = (portrait) => {
