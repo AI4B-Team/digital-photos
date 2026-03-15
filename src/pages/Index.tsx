@@ -4,6 +4,7 @@ import { useNavigate }  from "react-router-dom";
 import { useSession }   from "@/context/SessionContext";
 import { useUpload }    from "@/hooks/useUpload";
 import { createSession } from "@/lib/supabaseHelpers";
+import { supabase }     from "@/integrations/supabase/client";
 import {
   Upload, X, Check, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Share2, Heart, Truck, RefreshCw,
