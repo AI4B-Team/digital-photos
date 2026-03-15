@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -19,7 +20,7 @@ serve(async (req) => {
   }
 
   try {
-    const { product, email } = await req.json();
+    const { product, email, sessionId } = await req.json();
 
     const priceId = PRICE_IDS[product];
     if (!priceId) throw new Error(`Unknown product: ${product}`);
@@ -35,15 +36,28 @@ serve(async (req) => {
       mode: "payment",
       success_url: `${origin}/delivery?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/checkout`,
+      metadata: { app_session_id: sessionId || "" },
     };
 
     if (email) {
       sessionParams.customer_email = email;
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
+    const checkoutSession = await stripe.checkout.sessions.create(sessionParams);
 
-    return new Response(JSON.stringify({ url: session.url }), {
+    // Store stripe_session_id in our DB session
+    if (sessionId) {
+      const supabase = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+      );
+      await supabase
+        .from("sessions")
+        .update({ stripe_session_id: checkoutSession.id, order_product: product })
+        .eq("id", sessionId);
+    }
+
+    return new Response(JSON.stringify({ url: checkoutSession.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
