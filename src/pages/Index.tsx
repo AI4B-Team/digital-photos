@@ -1187,17 +1187,19 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, styles:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, styles:[], sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
 
-  const handleGenerate = useCallback(async ({ cat, photo, styles }) => {
-    setLocal({ cat, photo, styles });
+  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl }) => {
+    let sessionId = null;
+    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles }));
     setSession({ cat, photo, styles });
 
     // Create a Supabase session record to track generation
     try {
-      const sessionId = await createSession({ category: cat, styles, photoUrl: photo || "" });
+      sessionId = await createSession({ category: cat, styles, photoUrl: uploadedUrl || photo || "" });
       setSession({ cat, photo, styles, orderId: sessionId });
+      setLocal(prev => ({ ...prev, sessionId }));
     } catch (err) {
       console.warn("Could not create session record:", err);
     }
@@ -1205,13 +1207,25 @@ export default function App() {
     setScreen("gen");
   }, [setSession]);
 
+  const handleGenDone = useCallback((portraits) => {
+    setLocal(prev => ({ ...prev, generatedPortraits: portraits }));
+    setSession({ generatedPortraits: portraits.map(p => ({ style: p.style, url: p.url })) });
+    setScreen("preview");
+  }, [setSession]);
+
   return (
     <>
       <style>{G}</style>
       {screen==="home"    && <HomePage    onGenerate={handleGenerate}/>}
-      {screen==="gen"     && <GenScreen   selectedStyles={localSession.styles} onDone={() => setScreen("preview")}/>}
+      {screen==="gen"     && <GenScreen   selectedStyles={localSession.styles}
+                                sessionId={localSession.sessionId}
+                                photoUrl={localSession.photoUrl || localSession.photo}
+                                category={localSession.cat}
+                                onDone={handleGenDone}/>}
       {screen==="preview" && <PreviewScreen cat={localSession.cat} photo={localSession.photo}
-                               selectedStyles={localSession.styles} onBack={() => setScreen("home")}/>}
+                                selectedStyles={localSession.styles}
+                                generatedPortraits={localSession.generatedPortraits}
+                                onBack={() => setScreen("home")}/>}
     </>
   );
 }
