@@ -965,7 +965,6 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
           );
           })}
         </div>
-        </div>
 
         {/* gallery meta + share cta */}
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
