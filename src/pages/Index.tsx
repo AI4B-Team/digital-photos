@@ -1153,9 +1153,18 @@ export default function App() {
   const [localSession, setLocal]   = useState({ cat:"", photo:null, styles:[] });
   const { setSession }             = useSession();
 
-  const handleGenerate = useCallback(({ cat, photo, styles }) => {
+  const handleGenerate = useCallback(async ({ cat, photo, styles }) => {
     setLocal({ cat, photo, styles });
     setSession({ cat, photo, styles });
+
+    // Create a Supabase session record to track generation
+    try {
+      const sessionId = await createSession({ category: cat, styles, photoUrl: photo || "" });
+      setSession({ cat, photo, styles, orderId: sessionId });
+    } catch (err) {
+      console.warn("Could not create session record:", err);
+    }
+
     setScreen("gen");
   }, [setSession]);
 
