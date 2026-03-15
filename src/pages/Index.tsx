@@ -529,7 +529,7 @@ function HomePage({ onGenerate }) {
                 style={{ width:"100%", padding:"15px", fontSize:13, borderRadius:6,
                   display:"flex", alignItems:"center", justifyContent:"center", gap:9,
                   animation:canGo?"glow 2s infinite":"none" }}
-                onClick={() => onGenerate({ cat, photo, styles })}>
+                onClick={() => onGenerate({ cat, photo, styles, uploadedUrl })}>
                 <Wand2 size={15}/>{genLabel()}
               </button>
 
