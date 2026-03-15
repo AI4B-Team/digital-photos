@@ -401,7 +401,7 @@ function ProductSelectScreen({ selected, setSelected, onNext }) {
 }
 
 // ── SCREEN 2: ORDER BUMPS + PAYMENT FORM ──────────────────────
-function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack }) {
+function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack, sessionId }) {
   const [form, setForm] = useState({ email:"", firstName:"", lastName:"", card:"", expiry:"", cvc:"", address:"", city:"", zip:"", country:"US" });
   const [errors, setErrors] = useState({});
   const [processing, setProcessing] = useState(false);
