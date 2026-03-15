@@ -491,7 +491,7 @@ function HomePage({ onGenerate }) {
                       <div style={{ width:6, height:6, borderRadius:"50%", background:"#5CB87A" }}/>
                       <span style={{ fontSize:11, color:T.cream }}>Photo ready</span>
                     </div>
-                    <button onClick={() => setPhoto(null)} style={{ position:"absolute", top:6, right:6,
+                    <button onClick={() => clearPhoto()} style={{ position:"absolute", top:6, right:6,
                       width:22, height:22, background:"rgba(7,6,10,.9)", border:`1px solid ${T.border}`,
                       borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
                       <X size={9} color={T.muted}/>
