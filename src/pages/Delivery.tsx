@@ -1,26 +1,14 @@
 // @ts-nocheck
-// ============================================================
-// DIGITAL PHOTOS™ — PHASE 4: DELIVERY PAGE
-// Copy this entire file into Lovable as: src/pages/Delivery.jsx
-//
-// This is the post-purchase page. Users see:
-//   • Confirmation + order summary
-//   • Unlocked portrait grid (watermark-free)
-//   • Download buttons per portrait
-//   • Share to social
-//   • Print upsell (if they only bought digital)
-//   • Referral offer
-//   • Community share invitation
-// ============================================================
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
+import { verifyPayment } from "@/lib/stripe";
 import {
   Check, Download, Share2, Instagram, Twitter, Facebook,
   FrameIcon, Gift, Star, ArrowRight, Copy, Mail,
   Heart, Sparkles, Crown, Package, Truck, ChevronRight,
-  ExternalLink, RefreshCw, Users, Globe, Image, Award
+  ExternalLink, RefreshCw, Users, Globe, Image, Award,
+  Loader2
 } from "lucide-react";
 
 // ── DESIGN TOKENS ───────────────────────────────────────────
