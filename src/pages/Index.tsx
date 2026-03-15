@@ -962,7 +962,9 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
                 </button>
               )}
             </div>
-          ))}
+          );
+          })}
+        </div>
         </div>
 
         {/* gallery meta + share cta */}
