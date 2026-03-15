@@ -921,7 +921,10 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
 
         {/* ── GALLERY GRID (watermarked) ── */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8, marginBottom:11 }} className="pg3">
-          {active.map((s, i) => (
+          {active.map((s, i) => {
+            const genPortrait = generatedPortraits.find(p => p.style === s.id);
+            const imgSrc = genPortrait ? genPortrait.url : (photo || s.preview);
+            return (
             <div key={s.id}
               onMouseEnter={() => setFocusedPort(i)}
               onMouseLeave={() => setFocusedPort(null)}
@@ -929,7 +932,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
                 height:i===0||i===1 ? 270 : 220,
                 border:`1.5px solid ${focusedPort===i ? T.bGold : T.border}`,
                 cursor:"pointer", transition:"border-color .22s" }}>
-              <img src={photo || s.preview} alt={s.label}
+              <img src={imgSrc} alt={s.label}
                 style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
                   filter:"brightness(.8) saturate(1.08)" }}/>
               <Watermark/>
