@@ -15,6 +15,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
+import { createCheckoutSession } from "@/lib/stripe";
 import {
   Check, X, ChevronRight, ChevronLeft, Shield, Lock,
   Truck, Clock, RefreshCw, Star, Gift, Sparkles, Image,
@@ -422,13 +423,20 @@ function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack }) {
     return e;
   };
 
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
     setProcessing(true);
-    // TODO: Replace with Stripe.js payment call
-    // stripe.confirmPayment({ ... })
-    setTimeout(() => { setProcessing(false); onComplete(); }, 2200);
+    try {
+      const url = await createCheckoutSession(product, form.email);
+      // Save order info before redirecting
+      onComplete();
+      window.location.href = url;
+    } catch (err) {
+      console.error("Stripe checkout error:", err);
+      setProcessing(false);
+      setErrors({ card: "Payment failed. Please try again." });
+    }
   };
 
   const f = (field, value) => setForm(prev => ({...prev,[field]:value}));
