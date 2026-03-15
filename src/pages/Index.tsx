@@ -2,6 +2,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate }  from "react-router-dom";
 import { useSession }   from "@/context/SessionContext";
+import { useUpload }    from "@/hooks/useUpload";
+import { createSession } from "@/lib/supabaseHelpers";
 import {
   Upload, X, Check, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Share2, Heart, Truck, RefreshCw,
@@ -308,11 +310,11 @@ function LiveTeaser({ activeCat, onCatClick }) {
    HOME PAGE
 ═══════════════════════════════════════════════════════════ */
 function HomePage({ onGenerate }) {
+  const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
   const [cat,     setCat]     = useState("");
-  const [photo,   setPhoto]   = useState(null);
   const [styles,  setStyles]  = useState([]);
   const [drag,    setDrag]    = useState(false);
-  const [err,     setErr]     = useState("");
+  const err = uploadErr;
   const [scrolled,setScrolled]= useState(false);
   const [baX,     setBaX]     = useState(50);
   const [baDown,  setBaDown]  = useState(false);
@@ -325,14 +327,6 @@ function HomePage({ onGenerate }) {
     const fn = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  const loadFile = useCallback(f => {
-    if (!f?.type?.startsWith("image/")) { setErr("Please upload an image file."); return; }
-    setErr("");
-    const r = new FileReader();
-    r.onload = e => setPhoto(e.target.result);
-    r.readAsDataURL(f);
   }, []);
 
   const toggleStyle = id => setStyles(p => p.includes(id) ? p.filter(s=>s!==id) : [...p, id]);
@@ -497,7 +491,7 @@ function HomePage({ onGenerate }) {
                       <div style={{ width:6, height:6, borderRadius:"50%", background:"#5CB87A" }}/>
                       <span style={{ fontSize:11, color:T.cream }}>Photo ready</span>
                     </div>
-                    <button onClick={() => setPhoto(null)} style={{ position:"absolute", top:6, right:6,
+                    <button onClick={() => clearPhoto()} style={{ position:"absolute", top:6, right:6,
                       width:22, height:22, background:"rgba(7,6,10,.9)", border:`1px solid ${T.border}`,
                       borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
                       <X size={9} color={T.muted}/>
@@ -1159,9 +1153,18 @@ export default function App() {
   const [localSession, setLocal]   = useState({ cat:"", photo:null, styles:[] });
   const { setSession }             = useSession();
 
-  const handleGenerate = useCallback(({ cat, photo, styles }) => {
+  const handleGenerate = useCallback(async ({ cat, photo, styles }) => {
     setLocal({ cat, photo, styles });
     setSession({ cat, photo, styles });
+
+    // Create a Supabase session record to track generation
+    try {
+      const sessionId = await createSession({ category: cat, styles, photoUrl: photo || "" });
+      setSession({ cat, photo, styles, orderId: sessionId });
+    } catch (err) {
+      console.warn("Could not create session record:", err);
+    }
+
     setScreen("gen");
   }, [setSession]);
 
