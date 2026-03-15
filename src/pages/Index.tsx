@@ -821,7 +821,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, onDone }) {
 /* ═══════════════════════════════════════════════════════════
    PREVIEW PAGE  — Gallery Unlock Model
 ═══════════════════════════════════════════════════════════ */
-function PreviewScreen({ cat, photo, selectedStyles, onBack }) {
+function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], onBack }) {
   const navigate              = useNavigate();
   const { setSession }        = useSession();
   const [planSel,    setPlanSel]    = useState("bundle");
