@@ -18,10 +18,35 @@ import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import portraitPets from "@/assets/portrait-pets.jpg";
+import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
+import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
+import portraitPetsFan from "@/assets/portrait-pets-fantasy.jpg";
+import portraitPetsCine from "@/assets/portrait-pets-cinematic.jpg";
+import portraitPetsMin from "@/assets/portrait-pets-minimal.jpg";
 import portraitBabies from "@/assets/portrait-babies.jpg";
+import portraitBabiesRoyal from "@/assets/portrait-babies-royal.jpg";
+import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
+import portraitBabiesFan from "@/assets/portrait-babies-fantasy.jpg";
+import portraitBabiesCine from "@/assets/portrait-babies-cinematic.jpg";
+import portraitBabiesMin from "@/assets/portrait-babies-minimal.jpg";
 import portraitPeople from "@/assets/portrait-people.jpg";
+import portraitPeopleRoyal from "@/assets/portrait-people-royal.jpg";
+import portraitPeopleRen from "@/assets/portrait-people-renaissance.jpg";
+import portraitPeopleStory from "@/assets/portrait-people-storybook.jpg";
+import portraitPeopleCine from "@/assets/portrait-people-cinematic.jpg";
+import portraitPeopleMin from "@/assets/portrait-people-minimal.jpg";
 import portraitMemorial from "@/assets/portrait-memorial.jpg";
+import portraitMemorialRoyal from "@/assets/portrait-memorial-royal.jpg";
+import portraitMemorialRen from "@/assets/portrait-memorial-renaissance.jpg";
+import portraitMemorialStory from "@/assets/portrait-memorial-storybook.jpg";
+import portraitMemorialFan from "@/assets/portrait-memorial-fantasy.jpg";
+import portraitMemorialCine from "@/assets/portrait-memorial-cinematic.jpg";
 import portraitGifts from "@/assets/portrait-gifts.jpg";
+import portraitGiftsRoyal from "@/assets/portrait-gifts-royal.jpg";
+import portraitGiftsStory from "@/assets/portrait-gifts-storybook.jpg";
+import portraitGiftsFan from "@/assets/portrait-gifts-fantasy.jpg";
+import portraitGiftsCine from "@/assets/portrait-gifts-cinematic.jpg";
+import portraitGiftsMin from "@/assets/portrait-gifts-minimal.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
