@@ -148,11 +148,11 @@ const STYLES = [
 
 // Live teaser — one per category, cycles automatically
 const TEASERS = [
-  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=300&h=380&fit=crop&q=80"  },
-  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=300&h=380&fit=crop&q=80"   },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=380&fit=crop&q=80"   },
-  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=300&h=380&fit=crop&q=80"   },
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&h=380&fit=crop&q=80"   },
+  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=300&h=380&fit=crop&q=80", after:scenePets    },
+  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=300&h=380&fit=crop&q=80", after:sceneBabies  },
+  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=380&fit=crop&q=80", after:scenePeople  },
+  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=300&h=380&fit=crop&q=80", after:sceneMemorial},
+  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=380&fit=crop&q=80", after:sceneGifts   },
 ];
 
 const PLANS = [
