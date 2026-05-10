@@ -198,6 +198,46 @@ export default function Customize() {
         </div>
       </header>
 
+      {/* Step nav: Upload | Customize | Print */}
+      <div style={{
+        display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+        padding:"14px 20px", background:"#fff", borderBottom:`1px solid ${BORDER}`,
+      }}>
+        {[
+          { id:"upload",    label:"Upload",    to:"/" },
+          { id:"customize", label:"Customize", to:"/customize" },
+          { id:"print",     label:"Print",     to:"/checkout" },
+        ].map((s, i, arr) => {
+          const active = s.id === "customize";
+          return (
+            <div key={s.id} style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <button onClick={() => navigate(s.to)}
+                style={{
+                  display:"flex", alignItems:"center", gap:8,
+                  padding:"8px 16px", borderRadius:999,
+                  background: active ? RED : "transparent",
+                  color: active ? "#fff" : TXT,
+                  border: active ? "none" : `1px solid ${BORDER}`,
+                  fontFamily:"Poppins", fontWeight:600, fontSize:13, cursor:"pointer",
+                  transition:"all .15s",
+                }}>
+                <span style={{
+                  width:20, height:20, borderRadius:"50%",
+                  background: active ? "rgba(255,255,255,.25)" : "#F0F0F0",
+                  color: active ? "#fff" : MUTED,
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  fontSize:11, fontWeight:700,
+                }}>{i+1}</span>
+                {s.label}
+              </button>
+              {i < arr.length-1 && (
+                <div style={{ width:24, height:1, background:BORDER }}/>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
       {/* Preview area */}
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "center",
