@@ -269,28 +269,15 @@ function LiveTeaser({ activeCat, onCatClick }) {
         What Your Photo Becomes
       </div>
 
-      {/* Before → After */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 36px 1fr", gap:0,
-        alignItems:"center", maxWidth:560, margin:"0 auto" }}>
-        <div style={{ position:"relative", aspectRatio:"4/5", borderRadius:8, overflow:"hidden",
-          border:`1px solid ${T.border}` }}>
-          <img src={cur.before} alt="Before"
-            style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.78)",
+      {/* Scene with corner inset of original */}
+      <div style={{ maxWidth:480, margin:"0 auto" }}>
+        <div style={{ position:"relative", aspectRatio:"1/1", borderRadius:14, overflow:"hidden",
+          border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)" }}>
+          <img src={cur.after} alt="Portrait scene"
+            style={{ width:"100%", height:"100%", objectFit:"cover",
               opacity:fading?0:1, transition:"opacity .3s" }}/>
-          <div style={{ position:"absolute", bottom:14, left:"50%", transform:"translateX(-50%)",
-            fontSize:11, letterSpacing:".22em", textTransform:"uppercase", color:"#FFFFFF",
-            background:"rgba(7,6,10,.75)", padding:"6px 14px", borderRadius:3 }}>Your Photo</div>
-        </div>
 
-        <div style={{ display:"flex", justifyContent:"center" }}>
-          <ArrowRight size={18} color={T.gold}/>
-        </div>
-
-        <div style={{ position:"relative", aspectRatio:"4/5", borderRadius:8, overflow:"hidden",
-          border:`1px solid ${T.bGold}` }}>
-          <img src={cur.after} alt="After"
-            style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.9) saturate(1.12)",
-              opacity:fading?0:1, transition:"opacity .3s" }}/>
+          {/* watermark */}
           <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
             justifyContent:"center", pointerEvents:"none" }}>
             <span style={{ fontSize:9, color:"rgba(255,255,255,.22)", letterSpacing:".26em",
@@ -298,9 +285,20 @@ function LiveTeaser({ activeCat, onCatClick }) {
               DIGITAL PHOTOS
             </span>
           </div>
-          <div style={{ position:"absolute", bottom:14, left:"50%", transform:"translateX(-50%)",
+
+          {/* corner inset — original photo */}
+          <div style={{ position:"absolute", bottom:16, left:16, width:84, height:84,
+            borderRadius:14, overflow:"hidden", border:"3px solid #FFFFFF",
+            boxShadow:"0 6px 18px rgba(0,0,0,.25)" }}>
+            <img src={cur.before} alt="Original"
+              style={{ width:"100%", height:"100%", objectFit:"cover",
+                opacity:fading?0:1, transition:"opacity .3s" }}/>
+          </div>
+
+          {/* style badge */}
+          <div style={{ position:"absolute", bottom:18, right:18,
             fontSize:11, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
-            background:T.gold, padding:"6px 16px", borderRadius:3, fontWeight:600 }}>
+            background:T.gold, padding:"7px 16px", borderRadius:8, fontWeight:600 }}>
             {cur.style}
           </div>
         </div>
