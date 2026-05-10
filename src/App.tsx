@@ -7,6 +7,7 @@ import { SessionProvider }     from "@/context/SessionContext";
 import { AuthProvider }        from "@/context/AuthContext";
 import Index                   from "./pages/Index";
 import Checkout                from "./pages/Checkout";
+import Customize               from "./pages/Customize";
 import Delivery                from "./pages/Delivery";
 import Auth                    from "./pages/Auth";
 import ResetPassword           from "./pages/ResetPassword";
@@ -26,6 +27,7 @@ const App = () => (
             <Routes>
               <Route path="/"               element={<Index />} />
               <Route path="/create"         element={<Navigate to="/" replace />} />
+              <Route path="/customize"      element={<Customize />} />
               <Route path="/checkout"       element={<Checkout />} />
               <Route path="/delivery"       element={<Delivery />} />
               <Route path="/auth"           element={<Auth />} />

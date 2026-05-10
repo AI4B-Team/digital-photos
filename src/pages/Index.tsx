@@ -888,11 +888,11 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
   };
   const buyPrint = () => {
     setSession({ selectedPlan:"bundle", cat, photo, styles: selectedStyles, printSize });
-    navigate("/checkout");
+    navigate(`/customize?style=${encodeURIComponent(featured?.id || selectedStyles[0] || "")}`);
   };
   const buyCanvas = () => {
     setSession({ selectedPlan:"canvas", cat, photo, styles: selectedStyles, canvasSize });
-    navigate("/checkout");
+    navigate(`/customize?style=${encodeURIComponent(featured?.id || selectedStyles[0] || "")}`);
   };
 
   const handleCopy = () => {
