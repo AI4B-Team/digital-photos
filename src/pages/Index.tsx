@@ -603,9 +603,6 @@ function HomePage({ onGenerate }) {
           </div>
         </div>
 
-        <div className="flt" style={{ position:"absolute", bottom:18, left:"50%", transform:"translateX(-50%)" }}>
-          <ChevronDown size={13} color={T.dim}/>
-        </div>
       </section>
 
       <footer style={{ padding:"26px 24px", borderTop:`1px solid ${T.border}` }}>
