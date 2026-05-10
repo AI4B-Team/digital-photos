@@ -418,11 +418,6 @@ function HomePage({ onGenerate }) {
 
           {/* TOP — Headline + Teaser (centered) */}
           <div style={{ textAlign:"center", display:"flex", flexDirection:"column", alignItems:"center", maxWidth:880 }}>
-            <div className="fu" style={{ display:"inline-flex", gap:7, alignItems:"center",
-              border:`1px solid rgba(196,150,58,.2)`, padding:"5px 14px", marginBottom:20,
-              fontSize:10, letterSpacing:".28em", color:T.gold, textTransform:"uppercase" }}>
-              <Sparkles size={10}/> AI Portrait Studio
-            </div>
 
             <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Cormorant Garamond',serif",
               fontWeight:700, lineHeight:.9, marginBottom:16 }}>
