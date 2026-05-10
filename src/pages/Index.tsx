@@ -18,10 +18,35 @@ import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import portraitPets from "@/assets/portrait-pets.jpg";
+import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
+import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
+import portraitPetsFan from "@/assets/portrait-pets-fantasy.jpg";
+import portraitPetsCine from "@/assets/portrait-pets-cinematic.jpg";
+import portraitPetsMin from "@/assets/portrait-pets-minimal.jpg";
 import portraitBabies from "@/assets/portrait-babies.jpg";
+import portraitBabiesRoyal from "@/assets/portrait-babies-royal.jpg";
+import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
+import portraitBabiesFan from "@/assets/portrait-babies-fantasy.jpg";
+import portraitBabiesCine from "@/assets/portrait-babies-cinematic.jpg";
+import portraitBabiesMin from "@/assets/portrait-babies-minimal.jpg";
 import portraitPeople from "@/assets/portrait-people.jpg";
+import portraitPeopleRoyal from "@/assets/portrait-people-royal.jpg";
+import portraitPeopleRen from "@/assets/portrait-people-renaissance.jpg";
+import portraitPeopleStory from "@/assets/portrait-people-storybook.jpg";
+import portraitPeopleCine from "@/assets/portrait-people-cinematic.jpg";
+import portraitPeopleMin from "@/assets/portrait-people-minimal.jpg";
 import portraitMemorial from "@/assets/portrait-memorial.jpg";
+import portraitMemorialRoyal from "@/assets/portrait-memorial-royal.jpg";
+import portraitMemorialRen from "@/assets/portrait-memorial-renaissance.jpg";
+import portraitMemorialStory from "@/assets/portrait-memorial-storybook.jpg";
+import portraitMemorialFan from "@/assets/portrait-memorial-fantasy.jpg";
+import portraitMemorialCine from "@/assets/portrait-memorial-cinematic.jpg";
 import portraitGifts from "@/assets/portrait-gifts.jpg";
+import portraitGiftsRoyal from "@/assets/portrait-gifts-royal.jpg";
+import portraitGiftsStory from "@/assets/portrait-gifts-storybook.jpg";
+import portraitGiftsFan from "@/assets/portrait-gifts-fantasy.jpg";
+import portraitGiftsCine from "@/assets/portrait-gifts-cinematic.jpg";
+import portraitGiftsMin from "@/assets/portrait-gifts-minimal.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -153,11 +178,51 @@ const STYLES = [
 
 // Live teaser — one per category, cycles automatically
 const TEASERS = [
-  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop&q=80", after:scenePets,    portrait:portraitPets    },
-  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&h=600&fit=crop&q=80", after:sceneBabies,  portrait:portraitBabies  },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople  },
-  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=600&h=600&fit=crop&q=80", after:sceneMemorial,portrait:portraitMemorial},
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts   },
+  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop&q=80", after:scenePets,    portrait:portraitPets,
+    portraits:[
+      { url:portraitPets,       style:"Royal" },
+      { url:portraitPetsRen,    style:"Renaissance" },
+      { url:portraitPetsStory,  style:"Storybook" },
+      { url:portraitPetsFan,    style:"Fantasy" },
+      { url:portraitPetsCine,   style:"Cinematic" },
+      { url:portraitPetsMin,    style:"Minimal" },
+    ] },
+  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&h=600&fit=crop&q=80", after:sceneBabies,  portrait:portraitBabies,
+    portraits:[
+      { url:portraitBabiesRoyal, style:"Royal" },
+      { url:portraitBabiesRen,   style:"Renaissance" },
+      { url:portraitBabies,      style:"Storybook" },
+      { url:portraitBabiesFan,   style:"Fantasy" },
+      { url:portraitBabiesCine,  style:"Cinematic" },
+      { url:portraitBabiesMin,   style:"Minimal" },
+    ] },
+  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
+    portraits:[
+      { url:portraitPeopleRoyal, style:"Royal" },
+      { url:portraitPeopleRen,   style:"Renaissance" },
+      { url:portraitPeopleStory, style:"Storybook" },
+      { url:portraitPeople,      style:"Fantasy" },
+      { url:portraitPeopleCine,  style:"Cinematic" },
+      { url:portraitPeopleMin,   style:"Minimal" },
+    ] },
+  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=600&h=600&fit=crop&q=80", after:sceneMemorial,portrait:portraitMemorial,
+    portraits:[
+      { url:portraitMemorialRoyal, style:"Royal" },
+      { url:portraitMemorialRen,   style:"Renaissance" },
+      { url:portraitMemorialStory, style:"Storybook" },
+      { url:portraitMemorialFan,   style:"Fantasy" },
+      { url:portraitMemorialCine,  style:"Cinematic" },
+      { url:portraitMemorial,      style:"Minimal" },
+    ] },
+  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts,
+    portraits:[
+      { url:portraitGiftsRoyal, style:"Royal" },
+      { url:portraitGifts,      style:"Renaissance" },
+      { url:portraitGiftsStory, style:"Storybook" },
+      { url:portraitGiftsFan,   style:"Fantasy" },
+      { url:portraitGiftsCine,  style:"Cinematic" },
+      { url:portraitGiftsMin,   style:"Minimal" },
+    ] },
 ];
 
 const PLANS = [
@@ -272,11 +337,24 @@ function LiveTeaser({ activeCat, onCatClick }) {
     return () => clearInterval(iv);
   }, [activeCat]);
 
-  // Keep right portrait in sync when category changes
-  useEffect(() => { setPortraitIdx(idx); }, [idx]);
+  // Reset right portrait variant when category changes
+  useEffect(() => { setPortraitIdx(0); }, [idx]);
+
+  // Auto-cycle right portraits within current category
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setPortraitFading(true);
+      setTimeout(() => {
+        setPortraitIdx(p => (p+1) % (TEASERS[idx].portraits?.length || 1));
+        setPortraitFading(false);
+      }, 260);
+    }, 2600);
+    return () => clearInterval(iv);
+  }, [idx]);
 
   const cur = TEASERS[idx];
-  const portraitCur = TEASERS[portraitIdx];
+  const variants = cur.portraits || [{ url: cur.portrait, style: cur.style }];
+  const portraitCur = variants[portraitIdx % variants.length];
 
   return (
     <div style={{ padding:"0 0 8px", display:"flex", flexDirection:"column", height:"100%" }}>
@@ -308,7 +386,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)",
           background:"#F5EFE3", minHeight:340 }}>
-          <img src={portraitCur.portrait} alt="Generated portrait"
+          <img src={portraitCur.url} alt="Generated portrait"
             style={{ width:"100%", height:"100%", objectFit:"cover",
               opacity:portraitFading?0:1, transition:"opacity .4s" }}/>
           {/* watermark */}
@@ -338,7 +416,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
           ].map(a => (
             <button key={a.side} aria-label={a.dir<0?"Previous":"Next"}
               onClick={() => {
-                const next = (portraitIdx + a.dir + TEASERS.length) % TEASERS.length;
+                const next = (portraitIdx + a.dir + variants.length) % variants.length;
                 setPortraitFading(true);
                 setTimeout(()=>{ setPortraitIdx(next); setPortraitFading(false); },260);
               }}
