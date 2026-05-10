@@ -25,6 +25,17 @@ export interface SessionState {
 
   // Generated portrait URLs (Phase 4 — AI integration)
   generatedPortraits: { style: string; url: string }[];
+
+  // Customization (Mixtiles-style frame/size/effect/border)
+  customization?: {
+    portraitUrl: string;
+    style: string;
+    frame:    "frameless" | "black" | "white" | "oak" | "wide-black" | "wide-white" | "wide-walnut" | "canvas";
+    size:     string;        // e.g. '8" x 10"'
+    effect:   "original" | "silver" | "noir" | "vivid" | "dramatic";
+    border:   "none" | "shallow" | "medium" | "deep";
+    borderColor: string;     // hex
+  };
 }
 
 interface SessionContextType {
