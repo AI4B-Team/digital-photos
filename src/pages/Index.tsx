@@ -322,7 +322,6 @@ function LiveTeaser({ activeCat, onCatClick }) {
           </div>
         </div>
       </div>
-      </div>
 
       {/* Category dots */}
       <div style={{ display:"flex", gap:8, marginTop:18, alignItems:"center", justifyContent:"center" }}>
