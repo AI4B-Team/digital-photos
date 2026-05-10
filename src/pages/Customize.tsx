@@ -186,7 +186,15 @@ export default function Customize() {
           boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
         }}>
           <img src={portraitUrl} alt="Your portrait"
-            style={{ display:"block", maxWidth:"100%", maxHeight:"58vh", filter: effectDef.filter, objectFit:"contain" }}/>
+            style={{
+              display:"block",
+              width:  `min(${sizeDef.w * 60}vh, ${sizeDef.w * 90}%)`,
+              height: `min(${sizeDef.h * 60}vh, ${sizeDef.h * 90}vw)`,
+              aspectRatio: `${sizeDef.w} / ${sizeDef.h}`,
+              maxWidth: "100%",
+              objectFit: "cover",
+              filter: effectDef.filter,
+            }}/>
         </div>
       </div>
     );
