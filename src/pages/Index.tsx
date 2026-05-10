@@ -419,12 +419,12 @@ function HomePage({ onGenerate }) {
             </h1>
 
             <p className="fu" style={{ animationDelay:".15s", fontSize:14, color:T.muted,
-              lineHeight:1.8, marginBottom:18, maxWidth:380 }}>
+              lineHeight:1.8, marginBottom:18, maxWidth:520 }}>
               Turn photos of your pets, babies, people, or precious memories into timeless AI portraits in seconds.
             </p>
 
             <div className="fu" style={{ animationDelay:".22s", display:"flex", alignItems:"center",
-              gap:9, flexWrap:"wrap", marginBottom:6 }}>
+              justifyContent:"center", gap:9, flexWrap:"wrap", marginBottom:6 }}>
               <Stars n={5}/>
               <span style={{ fontSize:12, color:T.muted }}>
                 <strong style={{ color:T.cream }}>4.9★ rated</strong> · Thousands of portraits created · Digital + gift prints
@@ -437,8 +437,8 @@ function HomePage({ onGenerate }) {
             </div>
           </div>
 
-          {/* RIGHT — BUILDER CARD */}
-          <div className="si" style={{ animationDelay:".1s" }}>
+          {/* BOTTOM — BUILDER CARD (centered) */}
+          <div className="si" style={{ animationDelay:".1s", width:"100%", maxWidth:680 }}>
             <div style={{ background:T.sur, border:`1px solid ${T.border}`, padding:"22px 20px",
               position:"relative",
               boxShadow:"0 44px 110px rgba(0,0,0,.72), inset 0 1px 0 rgba(196,150,58,.08)" }}>
