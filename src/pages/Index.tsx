@@ -386,7 +386,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)",
           background:"#F5EFE3", minHeight:340 }}>
-          <img src={portraitCur.portrait} alt="Generated portrait"
+          <img src={portraitCur.url} alt="Generated portrait"
             style={{ width:"100%", height:"100%", objectFit:"cover",
               opacity:portraitFading?0:1, transition:"opacity .4s" }}/>
           {/* watermark */}
