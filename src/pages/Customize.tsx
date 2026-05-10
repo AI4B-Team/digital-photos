@@ -38,6 +38,13 @@ const G = `
 .cz-swatch:hover{transform:translateY(-1px)}
 .cz-swatch.on{box-shadow:0 0 0 2px ${RED},0 0 0 4px #fff}
 .cz-row{display:flex;gap:8px;flex-wrap:wrap}
+.cz-size-scroll{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#cfc7bd transparent}
+.cz-size-scroll::-webkit-scrollbar{height:6px}
+.cz-size-scroll::-webkit-scrollbar-thumb{background:#cfc7bd;border-radius:3px}
+.cz-size-scroll::-webkit-scrollbar-track{background:transparent}
+.cz-size-card{flex:0 0 auto;scroll-snap-align:start;background:#fff;border:1px solid ${BORDER};border-radius:12px;padding:12px 14px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-family:'Poppins',sans-serif;transition:all .15s;min-width:88px}
+.cz-size-card:hover{border-color:rgba(0,0,0,.25);transform:translateY(-1px)}
+.cz-size-card.on{border-color:${RED};box-shadow:0 0 0 1px ${RED}}
 @keyframes czFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .cz-fade{animation:czFade .35s cubic-bezier(.23,1,.32,1) both}
 @media (max-width: 1100px){
@@ -60,12 +67,16 @@ const FRAMES = [
 ];
 
 const SIZES = [
-  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",   price: 15 },
-  { id: '8" x 10"',  label: '8 × 10',  sub: "Petite",   price: 19 },
-  { id: '11" x 14"', label: '11 × 14', sub: "Classic",  price: 29 },
-  { id: '16" x 20"', label: '16 × 20', sub: "Statement",price: 45 },
-  { id: '20" x 30"', label: '20 × 30', sub: "Grand",    price: 69 },
+  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",    price: 15, w: 1,    h: 1    },
+  { id: '8" x 10"',  label: '8 × 10',  sub: "Petite",    price: 19, w: 0.8,  h: 1    },
+  { id: '10" x 8"',  label: '10 × 8',  sub: "Petite",    price: 19, w: 1,    h: 0.8  },
+  { id: '11" x 14"', label: '11 × 14', sub: "Classic",   price: 29, w: 0.79, h: 1    },
+  { id: '14" x 11"', label: '14 × 11', sub: "Classic",   price: 29, w: 1,    h: 0.79 },
+  { id: '16" x 20"', label: '16 × 20', sub: "Statement", price: 45, w: 0.8,  h: 1    },
+  { id: '20" x 16"', label: '20 × 16', sub: "Statement", price: 45, w: 1,    h: 0.8  },
+  { id: '20" x 30"', label: '20 × 30', sub: "Grand",     price: 69, w: 0.67, h: 1    },
 ];
+
 
 const EFFECTS = [
   { id: "original", label: "Original", filter: "none" },
@@ -251,12 +262,29 @@ export default function Customize() {
           {/* Size */}
           <div className="cz-section">
             <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef.label}″</span></div>
-            <div className="cz-row">
-              {SIZES.map(s => (
-                <button key={s.id} className={`cz-chip ${size===s.id?"on":""}`} onClick={() => setSize(s.id)}>
-                  {s.label}″ <span className="cz-chip-meta">${s.price}</span>
-                </button>
-              ))}
+            <div className="cz-size-scroll">
+              {SIZES.map(s => {
+                const on = size === s.id;
+                const SHAPE_BOX = 44;
+                return (
+                  <button key={s.id} onClick={() => setSize(s.id)} className={`cz-size-card ${on?"on":""}`}>
+                    <div style={{
+                      width: SHAPE_BOX, height: SHAPE_BOX,
+                      display:"flex", alignItems:"center", justifyContent:"center", marginBottom:8,
+                    }}>
+                      <div style={{
+                        width: SHAPE_BOX * s.w,
+                        height: SHAPE_BOX * s.h,
+                        border: `1.5px solid ${on ? RED : "#B8B0A8"}`,
+                        borderRadius: 3,
+                        background: on ? "rgba(230,25,25,0.06)" : "transparent",
+                      }}/>
+                    </div>
+                    <div style={{ fontSize:12, fontWeight:600, color:INK, lineHeight:1.1, whiteSpace:"nowrap" }}>{s.label}″</div>
+                    <div style={{ fontSize:10.5, color:MUTED, marginTop:2, whiteSpace:"nowrap" }}>From ${s.price}</div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
