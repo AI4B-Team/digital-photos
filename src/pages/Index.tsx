@@ -499,9 +499,9 @@ function HomePage({ onGenerate }) {
                         borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center",
                         fontSize:12, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
                     </div>
-                    <p style={{ fontSize:12, color:T.cream, marginBottom:3 }}>Drop your photo here or click to upload</p>
+                    <p style={{ fontSize:12, color:T.cream, marginBottom:3 }}>Drop Your Photo Here Or Click To Upload</p>
                     <p style={{ fontSize:10, color:T.muted, lineHeight:1.55 }}>
-                      Upload a clear photo · Good lighting · Visible faces for best results
+                      Upload A Clear Photo · Good Lighting · Visible Faces For Best Results
                     </p>
                     {err && (
                       <div style={{ marginTop:8, display:"flex", gap:5, alignItems:"center",
