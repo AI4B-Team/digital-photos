@@ -337,11 +337,24 @@ function LiveTeaser({ activeCat, onCatClick }) {
     return () => clearInterval(iv);
   }, [activeCat]);
 
-  // Keep right portrait in sync when category changes
-  useEffect(() => { setPortraitIdx(idx); }, [idx]);
+  // Reset right portrait variant when category changes
+  useEffect(() => { setPortraitIdx(0); }, [idx]);
+
+  // Auto-cycle right portraits within current category
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setPortraitFading(true);
+      setTimeout(() => {
+        setPortraitIdx(p => (p+1) % (TEASERS[idx].portraits?.length || 1));
+        setPortraitFading(false);
+      }, 260);
+    }, 2600);
+    return () => clearInterval(iv);
+  }, [idx]);
 
   const cur = TEASERS[idx];
-  const portraitCur = TEASERS[portraitIdx];
+  const variants = cur.portraits || [{ url: cur.portrait, style: cur.style }];
+  const portraitCur = variants[portraitIdx % variants.length];
 
   return (
     <div style={{ padding:"0 0 8px", display:"flex", flexDirection:"column", height:"100%" }}>
