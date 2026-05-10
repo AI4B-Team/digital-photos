@@ -251,6 +251,8 @@ function CheckRow({ label, gold }) {
 ═══════════════════════════════════════════════════════════ */
 function LiveTeaser({ activeCat, onCatClick }) {
   const [idx, setIdx] = useState(0);
+  const [portraitIdx, setPortraitIdx] = useState(0);
+  const [portraitFading, setPortraitFading] = useState(false);
   const [fading, setFading] = useState(false);
 
   // When user picks a category, jump to matching teaser
