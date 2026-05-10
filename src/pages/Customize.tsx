@@ -188,12 +188,12 @@ export default function Customize() {
           <img src={portraitUrl} alt="Your portrait"
             style={{
               display:"block",
-              width:  `min(${sizeDef.w * 60}vh, ${sizeDef.w * 90}%)`,
-              height: `min(${sizeDef.h * 60}vh, ${sizeDef.h * 90}vw)`,
-              aspectRatio: `${sizeDef.w} / ${sizeDef.h}`,
+              height: `${sizeDef.h * 58}vh`,
+              width:  `${sizeDef.w * 58}vh`,
               maxWidth: "100%",
               objectFit: "cover",
               filter: effectDef.filter,
+              transition: "width .25s ease, height .25s ease",
             }}/>
         </div>
       </div>
