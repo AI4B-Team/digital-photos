@@ -12,6 +12,11 @@ import {
   ArrowRight, Shield, Star, Instagram, Facebook,
   PawPrint, Baby, Users, Flower2
 } from "lucide-react";
+import scenePets from "@/assets/scene-pets.jpg";
+import sceneBabies from "@/assets/scene-babies.jpg";
+import scenePeople from "@/assets/scene-people.jpg";
+import sceneMemorial from "@/assets/scene-memorial.jpg";
+import sceneGifts from "@/assets/scene-gifts.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
