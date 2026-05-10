@@ -410,7 +410,7 @@ function HomePage({ onGenerate }) {
       </div>
 
       {/* ── NAV ── */}
-      <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:200, height:50,
+      <nav style={{ position:"fixed", top:30, left:0, right:0, zIndex:200, height:50,
         display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 26px",
         background:scrolled?"rgba(7,6,10,.97)":"transparent",
         backdropFilter:scrolled?"blur(22px)":"none",
