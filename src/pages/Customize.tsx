@@ -331,87 +331,22 @@ export default function Customize() {
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
             <span>{effectDef.label}</span>
           </div>
+
+          <div style={{ width:"100%", maxWidth:420, display:"flex", flexDirection:"column", gap:8, marginTop:8 }}>
+            <button onClick={handleContinue} className="cz-btn-red" style={{
+              padding:"16px 18px", fontSize:14.5,
+              display:"flex", alignItems:"center", justifyContent:"space-between", gap:10,
+            }}>
+              <span style={{ display:"flex", alignItems:"center", gap:10 }}>
+                <Check size={18}/> Continue to Checkout
+              </span>
+              <span className="cz-serif" style={{ fontWeight:700, fontSize:16 }}>${total}</span>
+            </button>
+            <div style={{ textAlign:"center", color:MUTED, fontSize:11.5 }}>
+              Free shipping · 100-day happiness guarantee
+            </div>
+          </div>
         </div>
-
-        {/* Side controls */}
-        <aside className="cz-side" style={{
-          padding:"32px 28px 32px 12px",
-          position:"sticky", top:70, alignSelf:"start",
-          maxHeight:"calc(100vh - 70px)", overflowY:"auto",
-          display:"flex", flexDirection:"column", gap:14,
-        }}>
-          {/* Size */}
-          <div className="cz-section">
-            <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef.label}″ · ${sizeDef.price}</span></div>
-            <div className="cz-row">
-              {SIZES.map(s => (
-                <button key={s.id} className={`cz-chip ${size===s.id?"on":""}`} onClick={() => setSize(s.id)}>
-                  {s.label}″ <span className="cz-chip-meta">${s.price}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Frame */}
-          <div className="cz-section">
-            <div className="cz-label"><span>Frame</span><span className="cz-value">{frameDef.label}{frameDef.add?` · +$${frameDef.add}`:""}</span></div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(38px, 1fr))", gap:10, marginBottom:10 }}>
-              {FRAMES.map(f => (
-                <button key={f.id} onClick={() => setFrame(f.id)} title={f.label}
-                  style={{ border:"none", background:"transparent", padding:0, cursor:"pointer" }}>
-                  <FrameSwatch frame={f} on={frame===f.id}/>
-                </button>
-              ))}
-            </div>
-            <div style={{ fontSize:11.5, color:MUTED }}>Tap a swatch to switch frame style.</div>
-          </div>
-
-          {/* Effect */}
-          <div className="cz-section">
-            <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
-            <div className="cz-row">
-              {EFFECTS.map(e => (
-                <button key={e.id} className={`cz-chip ${effect===e.id?"on":""}`} onClick={() => setEffect(e.id)}>
-                  {e.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Mat / Border */}
-          <div className="cz-section">
-            <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
-            <div className="cz-row" style={{ marginBottom:14 }}>
-              {BORDERS.map(b => (
-                <button key={b.id} className={`cz-chip ${border===b.id?"on":""}`} onClick={() => setBorder(b.id)}>
-                  {b.label}
-                </button>
-              ))}
-            </div>
-            <div className="cz-label" style={{ marginBottom:8 }}><span>Mat color</span></div>
-            <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-              {BORDER_COLORS.map(c => (
-                <button key={c} aria-label={`Mat color ${c}`} onClick={() => setBorderColor(c)}
-                  className={`cz-swatch ${borderColor===c?"on":""}`}
-                  style={{ background:c, border: c==="#FFFFFF"?"1px solid rgba(0,0,0,.12)":"none" }}/>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <button onClick={handleContinue} className="cz-btn-red" style={{
-            padding:"16px 18px", fontSize:14.5, marginTop:4,
-            display:"flex", alignItems:"center", justifyContent:"space-between", gap:10,
-          }}>
-            <span style={{ display:"flex", alignItems:"center", gap:10 }}>
-              <Check size={18}/> Continue to Checkout
-            </span>
-            <span className="cz-serif" style={{ fontWeight:700, fontSize:16 }}>${total}</span>
-          </button>
-          <div style={{ textAlign:"center", color:MUTED, fontSize:11.5, marginTop:-4 }}>
-            Free shipping · 100-day happiness guarantee
-          </div>
-        </aside>
       </div>
     </div>
   );
