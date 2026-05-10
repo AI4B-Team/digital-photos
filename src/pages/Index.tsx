@@ -125,11 +125,11 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
    DATA
 ═══════════════════════════════════════════════════════════ */
 const CATS = [
-  { id:"pets",     label:"Pets",     icon:"🐾" },
-  { id:"babies",   label:"Babies",   icon:"🍼" },
-  { id:"people",   label:"People",   icon:"👤" },
-  { id:"memorial", label:"Memorial", icon:"✦"  },
-  { id:"gifts",    label:"Gifts",    icon:"🎁" },
+  { id:"pets",     label:"Pets",     icon:"🐾", Icon: PawPrint },
+  { id:"babies",   label:"Babies",   icon:"🍼", Icon: Baby     },
+  { id:"people",   label:"People",   icon:"👤", Icon: Users    },
+  { id:"memorial", label:"Memorial", icon:"✦",  Icon: Flower2  },
+  { id:"gifts",    label:"Gifts",    icon:"🎁", Icon: Gift     },
 ];
 
 const STYLES = [
