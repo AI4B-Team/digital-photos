@@ -657,16 +657,27 @@ function HomePage({ onGenerate }) {
                     )}
                   </div>
                 ) : (
-                  <div style={{ position:"relative", borderRadius:6, overflow:"hidden", height:100, border:`1px solid ${T.bGold}` }}>
-                    <img src={photo} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-                    <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(7,6,10,.82) 0%,transparent 55%)" }}/>
-                    <div style={{ position:"absolute", bottom:7, left:10, display:"flex", alignItems:"center", gap:6 }}>
-                      <div style={{ width:6, height:6, borderRadius:"50%", background:"#5CB87A" }}/>
-                      <span style={{ fontSize:11, color:T.cream }}>Photo ready</span>
+                  <div style={{ display:"inline-flex", alignItems:"center", gap:10,
+                    padding:"6px 10px 6px 6px", borderRadius:999,
+                    background:"rgba(255,255,255,.04)", border:`1px solid ${T.bGold}`,
+                    maxWidth:"100%" }}>
+                    <img src={photo} alt="" style={{ width:36, height:36, borderRadius:"50%",
+                      objectFit:"cover", display:"block", flexShrink:0 }}/>
+                    <div style={{ display:"flex", flexDirection:"column", minWidth:0 }}>
+                      <span style={{ fontSize:11, color:T.cream, fontWeight:600,
+                        whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                        Photo attached
+                      </span>
+                      <span style={{ fontSize:9, color:"#5CB87A", display:"flex",
+                        alignItems:"center", gap:4 }}>
+                        <span style={{ width:5, height:5, borderRadius:"50%", background:"#5CB87A" }}/>
+                        Ready
+                      </span>
                     </div>
-                    <button onClick={() => clearPhoto()} style={{ position:"absolute", top:6, right:6,
-                      width:22, height:22, background:"rgba(7,6,10,.9)", border:`1px solid ${T.border}`,
-                      borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
+                    <button onClick={() => clearPhoto()} aria-label="Remove photo"
+                      style={{ marginLeft:6, width:20, height:20, background:"rgba(7,6,10,.6)",
+                        border:`1px solid ${T.border}`, borderRadius:"50%", display:"flex",
+                        alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0 }}>
                       <X size={9} color={T.muted}/>
                     </button>
                   </div>
