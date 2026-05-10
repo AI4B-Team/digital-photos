@@ -291,15 +291,21 @@ export default function Customize() {
           {/* Frame */}
           <div className="cz-section">
             <div className="cz-label"><span>Frame</span><span className="cz-value">{frameDef.label}{frameDef.add?` · +$${frameDef.add}`:""}</span></div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(38px, 1fr))", gap:10, marginBottom:10 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(64px, 1fr))", gap:10, marginBottom:10 }}>
               {FRAMES.map(f => (
                 <button key={f.id} onClick={() => setFrame(f.id)} title={f.label}
-                  style={{ border:"none", background:"transparent", padding:0, cursor:"pointer" }}>
+                  style={{
+                    border:"none", background:"transparent", padding:0, cursor:"pointer",
+                    display:"flex", flexDirection:"column", alignItems:"center", gap:6,
+                  }}>
                   <FrameSwatch frame={f} on={frame===f.id}/>
+                  <span style={{
+                    fontSize:10.5, color: frame===f.id ? INK : MUTED, fontWeight: frame===f.id ? 600 : 500,
+                    whiteSpace:"nowrap", textAlign:"center", lineHeight:1.1,
+                  }}>{f.label}</span>
                 </button>
               ))}
             </div>
-            <div style={{ fontSize:11.5, color:MUTED }}>Tap a swatch to switch frame style.</div>
           </div>
 
           {/* Effect */}
