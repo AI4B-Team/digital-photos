@@ -507,13 +507,14 @@ function HomePage({ onGenerate }) {
             </p>
           </div>
 
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"start" }} className="hg hero-grid">
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"stretch" }} className="hg hero-grid">
 
           {/* LEFT PANEL — teaser */}
-          <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
+          <div style={{ display:"flex", flexDirection:"column", gap:24, height:"100%" }}>
 
             {/* LIVE TEASER moved into left panel */}
-            <div className="fu" style={{ animationDelay:".3s", width:"100%", maxWidth:560 }}>
+            <div className="fu" style={{ animationDelay:".3s", width:"100%", maxWidth:560,
+              display:"flex", flexDirection:"column", flex:1 }}>
               <LiveTeaser activeCat={cat} onCatClick={setCat}/>
             </div>
           </div>
