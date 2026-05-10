@@ -388,18 +388,44 @@ export default function Customize() {
           <div className="cz-section">
             <div className="cz-label" style={{ marginBottom:14 }}><span>Your Cart</span></div>
 
-            {/* Mini preview */}
-            <div style={{
-              background:BG, borderRadius:12, padding:14,
-              display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14,
-              border:`1px solid ${BORDER}`,
-            }}>
-              <img src={portraitUrl} alt="" style={{
-                maxWidth:"100%", maxHeight:120, objectFit:"contain",
-                filter: effectDef.filter,
-                boxShadow:"0 4px 12px rgba(0,0,0,.15)",
-              }}/>
-            </div>
+            {/* Mini preview — mirrors live canvas */}
+            {(() => {
+              const isFrameless = frameDef.id === "frameless";
+              const isCanvas    = frameDef.id === "canvas";
+              const woodPad     = (frameDef.w || 0) * 0.35;
+              const maxDim      = 130;
+              const imgW = sizeDef.w >= sizeDef.h ? maxDim : maxDim * (sizeDef.w / sizeDef.h);
+              const imgH = sizeDef.h >= sizeDef.w ? maxDim : maxDim * (sizeDef.h / sizeDef.w);
+              return (
+                <div style={{
+                  background:BG, borderRadius:12, padding:16,
+                  display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14,
+                  border:`1px solid ${BORDER}`, minHeight:170,
+                }}>
+                  <div style={{
+                    background: isCanvas ? "#fff" : (isFrameless ? "transparent" : frameDef.wood),
+                    padding: isFrameless ? 0 : woodPad,
+                    borderRadius: isFrameless ? 0 : 2,
+                    boxShadow: isFrameless ? "0 8px 20px rgba(0,0,0,.12)" : "0 12px 24px -8px rgba(0,0,0,.25), 0 4px 10px rgba(0,0,0,.08)",
+                    display:"inline-block",
+                  }}>
+                    <div style={{
+                      background: borderColor,
+                      padding: borderDef.px * 0.4,
+                      display:"flex",
+                    }}>
+                      <img src={portraitUrl} alt="" style={{
+                        display:"block",
+                        width: imgW, height: imgH,
+                        objectFit:"cover",
+                        filter: effectDef.filter,
+                        transition:"width .25s ease, height .25s ease",
+                      }}/>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
 
             <div className="cz-serif" style={{ fontSize:15, fontWeight:600, color:INK, marginBottom:2 }}>
               Custom Portrait
