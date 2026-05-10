@@ -308,9 +308,9 @@ function LiveTeaser({ activeCat, onCatClick }) {
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)",
           background:"#F5EFE3", minHeight:340 }}>
-          <img src={cur.portrait} alt="Generated portrait"
+          <img src={portraitCur.portrait} alt="Generated portrait"
             style={{ width:"100%", height:"100%", objectFit:"cover",
-              opacity:fading?0:1, transition:"opacity .4s" }}/>
+              opacity:portraitFading?0:1, transition:"opacity .4s" }}/>
           {/* watermark */}
           <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
             justifyContent:"center", pointerEvents:"none" }}>
@@ -329,18 +329,18 @@ function LiveTeaser({ activeCat, onCatClick }) {
           <div style={{ position:"absolute", bottom:12, right:12,
             fontSize:10, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
             background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700 }}>
-            {cur.style}
+            {portraitCur.style}
           </div>
-          {/* Prev/Next arrows for generated options */}
+          {/* Prev/Next arrows for generated options (right panel only) */}
           {[
             { dir:-1, side:"left", d:"M15 6 L9 12 L15 18" },
             { dir:1,  side:"right", d:"M9 6 L15 12 L9 18" },
           ].map(a => (
             <button key={a.side} aria-label={a.dir<0?"Previous":"Next"}
               onClick={() => {
-                const next = (idx + a.dir + TEASERS.length) % TEASERS.length;
-                onCatClick(TEASERS[next].catId);
-                setFading(true); setTimeout(()=>{ setIdx(next); setFading(false); },260);
+                const next = (portraitIdx + a.dir + TEASERS.length) % TEASERS.length;
+                setPortraitFading(true);
+                setTimeout(()=>{ setPortraitIdx(next); setPortraitFading(false); },260);
               }}
               style={{ position:"absolute", top:"50%", [a.side]:10, transform:"translateY(-50%)",
                 width:36, height:36, borderRadius:"50%", border:"none", cursor:"pointer",
