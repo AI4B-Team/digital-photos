@@ -416,7 +416,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
           ].map(a => (
             <button key={a.side} aria-label={a.dir<0?"Previous":"Next"}
               onClick={() => {
-                const next = (portraitIdx + a.dir + TEASERS.length) % TEASERS.length;
+                const next = (portraitIdx + a.dir + variants.length) % variants.length;
                 setPortraitFading(true);
                 setTimeout(()=>{ setPortraitIdx(next); setPortraitFading(false); },260);
               }}
