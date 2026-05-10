@@ -17,9 +17,9 @@ import {
 ═══════════════════════════════════════════════════════════ */
 const T = {
   bg:"#FFFFFF",sur:"#FFFFFF",card:"#FFFFFF",
-  border:"#1E1A22",bGold:"rgba(196,150,58,.36)",
-  cream:"#EAE6DF",muted:"#7A7068",dim:"#38342E",
-  gold:"#C4963A",goldLt:"#DDB04E",goldBg:"rgba(196,150,58,.07)",
+  border:"rgba(0,0,0,0.1)",bGold:"rgba(230,25,25,.4)",
+  cream:"#0A0A0A",muted:"#8C8C8C",dim:"#BFBFBF",
+  gold:"#E61919",goldLt:"#FF3333",goldBg:"rgba(230,25,25,.07)",
   teal:"#2DD4BF",purple:"#8B5CF6",
 };
 
