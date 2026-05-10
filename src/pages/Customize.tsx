@@ -60,14 +60,14 @@ const FRAMES = [
 ];
 
 const SIZES = [
-  { id: '8" x 8"',   label: '8″ × 8″',   sub: "Square",    price: 15, w: 1,    h: 1    },
-  { id: '8" x 10"',  label: '8″ × 10″',  sub: "Petite",    price: 19, w: 0.8,  h: 1    },
-  { id: '10" x 8"',  label: '10″ × 8″',  sub: "Petite",    price: 19, w: 1,    h: 0.8  },
-  { id: '11" x 14"', label: '11″ × 14″', sub: "Classic",   price: 29, w: 0.79, h: 1    },
-  { id: '14" x 11"', label: '14″ × 11″', sub: "Classic",   price: 29, w: 1,    h: 0.79 },
-  { id: '16" x 20"', label: '16″ × 20″', sub: "Statement", price: 45, w: 0.8,  h: 1    },
-  { id: '20" x 16"', label: '20″ × 16″', sub: "Statement", price: 45, w: 1,    h: 0.8  },
-  { id: '20" x 30"', label: '20″ × 30″', sub: "Grand",     price: 69, w: 0.67, h: 1    },
+  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",    price: 15, w: 1,    h: 1    },
+  { id: '8" x 10"',  label: '8 × 10',  sub: "Petite",    price: 19, w: 0.8,  h: 1    },
+  { id: '10" x 8"',  label: '10 × 8',  sub: "Petite",    price: 19, w: 1,    h: 0.8  },
+  { id: '11" x 14"', label: '11 × 14', sub: "Classic",   price: 29, w: 0.79, h: 1    },
+  { id: '14" x 11"', label: '14 × 11', sub: "Classic",   price: 29, w: 1,    h: 0.79 },
+  { id: '16" x 20"', label: '16 × 20', sub: "Statement", price: 45, w: 0.8,  h: 1    },
+  { id: '20" x 16"', label: '20 × 16', sub: "Statement", price: 45, w: 1,    h: 0.8  },
+  { id: '20" x 30"', label: '20 × 30', sub: "Grand",     price: 69, w: 0.67, h: 1    },
 ];
 
 
