@@ -453,14 +453,16 @@ function HomePage({ onGenerate }) {
   const [cat,     setCat]     = useState("");
   const [styles,  setStyles]  = useState([]);
   const [drag,    setDrag]    = useState(false);
+  const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
+  const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
   const err = uploadErr;
   const [scrolled,setScrolled]= useState(false);
   const [baX,     setBaX]     = useState(50);
   const [baDown,  setBaDown]  = useState(false);
 
-  const heroRef = useRef();
-  const fileRef = useRef();
-  const baRef   = useRef();
+  const heroRef = useRef<any>();
+  const fileRef = useRef<any>();
+  const baRef   = useRef<any>();
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 50);
