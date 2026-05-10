@@ -420,7 +420,7 @@ function HomePage({ onGenerate }) {
       {/* ══════════════════════════════════════════════════════
           HERO + BUILDER
       ══════════════════════════════════════════════════════ */}
-      <section ref={heroRef} style={{ paddingTop:16, paddingBottom:40, display:"flex", alignItems:"center",
+      <section ref={heroRef} style={{ paddingTop:36, paddingBottom:40, display:"flex", alignItems:"center",
         position:"relative", overflow:"hidden",
         background: T.bg }}>
 
