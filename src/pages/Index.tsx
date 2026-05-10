@@ -268,7 +268,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
   const cur = TEASERS[idx];
 
   return (
-    <div style={{ marginTop:8, padding:"24px 0" }}>
+    <div style={{ padding:"0 0 24px" }}>
       <div style={{ textAlign:"center", fontSize:11, letterSpacing:".32em",
         textTransform:"uppercase", color:T.gold, marginBottom:18 }}>
         What Your Photo Becomes
