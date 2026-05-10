@@ -255,12 +255,29 @@ export default function Customize() {
           {/* Size */}
           <div className="cz-section">
             <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef.label}″</span></div>
-            <div className="cz-row">
-              {SIZES.map(s => (
-                <button key={s.id} className={`cz-chip ${size===s.id?"on":""}`} onClick={() => setSize(s.id)}>
-                  {s.label}″ <span className="cz-chip-meta">${s.price}</span>
-                </button>
-              ))}
+            <div className="cz-size-scroll">
+              {SIZES.map(s => {
+                const on = size === s.id;
+                const SHAPE_BOX = 44;
+                return (
+                  <button key={s.id} onClick={() => setSize(s.id)} className={`cz-size-card ${on?"on":""}`}>
+                    <div style={{
+                      width: SHAPE_BOX, height: SHAPE_BOX,
+                      display:"flex", alignItems:"center", justifyContent:"center", marginBottom:8,
+                    }}>
+                      <div style={{
+                        width: SHAPE_BOX * s.w,
+                        height: SHAPE_BOX * s.h,
+                        border: `1.5px solid ${on ? RED : "#B8B0A8"}`,
+                        borderRadius: 3,
+                        background: on ? "rgba(230,25,25,0.06)" : "transparent",
+                      }}/>
+                    </div>
+                    <div style={{ fontSize:12, fontWeight:600, color:INK, lineHeight:1.1, whiteSpace:"nowrap" }}>{s.label}″</div>
+                    <div style={{ fontSize:10.5, color:MUTED, marginTop:2, whiteSpace:"nowrap" }}>From ${s.price}</div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
