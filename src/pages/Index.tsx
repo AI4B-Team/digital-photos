@@ -9,7 +9,8 @@ import {
   Upload, X, Check, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Share2, Heart, Truck, RefreshCw,
   Lock, Wand2, Sparkles, AlertCircle, Copy, Gift,
-  ArrowRight, Shield, Star, Instagram, Facebook
+  ArrowRight, Shield, Star, Instagram, Facebook,
+  PawPrint, Baby, Users, Flower2
 } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════════
@@ -124,11 +125,11 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
    DATA
 ═══════════════════════════════════════════════════════════ */
 const CATS = [
-  { id:"pets",     label:"Pets",     icon:"🐾" },
-  { id:"babies",   label:"Babies",   icon:"🍼" },
-  { id:"people",   label:"People",   icon:"👤" },
-  { id:"memorial", label:"Memorial", icon:"✦"  },
-  { id:"gifts",    label:"Gifts",    icon:"🎁" },
+  { id:"pets",     label:"Pets",     icon:"🐾", Icon: PawPrint },
+  { id:"babies",   label:"Babies",   icon:"🍼", Icon: Baby     },
+  { id:"people",   label:"People",   icon:"👤", Icon: Users    },
+  { id:"memorial", label:"Memorial", icon:"✦",  Icon: Flower2  },
+  { id:"gifts",    label:"Gifts",    icon:"🎁", Icon: Gift     },
 ];
 
 const STYLES = [
@@ -385,20 +386,25 @@ function HomePage({ onGenerate }) {
         </div>
         <div className="hid" style={{ display:"flex", gap:44, alignItems:"center",
           position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)" }}>
-          {CATS.map(c => (
-            <button key={c.id} onClick={() => {
-                setCat(c.id);
-                heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
-              }}
-              style={{ background:"none", border:"none", cursor:"pointer",
-                fontSize:11, letterSpacing:".14em", textTransform:"uppercase",
-                color: cat===c.id ? T.gold : T.muted, fontFamily:"'Poppins',sans-serif",
-                transition:"color .2s" }}
-              onMouseOver={e => { if(cat!==c.id) e.currentTarget.style.color = T.cream; }}
-              onMouseOut={e => { if(cat!==c.id) e.currentTarget.style.color = T.muted; }}>
-              {c.label}
-            </button>
-          ))}
+          {CATS.map(c => {
+            const NavIcon = c.Icon;
+            return (
+              <button key={c.id} onClick={() => {
+                  setCat(c.id);
+                  heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
+                }}
+                style={{ background:"none", border:"none", cursor:"pointer",
+                  fontSize:11, letterSpacing:".14em", textTransform:"uppercase",
+                  color: cat===c.id ? T.gold : T.muted, fontFamily:"'Poppins',sans-serif",
+                  transition:"color .2s",
+                  display:"flex", alignItems:"center", gap:7 }}
+                onMouseOver={e => { if(cat!==c.id) e.currentTarget.style.color = T.cream; }}
+                onMouseOut={e => { if(cat!==c.id) e.currentTarget.style.color = T.muted; }}>
+                <NavIcon size={14} strokeWidth={1.8}/>
+                {c.label}
+              </button>
+            );
+          })}
         </div>
 
         <div style={{ display:"flex", gap:10, alignItems:"center" }}>
