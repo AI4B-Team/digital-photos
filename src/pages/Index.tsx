@@ -392,7 +392,7 @@ function HomePage({ onGenerate }) {
 
       {/* ── ANNOUNCEMENT STRIP ── */}
       <div style={{ position:"fixed", top:0, left:0, right:0, zIndex:201, height:30,
-        background:`linear-gradient(90deg, ${T.gold} 0%, #E0B65A 50%, ${T.gold} 100%)`,
+        background:T.gold,
         display:"flex", alignItems:"center", justifyContent:"center", gap:10,
         fontFamily:"'Poppins',sans-serif", fontSize:11, letterSpacing:".14em",
         textTransform:"uppercase", color:T.bg, fontWeight:600 }}>
