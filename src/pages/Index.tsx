@@ -178,11 +178,51 @@ const STYLES = [
 
 // Live teaser — one per category, cycles automatically
 const TEASERS = [
-  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop&q=80", after:scenePets,    portrait:portraitPets    },
-  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&h=600&fit=crop&q=80", after:sceneBabies,  portrait:portraitBabies  },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople  },
-  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=600&h=600&fit=crop&q=80", after:sceneMemorial,portrait:portraitMemorial},
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts   },
+  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop&q=80", after:scenePets,    portrait:portraitPets,
+    portraits:[
+      { url:portraitPets,       style:"Royal" },
+      { url:portraitPetsRen,    style:"Renaissance" },
+      { url:portraitPetsStory,  style:"Storybook" },
+      { url:portraitPetsFan,    style:"Fantasy" },
+      { url:portraitPetsCine,   style:"Cinematic" },
+      { url:portraitPetsMin,    style:"Minimal" },
+    ] },
+  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&h=600&fit=crop&q=80", after:sceneBabies,  portrait:portraitBabies,
+    portraits:[
+      { url:portraitBabiesRoyal, style:"Royal" },
+      { url:portraitBabiesRen,   style:"Renaissance" },
+      { url:portraitBabies,      style:"Storybook" },
+      { url:portraitBabiesFan,   style:"Fantasy" },
+      { url:portraitBabiesCine,  style:"Cinematic" },
+      { url:portraitBabiesMin,   style:"Minimal" },
+    ] },
+  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
+    portraits:[
+      { url:portraitPeopleRoyal, style:"Royal" },
+      { url:portraitPeopleRen,   style:"Renaissance" },
+      { url:portraitPeopleStory, style:"Storybook" },
+      { url:portraitPeople,      style:"Fantasy" },
+      { url:portraitPeopleCine,  style:"Cinematic" },
+      { url:portraitPeopleMin,   style:"Minimal" },
+    ] },
+  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=600&h=600&fit=crop&q=80", after:sceneMemorial,portrait:portraitMemorial,
+    portraits:[
+      { url:portraitMemorialRoyal, style:"Royal" },
+      { url:portraitMemorialRen,   style:"Renaissance" },
+      { url:portraitMemorialStory, style:"Storybook" },
+      { url:portraitMemorialFan,   style:"Fantasy" },
+      { url:portraitMemorialCine,  style:"Cinematic" },
+      { url:portraitMemorial,      style:"Minimal" },
+    ] },
+  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts,
+    portraits:[
+      { url:portraitGiftsRoyal, style:"Royal" },
+      { url:portraitGifts,      style:"Renaissance" },
+      { url:portraitGiftsStory, style:"Storybook" },
+      { url:portraitGiftsFan,   style:"Fantasy" },
+      { url:portraitGiftsCine,  style:"Cinematic" },
+      { url:portraitGiftsMin,   style:"Minimal" },
+    ] },
 ];
 
 const PLANS = [
