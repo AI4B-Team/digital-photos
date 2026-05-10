@@ -267,39 +267,58 @@ function LiveTeaser({ activeCat, onCatClick }) {
   const cur = TEASERS[idx];
 
   return (
-    <div style={{ marginTop:20 }}>
-      <div style={{ fontSize:10, letterSpacing:".22em", textTransform:"uppercase", color:T.gold, marginBottom:10 }}>
+    <div style={{ marginTop:8, padding:"24px 0" }}>
+      <div style={{ textAlign:"center", fontSize:11, letterSpacing:".32em",
+        textTransform:"uppercase", color:T.gold, marginBottom:18 }}>
         What Your Photo Becomes
       </div>
 
       {/* Before → After */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 28px 1fr", gap:0, alignItems:"center" }}>
-        <div style={{ position:"relative", height:148, borderRadius:6, overflow:"hidden", border:`1px solid ${T.border}` }}>
-          <img src={cur.before} alt="Before" style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.72)", opacity:fading?0:1, transition:"opacity .26s" }}/>
-          <div style={{ position:"absolute", bottom:6, left:8, fontSize:9, letterSpacing:".18em", textTransform:"uppercase", color:"rgba(255,255,255,.5)", background:"rgba(7,6,10,.72)", padding:"3px 8px", borderRadius:2 }}>Your Photo</div>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 36px 1fr", gap:0,
+        alignItems:"center", maxWidth:560, margin:"0 auto" }}>
+        <div style={{ position:"relative", aspectRatio:"4/5", borderRadius:8, overflow:"hidden",
+          border:`1px solid ${T.border}` }}>
+          <img src={cur.before} alt="Before"
+            style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.78)",
+              opacity:fading?0:1, transition:"opacity .3s" }}/>
+          <div style={{ position:"absolute", bottom:14, left:"50%", transform:"translateX(-50%)",
+            fontSize:11, letterSpacing:".22em", textTransform:"uppercase", color:T.cream,
+            background:"rgba(7,6,10,.75)", padding:"6px 14px", borderRadius:3 }}>Your Photo</div>
         </div>
 
         <div style={{ display:"flex", justifyContent:"center" }}>
-          <ArrowRight size={14} color={T.gold}/>
+          <ArrowRight size={18} color={T.gold}/>
         </div>
 
-        <div style={{ position:"relative", height:148, borderRadius:6, overflow:"hidden", border:`1px solid ${T.bGold}` }}>
-          <img src={cur.after} alt="After" style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.84) saturate(1.12)", opacity:fading?0:1, transition:"opacity .26s" }}/>
-          {/* mini watermark */}
-          <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", pointerEvents:"none" }}>
-            <span style={{ fontSize:7, color:"rgba(255,255,255,.22)", letterSpacing:".22em", textTransform:"uppercase", transform:"rotate(-20deg)", whiteSpace:"nowrap", fontFamily:"'DM Sans',sans-serif" }}>DIGITAL PHOTOS</span>
+        <div style={{ position:"relative", aspectRatio:"4/5", borderRadius:8, overflow:"hidden",
+          border:`1px solid ${T.bGold}` }}>
+          <img src={cur.after} alt="After"
+            style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.9) saturate(1.12)",
+              opacity:fading?0:1, transition:"opacity .3s" }}/>
+          <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
+            justifyContent:"center", pointerEvents:"none" }}>
+            <span style={{ fontSize:9, color:"rgba(255,255,255,.22)", letterSpacing:".26em",
+              textTransform:"uppercase", transform:"rotate(-20deg)", whiteSpace:"nowrap" }}>
+              DIGITAL PHOTOS
+            </span>
           </div>
-          <div style={{ position:"absolute", bottom:6, right:8, fontSize:9, letterSpacing:".12em", textTransform:"uppercase", color:T.bg, background:`rgba(196,150,58,.9)`, padding:"3px 8px", borderRadius:2, fontWeight:600 }}>{cur.style}</div>
+          <div style={{ position:"absolute", bottom:14, left:"50%", transform:"translateX(-50%)",
+            fontSize:11, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
+            background:T.gold, padding:"6px 16px", borderRadius:3, fontWeight:600 }}>
+            {cur.style}
+          </div>
         </div>
       </div>
 
       {/* Category dots */}
-      <div style={{ display:"flex", gap:6, marginTop:10, alignItems:"center" }}>
+      <div style={{ display:"flex", gap:8, marginTop:18, alignItems:"center", justifyContent:"center" }}>
         {TEASERS.map((t, i) => (
           <button key={i} onClick={() => { onCatClick(t.catId); setFading(true); setTimeout(()=>{setIdx(i);setFading(false);},260); }}
-            style={{ padding:0, border:"none", background:"none", cursor:"pointer", display:"flex", alignItems:"center", gap:4 }}>
-            <div style={{ width:i===idx?18:5, height:5, borderRadius:3, background:i===idx?T.gold:T.dim, transition:"all .3s" }}/>
-            {i===idx && <span style={{ fontSize:9, color:T.muted, letterSpacing:".1em" }}>{t.cat}</span>}
+            style={{ padding:0, border:"none", background:"none", cursor:"pointer",
+              display:"flex", alignItems:"center", gap:7 }}>
+            <div style={{ width:i===idx?22:7, height:7, borderRadius:4,
+              background:i===idx?T.gold:T.dim, transition:"all .3s" }}/>
+            {i===idx && <span style={{ fontSize:11, color:T.muted, letterSpacing:".12em" }}>{t.cat}</span>}
           </button>
         ))}
       </div>
