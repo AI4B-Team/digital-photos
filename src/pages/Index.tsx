@@ -280,7 +280,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
       </div>
 
       {/* Two-panel layout: Your Photo (left) + Generated slideshow (right) */}
-      <div style={{ position:"relative", display:"grid", gridTemplateColumns:"1fr 1fr", gap:4,
+      <div style={{ position:"relative", display:"grid", gridTemplateColumns:"1fr 1fr", gap:48,
         alignItems:"stretch", flex:1, minHeight:0 }}>
 
         {/* LEFT: Your Photo */}
