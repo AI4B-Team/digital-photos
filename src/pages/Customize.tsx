@@ -40,7 +40,7 @@ const G = `
 .cz-row{display:flex;gap:8px;flex-wrap:wrap}
 @keyframes czFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .cz-fade{animation:czFade .35s cubic-bezier(.23,1,.32,1) both}
-@media (max-width: 900px){
+@media (max-width: 1100px){
   .cz-grid{grid-template-columns:1fr !important}
   .cz-stage{min-height:46vh !important;padding:28px 16px !important}
   .cz-side{padding:0 16px 24px !important;position:static !important;max-height:none !important}
