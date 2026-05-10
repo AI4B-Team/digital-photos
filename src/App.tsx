@@ -7,6 +7,7 @@ import { SessionProvider }     from "@/context/SessionContext";
 import { AuthProvider }        from "@/context/AuthContext";
 import Index                   from "./pages/Index";
 import Checkout                from "./pages/Checkout";
+import Customize               from "./pages/Customize";
 import Delivery                from "./pages/Delivery";
 import Auth                    from "./pages/Auth";
 import ResetPassword           from "./pages/ResetPassword";
