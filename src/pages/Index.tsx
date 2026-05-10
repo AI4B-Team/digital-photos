@@ -68,7 +68,7 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .btn-outline:hover{background:rgba(230,25,25,.08)}
 
 /* Chips */
-.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;transition:all .18s;white-space:nowrap;border:1px solid rgba(0,0,0,.1);background:#FFFFFF;color:#525252;user-select:none}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;transition:all .18s;white-space:nowrap;border:1px solid rgba(0,0,0,.1);background:#FFFFFF;color:#525252;user-select:none}
 .chip:hover{border-color:rgba(0,0,0,.2);color:#0A0A0A}
 .chip.on{border-color:#E61919;background:rgba(230,25,25,.08);color:#E61919;font-weight:600}
 .chip.cat.on{border-color:#E61919;background:rgba(230,25,25,.08);color:#E61919}
@@ -480,11 +480,14 @@ function HomePage({ onGenerate }) {
                 <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold, textTransform:"uppercase",
                   fontWeight:500, marginBottom:8 }}>Who Is This For?</div>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
-                  {CATS.map(c => (
-                    <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => setCat(c.id)}>
-                      <span style={{ fontSize:11 }}>{c.icon}</span>{c.label}
-                    </button>
-                  ))}
+                  {CATS.map(c => {
+                    const CIcon = c.Icon;
+                    return (
+                      <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => setCat(c.id)}>
+                        <CIcon size={14} strokeWidth={1.8}/>{c.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
