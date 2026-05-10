@@ -16,7 +16,7 @@ import {
    DESIGN TOKENS
 ═══════════════════════════════════════════════════════════ */
 const T = {
-  bg:"#07060A",sur:"#0D0C11",card:"#111019",
+  bg:"#FFFFFF",sur:"#FFFFFF",card:"#FFFFFF",
   border:"#1E1A22",bGold:"rgba(196,150,58,.36)",
   cream:"#EAE6DF",muted:"#7A7068",dim:"#38342E",
   gold:"#C4963A",goldLt:"#DDB04E",goldBg:"rgba(196,150,58,.07)",
@@ -30,7 +30,7 @@ const G = `
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:#07060A;color:#EAE6DF;font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden}
+body{background:#FFFFFF;color:#EAE6DF;font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden}
 ::-webkit-scrollbar{width:2px}
 ::-webkit-scrollbar-thumb{background:#C4963A}
 
