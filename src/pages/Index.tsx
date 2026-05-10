@@ -480,11 +480,14 @@ function HomePage({ onGenerate }) {
                 <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold, textTransform:"uppercase",
                   fontWeight:500, marginBottom:8 }}>Who Is This For?</div>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
-                  {CATS.map(c => (
-                    <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => setCat(c.id)}>
-                      <span style={{ fontSize:11 }}>{c.icon}</span>{c.label}
-                    </button>
-                  ))}
+                  {CATS.map(c => {
+                    const CIcon = c.Icon;
+                    return (
+                      <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => setCat(c.id)}>
+                        <CIcon size={14} strokeWidth={1.8}/>{c.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
