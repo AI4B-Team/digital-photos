@@ -332,8 +332,6 @@ function CheckRow({ label, gold }) {
 ═══════════════════════════════════════════════════════════ */
 function LiveTeaser({ activeCat, onCatClick }) {
   const [idx, setIdx] = useState(0);
-  const [portraitIdx, setPortraitIdx] = useState(0);
-  const [portraitFading, setPortraitFading] = useState(false);
   const [fading, setFading] = useState(false);
 
   // When user picks a category, jump to matching teaser
@@ -353,21 +351,9 @@ function LiveTeaser({ activeCat, onCatClick }) {
     return () => clearInterval(iv);
   }, [activeCat]);
 
-  // Reset right portrait variant when category changes
-  useEffect(() => { setPortraitIdx(0); }, [idx]);
-
-  // Auto-cycle right portraits within current category (crossfade via stacked layers)
-  useEffect(() => {
-    const len = TEASERS[idx].portraits?.length || 1;
-    const iv = setInterval(() => {
-      setPortraitIdx(p => (p+1) % len);
-    }, 3000);
-    return () => clearInterval(iv);
-  }, [idx]);
-
   const cur = TEASERS[idx];
   const variants = cur.portraits || [{ url: cur.portrait, style: cur.style }];
-  const portraitCur = variants[portraitIdx % variants.length];
+  const portraitCur = variants[0];
 
   return (
     <div style={{ padding:"0 0 8px", display:"flex", flexDirection:"column", height:"100%" }}>
@@ -399,13 +385,8 @@ function LiveTeaser({ activeCat, onCatClick }) {
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)",
           background:"#F5EFE3", minHeight:340 }}>
-          {/* Stacked layers — all variants preloaded, only active one visible (true crossfade, no flicker) */}
-          {variants.map((v, i) => (
-            <img key={i} src={v.url} alt="Generated portrait"
-              style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
-                opacity: i === (portraitIdx % variants.length) ? 1 : 0,
-                transition:"opacity .6s ease-in-out" }}/>
-          ))}
+          <img src={portraitCur.url} alt="Generated portrait"
+            style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
           {/* watermark */}
           <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
             justifyContent:"center", pointerEvents:"none" }}>
@@ -426,25 +407,6 @@ function LiveTeaser({ activeCat, onCatClick }) {
             background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700 }}>
             {portraitCur.style}
           </div>
-          {/* Prev/Next arrows for generated options (right panel only) */}
-          {[
-            { dir:-1, side:"left", d:"M15 6 L9 12 L15 18" },
-            { dir:1,  side:"right", d:"M9 6 L15 12 L9 18" },
-          ].map(a => (
-            <button key={a.side} aria-label={a.dir<0?"Previous":"Next"}
-              onClick={() => {
-                setPortraitIdx(p => (p + a.dir + variants.length) % variants.length);
-              }}
-              style={{ position:"absolute", top:"50%", [a.side]:10, transform:"translateY(-50%)",
-                width:36, height:36, borderRadius:"50%", border:"none", cursor:"pointer",
-                background:"rgba(7,6,10,.62)", color:"#fff",
-                display:"flex", alignItems:"center", justifyContent:"center",
-                boxShadow:"0 4px 14px rgba(0,0,0,.25)", zIndex:4 } as any}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d={a.d} stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          ))}
         </div>
 
         {/* Doodle "becomes" arrow between panels */}
