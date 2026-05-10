@@ -394,7 +394,7 @@ export default function Customize() {
           </button>
 
           <div style={{ textAlign:"center", color:MUTED, fontSize:11.5 }}>
-            Free shipping · 100-day happiness guarantee
+            Free Shipping · 100-Day Happiness Guarantee
           </div>
         </aside>
       </div>
