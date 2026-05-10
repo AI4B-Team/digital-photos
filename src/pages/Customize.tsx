@@ -38,6 +38,13 @@ const G = `
 .cz-swatch:hover{transform:translateY(-1px)}
 .cz-swatch.on{box-shadow:0 0 0 2px ${RED},0 0 0 4px #fff}
 .cz-row{display:flex;gap:8px;flex-wrap:wrap}
+.cz-size-scroll{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#cfc7bd transparent}
+.cz-size-scroll::-webkit-scrollbar{height:6px}
+.cz-size-scroll::-webkit-scrollbar-thumb{background:#cfc7bd;border-radius:3px}
+.cz-size-scroll::-webkit-scrollbar-track{background:transparent}
+.cz-size-card{flex:0 0 auto;scroll-snap-align:start;background:#fff;border:1px solid ${BORDER};border-radius:12px;padding:12px 14px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-family:'Poppins',sans-serif;transition:all .15s;min-width:88px}
+.cz-size-card:hover{border-color:rgba(0,0,0,.25);transform:translateY(-1px)}
+.cz-size-card.on{border-color:${RED};box-shadow:0 0 0 1px ${RED}}
 @keyframes czFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .cz-fade{animation:czFade .35s cubic-bezier(.23,1,.32,1) both}
 @media (max-width: 1100px){
