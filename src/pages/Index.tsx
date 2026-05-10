@@ -467,7 +467,7 @@ function HomePage({ onGenerate }) {
 
           {/* RIGHT PANEL — BUILDER CARD */}
           <div className="si" style={{ animationDelay:".1s", width:"100%", justifySelf:"end" }}>
-            <div style={{ background:T.sur, border:`1px solid ${T.border}`, padding:"22px 20px",
+            <div style={{ background:T.sur, border:`1px solid ${T.gold}`, padding:"22px 20px",
               position:"relative",
               boxShadow:"inset 0 1px 0 rgba(196,150,58,.08)" }}>
 
