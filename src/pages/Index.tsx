@@ -568,11 +568,6 @@ function HomePage({ onGenerate }) {
               </p>
             </div>
           </div>
-
-          {/* LIVE TEASER — below the builder */}
-          <div className="fu" style={{ animationDelay:".3s", width:"100%", maxWidth:680 }}>
-            <LiveTeaser activeCat={cat} onCatClick={setCat}/>
-          </div>
         </div>
 
         <div className="flt" style={{ position:"absolute", bottom:18, left:"50%", transform:"translateX(-50%)" }}>
