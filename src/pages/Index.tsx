@@ -473,7 +473,7 @@ function HomePage({ onGenerate }) {
           <div className="si" style={{ animationDelay:".1s", width:"100%", justifySelf:"end" }}>
             <div style={{ background:T.sur, border:`1px solid ${T.border}`, padding:"22px 20px",
               position:"relative",
-              boxShadow:"0 44px 110px rgba(0,0,0,.72), inset 0 1px 0 rgba(196,150,58,.08)" }}>
+              boxShadow:"inset 0 1px 0 rgba(196,150,58,.08)" }}>
 
               {/* gold top accent */}
               <div style={{ position:"absolute", top:0, left:"16%", right:"16%", height:1,
