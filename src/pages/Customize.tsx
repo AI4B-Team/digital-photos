@@ -60,9 +60,9 @@ const FRAMES = [
   { id: "black",       label: "Black",       add: 0,  wood: "#1a1a1a", w: 14 },
   { id: "white",       label: "White",       add: 0,  wood: "#f4f4f4", w: 14 },
   { id: "oak",         label: "Oak",         add: 2,  wood: "#c89968", w: 14 },
+  { id: "walnut",      label: "Walnut",      add: 2,  wood: "#5a3a24", w: 14 },
   { id: "wide-black",  label: "Wide Black",  add: 4,  wood: "#1a1a1a", w: 28 },
   { id: "wide-white",  label: "Wide White",  add: 4,  wood: "#f4f4f4", w: 28 },
-  { id: "wide-walnut", label: "Wide Walnut", add: 4,  wood: "#5a3a24", w: 28 },
   { id: "canvas",      label: "Canvas",      add: 15, wood: null },
 ];
 
