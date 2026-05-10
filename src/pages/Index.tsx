@@ -280,7 +280,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
       </div>
 
       {/* Two-panel layout: Your Photo (left) + Generated slideshow (right) */}
-      <div style={{ position:"relative", display:"grid", gridTemplateColumns:"1fr 1fr", gap:4,
+      <div style={{ position:"relative", display:"grid", gridTemplateColumns:"1fr 1fr", gap:48,
         alignItems:"stretch", flex:1, minHeight:0 }}>
 
         {/* LEFT: Your Photo */}
@@ -325,6 +325,27 @@ function LiveTeaser({ activeCat, onCatClick }) {
             background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700 }}>
             {cur.style}
           </div>
+          {/* Prev/Next arrows for generated options */}
+          {[
+            { dir:-1, side:"left", d:"M15 6 L9 12 L15 18" },
+            { dir:1,  side:"right", d:"M9 6 L15 12 L9 18" },
+          ].map(a => (
+            <button key={a.side} aria-label={a.dir<0?"Previous":"Next"}
+              onClick={() => {
+                const next = (idx + a.dir + TEASERS.length) % TEASERS.length;
+                onCatClick(TEASERS[next].catId);
+                setFading(true); setTimeout(()=>{ setIdx(next); setFading(false); },260);
+              }}
+              style={{ position:"absolute", top:"50%", [a.side]:10, transform:"translateY(-50%)",
+                width:36, height:36, borderRadius:"50%", border:"none", cursor:"pointer",
+                background:"rgba(7,6,10,.62)", color:"#fff",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                boxShadow:"0 4px 14px rgba(0,0,0,.25)", zIndex:4 } as any}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d={a.d} stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          ))}
         </div>
 
         {/* Doodle "becomes" arrow between panels */}
