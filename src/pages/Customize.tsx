@@ -28,11 +28,11 @@ const G = `
 .cz-chip-meta{font-size:11px;color:${MUTED};font-weight:500}
 .cz-section{background:#fff;border-radius:18px;padding:18px 18px 20px;border:1px solid ${BORDER}}
 .cz-label{font-size:10.5px;letter-spacing:.18em;font-weight:600;color:${MUTED};text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-.cz-value{font-family:'Fraunces',serif;font-size:15px;color:${INK};letter-spacing:0;text-transform:none}
+.cz-value{font-family:'Poppins',sans-serif;font-size:15px;color:${INK};letter-spacing:0;text-transform:none}
 .cz-step{display:flex;align-items:center;gap:6px;color:${MUTED};font-size:12.5px;font-weight:500;cursor:pointer;background:none;border:none;font-family:inherit;padding:6px 10px;border-radius:8px;transition:all .15s}
 .cz-step:hover{color:${TXT};background:rgba(0,0,0,.04)}
 .cz-step.on{color:${INK};font-weight:600}
-.cz-step .cz-step-num{width:22px;height:22px;border-radius:50%;background:#EFE9DF;color:${MUTED};display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Fraunces',serif}
+.cz-step .cz-step-num{width:22px;height:22px;border-radius:50%;background:#EFE9DF;color:${MUTED};display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Poppins',sans-serif}
 .cz-step.on .cz-step-num{background:${RED};color:#fff}
 .cz-swatch{width:38px;height:38px;border-radius:10px;cursor:pointer;padding:0;transition:transform .15s,box-shadow .15s}
 .cz-swatch:hover{transform:translateY(-1px)}
