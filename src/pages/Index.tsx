@@ -635,10 +635,10 @@ function HomePage({ onGenerate }) {
                 </div>
                 {!photo ? (
                   <div className={`dz ${drag?"drag":""}`} style={{ borderRadius:6, padding:"20px 16px" }}
-                    onClick={() => fileRef.current?.click()}
+                    onClick={() => { setAddSlot("primary"); fileRef.current?.click(); }}
                     onDragOver={e => { e.preventDefault(); setDrag(true); }}
                     onDragLeave={() => setDrag(false)}
-                    onDrop={e => { e.preventDefault(); setDrag(false); loadFile(e.dataTransfer.files[0]); }}>
+                    onDrop={e => { e.preventDefault(); setDrag(false); setAddSlot("primary"); loadFile(e.dataTransfer.files[0]); }}>
                     <div style={{ width:38, height:38, background:"rgba(255,255,255,.04)", border:`1px solid ${T.border}`,
                       borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center",
                       margin:"0 auto 9px", position:"relative" }}>
@@ -659,33 +659,53 @@ function HomePage({ onGenerate }) {
                     )}
                   </div>
                 ) : (
-                  <div style={{ display:"inline-flex", alignItems:"center", gap:10,
-                    padding:"6px 10px 6px 6px", borderRadius:999,
-                    background:"rgba(255,255,255,.04)", border:`1px solid ${T.bGold}`,
-                    maxWidth:"100%" }}>
-                    <img src={photo} alt="" style={{ width:36, height:36, borderRadius:"50%",
-                      objectFit:"cover", display:"block", flexShrink:0 }}/>
-                    <div style={{ display:"flex", flexDirection:"column", minWidth:0 }}>
-                      <span style={{ fontSize:11, color:T.cream, fontWeight:600,
-                        whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
-                        Photo attached
-                      </span>
-                      <span style={{ fontSize:9, color:"#5CB87A", display:"flex",
-                        alignItems:"center", gap:4 }}>
-                        <span style={{ width:5, height:5, borderRadius:"50%", background:"#5CB87A" }}/>
-                        Ready
-                      </span>
-                    </div>
-                    <button onClick={() => clearPhoto()} aria-label="Remove photo"
-                      style={{ marginLeft:6, width:20, height:20, background:"rgba(7,6,10,.6)",
-                        border:`1px solid ${T.border}`, borderRadius:"50%", display:"flex",
-                        alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0 }}>
-                      <X size={9} color={T.muted}/>
+                  <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+                    {[{ src: photo, onRemove: () => { clearPhoto(); if (fileRef.current) fileRef.current.value = ""; } },
+                      ...extraPhotos.map((src, i) => ({
+                        src,
+                        onRemove: () => setExtraPhotos(p => p.filter((_, j) => j !== i)),
+                      }))
+                    ].map((item, i) => (
+                      <div key={i} style={{ position:"relative", width:90, height:70, borderRadius:10,
+                        overflow:"hidden", border:`1px solid ${T.bGold}`, background:"rgba(255,255,255,.04)" }}>
+                        <img src={item.src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                        <button onClick={item.onRemove} aria-label="Remove photo"
+                          style={{ position:"absolute", top:4, right:4, width:18, height:18,
+                            background:"#E0353F", border:"none", borderRadius:"50%", display:"flex",
+                            alignItems:"center", justifyContent:"center", cursor:"pointer",
+                            boxShadow:"0 2px 6px rgba(0,0,0,.35)" }}>
+                          <X size={10} color="#fff" strokeWidth={3}/>
+                        </button>
+                      </div>
+                    ))}
+                    {/* Add another photo card */}
+                    <button type="button"
+                      onClick={() => { setAddSlot("extra"); fileRef.current?.click(); }}
+                      style={{ width:90, height:70, borderRadius:10,
+                        border:`1px dashed ${T.bGold}`, background:"rgba(255,255,255,.03)",
+                        display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+                        gap:3, cursor:"pointer", color:T.cream }}>
+                      <div style={{ width:22, height:22, borderRadius:"50%", background:T.gold,
+                        display:"flex", alignItems:"center", justifyContent:"center",
+                        fontSize:14, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
+                      <span style={{ fontSize:9, color:T.muted, letterSpacing:".06em" }}>Add another</span>
                     </button>
                   </div>
                 )}
                 <input ref={fileRef} type="file" accept="image/*" style={{ display:"none" }}
-                  onChange={e => loadFile(e.target.files[0])}/>
+                  onChange={e => {
+                    const f = e.target.files?.[0];
+                    if (!f) return;
+                    if (addSlot === "extra") {
+                      const reader = new FileReader();
+                      reader.onload = ev => setExtraPhotos(p => [...p, ev.target?.result as string]);
+                      reader.readAsDataURL(f);
+                    } else {
+                      loadFile(f);
+                    }
+                    // reset so the same file can be re-selected after removal
+                    e.target.value = "";
+                  }}/>
               </div>
 
               {/* ── CHOOSE STYLES ── */}
