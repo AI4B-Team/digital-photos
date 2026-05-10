@@ -353,21 +353,9 @@ function LiveTeaser({ activeCat, onCatClick }) {
     return () => clearInterval(iv);
   }, [activeCat]);
 
-  // Reset right portrait variant when category changes
-  useEffect(() => { setPortraitIdx(0); }, [idx]);
-
-  // Auto-cycle right portraits within current category (crossfade via stacked layers)
-  useEffect(() => {
-    const len = TEASERS[idx].portraits?.length || 1;
-    const iv = setInterval(() => {
-      setPortraitIdx(p => (p+1) % len);
-    }, 3000);
-    return () => clearInterval(iv);
-  }, [idx]);
-
   const cur = TEASERS[idx];
   const variants = cur.portraits || [{ url: cur.portrait, style: cur.style }];
-  const portraitCur = variants[portraitIdx % variants.length];
+  const portraitCur = variants[0];
 
   return (
     <div style={{ padding:"0 0 8px", display:"flex", flexDirection:"column", height:"100%" }}>
