@@ -17,6 +17,11 @@ import sceneBabies from "@/assets/scene-babies.jpg";
 import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
+import portraitPets from "@/assets/portrait-pets.jpg";
+import portraitBabies from "@/assets/portrait-babies.jpg";
+import portraitPeople from "@/assets/portrait-people.jpg";
+import portraitMemorial from "@/assets/portrait-memorial.jpg";
+import portraitGifts from "@/assets/portrait-gifts.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
