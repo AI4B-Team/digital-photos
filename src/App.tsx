@@ -27,6 +27,7 @@ const App = () => (
             <Routes>
               <Route path="/"               element={<Index />} />
               <Route path="/create"         element={<Navigate to="/" replace />} />
+              <Route path="/customize"      element={<Customize />} />
               <Route path="/checkout"       element={<Checkout />} />
               <Route path="/delivery"       element={<Delivery />} />
               <Route path="/auth"           element={<Auth />} />
