@@ -383,7 +383,7 @@ function HomePage({ onGenerate }) {
           Digital<span style={{ color:T.gold }}>Photos</span>
           <sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
         </div>
-        <div className="hid" style={{ display:"flex", gap:22, alignItems:"center",
+        <div className="hid" style={{ display:"flex", gap:44, alignItems:"center",
           position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)" }}>
           {CATS.map(c => (
             <button key={c.id} onClick={() => {
