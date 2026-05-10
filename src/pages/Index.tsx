@@ -548,6 +548,7 @@ function HomePage({ onGenerate }) {
               <p style={{ textAlign:"center", fontSize:10, color:T.dim, marginTop:9, letterSpacing:".05em" }}>
                 No subscription · Free watermarked preview before purchase
               </p>
+            </div>
           </div>
 
           {/* LIVE TEASER — below the builder */}
