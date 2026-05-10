@@ -17,6 +17,11 @@ import sceneBabies from "@/assets/scene-babies.jpg";
 import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
+import portraitPets from "@/assets/portrait-pets.jpg";
+import portraitBabies from "@/assets/portrait-babies.jpg";
+import portraitPeople from "@/assets/portrait-people.jpg";
+import portraitMemorial from "@/assets/portrait-memorial.jpg";
+import portraitGifts from "@/assets/portrait-gifts.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -148,11 +153,11 @@ const STYLES = [
 
 // Live teaser — one per category, cycles automatically
 const TEASERS = [
-  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=300&h=380&fit=crop&q=80", after:scenePets    },
-  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=300&h=380&fit=crop&q=80", after:sceneBabies  },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=380&fit=crop&q=80", after:scenePeople  },
-  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=300&h=380&fit=crop&q=80", after:sceneMemorial},
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=380&fit=crop&q=80", after:sceneGifts   },
+  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop&q=80", after:scenePets,    portrait:portraitPets    },
+  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&h=600&fit=crop&q=80", after:sceneBabies,  portrait:portraitBabies  },
+  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople  },
+  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=600&h=600&fit=crop&q=80", after:sceneMemorial,portrait:portraitMemorial},
+  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts   },
 ];
 
 const PLANS = [
@@ -268,63 +273,82 @@ function LiveTeaser({ activeCat, onCatClick }) {
   const cur = TEASERS[idx];
 
   return (
-    <div style={{ padding:"0 0 24px" }}>
+    <div style={{ padding:"0 0 8px", display:"flex", flexDirection:"column", height:"100%" }}>
       <div style={{ textAlign:"center", fontSize:11, letterSpacing:".32em",
-        textTransform:"uppercase", color:T.gold, marginBottom:18 }}>
+        textTransform:"uppercase", color:T.gold, marginBottom:14 }}>
         What Your Photo Becomes
       </div>
 
       {/* Two-panel layout: Your Photo (left) + Generated slideshow (right) */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1.6fr", gap:14, alignItems:"stretch" }}>
+      <div style={{ position:"relative", display:"grid", gridTemplateColumns:"1fr 1fr", gap:18,
+        alignItems:"stretch", flex:1, minHeight:0 }}>
 
         {/* LEFT: Your Photo */}
-        <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-          <div style={{ fontSize:10, letterSpacing:".22em", textTransform:"uppercase",
-            color:T.gold, textAlign:"center", fontWeight:600 }}>
+        <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
+          border:`1px solid ${T.bGold}`, background:"#fff",
+          boxShadow:"0 8px 24px rgba(0,0,0,.08)", minHeight:340 }}>
+          <img src={cur.before} alt="Your original photo"
+            style={{ width:"100%", height:"100%", objectFit:"cover",
+              opacity:fading?0:1, transition:"opacity .3s" }}/>
+          {/* "Your Photo" overlay label */}
+          <div style={{ position:"absolute", top:12, left:12,
+            fontSize:10, letterSpacing:".22em", textTransform:"uppercase", color:"#fff",
+            background:"rgba(7,6,10,.78)", padding:"6px 12px", borderRadius:6, fontWeight:600 }}>
             Your Photo
-          </div>
-          <div style={{ position:"relative", aspectRatio:"1/1", borderRadius:12, overflow:"hidden",
-            border:`1px solid ${T.bGold}`, background:"#fff",
-            boxShadow:"0 8px 24px rgba(0,0,0,.08)" }}>
-            <img src={cur.before} alt="Your original photo"
-              style={{ width:"100%", height:"100%", objectFit:"cover",
-                opacity:fading?0:1, transition:"opacity .3s" }}/>
           </div>
         </div>
 
-        {/* RIGHT: Generated portraits slideshow */}
-        <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-          <div style={{ fontSize:10, letterSpacing:".22em", textTransform:"uppercase",
-            color:T.gold, textAlign:"center", fontWeight:600 }}>
-            Your Generated Portraits
+        {/* RIGHT: Generated portraits slideshow (one at a time) */}
+        <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
+          border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)",
+          background:"#F5EFE3", minHeight:340 }}>
+          <img src={cur.portrait} alt="Generated portrait"
+            style={{ width:"100%", height:"100%", objectFit:"cover",
+              opacity:fading?0:1, transition:"opacity .4s" }}/>
+          {/* watermark */}
+          <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
+            justifyContent:"center", pointerEvents:"none" }}>
+            <span style={{ fontSize:10, color:"rgba(255,255,255,.22)", letterSpacing:".26em",
+              textTransform:"uppercase", transform:"rotate(-20deg)", whiteSpace:"nowrap" }}>
+              DIGITAL PHOTOS
+            </span>
           </div>
-          <div style={{ position:"relative", aspectRatio:"1.6/1", borderRadius:12, overflow:"hidden",
-            border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)" }}>
-            <img src={cur.after} alt="Generated portraits"
-              style={{ width:"100%", height:"100%", objectFit:"cover",
-                opacity:fading?0:1, transition:"opacity .3s" }}/>
-
-            {/* watermark */}
-            <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
-              justifyContent:"center", pointerEvents:"none" }}>
-              <span style={{ fontSize:9, color:"rgba(255,255,255,.22)", letterSpacing:".26em",
-                textTransform:"uppercase", transform:"rotate(-20deg)", whiteSpace:"nowrap" }}>
-                DIGITAL PHOTOS
-              </span>
-            </div>
-
-            {/* style badge */}
-            <div style={{ position:"absolute", bottom:12, right:12,
-              fontSize:10, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
-              background:T.gold, padding:"5px 12px", borderRadius:6, fontWeight:600 }}>
-              {cur.style}
-            </div>
+          {/* "Generated Portrait" label */}
+          <div style={{ position:"absolute", top:12, left:12,
+            fontSize:10, letterSpacing:".22em", textTransform:"uppercase", color:"#fff",
+            background:"rgba(7,6,10,.78)", padding:"6px 12px", borderRadius:6, fontWeight:600 }}>
+            Generated Portrait
           </div>
+          {/* style badge */}
+          <div style={{ position:"absolute", bottom:12, right:12,
+            fontSize:10, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
+            background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700 }}>
+            {cur.style}
+          </div>
+        </div>
+
+        {/* Doodle "becomes" arrow between panels */}
+        <div style={{ position:"absolute", top:"50%", left:"50%",
+          transform:"translate(-50%,-50%) rotate(-4deg)", pointerEvents:"none",
+          display:"flex", flexDirection:"column", alignItems:"center", gap:2, zIndex:5 }}>
+          <span style={{
+            fontFamily:"'Caveat', 'Patrick Hand', cursive",
+            fontSize:22, fontWeight:700, color:"#fff",
+            background:T.gold, padding:"3px 14px", borderRadius:20,
+            boxShadow:"0 6px 16px rgba(0,0,0,.25)", whiteSpace:"nowrap" }}>
+            becomes
+          </span>
+          <svg width="56" height="22" viewBox="0 0 56 22" fill="none">
+            <path d="M2 11 C 18 4, 38 18, 52 11" stroke={T.gold} strokeWidth="2.4"
+              strokeLinecap="round" fill="none"/>
+            <path d="M52 11 L44 6 M52 11 L44 16" stroke={T.gold} strokeWidth="2.4"
+              strokeLinecap="round" fill="none"/>
+          </svg>
         </div>
       </div>
 
       {/* Category dots */}
-      <div style={{ display:"flex", gap:8, marginTop:18, alignItems:"center", justifyContent:"center" }}>
+      <div style={{ display:"flex", gap:8, marginTop:14, alignItems:"center", justifyContent:"center" }}>
         {TEASERS.map((t, i) => (
           <button key={i} onClick={() => { onCatClick(t.catId); setFading(true); setTimeout(()=>{setIdx(i);setFading(false);},260); }}
             style={{ padding:0, border:"none", background:"none", cursor:"pointer",
@@ -483,13 +507,14 @@ function HomePage({ onGenerate }) {
             </p>
           </div>
 
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"start" }} className="hg hero-grid">
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"stretch" }} className="hg hero-grid">
 
           {/* LEFT PANEL — teaser */}
-          <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
+          <div style={{ display:"flex", flexDirection:"column", gap:24, height:"100%" }}>
 
             {/* LIVE TEASER moved into left panel */}
-            <div className="fu" style={{ animationDelay:".3s", width:"100%", maxWidth:560 }}>
+            <div className="fu" style={{ animationDelay:".3s", width:"100%", maxWidth:560,
+              display:"flex", flexDirection:"column", flex:1 }}>
               <LiveTeaser activeCat={cat} onCatClick={setCat}/>
             </div>
           </div>
