@@ -29,6 +29,12 @@ import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
 import portraitBabiesFan from "@/assets/portrait-babies-fantasy.jpg";
 import portraitBabiesCine from "@/assets/portrait-babies-cinematic.jpg";
 import portraitBabiesMin from "@/assets/portrait-babies-minimal.jpg";
+import portraitCouplesRoyal from "@/assets/portrait-couples-royal.jpg";
+import portraitCouplesRen from "@/assets/portrait-couples-renaissance.jpg";
+import portraitCouplesStory from "@/assets/portrait-couples-storybook.jpg";
+import portraitCouplesFan from "@/assets/portrait-couples-fantasy.jpg";
+import portraitCouplesCine from "@/assets/portrait-couples-cinematic.jpg";
+import portraitCouplesMin from "@/assets/portrait-couples-minimal.jpg";
 import portraitPeople from "@/assets/portrait-people.jpg";
 import portraitPeopleRoyal from "@/assets/portrait-people-royal.jpg";
 import portraitPeopleRen from "@/assets/portrait-people-renaissance.jpg";
@@ -162,6 +168,7 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 const CATS = [
   { id:"pets",     label:"Pets",     icon:"🐾", Icon: PawPrint },
   { id:"babies",   label:"Babies",   icon:"🍼", Icon: Baby     },
+  { id:"couples",  label:"Couples",  icon:"💞", Icon: Heart    },
   { id:"people",   label:"People",   icon:"👤", Icon: Users    },
   { id:"memorial", label:"Memorial", icon:"✦",  Icon: Flower2  },
   { id:"gifts",    label:"Gifts",    icon:"🎁", Icon: Gift     },
@@ -195,6 +202,15 @@ const TEASERS = [
       { url:portraitBabiesFan,   style:"Fantasy" },
       { url:portraitBabiesCine,  style:"Cinematic" },
       { url:portraitBabiesMin,   style:"Minimal" },
+    ] },
+  { cat:"Couples",  catId:"couples",  style:"Royal",       before:"https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=600&fit=crop&q=80", after:portraitCouplesRoyal, portrait:portraitCouplesRoyal,
+    portraits:[
+      { url:portraitCouplesRoyal, style:"Royal" },
+      { url:portraitCouplesRen,   style:"Renaissance" },
+      { url:portraitCouplesStory, style:"Storybook" },
+      { url:portraitCouplesFan,   style:"Fantasy" },
+      { url:portraitCouplesCine,  style:"Cinematic" },
+      { url:portraitCouplesMin,   style:"Minimal" },
     ] },
   { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
     portraits:[
