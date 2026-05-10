@@ -238,39 +238,16 @@ export default function Customize() {
 
       {/* Two-column layout */}
       <div className="cz-grid" style={{
-        display:"grid", gridTemplateColumns:"1fr 380px", gap:0,
+        display:"grid", gridTemplateColumns:"380px 1fr", gap:0,
         maxWidth:1400, margin:"0 auto",
       }}>
-        {/* Stage */}
-        <div className="cz-stage cz-fade" style={{
-          padding:"56px 40px",
-          minHeight:"calc(100vh - 70px)",
-          display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
-          gap:28,
-          background:`radial-gradient(ellipse at 50% 30%, #FFFFFF 0%, ${BG} 70%)`,
-        }}>
-          <div style={{ textAlign:"center" }}>
-            <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
-            <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
-              Make it yours.
-            </h1>
-          </div>
-          {renderPreview()}
-          <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
-            <span>{sizeDef.label}″</span>
-            <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-            <span>{frameDef.label}</span>
-            <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-            <span>{effectDef.label}</span>
-          </div>
-        </div>
-
-        {/* Side controls */}
+        {/* Side controls (left) */}
         <aside className="cz-side" style={{
-          padding:"32px 28px 32px 12px",
+          padding:"32px 12px 32px 28px",
           position:"sticky", top:70, alignSelf:"start",
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
+          order:1,
         }}>
           {/* Size */}
           <div className="cz-section">
@@ -329,21 +306,47 @@ export default function Customize() {
               ))}
             </div>
           </div>
-
-          {/* CTA */}
-          <button onClick={handleContinue} className="cz-btn-red" style={{
-            padding:"16px 18px", fontSize:14.5, marginTop:4,
-            display:"flex", alignItems:"center", justifyContent:"space-between", gap:10,
-          }}>
-            <span style={{ display:"flex", alignItems:"center", gap:10 }}>
-              <Check size={18}/> Continue to Checkout
-            </span>
-            <span className="cz-serif" style={{ fontWeight:700, fontSize:16 }}>${total}</span>
-          </button>
-          <div style={{ textAlign:"center", color:MUTED, fontSize:11.5, marginTop:-4 }}>
-            Free shipping · 100-day happiness guarantee
-          </div>
         </aside>
+
+        {/* Stage + pricing (right) */}
+        <div className="cz-stage cz-fade" style={{
+          order:2,
+          padding:"56px 40px",
+          minHeight:"calc(100vh - 70px)",
+          display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+          gap:28,
+          background:`radial-gradient(ellipse at 50% 30%, #FFFFFF 0%, ${BG} 70%)`,
+        }}>
+          <div style={{ textAlign:"center" }}>
+            <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
+            <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
+              Make it yours.
+            </h1>
+          </div>
+          {renderPreview()}
+          <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
+            <span>{sizeDef.label}″</span>
+            <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
+            <span>{frameDef.label}</span>
+            <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
+            <span>{effectDef.label}</span>
+          </div>
+
+          <div style={{ width:"100%", maxWidth:420, display:"flex", flexDirection:"column", gap:8, marginTop:8 }}>
+            <button onClick={handleContinue} className="cz-btn-red" style={{
+              padding:"16px 18px", fontSize:14.5,
+              display:"flex", alignItems:"center", justifyContent:"space-between", gap:10,
+            }}>
+              <span style={{ display:"flex", alignItems:"center", gap:10 }}>
+                <Check size={18}/> Continue to Checkout
+              </span>
+              <span className="cz-serif" style={{ fontWeight:700, fontSize:16 }}>${total}</span>
+            </button>
+            <div style={{ textAlign:"center", color:MUTED, fontSize:11.5 }}>
+              Free shipping · 100-day happiness guarantee
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
