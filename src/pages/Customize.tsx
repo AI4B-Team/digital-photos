@@ -238,11 +238,79 @@ export default function Customize() {
 
       {/* Two-column layout */}
       <div className="cz-grid" style={{
-        display:"grid", gridTemplateColumns:"1fr 380px", gap:0,
+        display:"grid", gridTemplateColumns:"380px 1fr", gap:0,
         maxWidth:1400, margin:"0 auto",
       }}>
-        {/* Stage */}
+        {/* Side controls (left) */}
+        <aside className="cz-side" style={{
+          padding:"32px 12px 32px 28px",
+          position:"sticky", top:70, alignSelf:"start",
+          maxHeight:"calc(100vh - 70px)", overflowY:"auto",
+          display:"flex", flexDirection:"column", gap:14,
+          order:1,
+        }}>
+          {/* Size */}
+          <div className="cz-section">
+            <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef.label}″ · ${sizeDef.price}</span></div>
+            <div className="cz-row">
+              {SIZES.map(s => (
+                <button key={s.id} className={`cz-chip ${size===s.id?"on":""}`} onClick={() => setSize(s.id)}>
+                  {s.label}″ <span className="cz-chip-meta">${s.price}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Frame */}
+          <div className="cz-section">
+            <div className="cz-label"><span>Frame</span><span className="cz-value">{frameDef.label}{frameDef.add?` · +$${frameDef.add}`:""}</span></div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(38px, 1fr))", gap:10, marginBottom:10 }}>
+              {FRAMES.map(f => (
+                <button key={f.id} onClick={() => setFrame(f.id)} title={f.label}
+                  style={{ border:"none", background:"transparent", padding:0, cursor:"pointer" }}>
+                  <FrameSwatch frame={f} on={frame===f.id}/>
+                </button>
+              ))}
+            </div>
+            <div style={{ fontSize:11.5, color:MUTED }}>Tap a swatch to switch frame style.</div>
+          </div>
+
+          {/* Effect */}
+          <div className="cz-section">
+            <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
+            <div className="cz-row">
+              {EFFECTS.map(e => (
+                <button key={e.id} className={`cz-chip ${effect===e.id?"on":""}`} onClick={() => setEffect(e.id)}>
+                  {e.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Mat / Border */}
+          <div className="cz-section">
+            <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
+            <div className="cz-row" style={{ marginBottom:14 }}>
+              {BORDERS.map(b => (
+                <button key={b.id} className={`cz-chip ${border===b.id?"on":""}`} onClick={() => setBorder(b.id)}>
+                  {b.label}
+                </button>
+              ))}
+            </div>
+            <div className="cz-label" style={{ marginBottom:8 }}><span>Mat color</span></div>
+            <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+              {BORDER_COLORS.map(c => (
+                <button key={c} aria-label={`Mat color ${c}`} onClick={() => setBorderColor(c)}
+                  className={`cz-swatch ${borderColor===c?"on":""}`}
+                  style={{ background:c, border: c==="#FFFFFF"?"1px solid rgba(0,0,0,.12)":"none" }}/>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        {/* Stage + pricing (right) */}
         <div className="cz-stage cz-fade" style={{
+          order:2,
           padding:"56px 40px",
           minHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
