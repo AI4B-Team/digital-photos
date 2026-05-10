@@ -548,7 +548,11 @@ function HomePage({ onGenerate }) {
               <p style={{ textAlign:"center", fontSize:10, color:T.dim, marginTop:9, letterSpacing:".05em" }}>
                 No subscription · Free watermarked preview before purchase
               </p>
-            </div>
+          </div>
+
+          {/* LIVE TEASER — below the builder */}
+          <div className="fu" style={{ animationDelay:".3s", width:"100%", maxWidth:680 }}>
+            <LiveTeaser activeCat={cat} onCatClick={setCat}/>
           </div>
         </div>
 
