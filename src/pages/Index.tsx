@@ -9,7 +9,8 @@ import {
   Upload, X, Check, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Share2, Heart, Truck, RefreshCw,
   Lock, Wand2, Sparkles, AlertCircle, Copy, Gift,
-  ArrowRight, Shield, Star, Instagram, Facebook
+  ArrowRight, Shield, Star, Instagram, Facebook,
+  PawPrint, Baby, Users, Flower2
 } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════════
