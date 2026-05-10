@@ -17,9 +17,9 @@ import {
 ═══════════════════════════════════════════════════════════ */
 const T = {
   bg:"#FFFFFF",sur:"#FFFFFF",card:"#FFFFFF",
-  border:"rgba(0,0,0,0.1)",bGold:"rgba(230,25,25,.4)",
+  border:"rgba(0,0,0,0.1)",bGold:"rgba(237,28,123,.4)",
   cream:"#0A0A0A",muted:"#8C8C8C",dim:"#BFBFBF",
-  gold:"#E61919",goldLt:"#FF3333",goldBg:"rgba(230,25,25,.07)",
+  gold:"#ED1C7B",goldLt:"#FF4D9A",goldBg:"rgba(237,28,123,.07)",
   teal:"#2DD4BF",purple:"#8B5CF6",
 };
 
@@ -30,7 +30,7 @@ const G = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:#FFFFFF;color:#0A0A0A;font-family:'DM Sans',sans-serif;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18);border-radius:3px}
 
@@ -41,7 +41,7 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'DM Sans',sans-serif;font-weig
 @keyframes spinR   {from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes drift   {0%{transform:translateX(0) rotate(-20deg)}100%{transform:translateX(-50%) rotate(-20deg)}}
 @keyframes floatY  {0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes glow    {0%,100%{box-shadow:0 0 0 0 rgba(230,25,25,.4)}50%{box-shadow:0 0 0 13px rgba(230,25,25,0)}}
+@keyframes glow    {0%,100%{box-shadow:0 0 0 0 rgba(237,28,123,.4)}50%{box-shadow:0 0 0 13px rgba(237,28,123,0)}}
 @keyframes buildIn {from{opacity:0;transform:scale(.86) translateY(9px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes slideIn {from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
 @keyframes pulse   {0%,100%{opacity:1}50%{opacity:.6}}
@@ -54,51 +54,51 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'DM Sans',sans-serif;font-weig
 .bi {animation:buildIn .4s cubic-bezier(.23,1,.32,1) both}
 .sl {animation:slideIn .4s cubic-bezier(.23,1,.32,1) both}
 
-.gold-text{color:#E61919}
+.gold-text{color:#ED1C7B}
 
 /* Buttons — REAL CREATOR style */
-.btn-gold{background:#E61919;color:#FFFFFF;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:10px;transition:all .2s}
-.btn-gold:hover{background:#CC1414;transform:translateY(-1px);box-shadow:0 6px 18px rgba(230,25,25,.25)}
+.btn-gold{background:#ED1C7B;color:#FFFFFF;border:none;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
+.btn-gold:hover{background:#D11268;transform:translateY(-1px);box-shadow:0 6px 18px rgba(237,28,123,.25)}
 .btn-gold:active{transform:translateY(0)}
 .btn-gold:disabled{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important;animation:none!important}
-.btn-ghost{background:transparent;border:1px solid rgba(0,0,0,.12);color:#0A0A0A;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:.01em;text-transform:none;border-radius:10px;transition:all .2s}
+.btn-ghost{background:transparent;border:1px solid rgba(0,0,0,.12);color:#0A0A0A;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
 .btn-ghost:hover{border-color:rgba(0,0,0,.3);background:rgba(0,0,0,.03)}
-.btn-outline{background:transparent;border:1px solid #E61919;color:#E61919;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:10px;transition:all .2s}
-.btn-outline:hover{background:rgba(230,25,25,.08)}
+.btn-outline{background:transparent;border:1px solid #ED1C7B;color:#ED1C7B;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
+.btn-outline:hover{background:rgba(237,28,123,.08)}
 
 /* Chips */
-.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .18s;white-space:nowrap;border:1px solid rgba(0,0,0,.1);background:#FFFFFF;color:#525252;user-select:none}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;transition:all .18s;white-space:nowrap;border:1px solid rgba(0,0,0,.1);background:#FFFFFF;color:#525252;user-select:none}
 .chip:hover{border-color:rgba(0,0,0,.2);color:#0A0A0A}
-.chip.on{border-color:#E61919;background:rgba(230,25,25,.08);color:#E61919;font-weight:600}
-.chip.cat.on{border-color:#E61919;background:rgba(230,25,25,.08);color:#E61919}
+.chip.on{border-color:#ED1C7B;background:rgba(237,28,123,.08);color:#ED1C7B;font-weight:600}
+.chip.cat.on{border-color:#ED1C7B;background:rgba(237,28,123,.08);color:#ED1C7B}
 
 /* Drop zone */
-.dz{border:1.5px dashed rgba(0,0,0,.18);text-align:center;cursor:pointer;transition:all .25s;background:#FAFAFA;position:relative;overflow:hidden;border-radius:14px}
-.dz:hover,.dz.drag{border-color:#E61919;background:rgba(230,25,25,.04)}
+.dz{border:1.5px dashed rgba(0,0,0,.18);text-align:center;cursor:pointer;transition:all .25s;background:#FAFAFA;position:relative;overflow:hidden;border-radius:20px}
+.dz:hover,.dz.drag{border-color:#ED1C7B;background:rgba(237,28,123,.04)}
 
 /* Cards */
-.ptile{position:relative;overflow:hidden;border-radius:14px;transition:transform .38s cubic-bezier(.23,1,.32,1)}
+.ptile{position:relative;overflow:hidden;border-radius:20px;transition:transform .38s cubic-bezier(.23,1,.32,1)}
 .ptile:hover{transform:translateY(-4px)}
 .ptile img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .38s}
 .ptile:hover img{filter:brightness(1.04)}
-.pcard{border:1px solid rgba(0,0,0,.1);background:#FFFFFF;border-radius:14px;transition:all .25s cubic-bezier(.23,1,.32,1);cursor:pointer;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.pcard{border:1px solid rgba(0,0,0,.1);background:#FFFFFF;border-radius:20px;transition:all .25s cubic-bezier(.23,1,.32,1);cursor:pointer;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .pcard:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.pcard.sel{border-color:#E61919;background:rgba(230,25,25,.04)}
-.pcard.featured{border-color:#E61919;background:rgba(230,25,25,.05)}
-.pcard.featured:hover{border-color:#CC1414}
+.pcard.sel{border-color:#ED1C7B;background:rgba(237,28,123,.04)}
+.pcard.featured{border-color:#ED1C7B;background:rgba(237,28,123,.05)}
+.pcard.featured:hover{border-color:#D11268}
 
 /* Watermark */
 .wml{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.wmr{position:absolute;white-space:nowrap;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.4);animation:drift 22s linear infinite;width:200%}
+.wmr{position:absolute;white-space:nowrap;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.4);animation:drift 22s linear infinite;width:200%}
 
 /* Thumb strip */
 .tstrip{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px}
 .tstrip::-webkit-scrollbar{height:2px}
-.tstrip::-webkit-scrollbar-thumb{background:#E61919}
+.tstrip::-webkit-scrollbar-thumb{background:#ED1C7B}
 
 /* Size button */
-.szb{padding:6px 12px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;border-radius:8px;transition:all .18s}
-.szon{border:1px solid #E61919;background:rgba(230,25,25,.08);color:#E61919}
+.szb{padding:6px 12px;font-size:12px;font-family:'Poppins',sans-serif;font-weight:500;cursor:pointer;border-radius:999px;transition:all .18s}
+.szon{border:1px solid #ED1C7B;background:rgba(237,28,123,.08);color:#ED1C7B}
 .szoff{border:1px solid rgba(0,0,0,.1);background:transparent;color:#525252}
 .szoff:hover{border-color:rgba(0,0,0,.25);color:#0A0A0A}
 
@@ -379,7 +379,7 @@ function HomePage({ onGenerate }) {
         backdropFilter:scrolled?"blur(22px)":"none",
         borderBottom:scrolled?`1px solid ${T.border}`:"none",
         transition:"all .4s" }}>
-        <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:600 }}>
+        <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, fontWeight:600 }}>
           Digital<span style={{ color:T.gold }}>Photos</span>
           <sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
         </div>
@@ -392,7 +392,7 @@ function HomePage({ onGenerate }) {
               }}
               style={{ background:"none", border:"none", cursor:"pointer",
                 fontSize:11, letterSpacing:".14em", textTransform:"uppercase",
-                color: cat===c.id ? T.gold : T.muted, fontFamily:"'DM Sans',sans-serif",
+                color: cat===c.id ? T.gold : T.muted, fontFamily:"'Poppins',sans-serif",
                 transition:"color .2s" }}
               onMouseOver={e => { if(cat!==c.id) e.currentTarget.style.color = T.cream; }}
               onMouseOut={e => { if(cat!==c.id) e.currentTarget.style.color = T.muted; }}>
@@ -433,7 +433,7 @@ function HomePage({ onGenerate }) {
           {/* TOP — Headline + Teaser (centered) */}
           <div style={{ textAlign:"center", display:"flex", flexDirection:"column", alignItems:"center", maxWidth:880 }}>
 
-            <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'DM Sans',sans-serif",
+            <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Poppins',sans-serif",
               fontWeight:700, lineHeight:1, marginBottom:16, whiteSpace:"nowrap" }}>
               <span style={{ fontSize:"clamp(32px,5.2vw,64px)", color:T.cream, display:"block" }}>Upload A Photo.</span>
               <span style={{ fontSize:"clamp(32px,5.2vw,64px)", display:"block", fontStyle:"italic" }}>
@@ -536,7 +536,7 @@ function HomePage({ onGenerate }) {
                     textTransform:"uppercase", fontWeight:500, transition:"color .28s" }}>Choose Styles</div>
                   <button onClick={() => setStyles(allOn ? [] : STYLES.map(s=>s.id))}
                     style={{ fontSize:9, color:allOn?T.gold:T.dim, background:"none", border:"none", cursor:"pointer",
-                      letterSpacing:".12em", textTransform:"uppercase", fontFamily:"'DM Sans',sans-serif", transition:"color .2s" }}>
+                      letterSpacing:".12em", textTransform:"uppercase", fontFamily:"'Poppins',sans-serif", transition:"color .2s" }}>
                     {allOn ? "Deselect All" : "Select All"}
                   </button>
                 </div>
@@ -583,7 +583,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1240, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:44 }}>
             <SLabel>The Styles</SLabel>
-            <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(28px,5vw,56px)",
+            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(28px,5vw,56px)",
               fontWeight:700, color:T.cream, lineHeight:1, marginBottom:12 }}>
               Six Styles. One Upload. <em style={{ fontStyle:"italic", color:T.gold }}>All Yours.</em>
             </h2>
@@ -604,7 +604,7 @@ function HomePage({ onGenerate }) {
                   justifyContent:"center", pointerEvents:"none" }}>
                   <span style={{ fontSize:9, color:"rgba(255,255,255,.17)", letterSpacing:".26em",
                     textTransform:"uppercase", transform:"rotate(-20deg)", whiteSpace:"nowrap",
-                    fontFamily:"'DM Sans',sans-serif" }}>DIGITAL PHOTOS</span>
+                    fontFamily:"'Poppins',sans-serif" }}>DIGITAL PHOTOS</span>
                 </div>
                 <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(7,6,10,.93) 0%,transparent 52%)", borderRadius:6 }}/>
                 {/* selected badge */}
@@ -615,7 +615,7 @@ function HomePage({ onGenerate }) {
                   </div>
                 )}
                 <div style={{ position:"absolute", bottom:13, left:15, right:15 }}>
-                  <div style={{ fontFamily:"'DM Sans',sans-serif", fontStyle:"italic", fontSize:20, color:T.cream, marginBottom:2 }}>{s.label}</div>
+                  <div style={{ fontFamily:"'Poppins',sans-serif", fontStyle:"italic", fontSize:20, color:T.cream, marginBottom:2 }}>{s.label}</div>
                   <div style={{ fontSize:10, color:T.muted, marginBottom:5 }}>{s.desc}</div>
                   <div style={{ fontSize:9, color:T.gold, letterSpacing:".1em" }}>Click to select →</div>
                 </div>
@@ -639,7 +639,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:860, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:42 }}>
             <SLabel>Transformations</SLabel>
-            <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(26px,5vw,52px)",
+            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(26px,5vw,52px)",
               fontWeight:700, color:T.cream, lineHeight:1 }}>
               Real Photos. <em style={{ fontStyle:"italic", color:T.gold }}>Real Results.</em>
             </h2>
@@ -696,7 +696,7 @@ function HomePage({ onGenerate }) {
           ].map((t,i) => (
             <div key={i} style={{ padding:"16px 10px", border:`1px solid ${T.border}`, borderRadius:5 }}>
               <div style={{ fontSize:17, marginBottom:5 }}>{t.i}</div>
-              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:3 }}>{t.v}</div>
+              <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:3 }}>{t.v}</div>
               <div style={{ fontSize:10, color:T.muted, letterSpacing:".1em" }}>{t.l}</div>
             </div>
           ))}
@@ -711,7 +711,7 @@ function HomePage({ onGenerate }) {
         borderBottom:`1px solid ${T.border}` }}>
         <div style={{ maxWidth:560, margin:"0 auto" }}>
           <SLabel>Start Creating</SLabel>
-          <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(34px,6vw,66px)",
+          <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(34px,6vw,66px)",
             fontWeight:700, fontStyle:"italic", color:T.cream, lineHeight:.95, marginBottom:14 }}>
             Ready to See<br/>Your Portrait?
           </h2>
@@ -736,7 +736,7 @@ function HomePage({ onGenerate }) {
       <footer style={{ padding:"26px 24px", borderTop:`1px solid ${T.border}` }}>
         <div style={{ maxWidth:1240, margin:"0 auto", display:"flex",
           justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:11 }}>
-          <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:18, color:T.cream, fontWeight:600 }}>
+          <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, color:T.cream, fontWeight:600 }}>
             Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
           </div>
           <div style={{ fontSize:11, color:T.dim }}>© 2025 Digital Photos™. All rights reserved.</div>
@@ -803,14 +803,14 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, onDone }) {
   return (
     <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
       alignItems:"center", justifyContent:"center", padding:"40px 20px" }}>
-      <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, marginBottom:42, fontWeight:600 }}>
+      <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, marginBottom:42, fontWeight:600 }}>
         Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
       </div>
 
       {error ? (
         <div style={{ textAlign:"center", maxWidth:440 }}>
           <AlertCircle size={42} color="#E06060" style={{ marginBottom:16 }}/>
-          <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:28, color:T.cream, marginBottom:12 }}>Generation Failed</h2>
+          <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:28, color:T.cream, marginBottom:12 }}>Generation Failed</h2>
           <p style={{ color:T.muted, fontSize:14, marginBottom:24, lineHeight:1.7 }}>{error}</p>
           <button className="btn-gold" style={{ padding:"14px 36px", borderRadius:6, fontSize:13 }}
             onClick={() => window.location.reload()}>
@@ -827,7 +827,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, onDone }) {
             </div>
           </div>
 
-          <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(24px,5vw,42px)",
+          <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(24px,5vw,42px)",
             fontWeight:700, fontStyle:"italic", color:T.cream, textAlign:"center", marginBottom:8 }}>
             Creating Your Portrait Collection
           </h2>
@@ -936,7 +936,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
       <header style={{ padding:"14px 22px", display:"flex", alignItems:"center", justifyContent:"space-between",
         borderBottom:`1px solid ${T.border}` }}>
         <div>
-          <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:22, color:T.cream, fontWeight:600, lineHeight:1 }}>
+          <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:22, color:T.cream, fontWeight:600, lineHeight:1 }}>
             Digital<span style={{ color:T.gold }}>Photos</span>
           </div>
           <div style={{ fontSize:9, letterSpacing:".28em", color:T.dim, textTransform:"uppercase", marginTop:3 }}>
@@ -961,7 +961,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
         </div>
 
         {/* HEADLINE */}
-        <h1 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(30px,5vw,46px)",
+        <h1 style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(30px,5vw,46px)",
           fontWeight:700, color:T.cream, textAlign:"center", marginBottom:22, lineHeight:1.1 }}>
           Your Masterpiece is Ready!
         </h1>
@@ -999,7 +999,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
         )}
 
         {/* CHOOSE YOUR FORMAT */}
-        <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(22px,3.5vw,32px)",
+        <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(22px,3.5vw,32px)",
           fontWeight:700, color:T.cream, textAlign:"center", marginBottom:18 }}>
           Choose Your Format
         </h2>
@@ -1015,7 +1015,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
               Most Popular
             </div>
             <Download size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
-            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+            <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
               Instant Masterpiece
             </div>
             <div style={{ display:"flex", alignItems:"baseline", gap:8, justifyContent:"center", marginBottom:4 }}>
@@ -1051,7 +1051,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
           <div style={{ background:T.sur, border:`1px solid ${T.border}`,
             borderRadius:10, padding:"26px 18px 20px", textAlign:"center" }}>
             <FrameIcon size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
-            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+            <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
               Fine Art Print
             </div>
             <div style={{ fontSize:32, color:T.cream, fontWeight:700, lineHeight:1, marginBottom:14 }}>$89</div>
@@ -1063,7 +1063,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
               <select value={printSize} onChange={e => setPrintSize(e.target.value)}
                 style={{ width:"100%", marginTop:5, padding:"8px 10px", background:T.card,
                   border:`1px solid ${T.border}`, borderRadius:5, color:T.cream, fontSize:12,
-                  fontFamily:"'DM Sans',sans-serif" }}>
+                  fontFamily:"'Poppins',sans-serif" }}>
                 {['8" x 10"','11" x 14"','16" x 20"'].map(s => <option key={s}>{s}</option>)}
               </select>
             </div>
@@ -1096,7 +1096,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
               The Perfect Gift 🎁
             </div>
             <Gift size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
-            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+            <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
               Large Canvas
             </div>
             <div style={{ fontSize:32, color:T.cream, fontWeight:700, lineHeight:1, marginBottom:14 }}>$299</div>
@@ -1108,7 +1108,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
               <select value={canvasSize} onChange={e => setCanvasSize(e.target.value)}
                 style={{ width:"100%", marginTop:5, padding:"8px 10px", background:T.card,
                   border:`1px solid ${T.border}`, borderRadius:5, color:T.cream, fontSize:12,
-                  fontFamily:"'DM Sans',sans-serif" }}>
+                  fontFamily:"'Poppins',sans-serif" }}>
                 {['12" x 16"','18" x 24"','24" x 36"'].map(s => <option key={s}>{s}</option>)}
               </select>
             </div>
@@ -1135,7 +1135,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
 
         {/* SOCIAL PROOF */}
         <div style={{ textAlign:"center", marginBottom:40 }}>
-          <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:22, color:T.cream, marginBottom:10 }}>
+          <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:22, color:T.cream, marginBottom:10 }}>
             Chosen by 10,000+ {catLabel} Owners
           </p>
           <div style={{ display:"inline-flex", gap:8, alignItems:"center", padding:"6px 14px",
@@ -1147,7 +1147,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
         </div>
 
         {/* SHARE */}
-        <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:24, color:T.cream,
+        <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:24, color:T.cream,
           textAlign:"center", marginBottom:14 }}>
           Send to Friends &amp; Family
         </h2>
@@ -1155,13 +1155,13 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
           <button onClick={handleCopy} style={{ padding:"14px", borderRadius:7,
             background:"transparent", border:`1px solid ${T.border}`, color:T.cream,
             display:"flex", gap:8, alignItems:"center", justifyContent:"center", cursor:"pointer",
-            fontSize:12, fontFamily:"'DM Sans',sans-serif" }}>
+            fontSize:12, fontFamily:"'Poppins',sans-serif" }}>
             <Copy size={13}/> {shareCopied ? "Copied!" : "Save for Later"}
           </button>
           <button style={{ padding:"14px", borderRadius:7, background:T.teal,
             border:"none", color:"#062019", display:"flex", gap:8, alignItems:"center",
             justifyContent:"center", cursor:"pointer", fontSize:12, fontWeight:600,
-            fontFamily:"'DM Sans',sans-serif" }}>
+            fontFamily:"'Poppins',sans-serif" }}>
             <Share2 size={13}/> Share
           </button>
         </div>
@@ -1173,7 +1173,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
               <button onClick={() => setOpenFaq(openFaq===f.id ? null : f.id)}
                 style={{ width:"100%", padding:"16px 18px", background:"transparent", border:"none",
                   display:"flex", alignItems:"center", justifyContent:"space-between", cursor:"pointer",
-                  textAlign:"left", color:T.cream, fontFamily:"'DM Sans',sans-serif" }}>
+                  textAlign:"left", color:T.cream, fontFamily:"'Poppins',sans-serif" }}>
                 <div>
                   <div style={{ fontSize:13, color:T.cream, marginBottom:3 }}>{f.title}</div>
                   <div style={{ fontSize:11, color:T.muted }}>{f.sub}</div>
@@ -1194,7 +1194,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
           <div style={{ display:"flex", gap:30, justifyContent:"center", flexWrap:"wrap" }}>
             {["The New York Times","Forbes","ELLE","Vogue"].map(p => (
               <span key={p} style={{ fontSize:13, color:T.dim, letterSpacing:".1em",
-                fontStyle:"italic", fontFamily:"'DM Sans',sans-serif" }}>{p}</span>
+                fontStyle:"italic", fontFamily:"'Poppins',sans-serif" }}>{p}</span>
             ))}
           </div>
         </div>
