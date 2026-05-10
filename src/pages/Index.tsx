@@ -384,7 +384,7 @@ function HomePage({ onGenerate }) {
         backdropFilter:scrolled?"blur(22px)":"none",
         borderBottom:scrolled?`1px solid ${T.border}`:"none",
         transition:"all .4s" }}>
-        <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, fontWeight:600 }}>
+        <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:600 }}>
           Digital<span style={{ color:T.gold }}>Photos</span>
           <sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
         </div>
@@ -438,7 +438,7 @@ function HomePage({ onGenerate }) {
           {/* TOP — Headline + Teaser (centered) */}
           <div style={{ textAlign:"center", display:"flex", flexDirection:"column", alignItems:"center", maxWidth:880 }}>
 
-            <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Cormorant Garamond',serif",
+            <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'DM Sans',sans-serif",
               fontWeight:700, lineHeight:1, marginBottom:16, whiteSpace:"nowrap" }}>
               <span style={{ fontSize:"clamp(32px,5.2vw,64px)", color:T.cream, display:"block" }}>Upload A Photo.</span>
               <span style={{ fontSize:"clamp(32px,5.2vw,64px)", display:"block", fontStyle:"italic" }}>
@@ -588,7 +588,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1240, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:44 }}>
             <SLabel>The Styles</SLabel>
-            <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(28px,5vw,56px)",
+            <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(28px,5vw,56px)",
               fontWeight:700, color:T.cream, lineHeight:1, marginBottom:12 }}>
               Six Styles. One Upload. <em style={{ fontStyle:"italic", color:T.gold }}>All Yours.</em>
             </h2>
@@ -620,7 +620,7 @@ function HomePage({ onGenerate }) {
                   </div>
                 )}
                 <div style={{ position:"absolute", bottom:13, left:15, right:15 }}>
-                  <div style={{ fontFamily:"'Cormorant Garamond',serif", fontStyle:"italic", fontSize:20, color:T.cream, marginBottom:2 }}>{s.label}</div>
+                  <div style={{ fontFamily:"'DM Sans',sans-serif", fontStyle:"italic", fontSize:20, color:T.cream, marginBottom:2 }}>{s.label}</div>
                   <div style={{ fontSize:10, color:T.muted, marginBottom:5 }}>{s.desc}</div>
                   <div style={{ fontSize:9, color:T.gold, letterSpacing:".1em" }}>Click to select →</div>
                 </div>
@@ -644,7 +644,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:860, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:42 }}>
             <SLabel>Transformations</SLabel>
-            <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(26px,5vw,52px)",
+            <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(26px,5vw,52px)",
               fontWeight:700, color:T.cream, lineHeight:1 }}>
               Real Photos. <em style={{ fontStyle:"italic", color:T.gold }}>Real Results.</em>
             </h2>
@@ -701,7 +701,7 @@ function HomePage({ onGenerate }) {
           ].map((t,i) => (
             <div key={i} style={{ padding:"16px 10px", border:`1px solid ${T.border}`, borderRadius:5 }}>
               <div style={{ fontSize:17, marginBottom:5 }}>{t.i}</div>
-              <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:3 }}>{t.v}</div>
+              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:3 }}>{t.v}</div>
               <div style={{ fontSize:10, color:T.muted, letterSpacing:".1em" }}>{t.l}</div>
             </div>
           ))}
@@ -716,7 +716,7 @@ function HomePage({ onGenerate }) {
         borderBottom:`1px solid ${T.border}` }}>
         <div style={{ maxWidth:560, margin:"0 auto" }}>
           <SLabel>Start Creating</SLabel>
-          <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(34px,6vw,66px)",
+          <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(34px,6vw,66px)",
             fontWeight:700, fontStyle:"italic", color:T.cream, lineHeight:.95, marginBottom:14 }}>
             Ready to See<br/>Your Portrait?
           </h2>
@@ -741,7 +741,7 @@ function HomePage({ onGenerate }) {
       <footer style={{ padding:"26px 24px", borderTop:`1px solid ${T.border}` }}>
         <div style={{ maxWidth:1240, margin:"0 auto", display:"flex",
           justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:11 }}>
-          <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:18, color:T.cream, fontWeight:600 }}>
+          <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:18, color:T.cream, fontWeight:600 }}>
             Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
           </div>
           <div style={{ fontSize:11, color:T.dim }}>© 2025 Digital Photos™. All rights reserved.</div>
@@ -808,14 +808,14 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, onDone }) {
   return (
     <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
       alignItems:"center", justifyContent:"center", padding:"40px 20px" }}>
-      <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, marginBottom:42, fontWeight:600 }}>
+      <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, marginBottom:42, fontWeight:600 }}>
         Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
       </div>
 
       {error ? (
         <div style={{ textAlign:"center", maxWidth:440 }}>
           <AlertCircle size={42} color="#E06060" style={{ marginBottom:16 }}/>
-          <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:28, color:T.cream, marginBottom:12 }}>Generation Failed</h2>
+          <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:28, color:T.cream, marginBottom:12 }}>Generation Failed</h2>
           <p style={{ color:T.muted, fontSize:14, marginBottom:24, lineHeight:1.7 }}>{error}</p>
           <button className="btn-gold" style={{ padding:"14px 36px", borderRadius:6, fontSize:13 }}
             onClick={() => window.location.reload()}>
@@ -832,7 +832,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, onDone }) {
             </div>
           </div>
 
-          <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(24px,5vw,42px)",
+          <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(24px,5vw,42px)",
             fontWeight:700, fontStyle:"italic", color:T.cream, textAlign:"center", marginBottom:8 }}>
             Creating Your Portrait Collection
           </h2>
@@ -941,7 +941,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
       <header style={{ padding:"14px 22px", display:"flex", alignItems:"center", justifyContent:"space-between",
         borderBottom:`1px solid ${T.border}` }}>
         <div>
-          <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:22, color:T.cream, fontWeight:600, lineHeight:1 }}>
+          <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:22, color:T.cream, fontWeight:600, lineHeight:1 }}>
             Digital<span style={{ color:T.gold }}>Photos</span>
           </div>
           <div style={{ fontSize:9, letterSpacing:".28em", color:T.dim, textTransform:"uppercase", marginTop:3 }}>
@@ -966,7 +966,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
         </div>
 
         {/* HEADLINE */}
-        <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(30px,5vw,46px)",
+        <h1 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(30px,5vw,46px)",
           fontWeight:700, color:T.cream, textAlign:"center", marginBottom:22, lineHeight:1.1 }}>
           Your Masterpiece is Ready!
         </h1>
@@ -1004,7 +1004,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
         )}
 
         {/* CHOOSE YOUR FORMAT */}
-        <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(22px,3.5vw,32px)",
+        <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:"clamp(22px,3.5vw,32px)",
           fontWeight:700, color:T.cream, textAlign:"center", marginBottom:18 }}>
           Choose Your Format
         </h2>
@@ -1020,7 +1020,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
               Most Popular
             </div>
             <Download size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
-            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
               Instant Masterpiece
             </div>
             <div style={{ display:"flex", alignItems:"baseline", gap:8, justifyContent:"center", marginBottom:4 }}>
@@ -1056,7 +1056,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
           <div style={{ background:T.sur, border:`1px solid ${T.border}`,
             borderRadius:10, padding:"26px 18px 20px", textAlign:"center" }}>
             <FrameIcon size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
-            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
               Fine Art Print
             </div>
             <div style={{ fontSize:32, color:T.cream, fontWeight:700, lineHeight:1, marginBottom:14 }}>$89</div>
@@ -1101,7 +1101,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
               The Perfect Gift 🎁
             </div>
             <Gift size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
-            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
               Large Canvas
             </div>
             <div style={{ fontSize:32, color:T.cream, fontWeight:700, lineHeight:1, marginBottom:14 }}>$299</div>
@@ -1140,7 +1140,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
 
         {/* SOCIAL PROOF */}
         <div style={{ textAlign:"center", marginBottom:40 }}>
-          <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:22, color:T.cream, marginBottom:10 }}>
+          <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:22, color:T.cream, marginBottom:10 }}>
             Chosen by 10,000+ {catLabel} Owners
           </p>
           <div style={{ display:"inline-flex", gap:8, alignItems:"center", padding:"6px 14px",
@@ -1152,7 +1152,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
         </div>
 
         {/* SHARE */}
-        <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:T.cream,
+        <h2 style={{ fontFamily:"'DM Sans',sans-serif", fontSize:24, color:T.cream,
           textAlign:"center", marginBottom:14 }}>
           Send to Friends &amp; Family
         </h2>
@@ -1199,7 +1199,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
           <div style={{ display:"flex", gap:30, justifyContent:"center", flexWrap:"wrap" }}>
             {["The New York Times","Forbes","ELLE","Vogue"].map(p => (
               <span key={p} style={{ fontSize:13, color:T.dim, letterSpacing:".1em",
-                fontStyle:"italic", fontFamily:"'Cormorant Garamond',serif" }}>{p}</span>
+                fontStyle:"italic", fontFamily:"'DM Sans',sans-serif" }}>{p}</span>
             ))}
           </div>
         </div>
