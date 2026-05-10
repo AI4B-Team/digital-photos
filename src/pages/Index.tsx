@@ -386,20 +386,25 @@ function HomePage({ onGenerate }) {
         </div>
         <div className="hid" style={{ display:"flex", gap:44, alignItems:"center",
           position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)" }}>
-          {CATS.map(c => (
-            <button key={c.id} onClick={() => {
-                setCat(c.id);
-                heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
-              }}
-              style={{ background:"none", border:"none", cursor:"pointer",
-                fontSize:11, letterSpacing:".14em", textTransform:"uppercase",
-                color: cat===c.id ? T.gold : T.muted, fontFamily:"'Poppins',sans-serif",
-                transition:"color .2s" }}
-              onMouseOver={e => { if(cat!==c.id) e.currentTarget.style.color = T.cream; }}
-              onMouseOut={e => { if(cat!==c.id) e.currentTarget.style.color = T.muted; }}>
-              {c.label}
-            </button>
-          ))}
+          {CATS.map(c => {
+            const NavIcon = c.Icon;
+            return (
+              <button key={c.id} onClick={() => {
+                  setCat(c.id);
+                  heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
+                }}
+                style={{ background:"none", border:"none", cursor:"pointer",
+                  fontSize:11, letterSpacing:".14em", textTransform:"uppercase",
+                  color: cat===c.id ? T.gold : T.muted, fontFamily:"'Poppins',sans-serif",
+                  transition:"color .2s",
+                  display:"flex", alignItems:"center", gap:7 }}
+                onMouseOver={e => { if(cat!==c.id) e.currentTarget.style.color = T.cream; }}
+                onMouseOut={e => { if(cat!==c.id) e.currentTarget.style.color = T.muted; }}>
+                <NavIcon size={14} strokeWidth={1.8}/>
+                {c.label}
+              </button>
+            );
+          })}
         </div>
 
         <div style={{ display:"flex", gap:10, alignItems:"center" }}>
