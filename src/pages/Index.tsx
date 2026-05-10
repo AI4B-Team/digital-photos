@@ -278,7 +278,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
             style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.78)",
               opacity:fading?0:1, transition:"opacity .3s" }}/>
           <div style={{ position:"absolute", bottom:14, left:"50%", transform:"translateX(-50%)",
-            fontSize:11, letterSpacing:".22em", textTransform:"uppercase", color:T.cream,
+            fontSize:11, letterSpacing:".22em", textTransform:"uppercase", color:"#FFFFFF",
             background:"rgba(7,6,10,.75)", padding:"6px 14px", borderRadius:3 }}>Your Photo</div>
         </div>
 
