@@ -414,7 +414,7 @@ function HomePage({ onGenerate }) {
       {/* ══════════════════════════════════════════════════════
           HERO + BUILDER
       ══════════════════════════════════════════════════════ */}
-      <section ref={heroRef} style={{ minHeight:"100vh", paddingTop:50, display:"flex", alignItems:"center",
+      <section ref={heroRef} style={{ minHeight:"100vh", paddingTop:90, paddingBottom:40, display:"flex", alignItems:"center",
         position:"relative", overflow:"hidden",
         background:`radial-gradient(ellipse 85% 65% at 62% 48%, rgba(100,70,8,.18) 0%, transparent 66%), ${T.bg}` }}>
 
