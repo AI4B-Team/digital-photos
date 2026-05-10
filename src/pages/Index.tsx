@@ -427,37 +427,41 @@ function HomePage({ onGenerate }) {
           background:"radial-gradient(circle,rgba(196,150,58,.07) 0%,transparent 72%)",
           top:"-12%", right:"-7%", pointerEvents:"none" }}/>
 
-        <div style={{ maxWidth:1240, margin:"0 auto", padding:"52px 24px", width:"100%",
-          display:"flex", flexDirection:"column", alignItems:"center", gap:36 }} className="hg">
+        <div style={{ maxWidth:1240, margin:"0 auto", padding:"24px 24px", width:"100%",
+          display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"center" }} className="hg hero-grid">
 
-          {/* TOP — Headline + Teaser (centered) */}
-          <div style={{ textAlign:"center", display:"flex", flexDirection:"column", alignItems:"center", maxWidth:880 }}>
+          {/* LEFT PANEL — Headline, social proof, teaser */}
+          <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
 
             <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Poppins',sans-serif",
-              fontWeight:700, lineHeight:1, marginBottom:16, whiteSpace:"nowrap" }}>
-              <span style={{ fontSize:"clamp(32px,5.2vw,64px)", color:T.cream, display:"block" }}>Upload A Photo.</span>
-              <span style={{ fontSize:"clamp(32px,5.2vw,64px)", display:"block", fontStyle:"italic" }}>
+              fontWeight:700, lineHeight:1.05, marginBottom:0 }}>
+              <span style={{ fontSize:"clamp(28px,4.4vw,56px)", color:T.cream, display:"block" }}>Upload A Photo.</span>
+              <span style={{ fontSize:"clamp(28px,4.4vw,56px)", display:"block", fontStyle:"italic" }}>
                 <span style={{ color:T.cream }}>Get Back A </span><span className="gold-text">Portrait Masterpiece.</span>
               </span>
             </h1>
 
             <p className="fu" style={{ animationDelay:".15s", fontSize:14, color:T.muted,
-              lineHeight:1.8, marginBottom:18, maxWidth:"none", whiteSpace:"nowrap" }}>
+              lineHeight:1.7, marginBottom:0, maxWidth:520 }}>
               Turn photos of your pets, babies, people, or precious memories into timeless AI portraits in seconds.
             </p>
 
             <div className="fu" style={{ animationDelay:".22s", display:"flex", alignItems:"center",
-              justifyContent:"center", gap:9, flexWrap:"wrap", marginBottom:6 }}>
+              gap:9, flexWrap:"wrap" }}>
               <Stars n={5}/>
               <span style={{ fontSize:12, color:T.muted }}>
-                <strong style={{ color:T.cream }}>4.9★ rated</strong> · Thousands of portraits created · Digital + gift prints
+                <strong style={{ color:T.cream }}>4.9★ rated</strong> · Thousands of portraits created
               </span>
             </div>
 
+            {/* LIVE TEASER moved into left panel */}
+            <div className="fu" style={{ animationDelay:".3s", width:"100%", maxWidth:560 }}>
+              <LiveTeaser activeCat={cat} onCatClick={setCat}/>
+            </div>
           </div>
 
-          {/* BOTTOM — BUILDER CARD (centered) */}
-          <div className="si" style={{ animationDelay:".1s", width:"100%", maxWidth:680 }}>
+          {/* RIGHT PANEL — BUILDER CARD */}
+          <div className="si" style={{ animationDelay:".1s", width:"100%", maxWidth:560, justifySelf:"end" }}>
             <div style={{ background:T.sur, border:`1px solid ${T.border}`, padding:"22px 20px",
               position:"relative",
               boxShadow:"0 44px 110px rgba(0,0,0,.72), inset 0 1px 0 rgba(196,150,58,.08)" }}>
