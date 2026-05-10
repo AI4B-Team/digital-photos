@@ -203,6 +203,15 @@ const TEASERS = [
       { url:portraitBabiesCine,  style:"Cinematic" },
       { url:portraitBabiesMin,   style:"Minimal" },
     ] },
+  { cat:"Couples",  catId:"couples",  style:"Royal",       before:"https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=600&fit=crop&q=80", after:portraitCouplesRoyal, portrait:portraitCouplesRoyal,
+    portraits:[
+      { url:portraitCouplesRoyal, style:"Royal" },
+      { url:portraitCouplesRen,   style:"Renaissance" },
+      { url:portraitCouplesStory, style:"Storybook" },
+      { url:portraitCouplesFan,   style:"Fantasy" },
+      { url:portraitCouplesCine,  style:"Cinematic" },
+      { url:portraitCouplesMin,   style:"Minimal" },
+    ] },
   { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
     portraits:[
       { url:portraitPeopleRoyal, style:"Royal" },
