@@ -440,10 +440,6 @@ function HomePage({ onGenerate }) {
               </span>
             </div>
 
-            {/* LIVE TEASER */}
-            <div className="fu" style={{ animationDelay:".3s" }}>
-              <LiveTeaser activeCat={cat} onCatClick={setCat}/>
-            </div>
           </div>
 
           {/* BOTTOM — BUILDER CARD (centered) */}
