@@ -399,10 +399,10 @@ function HomePage({ onGenerate }) {
           top:"-12%", right:"-7%", pointerEvents:"none" }}/>
 
         <div style={{ maxWidth:1240, margin:"0 auto", padding:"52px 24px", width:"100%",
-          display:"grid", gridTemplateColumns:"1fr 1.1fr", gap:44, alignItems:"center" }} className="hg">
+          display:"flex", flexDirection:"column", alignItems:"center", gap:36 }} className="hg">
 
-          {/* LEFT — Headline + Teaser */}
-          <div>
+          {/* TOP — Headline + Teaser (centered) */}
+          <div style={{ textAlign:"center", display:"flex", flexDirection:"column", alignItems:"center", maxWidth:880 }}>
             <div className="fu" style={{ display:"inline-flex", gap:7, alignItems:"center",
               border:`1px solid rgba(196,150,58,.2)`, padding:"5px 14px", marginBottom:20,
               fontSize:10, letterSpacing:".28em", color:T.gold, textTransform:"uppercase" }}>
