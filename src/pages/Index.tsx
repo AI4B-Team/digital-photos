@@ -17,9 +17,9 @@ import {
 ═══════════════════════════════════════════════════════════ */
 const T = {
   bg:"#FFFFFF",sur:"#FFFFFF",card:"#FFFFFF",
-  border:"rgba(0,0,0,0.1)",bGold:"rgba(237,28,123,.4)",
+  border:"rgba(0,0,0,0.1)",bGold:"rgba(230,25,25,.4)",
   cream:"#0A0A0A",muted:"#8C8C8C",dim:"#BFBFBF",
-  gold:"#ED1C7B",goldLt:"#FF4D9A",goldBg:"rgba(237,28,123,.07)",
+  gold:"#E61919",goldLt:"#FF3333",goldBg:"rgba(230,25,25,.07)",
   teal:"#2DD4BF",purple:"#8B5CF6",
 };
 
@@ -41,7 +41,7 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 @keyframes spinR   {from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes drift   {0%{transform:translateX(0) rotate(-20deg)}100%{transform:translateX(-50%) rotate(-20deg)}}
 @keyframes floatY  {0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes glow    {0%,100%{box-shadow:0 0 0 0 rgba(237,28,123,.4)}50%{box-shadow:0 0 0 13px rgba(237,28,123,0)}}
+@keyframes glow    {0%,100%{box-shadow:0 0 0 0 rgba(230,25,25,.4)}50%{box-shadow:0 0 0 13px rgba(230,25,25,0)}}
 @keyframes buildIn {from{opacity:0;transform:scale(.86) translateY(9px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes slideIn {from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
 @keyframes pulse   {0%,100%{opacity:1}50%{opacity:.6}}
@@ -54,27 +54,27 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .bi {animation:buildIn .4s cubic-bezier(.23,1,.32,1) both}
 .sl {animation:slideIn .4s cubic-bezier(.23,1,.32,1) both}
 
-.gold-text{color:#ED1C7B}
+.gold-text{color:#E61919}
 
 /* Buttons — REAL CREATOR style */
-.btn-gold{background:#ED1C7B;color:#FFFFFF;border:none;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
-.btn-gold:hover{background:#D11268;transform:translateY(-1px);box-shadow:0 6px 18px rgba(237,28,123,.25)}
+.btn-gold{background:#E61919;color:#FFFFFF;border:none;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
+.btn-gold:hover{background:#CC1414;transform:translateY(-1px);box-shadow:0 6px 18px rgba(230,25,25,.25)}
 .btn-gold:active{transform:translateY(0)}
 .btn-gold:disabled{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important;animation:none!important}
 .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,.12);color:#0A0A0A;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
 .btn-ghost:hover{border-color:rgba(0,0,0,.3);background:rgba(0,0,0,.03)}
-.btn-outline{background:transparent;border:1px solid #ED1C7B;color:#ED1C7B;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
-.btn-outline:hover{background:rgba(237,28,123,.08)}
+.btn-outline{background:transparent;border:1px solid #E61919;color:#E61919;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
+.btn-outline:hover{background:rgba(230,25,25,.08)}
 
 /* Chips */
 .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;transition:all .18s;white-space:nowrap;border:1px solid rgba(0,0,0,.1);background:#FFFFFF;color:#525252;user-select:none}
 .chip:hover{border-color:rgba(0,0,0,.2);color:#0A0A0A}
-.chip.on{border-color:#ED1C7B;background:rgba(237,28,123,.08);color:#ED1C7B;font-weight:600}
-.chip.cat.on{border-color:#ED1C7B;background:rgba(237,28,123,.08);color:#ED1C7B}
+.chip.on{border-color:#E61919;background:rgba(230,25,25,.08);color:#E61919;font-weight:600}
+.chip.cat.on{border-color:#E61919;background:rgba(230,25,25,.08);color:#E61919}
 
 /* Drop zone */
 .dz{border:1.5px dashed rgba(0,0,0,.18);text-align:center;cursor:pointer;transition:all .25s;background:#FAFAFA;position:relative;overflow:hidden;border-radius:20px}
-.dz:hover,.dz.drag{border-color:#ED1C7B;background:rgba(237,28,123,.04)}
+.dz:hover,.dz.drag{border-color:#E61919;background:rgba(230,25,25,.04)}
 
 /* Cards */
 .ptile{position:relative;overflow:hidden;border-radius:20px;transition:transform .38s cubic-bezier(.23,1,.32,1)}
@@ -83,9 +83,9 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .ptile:hover img{filter:brightness(1.04)}
 .pcard{border:1px solid rgba(0,0,0,.1);background:#FFFFFF;border-radius:20px;transition:all .25s cubic-bezier(.23,1,.32,1);cursor:pointer;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .pcard:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.pcard.sel{border-color:#ED1C7B;background:rgba(237,28,123,.04)}
-.pcard.featured{border-color:#ED1C7B;background:rgba(237,28,123,.05)}
-.pcard.featured:hover{border-color:#D11268}
+.pcard.sel{border-color:#E61919;background:rgba(230,25,25,.04)}
+.pcard.featured{border-color:#E61919;background:rgba(230,25,25,.05)}
+.pcard.featured:hover{border-color:#CC1414}
 
 /* Watermark */
 .wml{position:absolute;inset:0;pointer-events:none;overflow:hidden}
@@ -94,11 +94,11 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 /* Thumb strip */
 .tstrip{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px}
 .tstrip::-webkit-scrollbar{height:2px}
-.tstrip::-webkit-scrollbar-thumb{background:#ED1C7B}
+.tstrip::-webkit-scrollbar-thumb{background:#E61919}
 
 /* Size button */
 .szb{padding:6px 12px;font-size:12px;font-family:'Poppins',sans-serif;font-weight:500;cursor:pointer;border-radius:999px;transition:all .18s}
-.szon{border:1px solid #ED1C7B;background:rgba(237,28,123,.08);color:#ED1C7B}
+.szon{border:1px solid #E61919;background:rgba(230,25,25,.08);color:#E61919}
 .szoff{border:1px solid rgba(0,0,0,.1);background:transparent;color:#525252}
 .szoff:hover{border-color:rgba(0,0,0,.25);color:#0A0A0A}
 
