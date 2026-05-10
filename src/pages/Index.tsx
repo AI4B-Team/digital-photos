@@ -534,7 +534,7 @@ function HomePage({ onGenerate }) {
           <div style={{ display:"flex", flexDirection:"column", gap:24, height:"100%" }}>
 
             {/* LIVE TEASER moved into left panel */}
-            <div className="fu" style={{ animationDelay:".3s", width:"100%", maxWidth:560,
+            <div className="fu" style={{ animationDelay:".3s", width:"100%",
               display:"flex", flexDirection:"column", flex:1 }}>
               <LiveTeaser activeCat={cat} onCatClick={setCat}/>
             </div>
