@@ -433,7 +433,7 @@ function HomePage({ onGenerate }) {
           backgroundSize:"62px 62px" }}/>
 
         <div style={{ maxWidth:"100%", margin:"0 auto", padding:"24px 32px", width:"100%",
-          display:"flex", flexDirection:"column", gap:32 }}>
+          display:"flex", flexDirection:"column", gap:16 }}>
 
           {/* FULL-WIDTH HEADLINE + SUBHEADLINE */}
           <div style={{ display:"flex", flexDirection:"column", gap:14, textAlign:"center", alignItems:"center" }}>
