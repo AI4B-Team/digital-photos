@@ -300,6 +300,27 @@ function LiveTeaser({ activeCat, onCatClick }) {
                 opacity:fading?0:1, transition:"opacity .3s" }}/>
           </div>
 
+          {/* "Your Photo" badge with doodle arrow pointing to inset */}
+          <div style={{ position:"absolute", bottom:104, left:88, pointerEvents:"none",
+            display:"flex", flexDirection:"column", alignItems:"flex-start", gap:2 }}>
+            <span style={{
+              fontFamily:"'Caveat', 'Patrick Hand', cursive",
+              fontSize:22, fontWeight:700, color:"#FFFFFF",
+              background:T.gold, padding:"4px 12px", borderRadius:20,
+              boxShadow:"0 4px 12px rgba(0,0,0,.25)", whiteSpace:"nowrap",
+              transform:"rotate(-6deg)" }}>
+              Your Photo
+            </span>
+            <svg width="58" height="44" viewBox="0 0 58 44" fill="none"
+              style={{ marginLeft:6, marginTop:-2 }}>
+              <path d="M48 4 C40 14, 28 22, 14 34" stroke={T.gold} strokeWidth="2.2"
+                strokeLinecap="round" fill="none"
+                strokeDasharray="0" />
+              <path d="M14 34 L22 30 M14 34 L18 26" stroke={T.gold} strokeWidth="2.2"
+                strokeLinecap="round" fill="none"/>
+            </svg>
+          </div>
+
           {/* style badge */}
           <div style={{ position:"absolute", bottom:18, right:18,
             fontSize:11, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
