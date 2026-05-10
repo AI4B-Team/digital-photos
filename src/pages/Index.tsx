@@ -433,7 +433,7 @@ function HomePage({ onGenerate }) {
           background:"radial-gradient(circle,rgba(196,150,58,.07) 0%,transparent 72%)",
           top:"-12%", right:"-7%", pointerEvents:"none" }}/>
 
-        <div style={{ maxWidth:1240, margin:"0 auto", padding:"24px 24px", width:"100%",
+        <div style={{ maxWidth:"100%", margin:"0 auto", padding:"24px 32px", width:"100%",
           display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"center" }} className="hg hero-grid">
 
           {/* LEFT PANEL — Headline, social proof, teaser */}
@@ -467,7 +467,7 @@ function HomePage({ onGenerate }) {
           </div>
 
           {/* RIGHT PANEL — BUILDER CARD */}
-          <div className="si" style={{ animationDelay:".1s", width:"100%", maxWidth:560, justifySelf:"end" }}>
+          <div className="si" style={{ animationDelay:".1s", width:"100%", justifySelf:"end" }}>
             <div style={{ background:T.sur, border:`1px solid ${T.border}`, padding:"22px 20px",
               position:"relative",
               boxShadow:"0 44px 110px rgba(0,0,0,.72), inset 0 1px 0 rgba(196,150,58,.08)" }}>
