@@ -434,11 +434,10 @@ function HomePage({ onGenerate }) {
           top:"-12%", right:"-7%", pointerEvents:"none" }}/>
 
         <div style={{ maxWidth:"100%", margin:"0 auto", padding:"24px 32px", width:"100%",
-          display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"center" }} className="hg hero-grid">
+          display:"flex", flexDirection:"column", gap:32 }}>
 
-          {/* LEFT PANEL — Headline, social proof, teaser */}
-          <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
-
+          {/* FULL-WIDTH HEADLINE + SUBHEADLINE */}
+          <div style={{ display:"flex", flexDirection:"column", gap:18, textAlign:"center", alignItems:"center" }}>
             <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Poppins',sans-serif",
               fontWeight:700, lineHeight:1.05, marginBottom:0 }}>
               <span style={{ fontSize:"clamp(28px,4.4vw,56px)", color:T.cream, display:"block" }}>Upload A Photo.</span>
@@ -448,9 +447,15 @@ function HomePage({ onGenerate }) {
             </h1>
 
             <p className="fu" style={{ animationDelay:".15s", fontSize:14, color:T.muted,
-              lineHeight:1.7, marginBottom:0, maxWidth:520 }}>
+              lineHeight:1.7, marginBottom:0, maxWidth:640 }}>
               Turn photos of your pets, babies, people, or precious memories into timeless AI portraits in seconds.
             </p>
+          </div>
+
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"center" }} className="hg hero-grid">
+
+          {/* LEFT PANEL — social proof, teaser */}
+          <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
 
             <div className="fu" style={{ animationDelay:".22s", display:"flex", alignItems:"center",
               gap:9, flexWrap:"wrap" }}>
