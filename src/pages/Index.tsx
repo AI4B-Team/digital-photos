@@ -417,7 +417,7 @@ function HomePage({ onGenerate }) {
             </h1>
 
             <p className="fu" style={{ animationDelay:".15s", fontSize:14, color:T.muted,
-              lineHeight:1.8, marginBottom:18, maxWidth:520 }}>
+              lineHeight:1.8, marginBottom:18, maxWidth:"none", whiteSpace:"nowrap" }}>
               Turn photos of your pets, babies, people, or precious memories into timeless AI portraits in seconds.
             </p>
 
