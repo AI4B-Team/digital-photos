@@ -369,7 +369,23 @@ function HomePage({ onGenerate }) {
           Digital<span style={{ color:T.gold }}>Photos</span>
           <sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
         </div>
-        <div className="hid" />
+        <div className="hid" style={{ display:"flex", gap:22, alignItems:"center",
+          position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)" }}>
+          {CATS.map(c => (
+            <button key={c.id} onClick={() => {
+                setCat(c.id);
+                heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
+              }}
+              style={{ background:"none", border:"none", cursor:"pointer",
+                fontSize:11, letterSpacing:".14em", textTransform:"uppercase",
+                color: cat===c.id ? T.gold : T.muted, fontFamily:"'DM Sans',sans-serif",
+                transition:"color .2s" }}
+              onMouseOver={e => { if(cat!==c.id) e.currentTarget.style.color = T.cream; }}
+              onMouseOut={e => { if(cat!==c.id) e.currentTarget.style.color = T.muted; }}>
+              {c.label}
+            </button>
+          ))}
+        </div>
 
         <div style={{ display:"flex", gap:10, alignItems:"center" }}>
           <a href="/auth" style={{ fontSize:11, color:T.muted, textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
