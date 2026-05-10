@@ -274,60 +274,54 @@ function LiveTeaser({ activeCat, onCatClick }) {
         What Your Photo Becomes
       </div>
 
-      {/* Scene with corner inset of original */}
-      <div style={{ maxWidth:480, margin:"0 auto" }}>
-        <div style={{ position:"relative", aspectRatio:"1/1", borderRadius:14, overflow:"hidden",
-          border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)" }}>
-          <img src={cur.after} alt="Portrait scene"
-            style={{ width:"100%", height:"100%", objectFit:"cover",
-              opacity:fading?0:1, transition:"opacity .3s" }}/>
+      {/* Two-panel layout: Your Photo (left) + Generated slideshow (right) */}
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1.6fr", gap:14, alignItems:"stretch" }}>
 
-          {/* watermark */}
-          <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
-            justifyContent:"center", pointerEvents:"none" }}>
-            <span style={{ fontSize:9, color:"rgba(255,255,255,.22)", letterSpacing:".26em",
-              textTransform:"uppercase", transform:"rotate(-20deg)", whiteSpace:"nowrap" }}>
-              DIGITAL PHOTOS
-            </span>
+        {/* LEFT: Your Photo */}
+        <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+          <div style={{ fontSize:10, letterSpacing:".22em", textTransform:"uppercase",
+            color:T.gold, textAlign:"center", fontWeight:600 }}>
+            Your Photo
           </div>
-
-          {/* corner inset — original photo */}
-          <div style={{ position:"absolute", bottom:16, left:16, width:84, height:84,
-            borderRadius:14, overflow:"hidden", border:"3px solid #FFFFFF",
-            boxShadow:"0 6px 18px rgba(0,0,0,.25)" }}>
-            <img src={cur.before} alt="Original"
+          <div style={{ position:"relative", aspectRatio:"1/1", borderRadius:12, overflow:"hidden",
+            border:`1px solid ${T.bGold}`, background:"#fff",
+            boxShadow:"0 8px 24px rgba(0,0,0,.08)" }}>
+            <img src={cur.before} alt="Your original photo"
               style={{ width:"100%", height:"100%", objectFit:"cover",
                 opacity:fading?0:1, transition:"opacity .3s" }}/>
           </div>
+        </div>
 
-          {/* "Your Photo" badge with doodle arrow pointing to inset */}
-          <div style={{ position:"absolute", bottom:104, left:88, pointerEvents:"none",
-            display:"flex", flexDirection:"column", alignItems:"flex-start", gap:2 }}>
-            <span style={{
-              fontFamily:"'Caveat', 'Patrick Hand', cursive",
-              fontSize:22, fontWeight:700, color:"#FFFFFF",
-              background:T.gold, padding:"4px 12px", borderRadius:20,
-              boxShadow:"0 4px 12px rgba(0,0,0,.25)", whiteSpace:"nowrap",
-              transform:"rotate(-6deg)" }}>
-              Your Photo
-            </span>
-            <svg width="58" height="44" viewBox="0 0 58 44" fill="none"
-              style={{ marginLeft:6, marginTop:-2 }}>
-              <path d="M48 4 C40 14, 28 22, 14 34" stroke={T.gold} strokeWidth="2.2"
-                strokeLinecap="round" fill="none"
-                strokeDasharray="0" />
-              <path d="M14 34 L22 30 M14 34 L18 26" stroke={T.gold} strokeWidth="2.2"
-                strokeLinecap="round" fill="none"/>
-            </svg>
+        {/* RIGHT: Generated portraits slideshow */}
+        <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+          <div style={{ fontSize:10, letterSpacing:".22em", textTransform:"uppercase",
+            color:T.gold, textAlign:"center", fontWeight:600 }}>
+            Your Generated Portraits
           </div>
+          <div style={{ position:"relative", aspectRatio:"1.6/1", borderRadius:12, overflow:"hidden",
+            border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)" }}>
+            <img src={cur.after} alt="Generated portraits"
+              style={{ width:"100%", height:"100%", objectFit:"cover",
+                opacity:fading?0:1, transition:"opacity .3s" }}/>
 
-          {/* style badge */}
-          <div style={{ position:"absolute", bottom:18, right:18,
-            fontSize:11, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
-            background:T.gold, padding:"7px 16px", borderRadius:8, fontWeight:600 }}>
-            {cur.style}
+            {/* watermark */}
+            <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
+              justifyContent:"center", pointerEvents:"none" }}>
+              <span style={{ fontSize:9, color:"rgba(255,255,255,.22)", letterSpacing:".26em",
+                textTransform:"uppercase", transform:"rotate(-20deg)", whiteSpace:"nowrap" }}>
+                DIGITAL PHOTOS
+              </span>
+            </div>
+
+            {/* style badge */}
+            <div style={{ position:"absolute", bottom:12, right:12,
+              fontSize:10, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
+              background:T.gold, padding:"5px 12px", borderRadius:6, fontWeight:600 }}>
+              {cur.style}
+            </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Category dots */}
