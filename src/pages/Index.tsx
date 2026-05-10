@@ -572,8 +572,8 @@ function HomePage({ onGenerate }) {
                 <Wand2 size={15}/>{genLabel()}
               </button>
 
-              <p style={{ textAlign:"center", fontSize:10, color:T.dim, marginTop:9, letterSpacing:".05em" }}>
-                No subscription · Free watermarked preview before purchase
+              <p style={{ textAlign:"center", fontSize:12, color:T.muted, marginTop:9, letterSpacing:".03em" }}>
+                No Subscription · Free Watermarked Preview Before Purchase
               </p>
             </div>
           </div>
