@@ -439,11 +439,9 @@ function HomePage({ onGenerate }) {
           {/* FULL-WIDTH HEADLINE + SUBHEADLINE */}
           <div style={{ display:"flex", flexDirection:"column", gap:18, textAlign:"center", alignItems:"center" }}>
             <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Poppins',sans-serif",
-              fontWeight:700, lineHeight:1.05, marginBottom:0 }}>
-              <span style={{ fontSize:"clamp(28px,4.4vw,56px)", color:T.cream, display:"block" }}>Upload A Photo.</span>
-              <span style={{ fontSize:"clamp(28px,4.4vw,56px)", display:"block", fontStyle:"italic" }}>
-                <span style={{ color:T.cream }}>Get Back A </span><span className="gold-text">Portrait Masterpiece.</span>
-              </span>
+              fontWeight:700, lineHeight:1.05, marginBottom:0, color:T.cream,
+              fontSize:"clamp(28px,4.4vw,56px)" }}>
+              Upload A Photo. Receive A Masterpiece.
             </h1>
 
             <p className="fu" style={{ animationDelay:".15s", fontSize:14, color:T.muted,
