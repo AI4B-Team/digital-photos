@@ -457,7 +457,7 @@ function HomePage({ onGenerate }) {
             </p>
           </div>
 
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"center" }} className="hg hero-grid">
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"start" }} className="hg hero-grid">
 
           {/* LEFT PANEL — teaser */}
           <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
