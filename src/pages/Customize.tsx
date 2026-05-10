@@ -95,9 +95,10 @@ export default function Customize() {
   // Pull source portrait — prefer ?style= from query, else first generated, else uploaded photo
   const params = new URLSearchParams(window.location.search);
   const styleId = params.get("style") || session.generatedPortraits?.[0]?.style || "";
+  const PLACEHOLDER = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=80";
   const portraitUrl = useMemo(() => {
     const found = session.generatedPortraits?.find(p => p.style === styleId);
-    return found?.url || session.generatedPortraits?.[0]?.url || session.photo || "";
+    return found?.url || session.generatedPortraits?.[0]?.url || session.photo || PLACEHOLDER;
   }, [styleId, session.generatedPortraits, session.photo]);
 
   const [frame,       setFrame]       = useState(session.customization?.frame       || "black");
