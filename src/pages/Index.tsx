@@ -422,16 +422,12 @@ function HomePage({ onGenerate }) {
       ══════════════════════════════════════════════════════ */}
       <section ref={heroRef} style={{ minHeight:"100vh", paddingTop:62, paddingBottom:40, display:"flex", alignItems:"center",
         position:"relative", overflow:"hidden",
-        background:`radial-gradient(ellipse 85% 65% at 62% 48%, rgba(100,70,8,.18) 0%, transparent 66%), ${T.bg}` }}>
+        background: T.bg }}>
 
         {/* grid overlay */}
         <div style={{ position:"absolute", inset:0, pointerEvents:"none", opacity:.022,
           backgroundImage:`linear-gradient(${T.border} 1px,transparent 1px),linear-gradient(90deg,${T.border} 1px,transparent 1px)`,
           backgroundSize:"62px 62px" }}/>
-        {/* ambient orb */}
-        <div style={{ position:"absolute", width:580, height:580, borderRadius:"50%",
-          background:"radial-gradient(circle,rgba(196,150,58,.07) 0%,transparent 72%)",
-          top:"-12%", right:"-7%", pointerEvents:"none" }}/>
 
         <div style={{ maxWidth:"100%", margin:"0 auto", padding:"24px 32px", width:"100%",
           display:"flex", flexDirection:"column", gap:32 }}>
