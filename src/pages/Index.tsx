@@ -827,360 +827,350 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, onDone }) {
    PREVIEW PAGE  — Gallery Unlock Model
 ═══════════════════════════════════════════════════════════ */
 function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], onBack }) {
-  const navigate              = useNavigate();
-  const { setSession }        = useSession();
-  const [planSel,    setPlanSel]    = useState("bundle");
-
-  const handlePlanSelect = (id) => {
-    setPlanSel(id);
-    setSession({ selectedPlan: id });
-  };
-
-  const goToCheckout = () => {
-    setSession({ selectedPlan: planSel, cat, photo, styles: selectedStyles });
-    navigate("/checkout");
-  };
-  const [timer,      setTimer]      = useState(23 * 60 + 47);
-  const [focusedPort,setFocusedPort]= useState(null);
-  const [showShare,  setShowShare]  = useState(false);
-  const [shareCopied,setShareCopied]= useState(false);
-  const [shareUnlocked,setShareUnlocked] = useState(false);
-  const [upsellAdded,setUpsellAdded]= useState(false);
-  const [openFaq,    setOpenFaq]    = useState(null);
+  const navigate       = useNavigate();
+  const { setSession } = useSession();
 
   const catLabel = CATS.find(c => c.id===cat)?.label || "Portrait";
   const active   = STYLES.filter(s => selectedStyles.includes(s.id));
-  const plan     = PLANS.find(p => p.id===planSel);
+
+  // Build display list — one tile per generated style, fallback to selected style preview
+  const tiles = active.map(s => {
+    const gen = generatedPortraits.find(p => p.style === s.id);
+    return { id: s.id, label: s.label, src: gen ? gen.url : (photo || s.preview) };
+  });
+
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [timer,     setTimer]     = useState(20 * 60 + 18);
+  const [printSize, setPrintSize] = useState('8" x 10"');
+  const [canvasSize,setCanvasSize]= useState('12" x 16"');
+  const [openFaq,   setOpenFaq]   = useState(null);
+  const [shareCopied,setShareCopied] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => setTimer(p => Math.max(0, p-1)), 1000);
     return () => clearInterval(t);
   }, []);
 
-  const fmt = s =>
-    `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
+  const fmtTimer = s =>
+    `${String(Math.floor(s/3600)).padStart(1,"0")}:${String(Math.floor((s%3600)/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
 
-  const handleShare = type => {
-    if (type === "copy") {
-      setShareCopied(true);
-      setTimeout(() => setShareCopied(false), 2200);
-    }
-    if (!shareUnlocked) {
-      setTimeout(() => setShareUnlocked(true), 600);
-    }
+  const featured = tiles[activeIdx] || { src: photo, label:"Portrait" };
+
+  const buyDigital = () => {
+    setSession({ selectedPlan:"digital", cat, photo, styles: selectedStyles });
+    navigate("/checkout");
+  };
+  const buyPrint = () => {
+    setSession({ selectedPlan:"bundle", cat, photo, styles: selectedStyles, printSize });
+    navigate("/checkout");
+  };
+  const buyCanvas = () => {
+    setSession({ selectedPlan:"canvas", cat, photo, styles: selectedStyles, canvasSize });
+    navigate("/checkout");
   };
 
-  return (
-    <div style={{ minHeight:"100vh", background:T.bg, paddingBottom:100 }}>
+  const handleCopy = () => {
+    try { navigator.clipboard?.writeText(window.location.href); } catch {}
+    setShareCopied(true);
+    setTimeout(() => setShareCopied(false), 1800);
+  };
 
-      {/* STICKY HEADER */}
-      <header style={{ position:"sticky", top:0, zIndex:100,
-        background:"rgba(7,6,10,.97)", backdropFilter:"blur(22px)",
-        borderBottom:`1px solid ${T.border}` }}>
-        <div style={{ padding:"5px 18px", borderBottom:`1px solid ${T.border}`,
-          display:"flex", gap:16, alignItems:"center", justifyContent:"center",
-          fontSize:10, color:T.muted, flexWrap:"wrap" }}>
-          <span style={{ display:"flex", gap:4, alignItems:"center" }}><Truck size={10} color={T.gold}/>Free Shipping on Prints</span>
-          <span>·</span>
-          <span style={{ display:"flex", gap:4, alignItems:"center" }}><Stars n={5} size={12}/> Rated 4.9</span>
-          <span>·</span>
-          <span>Secure Checkout · 30-Day Guarantee</span>
+  const FAQS = [
+    { id:"reviews", title:"What Customers Say", sub:<>Rated <strong style={{color:T.cream}}>Excellent</strong> on Trustpilot ★★★★★</>,
+      body:(
+        <div style={{ display:"grid", gap:10 }}>
+          <p style={{ fontSize:12, color:T.muted, fontStyle:"italic", lineHeight:1.7 }}>
+            "The {catLabel.toLowerCase()} portrait is absolutely stunning. More compliments than any art I own." — Sarah M.
+          </p>
+          <p style={{ fontSize:12, color:T.muted, fontStyle:"italic", lineHeight:1.7 }}>
+            "Ordered three canvases for the holidays. Everyone was floored. Best gift I've ever given." — Marcus T.
+          </p>
         </div>
-        <div style={{ padding:"8px 22px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-          <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:18, color:T.cream, fontWeight:600 }}>
+      ) },
+    { id:"support", title:"Need Support?", sub:"We're happy to help!",
+      body:<p style={{ fontSize:12, color:T.muted, lineHeight:1.7 }}>Email <span style={{color:T.gold}}>support@digitalphotos.art</span> any time. We respond within a few hours and back every order with a 30-day satisfaction guarantee.</p> },
+    { id:"artists", title:"Supporting Real Artists", sub:"DigitalPhotos, crafted by our atelier.",
+      body:<p style={{ fontSize:12, color:T.muted, lineHeight:1.7 }}>Every portrait is reviewed and refined by our in-house artists before delivery — AI is the brush, our team is the painter.</p> },
+  ];
+
+  return (
+    <div style={{ minHeight:"100vh", background:T.bg, paddingBottom:60 }}>
+      {/* TOP UTILITY BAR */}
+      <div style={{ borderBottom:`1px solid ${T.border}`, padding:"7px 18px",
+        display:"flex", gap:18, alignItems:"center", justifyContent:"center",
+        fontSize:11, color:T.muted, flexWrap:"wrap" }}>
+        <span style={{ display:"flex", gap:5, alignItems:"center" }}><Truck size={11} color={T.gold}/>Free Shipping on Prints</span>
+        <span style={{ color:T.dim }}>·</span>
+        <span>Rated 4.9 ★</span>
+        <span style={{ color:T.dim }}>·</span>
+        <span>#1 on Trustpilot</span>
+      </div>
+
+      {/* HEADER */}
+      <header style={{ padding:"14px 22px", display:"flex", alignItems:"center", justifyContent:"space-between",
+        borderBottom:`1px solid ${T.border}` }}>
+        <div>
+          <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:22, color:T.cream, fontWeight:600, lineHeight:1 }}>
             Digital<span style={{ color:T.gold }}>Photos</span>
           </div>
-          <div style={{ display:"flex", gap:4, alignItems:"center", fontSize:11, color:T.dim }}>
-            {["Upload","Preview","Unlock & Download"].map((s,i) => (
-              <span key={s} style={{ display:"flex", alignItems:"center", gap:4 }}>
-                <span style={{ color:i===1?T.cream:T.dim, fontWeight:i===1?400:300 }}>{s}</span>
-                {i<2 && <ChevronRight size={9} color={T.dim}/>}
-              </span>
-            ))}
+          <div style={{ fontSize:9, letterSpacing:".28em", color:T.dim, textTransform:"uppercase", marginTop:3 }}>
+            By the Atelier
           </div>
-          <button className="btn-ghost" style={{ padding:"5px 12px", borderRadius:4, fontSize:10 }} onClick={onBack}>
-            ← Retry
-          </button>
         </div>
+        <button className="btn-ghost" style={{ padding:"7px 13px", borderRadius:5, fontSize:11 }} onClick={onBack}>
+          ← New Portrait
+        </button>
       </header>
 
-      <div style={{ maxWidth:900, margin:"0 auto", padding:"28px 18px 70px" }}>
+      <div style={{ maxWidth:980, margin:"0 auto", padding:"32px 18px 60px" }}>
+
+        {/* BREADCRUMB */}
+        <div style={{ display:"flex", gap:8, alignItems:"center", justifyContent:"center",
+          fontSize:12, color:T.dim, marginBottom:22 }}>
+          <span style={{ cursor:"pointer" }} onClick={onBack}>Upload</span>
+          <ChevronRight size={11}/>
+          <span style={{ color:T.cream }}>Preview</span>
+          <ChevronRight size={11}/>
+          <span>Download or Order Print</span>
+        </div>
 
         {/* HEADLINE */}
-        <div style={{ textAlign:"center", marginBottom:26 }}>
-          <div style={{ display:"inline-flex", gap:7, alignItems:"center",
-            background:T.goldBg, border:`1px solid rgba(196,150,58,.25)`,
-            padding:"5px 14px", borderRadius:50, marginBottom:14, fontSize:10,
-            color:T.gold, letterSpacing:".22em", textTransform:"uppercase" }}>
-            <Sparkles size={9}/> Your Collection Is Ready
-          </div>
-          <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(28px,5vw,52px)",
-            fontWeight:700, color:T.cream, marginBottom:9, lineHeight:1 }}>
-            Your Portrait Collection Is Ready
-          </h1>
-          <p style={{ color:T.muted, fontSize:13, lineHeight:1.75, maxWidth:440, margin:"0 auto" }}>
-            {active.length} portrait styles generated from your {catLabel.toLowerCase()} photo.
-            Remove watermarks to unlock your full collection.
-          </p>
+        <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(30px,5vw,46px)",
+          fontWeight:700, color:T.cream, textAlign:"center", marginBottom:22, lineHeight:1.1 }}>
+          Your Masterpiece is Ready!
+        </h1>
+
+        {/* FEATURED PORTRAIT */}
+        <div style={{ position:"relative", maxWidth:520, margin:"0 auto 18px",
+          aspectRatio:"4/5", borderRadius:8, overflow:"hidden",
+          border:`1px solid ${T.border}`, background:T.card }}>
+          <img src={featured.src} alt={featured.label}
+            style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          <Watermark/>
+          <button className="btn-ghost" onClick={onBack}
+            style={{ position:"absolute", top:12, right:12, padding:"6px 11px", borderRadius:4,
+              fontSize:10, display:"flex", gap:5, alignItems:"center",
+              background:"rgba(7,6,10,.8)", backdropFilter:"blur(6px)" }}>
+            <RefreshCw size={10}/> Retry or Edit
+          </button>
         </div>
 
-        {/* ── GALLERY GRID (watermarked) ── */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8, marginBottom:11 }} className="pg3">
-          {active.map((s, i) => {
-            const genPortrait = generatedPortraits.find(p => p.style === s.id);
-            const imgSrc = genPortrait ? genPortrait.url : (photo || s.preview);
-            return (
-            <div key={s.id}
-              onMouseEnter={() => setFocusedPort(i)}
-              onMouseLeave={() => setFocusedPort(null)}
-              style={{ position:"relative", borderRadius:7, overflow:"hidden",
-                height:i===0||i===1 ? 270 : 220,
-                border:`1.5px solid ${focusedPort===i ? T.bGold : T.border}`,
-                cursor:"pointer", transition:"border-color .22s" }}>
-              <img src={imgSrc} alt={s.label}
-                style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
-                  filter:"brightness(.8) saturate(1.08)" }}/>
-              <Watermark/>
-              {/* lock overlay */}
-              <div style={{ position:"absolute", inset:0,
-                background:"linear-gradient(to top,rgba(7,6,10,.88) 0%,rgba(7,6,10,.15) 55%,transparent 100%)",
-                display:"flex", alignItems:"flex-end", justifyContent:"center", padding:"12px" }}>
-                <div style={{ display:"flex", alignItems:"center", gap:5, fontSize:9,
-                  color:"rgba(255,255,255,.55)", letterSpacing:".1em" }}>
-                  <Lock size={9}/>Watermark locked
-                </div>
-              </div>
-              {/* style label */}
-              <div style={{ position:"absolute", top:9, left:10,
-                background:"rgba(7,6,10,.82)", border:`1px solid rgba(196,150,58,.18)`,
-                padding:"3px 9px", borderRadius:3, backdropFilter:"blur(8px)" }}>
-                <span style={{ fontFamily:"'Cormorant Garamond',serif", fontStyle:"italic",
-                  fontSize:12, color:T.cream }}>{s.label}</span>
-              </div>
-              {/* hover heart */}
-              {focusedPort===i && (
-                <button style={{ position:"absolute", top:9, right:9, width:26, height:26,
-                  background:"rgba(7,6,10,.82)", border:`1px solid ${T.border}`,
-                  borderRadius:"50%", display:"flex", alignItems:"center",
-                  justifyContent:"center", cursor:"pointer" }}>
-                  <Heart size={11} color={T.muted}/>
-                </button>
-              )}
-            </div>
-          );
-          })}
-        </div>
-
-        {/* gallery meta + share cta */}
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
-          marginBottom:22, flexWrap:"wrap", gap:10 }}>
-          <p style={{ fontSize:11, color:T.dim }}>
-            {active.length} portraits · All watermarks removed on purchase
-          </p>
-          <div style={{ display:"flex", gap:7 }}>
-            <button className="btn-ghost" style={{ padding:"6px 12px", borderRadius:4,
-              display:"flex", gap:5, alignItems:"center", fontSize:11 }}
-              onClick={() => setShowShare(v => !v)}>
-              <Share2 size={11}/>Share Free Preview
-            </button>
-            <button className="btn-ghost" style={{ padding:"6px 12px", borderRadius:4, fontSize:11 }} onClick={onBack}>
-              <RefreshCw size={10}/> Retry
-            </button>
-          </div>
-        </div>
-
-        {/* ── SHARE PANEL ── */}
-        {showShare && (
-          <div className="fi" style={{ background:T.sur, border:`1px solid ${T.bGold}`,
-            borderRadius:8, padding:"18px 20px", marginBottom:20 }}>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:10 }}>
-              <div>
-                <div style={{ fontSize:13, color:T.cream, fontWeight:400, marginBottom:4 }}>
-                  Share Your Watermarked Preview
-                </div>
-                <p style={{ fontSize:11, color:T.muted, lineHeight:1.6, marginBottom:14 }}>
-                  {shareUnlocked
-                    ? <span style={{ color:T.gold }}>✓ 2 bonus styles unlocked! They'll appear in your download.</span>
-                    : <span>Share your preview and <strong style={{ color:T.gold }}>unlock 2 extra styles free.</strong></span>
-                  }
-                </p>
-                <div style={{ display:"flex", gap:7, flexWrap:"wrap" }}>
-                  {[
-                    { label:"Instagram", icon:<svg viewBox="0 0 24 24" width={12} fill="none" stroke="currentColor" strokeWidth={2}><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>, color:"#E1306C" },
-                    { label:"Facebook",  icon:<svg viewBox="0 0 24 24" width={12} fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>, color:"#1877F2" },
-                    { label:shareCopied?"Copied!":"Copy Link", icon:<Copy size={11}/>, color:T.gold },
-                    { label:"Download Preview", icon:<Download size={11}/>, color:T.muted },
-                  ].map(b => (
-                    <button key={b.label} onClick={() => handleShare(b.label==="Copy Link"||b.label==="Copied!"?"copy":"social")}
-                      style={{ display:"flex", gap:6, alignItems:"center", padding:"7px 13px",
-                        borderRadius:5, border:`1px solid ${T.border}`, background:T.card,
-                        color:b.color, cursor:"pointer", fontSize:11,
-                        fontFamily:"'DM Sans',sans-serif", transition:"all .2s" }}>
-                      {b.icon}{b.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+        {/* THUMB STRIP */}
+        {tiles.length > 1 && (
+          <div style={{ display:"flex", gap:8, justifyContent:"center", flexWrap:"wrap", marginBottom:36 }}>
+            {tiles.map((t, i) => (
+              <button key={t.id} onClick={() => setActiveIdx(i)}
+                style={{ width:62, height:78, borderRadius:5, overflow:"hidden",
+                  border:`1.5px solid ${i===activeIdx ? T.gold : T.border}`,
+                  cursor:"pointer", padding:0, background:"transparent",
+                  position:"relative", transition:"border-color .2s" }}>
+                <img src={t.src} alt={t.label}
+                  style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
+                    filter:i===activeIdx ? "none" : "brightness(.7)" }}/>
+              </button>
+            ))}
           </div>
         )}
 
-        {/* ── UNLOCK SECTION ── */}
-        <div style={{ textAlign:"center", marginBottom:18 }}>
-          <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(22px,4.5vw,38px)",
-            fontWeight:700, color:T.cream, marginBottom:6 }}>
-            Unlock Your Portrait Collection
-          </h2>
-          <p style={{ color:T.muted, fontSize:12 }}>
-            Remove watermarks · Download all portraits in high resolution · Order prints
-          </p>
-          {/* countdown */}
-          <div style={{ display:"inline-flex", gap:6, alignItems:"center", marginTop:10,
-            background:"rgba(196,150,58,.08)", border:`1px solid rgba(196,150,58,.22)`,
-            padding:"6px 16px", borderRadius:50, fontSize:11, color:T.gold }}>
-            ⏱ Special pricing expires in {fmt(timer)}
-          </div>
-        </div>
+        {/* CHOOSE YOUR FORMAT */}
+        <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(22px,3.5vw,32px)",
+          fontWeight:700, color:T.cream, textAlign:"center", marginBottom:18 }}>
+          Choose Your Format
+        </h2>
 
-        {/* ── PRICING CARDS ── */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:9, marginBottom:14 }} className="plangrid">
-          {PLANS.map(p => (
-            <div key={p.id} className={`pcard ${p.featured?"featured":""} ${planSel===p.id?"sel":""}`}
-              style={{ borderRadius:8, padding:"20px 16px", background:p.featured?T.goldBg:T.sur }}
-              onClick={() => handlePlanSelect(p.id)}>
-              {p.badge ? (
-                <div style={{ background:T.gold, color:T.bg, fontSize:9, fontWeight:700,
-                  letterSpacing:".14em", padding:"3px 10px", borderRadius:50,
-                  display:"inline-block", marginBottom:10 }}>{p.badge}</div>
-              ) : (
-                <div style={{ height:22, marginBottom:10 }}/>
-              )}
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:40 }} className="plangrid">
 
-              <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:16, color:T.cream,
-                fontWeight:700, marginBottom:5 }}>{p.label}</div>
-
-              <div style={{ display:"flex", alignItems:"baseline", gap:8, marginBottom:4 }}>
-                <span style={{ fontSize:12, color:T.dim, textDecoration:"line-through" }}>${p.orig}</span>
-                <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:38,
-                  fontWeight:700, color:p.featured?T.gold:T.cream, lineHeight:1 }}>${p.price}</span>
-              </div>
-
-              {p.desc && <p style={{ fontSize:11, color:p.featured?T.gold:T.dim, fontStyle:"italic", marginBottom:12 }}>{p.desc}</p>}
-
-              <div style={{ height:1, background:T.border, marginBottom:12 }}/>
-
-              {p.features.map(f => <CheckRow key={f} label={f} gold={p.featured}/>)}
-
-              <button className="btn-gold" style={{ width:"100%", padding:"12px", borderRadius:5, fontSize:12, marginTop:14 }}
-                onClick={() => { handlePlanSelect(p.id); goToCheckout(); }}>
-                {p.cta}
+          {/* ── CARD 1: INSTANT MASTERPIECE ── */}
+          <div style={{ position:"relative", background:T.sur, border:`1px solid ${T.border}`,
+            borderRadius:10, padding:"26px 18px 20px", textAlign:"center" }}>
+            <div style={{ position:"absolute", top:-11, left:"50%", transform:"translateX(-50%)",
+              background:T.teal, color:"#062019", fontSize:10, fontWeight:600,
+              letterSpacing:".14em", padding:"4px 12px", borderRadius:50, textTransform:"uppercase" }}>
+              Most Popular
+            </div>
+            <Download size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
+            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+              Instant Masterpiece
+            </div>
+            <div style={{ display:"flex", alignItems:"baseline", gap:8, justifyContent:"center", marginBottom:4 }}>
+              <span style={{ fontSize:13, color:T.dim, textDecoration:"line-through" }}>$39</span>
+              <span style={{ fontSize:32, color:T.cream, fontWeight:700, lineHeight:1 }}>$29</span>
+            </div>
+            <div style={{ fontSize:10, color:T.gold, marginBottom:14 }}>
+              Expires in <strong>{fmtTimer(timer)}</strong>
+            </div>
+            <p style={{ fontSize:11, color:T.muted, lineHeight:1.6, marginBottom:14 }}>
+              Instant high-resolution download — perfect for sharing or saving.
+            </p>
+            <div style={{ textAlign:"left", marginBottom:16 }}>
+              {["No Watermark","Instant Download","High-Resolution Portrait"].map(f => (
+                <CheckRow key={f} label={f}/>
+              ))}
+            </div>
+            <button onClick={buyDigital} style={{ width:"100%", padding:"12px", borderRadius:6,
+              background:T.cream, color:T.bg, fontSize:12, fontWeight:600, border:"none",
+              cursor:"pointer", letterSpacing:".07em", textTransform:"uppercase" }}>
+              Download Now
+            </button>
+            <div style={{ borderTop:`1px solid ${T.border}`, marginTop:16, paddingTop:12 }}>
+              <p style={{ fontSize:10, color:T.dim, marginBottom:4 }}>Want more styles & masterpieces?</p>
+              <button onClick={buyPrint} style={{ background:"none", border:"none", color:T.cream,
+                fontSize:11, cursor:"pointer", textDecoration:"underline" }}>
+                View Packs & Pricing
               </button>
-
-              {p.featured && (
-                <p style={{ textAlign:"center", fontSize:10, color:T.teal, marginTop:8 }}>
-                  Most customers choose this ·{" "}
-                  <span style={{ color:T.dim }}>Cancel anytime</span>
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* ── UPSELL: Fantasy Pack ── */}
-        <div style={{ background:T.sur, border:`1px solid ${upsellAdded?T.bGold:T.border}`,
-          borderRadius:7, padding:"14px 18px", display:"flex",
-          alignItems:"center", justifyContent:"space-between", marginBottom:20,
-          flexWrap:"wrap", gap:11, transition:"border-color .3s" }}>
-          <div>
-            <div style={{ fontSize:13, color:T.cream, marginBottom:3 }}>
-              🎨 Add Fantasy Style Pack
-            </div>
-            <div style={{ fontSize:11, color:T.muted }}>
-              +4 additional fantasy-themed portrait variations · One-click add · Delivered instantly
             </div>
           </div>
-          <div style={{ display:"flex", alignItems:"center", gap:11 }}>
-            <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:22, color:T.gold, fontWeight:700 }}>$12</span>
-            <button
-              onClick={() => setUpsellAdded(v => !v)}
-              className={upsellAdded ? "btn-ghost" : "btn-outline"}
-              style={{ padding:"8px 16px", borderRadius:5, fontSize:11 }}>
-              {upsellAdded ? "✓ Added" : "Add to Order"}
+
+          {/* ── CARD 2: FINE ART PRINT ── */}
+          <div style={{ background:T.sur, border:`1px solid ${T.border}`,
+            borderRadius:10, padding:"26px 18px 20px", textAlign:"center" }}>
+            <FrameIcon size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
+            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+              Fine Art Print
+            </div>
+            <div style={{ fontSize:32, color:T.cream, fontWeight:700, lineHeight:1, marginBottom:14 }}>$89</div>
+            <p style={{ fontSize:11, color:T.muted, lineHeight:1.6, marginBottom:14 }}>
+              Printed on museum-quality archival paper with fade-resistant inks.
+            </p>
+            <div style={{ textAlign:"left", marginBottom:14 }}>
+              <label style={{ fontSize:10, color:T.dim, letterSpacing:".18em", textTransform:"uppercase" }}>Choose Size</label>
+              <select value={printSize} onChange={e => setPrintSize(e.target.value)}
+                style={{ width:"100%", marginTop:5, padding:"8px 10px", background:T.card,
+                  border:`1px solid ${T.border}`, borderRadius:5, color:T.cream, fontSize:12,
+                  fontFamily:"'DM Sans',sans-serif" }}>
+                {['8" x 10"','11" x 14"','16" x 20"'].map(s => <option key={s}>{s}</option>)}
+              </select>
+            </div>
+            <div style={{ textAlign:"left", marginBottom:12 }}>
+              {["Museum-quality archival paper","Fade-resistant inks","Made to last decades"].map(f => (
+                <CheckRow key={f} label={f}/>
+              ))}
+            </div>
+            <div style={{ background:T.card, border:`1px solid ${T.border}`, borderRadius:5,
+              padding:"8px 10px", marginBottom:14, textAlign:"left" }}>
+              <div style={{ fontSize:11, color:T.cream, display:"flex", gap:6, alignItems:"center" }}>
+                <Truck size={11} color={T.gold}/> Free Shipping <span style={{ color:T.dim }}>($20 value)</span>
+              </div>
+              <div style={{ fontSize:10, color:T.dim, marginTop:2 }}>Delivery: 7–9 days</div>
+            </div>
+            <p style={{ fontSize:10, color:T.teal, marginBottom:12 }}>+ Includes digital download</p>
+            <button onClick={buyPrint} style={{ width:"100%", padding:"12px", borderRadius:6,
+              background:T.cream, color:T.bg, fontSize:12, fontWeight:600, border:"none",
+              cursor:"pointer", letterSpacing:".07em", textTransform:"uppercase" }}>
+              Order Print
+            </button>
+          </div>
+
+          {/* ── CARD 3: LARGE CANVAS ── */}
+          <div style={{ position:"relative", background:"rgba(139,92,246,.08)",
+            border:`1px solid rgba(139,92,246,.45)`, borderRadius:10, padding:"26px 18px 20px", textAlign:"center" }}>
+            <div style={{ position:"absolute", top:-11, left:"50%", transform:"translateX(-50%)",
+              background:T.purple, color:"#fff", fontSize:10, fontWeight:600,
+              letterSpacing:".14em", padding:"4px 12px", borderRadius:50, textTransform:"uppercase" }}>
+              The Perfect Gift 🎁
+            </div>
+            <Gift size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
+            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+              Large Canvas
+            </div>
+            <div style={{ fontSize:32, color:T.cream, fontWeight:700, lineHeight:1, marginBottom:14 }}>$299</div>
+            <p style={{ fontSize:11, color:T.muted, lineHeight:1.6, marginBottom:14 }}>
+              Gallery-quality canvas on wood — arrives ready to hang.
+            </p>
+            <div style={{ textAlign:"left", marginBottom:14 }}>
+              <label style={{ fontSize:10, color:T.dim, letterSpacing:".18em", textTransform:"uppercase" }}>Choose Size</label>
+              <select value={canvasSize} onChange={e => setCanvasSize(e.target.value)}
+                style={{ width:"100%", marginTop:5, padding:"8px 10px", background:T.card,
+                  border:`1px solid ${T.border}`, borderRadius:5, color:T.cream, fontSize:12,
+                  fontFamily:"'DM Sans',sans-serif" }}>
+                {['12" x 16"','18" x 24"','24" x 36"'].map(s => <option key={s}>{s}</option>)}
+              </select>
+            </div>
+            <div style={{ textAlign:"left", marginBottom:12 }}>
+              {["Ready to hang","Cotton-blend canvas, 1.25\" thick","Mounting included"].map(f => (
+                <CheckRow key={f} label={f}/>
+              ))}
+            </div>
+            <div style={{ background:T.card, border:`1px solid ${T.border}`, borderRadius:5,
+              padding:"8px 10px", marginBottom:14, textAlign:"left" }}>
+              <div style={{ fontSize:11, color:T.cream, display:"flex", gap:6, alignItems:"center" }}>
+                <Truck size={11} color={T.gold}/> Free Shipping <span style={{ color:T.dim }}>($20 value)</span>
+              </div>
+              <div style={{ fontSize:10, color:T.dim, marginTop:2 }}>Delivery: 7–9 days</div>
+            </div>
+            <p style={{ fontSize:10, color:T.teal, marginBottom:12 }}>+ Includes digital download</p>
+            <button onClick={buyCanvas} style={{ width:"100%", padding:"12px", borderRadius:6,
+              background:T.cream, color:T.bg, fontSize:12, fontWeight:600, border:"none",
+              cursor:"pointer", letterSpacing:".07em", textTransform:"uppercase" }}>
+              Order Canvas
             </button>
           </div>
         </div>
 
-        {/* TRUST ROW */}
-        <div style={{ display:"flex", gap:18, justifyContent:"center", flexWrap:"wrap", marginBottom:22 }}>
-          {[[Shield,"Secure checkout"],[Lock,"256-bit encrypted"],[Gift,"Gift messaging"],[Truck,"Free shipping on prints"]].map(([Icon,l]) => (
-            <div key={l} style={{ display:"flex", gap:5, alignItems:"center", fontSize:11, color:T.dim }}>
-              <Icon size={9}/>{l}
-            </div>
-          ))}
-        </div>
-
         {/* SOCIAL PROOF */}
-        <div style={{ textAlign:"center", padding:"14px 16px", border:`1px solid ${T.border}`,
-          borderRadius:7, background:T.sur, marginBottom:18 }}>
-          <p style={{ fontSize:13, color:T.muted }}>
-            Chosen by <strong style={{ color:T.cream }}>10,000+</strong> {catLabel.toLowerCase()} portrait owners
+        <div style={{ textAlign:"center", marginBottom:40 }}>
+          <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:22, color:T.cream, marginBottom:10 }}>
+            Chosen by 10,000+ {catLabel} Owners
           </p>
-          <div style={{ display:"flex", justifyContent:"center", gap:6, marginTop:7, alignItems:"center" }}>
-            <Stars n={5}/>
-            <span style={{ fontSize:11, color:T.dim }}>Rated Excellent on Trustpilot</span>
+          <div style={{ display:"inline-flex", gap:8, alignItems:"center", padding:"6px 14px",
+            background:T.sur, border:`1px solid ${T.border}`, borderRadius:5 }}>
+            <strong style={{ color:"#00B67A", fontSize:13 }}>Excellent</strong>
+            <Stars n={5} size={13}/>
+            <span style={{ fontSize:11, color:T.muted }}>★ Trustpilot</span>
           </div>
         </div>
 
-        {/* COMPACT REVIEWS */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:9, marginBottom:20 }}>
-          {[
-            { n:"Sarah M.", t:`The ${catLabel} portrait is absolutely stunning. More compliments than any art I own.` },
-            { n:"Marcus T.", t:"Ordered three canvases for the holidays. Everyone was floored. Best gift I've ever given." },
-          ].map(r => (
-            <div key={r.n} style={{ background:T.sur, border:`1px solid ${T.border}`, padding:"14px", borderRadius:6 }}>
-              <Stars n={5} size={12}/>
-              <p style={{ fontSize:11, color:T.muted, fontStyle:"italic", margin:"6px 0 5px", lineHeight:1.7 }}>"{r.t}"</p>
-              <p style={{ fontSize:10, color:T.dim }}>— {r.n}</p>
+        {/* SHARE */}
+        <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:T.cream,
+          textAlign:"center", marginBottom:14 }}>
+          Send to Friends &amp; Family
+        </h2>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:24 }} className="plangrid">
+          <button onClick={handleCopy} style={{ padding:"14px", borderRadius:7,
+            background:"transparent", border:`1px solid ${T.border}`, color:T.cream,
+            display:"flex", gap:8, alignItems:"center", justifyContent:"center", cursor:"pointer",
+            fontSize:12, fontFamily:"'DM Sans',sans-serif" }}>
+            <Copy size={13}/> {shareCopied ? "Copied!" : "Save for Later"}
+          </button>
+          <button style={{ padding:"14px", borderRadius:7, background:T.teal,
+            border:"none", color:"#062019", display:"flex", gap:8, alignItems:"center",
+            justifyContent:"center", cursor:"pointer", fontSize:12, fontWeight:600,
+            fontFamily:"'DM Sans',sans-serif" }}>
+            <Share2 size={13}/> Share
+          </button>
+        </div>
+
+        {/* ACCORDIONS */}
+        <div style={{ border:`1px solid ${T.border}`, borderRadius:8, marginBottom:36, background:T.sur }}>
+          {FAQS.map((f, i) => (
+            <div key={f.id} style={{ borderTop: i===0 ? "none" : `1px solid ${T.border}` }}>
+              <button onClick={() => setOpenFaq(openFaq===f.id ? null : f.id)}
+                style={{ width:"100%", padding:"16px 18px", background:"transparent", border:"none",
+                  display:"flex", alignItems:"center", justifyContent:"space-between", cursor:"pointer",
+                  textAlign:"left", color:T.cream, fontFamily:"'DM Sans',sans-serif" }}>
+                <div>
+                  <div style={{ fontSize:13, color:T.cream, marginBottom:3 }}>{f.title}</div>
+                  <div style={{ fontSize:11, color:T.muted }}>{f.sub}</div>
+                </div>
+                <ChevronDown size={15} color={T.muted} style={{
+                  transform: openFaq===f.id ? "rotate(180deg)" : "none", transition:"transform .25s" }}/>
+              </button>
+              {openFaq===f.id && (
+                <div className="fi" style={{ padding:"0 18px 18px" }}>{f.body}</div>
+              )}
             </div>
           ))}
         </div>
 
         {/* PRESS */}
-        <div style={{ textAlign:"center", padding:"20px 0 0" }}>
-          <p style={{ fontSize:9, letterSpacing:".28em", color:T.dim, textTransform:"uppercase", marginBottom:13 }}>As Seen On</p>
-          <div style={{ display:"flex", gap:24, justifyContent:"center", flexWrap:"wrap" }}>
+        <div style={{ textAlign:"center", padding:"20px 0" }}>
+          <p style={{ fontSize:9, letterSpacing:".28em", color:T.dim, textTransform:"uppercase", marginBottom:14 }}>As Seen On</p>
+          <div style={{ display:"flex", gap:30, justifyContent:"center", flexWrap:"wrap" }}>
             {["The New York Times","Forbes","ELLE","Vogue"].map(p => (
-              <span key={p} style={{ fontSize:12, color:T.dim, letterSpacing:".1em",
+              <span key={p} style={{ fontSize:13, color:T.dim, letterSpacing:".1em",
                 fontStyle:"italic", fontFamily:"'Cormorant Garamond',serif" }}>{p}</span>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* STICKY BOTTOM BAR */}
-      <div style={{ position:"fixed", bottom:0, left:0, right:0,
-        background:"rgba(7,6,10,.97)", backdropFilter:"blur(22px)",
-        borderTop:`1px solid ${T.border}`, padding:"9px 20px",
-        display:"flex", gap:10, alignItems:"center", zIndex:50 }}>
-        <div style={{ flex:1 }}>
-          <div style={{ fontSize:10, color:T.muted, marginBottom:1 }}>{plan?.label}</div>
-          <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:T.cream, fontWeight:700, lineHeight:1.1 }}>
-            ${plan?.price}
-            <span style={{ fontSize:12, color:T.dim, textDecoration:"line-through",
-              fontFamily:"'DM Sans',sans-serif", fontWeight:300, marginLeft:8 }}>${plan?.orig}</span>
-          </div>
-        </div>
-        <div style={{ display:"flex", gap:7, alignItems:"center" }}>
-          <button className="btn-ghost" style={{ padding:"10px 13px", borderRadius:6, fontSize:11,
-            display:"flex", gap:5, alignItems:"center" }}
-            onClick={() => setShowShare(v => !v)}>
-            <Share2 size={12}/>
-          </button>
-          <button className="btn-gold" style={{ padding:"12px 22px", borderRadius:7, fontSize:13,
-            display:"flex", gap:7, alignItems:"center", animation:"glow 2s infinite" }}
-            onClick={goToCheckout}>
-            <Lock size={13}/>Unlock Collection
-          </button>
         </div>
       </div>
     </div>
