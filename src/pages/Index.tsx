@@ -397,6 +397,18 @@ function HomePage({ onGenerate }) {
   return (
     <div style={{ background:T.bg, minHeight:"100vh" }}>
 
+      {/* ── ANNOUNCEMENT STRIP ── */}
+      <div style={{ position:"fixed", top:0, left:0, right:0, zIndex:201, height:30,
+        background:`linear-gradient(90deg, ${T.gold} 0%, #E0B65A 50%, ${T.gold} 100%)`,
+        display:"flex", alignItems:"center", justifyContent:"center", gap:10,
+        fontFamily:"'Poppins',sans-serif", fontSize:11, letterSpacing:".14em",
+        textTransform:"uppercase", color:T.bg, fontWeight:600 }}>
+        <Truck size={13} strokeWidth={2}/>
+        <span>Free Worldwide Shipping On All Prints</span>
+        <span style={{ opacity:.55 }}>·</span>
+        <span>Limited Time</span>
+      </div>
+
       {/* ── NAV ── */}
       <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:200, height:50,
         display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 26px",
