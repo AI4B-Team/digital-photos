@@ -688,7 +688,7 @@ function HomePage({ onGenerate }) {
                       <div style={{ width:22, height:22, borderRadius:"50%", background:T.gold,
                         display:"flex", alignItems:"center", justifyContent:"center",
                         fontSize:14, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
-                      <span style={{ fontSize:9, color:T.muted, letterSpacing:".06em" }}>Add another</span>
+                      <span style={{ fontSize:9, color:T.muted, letterSpacing:".06em" }}>Add Another</span>
                     </button>
                   </div>
                 )}
