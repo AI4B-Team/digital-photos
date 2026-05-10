@@ -369,9 +369,8 @@ function HomePage({ onGenerate }) {
           Digital<span style={{ color:T.gold }}>Photos</span>
           <sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
         </div>
-        <div className="hid" style={{ display:"flex", alignItems:"center", gap:8 }}>
-          <Stars n={5}/><span style={{ fontSize:12, color:T.muted }}>4.9 · 50,000+ portraits created</span>
-        </div>
+        <div className="hid" />
+
         <div style={{ display:"flex", gap:10, alignItems:"center" }}>
           <a href="/auth" style={{ fontSize:11, color:T.muted, textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
             padding:"6px 14px", border:`1px solid ${T.border}`, transition:"all .25s" }}
