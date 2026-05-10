@@ -410,10 +410,9 @@ function HomePage({ onGenerate }) {
 
             <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Cormorant Garamond',serif",
               fontWeight:700, lineHeight:.9, marginBottom:16 }}>
-              <span style={{ fontSize:"clamp(42px,6.4vw,78px)", color:T.cream, display:"block" }}>Upload a Photo.</span>
-              <span style={{ fontSize:"clamp(42px,6.4vw,78px)", color:T.cream, display:"block" }}>Get Back a</span>
-              <span style={{ fontSize:"clamp(42px,6.4vw,78px)", display:"block", fontStyle:"italic", whiteSpace:"nowrap" }}>
-                <span className="gold-text">Portrait Masterpiece.</span>
+              <span style={{ fontSize:"clamp(42px,6.4vw,78px)", color:T.cream, display:"block" }}>Upload A Photo.</span>
+              <span style={{ fontSize:"clamp(42px,6.4vw,78px)", display:"block", fontStyle:"italic" }}>
+                <span style={{ color:T.cream }}>Get Back A </span><span className="gold-text">Portrait Masterpiece.</span>
               </span>
             </h1>
 
