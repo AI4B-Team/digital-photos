@@ -527,8 +527,6 @@ function HomePage({ onGenerate }) {
         textTransform:"uppercase", color:T.bg, fontWeight:600 }}>
         <Truck size={13} strokeWidth={2}/>
         <span>Free Worldwide Shipping On All Prints</span>
-        <span style={{ opacity:.55 }}>·</span>
-        <span>Limited Time</span>
       </div>
 
       {/* ── NAV ── */}
