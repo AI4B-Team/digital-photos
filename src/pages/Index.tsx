@@ -601,7 +601,7 @@ function HomePage({ onGenerate }) {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:9 }} className="sg3">
             {STYLES.map((s, i) => (
               <div key={s.id} className="ptile"
-                style={{ height:i===0||i===3 ? 390 : 320, borderRadius:6, cursor:"pointer" }}
+                style={{ aspectRatio:"4/5", borderRadius:6, cursor:"pointer" }}
                 onClick={() => pickStyleScroll(s.id)}>
                 <img src={s.preview} alt={s.label}/>
                 {/* watermark */}
