@@ -272,7 +272,11 @@ function LiveTeaser({ activeCat, onCatClick }) {
     return () => clearInterval(iv);
   }, [activeCat]);
 
+  // Keep right portrait in sync when category changes
+  useEffect(() => { setPortraitIdx(idx); }, [idx]);
+
   const cur = TEASERS[idx];
+  const portraitCur = TEASERS[portraitIdx];
 
   return (
     <div style={{ padding:"0 0 8px", display:"flex", flexDirection:"column", height:"100%" }}>
