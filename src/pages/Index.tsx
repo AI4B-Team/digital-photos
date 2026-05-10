@@ -12,6 +12,11 @@ import {
   ArrowRight, Shield, Star, Instagram, Facebook,
   PawPrint, Baby, Users, Flower2
 } from "lucide-react";
+import scenePets from "@/assets/scene-pets.jpg";
+import sceneBabies from "@/assets/scene-babies.jpg";
+import scenePeople from "@/assets/scene-people.jpg";
+import sceneMemorial from "@/assets/scene-memorial.jpg";
+import sceneGifts from "@/assets/scene-gifts.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -143,11 +148,11 @@ const STYLES = [
 
 // Live teaser — one per category, cycles automatically
 const TEASERS = [
-  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=300&h=380&fit=crop&q=80"  },
-  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=300&h=380&fit=crop&q=80"   },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=380&fit=crop&q=80"   },
-  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=300&h=380&fit=crop&q=80"   },
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=380&fit=crop&q=80", after:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&h=380&fit=crop&q=80"   },
+  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=300&h=380&fit=crop&q=80", after:scenePets    },
+  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=300&h=380&fit=crop&q=80", after:sceneBabies  },
+  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=380&fit=crop&q=80", after:scenePeople  },
+  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=300&h=380&fit=crop&q=80", after:sceneMemorial},
+  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=380&fit=crop&q=80", after:sceneGifts   },
 ];
 
 const PLANS = [
@@ -269,28 +274,15 @@ function LiveTeaser({ activeCat, onCatClick }) {
         What Your Photo Becomes
       </div>
 
-      {/* Before → After */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 36px 1fr", gap:0,
-        alignItems:"center", maxWidth:560, margin:"0 auto" }}>
-        <div style={{ position:"relative", aspectRatio:"4/5", borderRadius:8, overflow:"hidden",
-          border:`1px solid ${T.border}` }}>
-          <img src={cur.before} alt="Before"
-            style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.78)",
+      {/* Scene with corner inset of original */}
+      <div style={{ maxWidth:480, margin:"0 auto" }}>
+        <div style={{ position:"relative", aspectRatio:"1/1", borderRadius:14, overflow:"hidden",
+          border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)" }}>
+          <img src={cur.after} alt="Portrait scene"
+            style={{ width:"100%", height:"100%", objectFit:"cover",
               opacity:fading?0:1, transition:"opacity .3s" }}/>
-          <div style={{ position:"absolute", bottom:14, left:"50%", transform:"translateX(-50%)",
-            fontSize:11, letterSpacing:".22em", textTransform:"uppercase", color:"#FFFFFF",
-            background:"rgba(7,6,10,.75)", padding:"6px 14px", borderRadius:3 }}>Your Photo</div>
-        </div>
 
-        <div style={{ display:"flex", justifyContent:"center" }}>
-          <ArrowRight size={18} color={T.gold}/>
-        </div>
-
-        <div style={{ position:"relative", aspectRatio:"4/5", borderRadius:8, overflow:"hidden",
-          border:`1px solid ${T.bGold}` }}>
-          <img src={cur.after} alt="After"
-            style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(.9) saturate(1.12)",
-              opacity:fading?0:1, transition:"opacity .3s" }}/>
+          {/* watermark */}
           <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
             justifyContent:"center", pointerEvents:"none" }}>
             <span style={{ fontSize:9, color:"rgba(255,255,255,.22)", letterSpacing:".26em",
@@ -298,9 +290,20 @@ function LiveTeaser({ activeCat, onCatClick }) {
               DIGITAL PHOTOS
             </span>
           </div>
-          <div style={{ position:"absolute", bottom:14, left:"50%", transform:"translateX(-50%)",
+
+          {/* corner inset — original photo */}
+          <div style={{ position:"absolute", bottom:16, left:16, width:84, height:84,
+            borderRadius:14, overflow:"hidden", border:"3px solid #FFFFFF",
+            boxShadow:"0 6px 18px rgba(0,0,0,.25)" }}>
+            <img src={cur.before} alt="Original"
+              style={{ width:"100%", height:"100%", objectFit:"cover",
+                opacity:fading?0:1, transition:"opacity .3s" }}/>
+          </div>
+
+          {/* style badge */}
+          <div style={{ position:"absolute", bottom:18, right:18,
             fontSize:11, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
-            background:T.gold, padding:"6px 16px", borderRadius:3, fontWeight:600 }}>
+            background:T.gold, padding:"7px 16px", borderRadius:8, fontWeight:600 }}>
             {cur.style}
           </div>
         </div>
