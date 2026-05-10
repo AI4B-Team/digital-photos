@@ -236,22 +236,21 @@ export default function Customize() {
         </div>
       </header>
 
-      {/* Two-column layout */}
+      {/* Three-column layout */}
       <div className="cz-grid" style={{
-        display:"grid", gridTemplateColumns:"380px 1fr", gap:0,
-        maxWidth:1400, margin:"0 auto",
+        display:"grid", gridTemplateColumns:"300px 1fr 320px", gap:0,
+        maxWidth:1500, margin:"0 auto",
       }}>
-        {/* Side controls (left) */}
+        {/* Customize controls (left) */}
         <aside className="cz-side" style={{
-          padding:"32px 12px 32px 28px",
+          padding:"32px 12px 32px 24px",
           position:"sticky", top:70, alignSelf:"start",
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
-          order:1,
         }}>
           {/* Size */}
           <div className="cz-section">
-            <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef.label}″ · ${sizeDef.price}</span></div>
+            <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef.label}″</span></div>
             <div className="cz-row">
               {SIZES.map(s => (
                 <button key={s.id} className={`cz-chip ${size===s.id?"on":""}`} onClick={() => setSize(s.id)}>
@@ -308,13 +307,12 @@ export default function Customize() {
           </div>
         </aside>
 
-        {/* Stage + pricing (right) */}
+        {/* Preview (middle) */}
         <div className="cz-stage cz-fade" style={{
-          order:2,
-          padding:"56px 40px",
+          padding:"56px 24px",
           minHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
-          gap:28,
+          gap:24,
           background:`radial-gradient(ellipse at 50% 30%, #FFFFFF 0%, ${BG} 70%)`,
         }}>
           <div style={{ textAlign:"center" }}>
@@ -331,22 +329,74 @@ export default function Customize() {
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
             <span>{effectDef.label}</span>
           </div>
+        </div>
 
-          <div style={{ width:"100%", maxWidth:420, display:"flex", flexDirection:"column", gap:8, marginTop:8 }}>
-            <button onClick={handleContinue} className="cz-btn-red" style={{
-              padding:"16px 18px", fontSize:14.5,
-              display:"flex", alignItems:"center", justifyContent:"space-between", gap:10,
+        {/* Cart + pricing (right) */}
+        <aside className="cz-side" style={{
+          padding:"32px 24px 32px 12px",
+          position:"sticky", top:70, alignSelf:"start",
+          maxHeight:"calc(100vh - 70px)", overflowY:"auto",
+          display:"flex", flexDirection:"column", gap:14,
+        }}>
+          <div className="cz-section">
+            <div className="cz-label" style={{ marginBottom:14 }}><span>Your Cart</span></div>
+
+            {/* Mini preview */}
+            <div style={{
+              background:BG, borderRadius:12, padding:14,
+              display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14,
+              border:`1px solid ${BORDER}`,
             }}>
-              <span style={{ display:"flex", alignItems:"center", gap:10 }}>
-                <Check size={18}/> Continue to Checkout
-              </span>
-              <span className="cz-serif" style={{ fontWeight:700, fontSize:16 }}>${total}</span>
-            </button>
-            <div style={{ textAlign:"center", color:MUTED, fontSize:11.5 }}>
-              Free shipping · 100-day happiness guarantee
+              <img src={portraitUrl} alt="" style={{
+                maxWidth:"100%", maxHeight:120, objectFit:"contain",
+                filter: effectDef.filter,
+                boxShadow:"0 4px 12px rgba(0,0,0,.15)",
+              }}/>
+            </div>
+
+            <div className="cz-serif" style={{ fontSize:15, fontWeight:600, color:INK, marginBottom:2 }}>
+              Custom Portrait
+            </div>
+            <div style={{ fontSize:12, color:MUTED, marginBottom:14 }}>
+              {sizeDef.label}″ · {frameDef.label} · {effectDef.label}
+            </div>
+
+            {/* Line items */}
+            <div style={{ display:"flex", flexDirection:"column", gap:8, fontSize:13, paddingTop:12, borderTop:`1px solid ${BORDER}` }}>
+              <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
+                <span>{sizeDef.label}″ Print</span><span>${sizeDef.price}</span>
+              </div>
+              {frameDef.add > 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
+                  <span>{frameDef.label} Frame</span><span>+${frameDef.add}</span>
+                </div>
+              )}
+              <div style={{ display:"flex", justifyContent:"space-between", color:MUTED, fontSize:12 }}>
+                <span>Shipping</span><span>Free</span>
+              </div>
+            </div>
+
+            {/* Total */}
+            <div style={{
+              display:"flex", justifyContent:"space-between", alignItems:"baseline",
+              paddingTop:14, marginTop:14, borderTop:`1px solid ${BORDER}`,
+            }}>
+              <span style={{ fontSize:13, fontWeight:600, color:INK }}>Total</span>
+              <span className="cz-serif" style={{ fontSize:24, fontWeight:700, color:INK }}>${total}</span>
             </div>
           </div>
-        </div>
+
+          <button onClick={handleContinue} className="cz-btn-red" style={{
+            padding:"16px 18px", fontSize:14.5,
+            display:"flex", alignItems:"center", justifyContent:"center", gap:10,
+          }}>
+            <Check size={18}/> Continue to Checkout
+          </button>
+
+          <div style={{ textAlign:"center", color:MUTED, fontSize:11.5 }}>
+            Free shipping · 100-day happiness guarantee
+          </div>
+        </aside>
       </div>
     </div>
   );
