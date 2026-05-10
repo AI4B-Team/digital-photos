@@ -340,15 +340,12 @@ function LiveTeaser({ activeCat, onCatClick }) {
   // Reset right portrait variant when category changes
   useEffect(() => { setPortraitIdx(0); }, [idx]);
 
-  // Auto-cycle right portraits within current category
+  // Auto-cycle right portraits within current category (crossfade via stacked layers)
   useEffect(() => {
+    const len = TEASERS[idx].portraits?.length || 1;
     const iv = setInterval(() => {
-      setPortraitFading(true);
-      setTimeout(() => {
-        setPortraitIdx(p => (p+1) % (TEASERS[idx].portraits?.length || 1));
-        setPortraitFading(false);
-      }, 260);
-    }, 2600);
+      setPortraitIdx(p => (p+1) % len);
+    }, 3000);
     return () => clearInterval(iv);
   }, [idx]);
 
