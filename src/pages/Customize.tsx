@@ -318,7 +318,7 @@ export default function Customize() {
           <div style={{ textAlign:"center" }}>
             <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
             <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
-              Make it yours.
+              Make It Yours.
             </h1>
           </div>
           {renderPreview()}
