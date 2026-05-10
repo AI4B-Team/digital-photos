@@ -340,15 +340,12 @@ function LiveTeaser({ activeCat, onCatClick }) {
   // Reset right portrait variant when category changes
   useEffect(() => { setPortraitIdx(0); }, [idx]);
 
-  // Auto-cycle right portraits within current category
+  // Auto-cycle right portraits within current category (crossfade via stacked layers)
   useEffect(() => {
+    const len = TEASERS[idx].portraits?.length || 1;
     const iv = setInterval(() => {
-      setPortraitFading(true);
-      setTimeout(() => {
-        setPortraitIdx(p => (p+1) % (TEASERS[idx].portraits?.length || 1));
-        setPortraitFading(false);
-      }, 260);
-    }, 2600);
+      setPortraitIdx(p => (p+1) % len);
+    }, 3000);
     return () => clearInterval(iv);
   }, [idx]);
 
@@ -386,9 +383,13 @@ function LiveTeaser({ activeCat, onCatClick }) {
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)",
           background:"#F5EFE3", minHeight:340 }}>
-          <img src={portraitCur.url} alt="Generated portrait"
-            style={{ width:"100%", height:"100%", objectFit:"cover",
-              opacity:portraitFading?0:1, transition:"opacity .4s" }}/>
+          {/* Stacked layers — all variants preloaded, only active one visible (true crossfade, no flicker) */}
+          {variants.map((v, i) => (
+            <img key={i} src={v.url} alt="Generated portrait"
+              style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+                opacity: i === (portraitIdx % variants.length) ? 1 : 0,
+                transition:"opacity .6s ease-in-out" }}/>
+          ))}
           {/* watermark */}
           <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
             justifyContent:"center", pointerEvents:"none" }}>
@@ -416,9 +417,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
           ].map(a => (
             <button key={a.side} aria-label={a.dir<0?"Previous":"Next"}
               onClick={() => {
-                const next = (portraitIdx + a.dir + variants.length) % variants.length;
-                setPortraitFading(true);
-                setTimeout(()=>{ setPortraitIdx(next); setPortraitFading(false); },260);
+                setPortraitIdx(p => (p + a.dir + variants.length) % variants.length);
               }}
               style={{ position:"absolute", top:"50%", [a.side]:10, transform:"translateY(-50%)",
                 width:36, height:36, borderRadius:"50%", border:"none", cursor:"pointer",
