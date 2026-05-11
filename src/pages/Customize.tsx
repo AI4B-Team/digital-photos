@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send } from "lucide-react";
 
 /* ── Tokens ── */
 const RED = "#E61919";
@@ -78,6 +78,35 @@ const G = `
 .cz-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .cz-suggest button{font-size:11.5px;padding:6px 10px;border-radius:999px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif}
 .cz-suggest button:hover{border-color:${INK}}
+.cz-toolbar{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid ${BORDER};border-radius:14px;padding:6px;box-shadow:0 12px 30px -10px rgba(0,0,0,.12)}
+.cz-tool{width:38px;height:38px;border-radius:10px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
+.cz-tool:hover{background:#F4F1EC;color:${INK}}
+.cz-tool.on{background:rgba(230,25,25,.10);color:${RED}}
+.cz-tool:disabled{opacity:.45;cursor:not-allowed}
+.cz-tool-divider{height:1px;background:${BORDER};margin:4px 6px}
+.cz-ai-panel{width:320px;background:#fff;border:1px solid ${BORDER};border-radius:18px;box-shadow:0 18px 50px -12px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;animation:czAiSlide .28s cubic-bezier(.22,1,.32,1) both;align-self:stretch;max-height:560px}
+@keyframes czAiSlide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+.cz-ai-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid ${BORDER}}
+.cz-ai-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:${INK}}
+.cz-ai-icon{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,${RED},#FF6B5B);display:flex;align-items:center;justify-content:center;color:#fff}
+.cz-ai-close{background:transparent;border:none;cursor:pointer;color:${MUTED};padding:4px;border-radius:6px}
+.cz-ai-close:hover{background:#F4F1EC;color:${INK}}
+.cz-ai-body{padding:14px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+.cz-ai-intro{font-size:12.5px;color:${MUTED};line-height:1.5}
+.cz-ai-quick{display:flex;flex-direction:column;gap:6px}
+.cz-ai-quick button{text-align:left;padding:10px 12px;border-radius:10px;border:1px solid ${BORDER};background:#FAFAF7;font-family:'Poppins',sans-serif;font-size:12.5px;color:${INK};cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px}
+.cz-ai-quick button:hover{border-color:${INK};background:#fff}
+.cz-ai-input{display:flex;gap:6px;padding:10px;border-top:1px solid ${BORDER};background:#FAFAF7}
+.cz-ai-input input{flex:1;border:1px solid ${BORDER};border-radius:10px;padding:9px 12px;font-family:'Poppins',sans-serif;font-size:12.5px;outline:none;background:#fff}
+.cz-ai-input input:focus{border-color:${RED}}
+.cz-ai-send{background:${RED};color:#fff;border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cz-ai-send:disabled{opacity:.4;cursor:not-allowed}
+@media (max-width: 1100px){
+  .cz-ai-panel{width:100%;max-width:420px}
+  .cz-stage-row{flex-direction:column !important}
+  .cz-toolbar{flex-direction:row !important}
+  .cz-tool-divider{height:auto;width:1px;margin:6px 4px}
+}
 @media (max-width: 1100px){
   .cz-grid{grid-template-columns:1fr !important}
   .cz-stage{min-height:46vh !important;padding:28px 16px !important}
@@ -270,6 +299,8 @@ export default function Customize() {
   const [editOpen, setEditOpen]       = useState(false);
   const [editPrompt, setEditPrompt]   = useState("");
   const [errorMsg, setErrorMsg]       = useState("");
+  const [aiOpen, setAiOpen]           = useState(false);
+  const [aiInput, setAiInput]         = useState("");
 
   useEffect(() => {
     if (!busy) { setBusyElapsed(0); return; }
@@ -370,14 +401,6 @@ export default function Customize() {
                   <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
                 ))}
               </div>
-            </div>
-            <div className="cz-img-overlay">
-              <button className="cz-overlay-btn" onClick={handleRetry} disabled={busy} aria-label="Retry">
-                <RotateCcw size={15}/> Retry
-              </button>
-              <button className="cz-overlay-btn alt" onClick={() => setEditOpen(true)} disabled={busy} aria-label="Edit">
-                <Pencil size={15}/> Edit
-              </button>
             </div>
             {busy && (
               <div className="cz-busy">
@@ -581,7 +604,92 @@ export default function Customize() {
               Make It Yours.
             </h1>
           </div>
-          {renderPreview()}
+          <div className="cz-stage-row" style={{
+            display:"flex", alignItems:"center", justifyContent:"center",
+            gap:16, width:"100%", maxWidth:"100%",
+            transition:"all .3s cubic-bezier(.22,1,.32,1)",
+          }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", flex:"0 1 auto", minWidth:0 }}>
+              {renderPreview()}
+            </div>
+            <div className="cz-toolbar" role="toolbar" aria-label="Image tools">
+              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} title="AI Assistant" aria-label="AI Assistant">
+                <Sparkles size={18}/>
+              </button>
+              <div className="cz-tool-divider"/>
+              <button className="cz-tool" onClick={handleRetry} disabled={busy} title="Regenerate" aria-label="Regenerate">
+                <RotateCcw size={17}/>
+              </button>
+              <button className="cz-tool" onClick={() => setEditOpen(true)} disabled={busy} title="Edit with prompt" aria-label="Edit with prompt">
+                <Pencil size={17}/>
+              </button>
+              <button className="cz-tool" title="Add layer" aria-label="Add layer"><Plus size={18}/></button>
+              <button className="cz-tool" title="Duplicate" aria-label="Duplicate"><Copy size={16}/></button>
+              <button className="cz-tool" title="Lock" aria-label="Lock"><Lock size={16}/></button>
+              <button className="cz-tool" title="Hide" aria-label="Hide"><EyeOff size={16}/></button>
+              <button className="cz-tool" title="Download preview" aria-label="Download preview"><Download size={16}/></button>
+              <button className="cz-tool" title="Delete" aria-label="Delete"><Trash2 size={16}/></button>
+              <div className="cz-tool-divider"/>
+              <button className="cz-tool" title="Move up" aria-label="Move up"><ChevronUp size={18}/></button>
+              <button className="cz-tool" title="Move down" aria-label="Move down"><ChevronDown size={18}/></button>
+              <button className="cz-tool" title="Adjust" aria-label="Adjust"><SlidersHorizontal size={16}/></button>
+            </div>
+            {aiOpen && (
+              <div className="cz-ai-panel">
+                <div className="cz-ai-head">
+                  <div className="cz-ai-title">
+                    <span className="cz-ai-icon"><Sparkles size={14}/></span>
+                    AI Assistant
+                  </div>
+                  <button className="cz-ai-close" onClick={() => setAiOpen(false)} aria-label="Close">
+                    <X size={16}/>
+                  </button>
+                </div>
+                <div className="cz-ai-body">
+                  <div className="cz-ai-intro">
+                    Ask Me Anything About Your Portrait. I'll Analyze, Rewrite, And Optimize.
+                  </div>
+                  <div className="cz-ai-quick">
+                    {[
+                      { label: "Make Background Darker", prompt: "Make the background darker and more dramatic" },
+                      { label: "More Cinematic Lighting", prompt: "Add more cinematic lighting with golden highlights" },
+                      { label: "Brighter & More Vibrant", prompt: "Make it brighter and more vibrant" },
+                      { label: "Soften The Colors", prompt: "Soften the overall color palette" },
+                      { label: "Generate A New Variation", prompt: "" },
+                    ].map(q => (
+                      <button key={q.label} disabled={busy} onClick={() => { setAiOpen(false); runRegenerate(q.prompt); }}>
+                        <Sparkles size={13} color={RED}/> {q.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="cz-ai-input">
+                  <input
+                    value={aiInput}
+                    onChange={(e) => setAiInput(e.target.value)}
+                    placeholder="Ask AI anything about this portrait…"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && aiInput.trim() && !busy) {
+                        const p = aiInput.trim();
+                        setAiInput("");
+                        setAiOpen(false);
+                        runRegenerate(p);
+                      }
+                    }}
+                    disabled={busy}
+                  />
+                  <button className="cz-ai-send" disabled={busy || !aiInput.trim()} onClick={() => {
+                    const p = aiInput.trim();
+                    setAiInput("");
+                    setAiOpen(false);
+                    runRegenerate(p);
+                  }} aria-label="Send">
+                    <Send size={15}/>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
           <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
             <span>{sizeDef.label}″</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
