@@ -931,13 +931,6 @@ export default function Customize() {
               </div>
             )}
           </div>
-          <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
-            <span>{sizeDef.label}″</span>
-            <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-            <span>{frameDef.label}</span>
-            <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-            <span>{effectDef.label}</span>
-          </div>
         </div>
 
         {/* Cart + pricing (right) */}
