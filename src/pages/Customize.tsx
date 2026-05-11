@@ -810,11 +810,13 @@ export default function Customize() {
           }}>
             {/* Phantom spacer to visually center the column (offsets the toolbar width on the right) */}
             <div aria-hidden="true" style={{ width: 66, flex: "0 0 auto" }}/>
-            <div style={{
+            <div className="cz-canvas-scroll" style={{
               flex:"0 1 auto", minWidth:0, maxHeight:"calc(100vh - 180px)",
               overflowY:"auto", display:"flex", flexDirection:"column",
               alignItems:"center", gap:8, padding:"4px 6px", scrollbarGutter:"stable",
-            }}>
+              scrollBehavior:"smooth", scrollSnapType:"y proximity",
+              WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
+            }}>;
               {items.map(it => renderItem(it, items.length > 1 && it.id === selectedId))}
             </div>
             <input
