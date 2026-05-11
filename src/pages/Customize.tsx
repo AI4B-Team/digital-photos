@@ -781,15 +781,21 @@ export default function Customize() {
             {/* Line items */}
             <div style={{ display:"flex", flexDirection:"column", gap:8, fontSize:13, paddingTop:12, borderTop:`1px solid ${BORDER}` }}>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>{sizeDef.label}″ Print</span><span>${sizeDef.price}</span>
+                <span>{sizeDef.label}″ {(frameDef as any).digital ? "Digital File" : "Print"}</span><span>${sizeDef.price}</span>
               </div>
               {frameDef.add > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
                   <span>{frameDef.label} Frame</span><span>+${frameDef.add}</span>
                 </div>
               )}
+              {frameDef.add < 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
+                  <span>Digital Discount</span><span>−${Math.abs(frameDef.add)}</span>
+                </div>
+              )}
               <div style={{ display:"flex", justifyContent:"space-between", color:MUTED, fontSize:12 }}>
-                <span>Shipping</span><span>Free</span>
+                <span>{(frameDef as any).digital ? "Delivery" : "Shipping"}</span>
+                <span>{(frameDef as any).digital ? "Instant Email" : "Free"}</span>
               </div>
             </div>
 
