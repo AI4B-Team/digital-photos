@@ -585,7 +585,7 @@ export default function Customize() {
             padding:"16px 18px", fontSize:14.5,
             display:"flex", alignItems:"center", justifyContent:"center", gap:10,
           }}>
-            <Check size={18}/> Continue to checkout
+            <Check size={18}/> Continue To Checkout
           </button>
 
           {/* Buy Now, Pay Later */}
