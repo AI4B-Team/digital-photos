@@ -107,7 +107,7 @@ const BORDER_COLORS = [
   { id: "dusty-pink",   label: "Dusty Pink",   bg: "#E8D4C8" },
   { id: "charcoal",     label: "Charcoal Gray",bg: "#2E2E30" },
   { id: "sage",         label: "Sage",         bg: "#B5BBA3" },
-  { id: "shiplap",      label: "Shiplap",      bg: "repeating-linear-gradient(0deg,#EFEAE2 0 14px,#E4DED4 14px 15px)" },
+  { id: "shiplap",      label: "Shiplap",      bg: "repeating-linear-gradient(90deg,#EFEAE2 0 14px,#E4DED4 14px 15px)" },
   { id: "pampas",       label: "Pampas Grass", bg: "repeating-linear-gradient(90deg,#E8E4D8 0 6px,#DDD7C7 6px 7px)" },
   { id: "linen",        label: "Linen",        bg: "#EFE6D2" },
   { id: "blush",        label: "Blush",        bg: "#F5DCDC" },
