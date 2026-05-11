@@ -401,19 +401,19 @@ export default function Customize() {
   const bundleSave = Math.round(subtotal * bundlePct);
   const total      = subtotal - bundleSave;
 
-  /* ── Regenerate / Edit ── */
+  /* ── Regenerate / Edit (acts on selected item) ── */
   const runRegenerate = async (extraPrompt) => {
     setErrorMsg("");
     setBusy(true);
     setBusyLabel(extraPrompt ? "Applying Your Edits…" : "Generating A New Variation…");
     try {
       const { supabase } = await import("@/integrations/supabase/client");
-      const sourceImageUrl = session.photo || portraitUrl;
+      const sourceImageUrl = selected.photoUrl || session.photo;
       const { data, error } = await supabase.functions.invoke("regenerate-portrait", {
         body: {
-          sessionId: session.orderId || session.cat ? (session as any).sessionDbId || null : null,
+          sessionId: (session as any).sessionDbId || null,
           sourceImageUrl,
-          style: styleId,
+          style: selected.style || styleId,
           extraPrompt: extraPrompt || "",
         },
       });
@@ -421,15 +421,7 @@ export default function Customize() {
       if (data?.error) throw new Error(data.error);
       const newUrl = data?.url;
       if (!newUrl) throw new Error("No image returned");
-
-      const updated = (session.generatedPortraits || []).map(p =>
-        p.style === styleId ? { ...p, url: newUrl } : p
-      );
-      // Ensure entry exists
-      if (!updated.find(p => p.style === styleId)) {
-        updated.push({ style: styleId, url: newUrl });
-      }
-      setSession({ generatedPortraits: updated });
+      updateSelected({ photoUrl: newUrl });
     } catch (e) {
       console.error(e);
       setErrorMsg(e?.message || "Something went wrong. Please try again.");
@@ -444,6 +436,58 @@ export default function Customize() {
   const handleApplyEdit = () => {
     if (!editPrompt.trim()) return;
     runRegenerate(editPrompt.trim());
+  };
+
+  /* ── Add a new image: file upload, then generate ── */
+  const handleAddImage = () => fileInputRef.current?.click();
+
+  const handleFilePicked = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow same-file reselect
+    if (!file) return;
+
+    // Read as data URL for preview + generation source
+    const dataUrl: string = await new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result as string);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+
+    // Insert new item with current selected's settings as defaults; mark as busy
+    const newItem = makeItem({
+      photoUrl: dataUrl,
+      frame: selected.frame, size: selected.size, effect: selected.effect,
+      border: selected.border, borderColor: selected.borderColor,
+    });
+    setItems(prev => [...prev, newItem]);
+    setSelectedId(newItem.id);
+
+    // Kick off generation in background
+    setBusy(true);
+    setBusyLabel("Generating Your Portrait…");
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("regenerate-portrait", {
+        body: {
+          sessionId: (session as any).sessionDbId || null,
+          sourceImageUrl: dataUrl,
+          style: styleId,
+          extraPrompt: "",
+        },
+      });
+      if (error) throw new Error(error.message || "Generation failed");
+      if (data?.error) throw new Error(data.error);
+      const newUrl = data?.url;
+      if (newUrl) {
+        setItems(prev => prev.map(i => i.id === newItem.id ? { ...i, photoUrl: newUrl } : i));
+      }
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(err?.message || "Couldn't generate that image. The original was added.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   /* ── Preview ── */
