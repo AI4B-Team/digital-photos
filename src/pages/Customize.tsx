@@ -653,7 +653,7 @@ export default function Customize() {
               <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
                 <RotateCcw size={17}/>
               </button>
-              <button className="cz-tool" onClick={() => setEditOpen(true)} disabled={busy} data-tip="Edit With Prompt" aria-label="Edit with prompt">
+              <button className="cz-tool" onClick={() => setAiOpen(true)} disabled={busy} data-tip="Edit With Prompt" aria-label="Edit with prompt">
                 <Pencil size={17}/>
               </button>
             </div>
@@ -670,45 +670,65 @@ export default function Customize() {
                 </div>
                 <div className="cz-ai-body">
                   <div className="cz-ai-intro">
-                    Ask Me Anything About Your Portrait. I'll Analyze, Rewrite, And Optimize.
+                    Describe what you'd like to change. The AI will regenerate the portrait with your tweaks.
                   </div>
-                  <div className="cz-ai-quick">
-                    {[
-                      { label: "Make Background Darker", prompt: "Make the background darker and more dramatic" },
-                      { label: "More Cinematic Lighting", prompt: "Add more cinematic lighting with golden highlights" },
-                      { label: "Brighter & More Vibrant", prompt: "Make it brighter and more vibrant" },
-                      { label: "Soften The Colors", prompt: "Soften the overall color palette" },
-                      { label: "Generate A New Variation", prompt: "" },
-                    ].map(q => (
-                      <button key={q.label} disabled={busy} onClick={() => { setAiOpen(false); runRegenerate(q.prompt); }}>
-                        <Sparkles size={13} color={RED}/> {q.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="cz-ai-input">
-                  <input
+                  <textarea
                     value={aiInput}
                     onChange={(e) => setAiInput(e.target.value)}
-                    placeholder="Ask AI anything about this portrait…"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && aiInput.trim() && !busy) {
+                    placeholder="e.g. Make the background darker, add a gold crown, more dramatic lighting…"
+                    disabled={busy}
+                    style={{
+                      width:"100%", minHeight:88, padding:"10px 12px",
+                      border:`1px solid ${BORDER}`, borderRadius:10,
+                      fontFamily:"'Poppins',sans-serif", fontSize:12.5, color:INK,
+                      resize:"vertical", outline:"none", background:"#fff",
+                    }}
+                    onFocus={(e) => e.currentTarget.style.borderColor = RED}
+                    onBlur={(e) => e.currentTarget.style.borderColor = BORDER}
+                  />
+                  <div className="cz-suggest" style={{ marginTop:0 }}>
+                    {[
+                      "Make the background darker",
+                      "More dramatic lighting",
+                      "Brighter and more vibrant",
+                      "Add a subtle smile",
+                      "Soften the colors",
+                    ].map(s => (
+                      <button key={s} type="button" disabled={busy} onClick={() => setAiInput(s)}>{s}</button>
+                    ))}
+                  </div>
+                  <div style={{ display:"flex", justifyContent:"space-between", gap:8, marginTop:4 }}>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => runRegenerate("")}
+                      style={{
+                        background:"transparent", border:"none", cursor:"pointer",
+                        color:MUTED, fontFamily:"'Poppins',sans-serif", fontSize:12.5,
+                        fontWeight:500, padding:"8px 4px",
+                      }}
+                    >
+                      <Sparkles size={12} style={{ marginRight:4, verticalAlign:"-2px" }} color={RED}/>
+                      New Variation
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy || !aiInput.trim()}
+                      onClick={() => {
                         const p = aiInput.trim();
                         setAiInput("");
-                        setAiOpen(false);
                         runRegenerate(p);
-                      }
-                    }}
-                    disabled={busy}
-                  />
-                  <button className="cz-ai-send" disabled={busy || !aiInput.trim()} onClick={() => {
-                    const p = aiInput.trim();
-                    setAiInput("");
-                    setAiOpen(false);
-                    runRegenerate(p);
-                  }} aria-label="Send">
-                    <Send size={15}/>
-                  </button>
+                      }}
+                      style={{
+                        background:RED, color:"#fff", border:"none", cursor:"pointer",
+                        padding:"9px 18px", borderRadius:10,
+                        fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:600,
+                        opacity: (busy || !aiInput.trim()) ? .5 : 1,
+                      }}
+                    >
+                      {busy ? "Generating…" : "Apply Edit"}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
