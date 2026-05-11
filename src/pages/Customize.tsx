@@ -54,7 +54,30 @@ const G = `
 .cz-img-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,10,.34);opacity:0;transition:opacity .18s ease;pointer-events:none}
 .cz-img-wrap:hover .cz-img-overlay{opacity:1;pointer-events:auto}
 .cz-overlay-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(20,20,20,.82);color:#fff;border:1px solid rgba(255,255,255,.18);font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(6px);transition:all .15s ease}
-.cz-overlay-btn:hover{background:#fff;color:#0A0A0A;border-color:#fff;transform:translateY(-1px)}
+.cz-overlay-btn.alt{background:#fff;color:#0A0A0A;border-color:#fff}
+.cz-overlay-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.25)}
+.cz-overlay-btn:disabled{opacity:.6;cursor:not-allowed}
+.cz-busy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(10,10,10,.62);backdrop-filter:blur(4px);color:#fff;z-index:5}
+.cz-spinner{width:46px;height:46px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;animation:czSpin .9s linear infinite}
+@keyframes czSpin{to{transform:rotate(360deg)}}
+.cz-busy-label{font-size:13px;font-weight:600;letter-spacing:.02em;text-align:center;max-width:80%}
+.cz-busy-sub{font-size:11.5px;color:rgba(255,255,255,.7);text-align:center}
+.cz-modal-back{position:fixed;inset:0;background:rgba(10,10,10,.55);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:czFade .2s ease}
+.cz-modal{background:#fff;border-radius:18px;padding:24px;width:100%;max-width:460px;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.cz-modal h3{font-family:'Poppins',sans-serif;font-weight:700;font-size:19px;color:${INK};margin:0 0 6px}
+.cz-modal p{font-size:13px;color:${MUTED};margin:0 0 14px;line-height:1.5}
+.cz-modal textarea{width:100%;min-height:96px;padding:12px 14px;border:1px solid ${BORDER};border-radius:10px;font-family:'Poppins',sans-serif;font-size:13.5px;color:${INK};resize:vertical;outline:none;transition:border-color .15s}
+.cz-modal textarea:focus{border-color:${RED}}
+.cz-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+.cz-modal-btn{padding:10px 18px;border-radius:10px;font-family:'Poppins',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.cz-modal-btn.ghost{background:transparent;color:${MUTED}}
+.cz-modal-btn.ghost:hover{color:${INK}}
+.cz-modal-btn.primary{background:${RED};color:#fff}
+.cz-modal-btn.primary:hover{background:${RED_DK}}
+.cz-modal-btn:disabled{opacity:.5;cursor:not-allowed}
+.cz-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.cz-suggest button{font-size:11.5px;padding:6px 10px;border-radius:999px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif}
+.cz-suggest button:hover{border-color:${INK}}
 @media (max-width: 1100px){
   .cz-grid{grid-template-columns:1fr !important}
   .cz-stage{min-height:46vh !important;padding:28px 16px !important}
