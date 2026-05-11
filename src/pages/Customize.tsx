@@ -3,6 +3,10 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send } from "lucide-react";
+import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
+import affirmLogo from "@/assets/payment-logos/affirm.svg";
+import klarnaLogo from "@/assets/payment-logos/klarna.svg";
+import afterpayLogo from "@/assets/payment-logos/afterpay.png";
 
 /* ── Tokens ── */
 const RED = "#E61919";
@@ -787,30 +791,22 @@ export default function Customize() {
             <div style={{ fontSize:12, color:INK, fontWeight:600, marginBottom:10, textAlign:"center" }}>
               Or 4 interest-free payments of <span className="cz-serif" style={{ fontWeight:700 }}>${(total/4).toFixed(2)}</span>
             </div>
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:6, flexWrap:"nowrap" }}>
-              {/* Shop Pay */}
-              <div title="Shop Pay" aria-label="Shop Pay" style={{ height:24, padding:"0 8px", borderRadius:4, background:"#5A31F4", display:"flex", alignItems:"center", gap:2 }}>
-                <svg height="11" viewBox="0 0 64 16" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5.6 15.6c-1.7 0-3.2-.4-4.5-1.2l1.2-2.5c1.1.7 2.3 1.1 3.5 1.1.9 0 1.4-.3 1.4-.9 0-.5-.4-.8-1.7-1.2C2.7 10.2 1 9.2 1 7c0-2.6 2.1-4.4 5.3-4.4 1.6 0 3 .3 4.1.9l-1.2 2.5c-1-.5-2-.8-3-.8-.8 0-1.3.3-1.3.8 0 .5.5.8 1.8 1.2 2.7.7 4.4 1.7 4.4 3.9 0 2.7-2.2 4.5-5.5 4.5zm10.6-.2h-3.4V0h3.4v6.1c.7-1.4 2-2.4 4-2.4 2.7 0 4.3 1.8 4.3 4.6v7.1h-3.4V9c0-1.5-.7-2.4-2-2.4-1.4 0-2.4.9-2.4 2.6v6.2h-1.5zm15.4.3c-3.7 0-6.4-2.5-6.4-6s2.7-6 6.4-6c3.7 0 6.4 2.5 6.4 6s-2.7 6-6.4 6zm0-2.9c1.7 0 2.9-1.2 2.9-3.1s-1.2-3.1-2.9-3.1-2.9 1.2-2.9 3.1 1.2 3.1 2.9 3.1zm14.5 2.9c-1.6 0-3-.6-3.8-1.7v5.6h-3.4V4h3.4v1.6c.8-1.2 2.2-1.9 3.8-1.9 3 0 5.5 2.5 5.5 5.9 0 3.5-2.5 6.1-5.5 6.1zm-.8-2.9c1.6 0 2.9-1.3 2.9-3.1s-1.3-3.1-2.9-3.1c-1.6 0-2.9 1.3-2.9 3.1s1.3 3.1 2.9 3.1z"/>
-                </svg>
-                <span style={{ color:"#fff", fontWeight:700, fontSize:11.5, fontFamily:"system-ui, -apple-system, Segoe UI, Roboto, sans-serif", letterSpacing:0.2 }}>Pay</span>
-              </div>
-
-              {/* Affirm */}
-              <div title="Affirm" aria-label="Affirm" style={{ height:24, padding:"0 10px", borderRadius:4, background:"#0FA0EA", display:"flex", alignItems:"center" }}>
-                <span style={{ color:"#fff", fontWeight:500, fontSize:14, fontStyle:"italic", fontFamily:"Georgia, 'Times New Roman', serif", lineHeight:1, letterSpacing:-0.3 }}>affirm</span>
-              </div>
-
-              {/* Klarna */}
-              <div title="Klarna" aria-label="Klarna" style={{ height:24, padding:"0 8px", borderRadius:4, background:"#FFA8CD", display:"flex", alignItems:"center" }}>
-                <span style={{ color:"#0A0A0A", fontWeight:800, fontSize:11.5, fontFamily:"'Helvetica Neue', Helvetica, Arial, sans-serif", letterSpacing:-0.2, lineHeight:1 }}>Klarna.</span>
-              </div>
-
-              {/* Afterpay */}
-              <div title="Afterpay" aria-label="Afterpay" style={{ height:24, padding:"0 8px", borderRadius:4, background:"#B2FCE4", display:"flex", alignItems:"center", gap:3 }}>
-                <span style={{ color:"#0A0A0A", fontWeight:800, fontSize:11, fontFamily:"'Helvetica Neue', Helvetica, Arial, sans-serif", letterSpacing:-0.2, lineHeight:1 }}>afterpay</span>
-                <svg width="8" height="8" viewBox="0 0 10 10" fill="#0A0A0A"><polygon points="0,0 10,5 0,10"/></svg>
-              </div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
+              {[
+                { name: "Shop Pay", logo: shopPayLogo, bg: "#5A31F4", scale: "86%" },
+                { name: "Affirm", logo: affirmLogo, bg: "#00A6EF", scale: "82%" },
+                { name: "Klarna", logo: klarnaLogo, bg: "#FFA8CD", scale: "80%" },
+                { name: "Afterpay", logo: afterpayLogo, bg: "#B2FCE4", scale: "84%" },
+              ].map((provider) => (
+                <div key={provider.name} title={provider.name} aria-label={provider.name} style={{
+                  height:23, minWidth:0, padding:"0 5px", borderRadius:4, background:provider.bg,
+                  display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden",
+                }}>
+                  <img src={provider.logo} alt={provider.name} style={{
+                    width:provider.scale, maxHeight:13, objectFit:"contain", display:"block",
+                  }}/>
+                </div>
+              ))}
             </div>
           </div>
 
