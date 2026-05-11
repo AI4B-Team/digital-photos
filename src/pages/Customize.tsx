@@ -490,55 +490,85 @@ export default function Customize() {
     }
   };
 
-  /* ── Preview ── */
-  const renderPreview = () => {
-    const woodPad = frameDef.w || 0;
-    const innerBorder = borderDef.px;
-    const isFrameless = frameDef.id === "frameless" || frameDef.id === "digital";
-    const isCanvas    = frameDef.id === "canvas";
+  /* ── Preview (per-item, click to select, ✕ to remove) ── */
+  const renderItem = (item, isSelected) => {
+    const fd = FRAMES.find(f => f.id === item.frame) || FRAMES[1];
+    const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
+    const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
+    const bd = BORDERS.find(b => b.id === item.border) || BORDERS[1];
+    const bcd = BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0];
+    const isFrameless = fd.id === "frameless" || fd.id === "digital";
+    const isCanvas    = fd.id === "canvas";
+    const woodPad     = fd.w || 0;
+    const itemBusy = busy && item.id === selectedId;
+    const showRemove = items.length > 1;
 
     return (
-      <div style={{
-        background: isCanvas ? "#fff" : (isFrameless ? "transparent" : frameDef.wood),
-        padding: isFrameless ? 0 : woodPad,
-        borderRadius: isFrameless ? 0 : 3,
-        boxShadow: isFrameless ? "none" : "0 30px 60px -20px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.08)",
-        display: "inline-block",
-        maxWidth: "100%",
-      }}>
-        <div style={{
-          background: borderColorDef.bg,
-          padding: innerBorder,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
+      <div key={item.id}
+        onClick={() => setSelectedId(item.id)}
+        style={{
+          position:"relative", cursor:"pointer", padding:14, borderRadius:14,
+          border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
+          background: isSelected ? "rgba(230,25,25,.04)" : "transparent",
+          transition: "all .2s ease",
+          display:"flex", justifyContent:"center",
         }}>
-          <div className="cz-img-wrap">
-            <img src={portraitUrl} alt="Your portrait"
-              style={{
-                display:"block",
-                height: `${sizeDef.h * 58}vh`,
-                width:  `${sizeDef.w * 58}vh`,
-                maxWidth: "100%",
-                objectFit: "cover",
-                filter: effectDef.filter,
-                transition: "width .25s ease, height .25s ease",
-              }}/>
-            <div className="cz-watermark" aria-hidden="true">
-              <div className="cz-watermark-inner">
-                {Array.from({ length: 9 }).map((_, i) => (
-                  <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
-                ))}
-              </div>
-            </div>
-            {busy && (
-              <div className="cz-busy">
-                <div className="cz-spinner" />
-                <div className="cz-busy-label">{busyLabel}</div>
-                <div className="cz-busy-sub">
-                  This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
+        {showRemove && (
+          <button
+            onClick={(e) => { e.stopPropagation(); removeItem(item.id); }}
+            aria-label="Remove image"
+            style={{
+              position:"absolute", top:6, right:6, zIndex:5,
+              width:28, height:28, borderRadius:"50%",
+              background:"#fff", border:`1px solid ${BORDER}`, color:INK,
+              cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+              boxShadow:"0 4px 12px rgba(0,0,0,.12)",
+            }}>
+            <X size={14}/>
+          </button>
+        )}
+        <div style={{
+          background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+          padding: isFrameless ? 0 : woodPad,
+          borderRadius: isFrameless ? 0 : 3,
+          boxShadow: isFrameless ? "none" : "0 30px 60px -20px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.08)",
+          display: "inline-block",
+          maxWidth: "100%",
+        }}>
+          <div style={{
+            background: bcd.bg,
+            padding: bd.px,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
+          }}>
+            <div className="cz-img-wrap">
+              <img src={item.photoUrl} alt="Your portrait"
+                style={{
+                  display:"block",
+                  height: `${sd.h * 42}vh`,
+                  width:  `${sd.w * 42}vh`,
+                  maxWidth: "100%",
+                  objectFit: "cover",
+                  filter: ed.filter,
+                  transition: "width .25s ease, height .25s ease",
+                }}/>
+              <div className="cz-watermark" aria-hidden="true">
+                <div className="cz-watermark-inner">
+                  {Array.from({ length: 9 }).map((_, i) => (
+                    <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
+                  ))}
                 </div>
               </div>
-            )}
+              {itemBusy && (
+                <div className="cz-busy">
+                  <div className="cz-spinner" />
+                  <div className="cz-busy-label">{busyLabel}</div>
+                  <div className="cz-busy-sub">
+                    This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
