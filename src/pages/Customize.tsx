@@ -770,11 +770,22 @@ export default function Customize() {
             gap:16, width:"100%", maxWidth:"100%",
             transition:"all .3s cubic-bezier(.22,1,.32,1)",
           }}>
-            {/* Phantom spacer to visually center the image (offsets the toolbar width on the right) */}
+            {/* Phantom spacer to visually center the column (offsets the toolbar width on the right) */}
             <div aria-hidden="true" style={{ width: 66, flex: "0 0 auto" }}/>
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", flex:"0 1 auto", minWidth:0 }}>
-              {renderPreview()}
+            <div style={{
+              flex:"0 1 auto", minWidth:0, maxHeight:"calc(100vh - 180px)",
+              overflowY:"auto", display:"flex", flexDirection:"column",
+              alignItems:"center", gap:8, padding:"4px 6px", scrollbarGutter:"stable",
+            }}>
+              {items.map(it => renderItem(it, it.id === selectedId))}
             </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display:"none" }}
+              onChange={handleFilePicked}
+            />
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools">
               <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
                 <Sparkles size={18}/>
@@ -783,8 +794,8 @@ export default function Customize() {
               <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
                 <RotateCcw size={17}/>
               </button>
-              <button className="cz-tool" onClick={() => setAiOpen(true)} disabled={busy} data-tip="Edit With Prompt" aria-label="Edit with prompt">
-                <Pencil size={17}/>
+              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
+                <Plus size={18}/>
               </button>
             </div>
             {aiOpen && (
