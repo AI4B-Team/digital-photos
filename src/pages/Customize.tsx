@@ -623,6 +623,7 @@ export default function Customize() {
               <button className="cz-tool" onClick={() => setEditOpen(true)} disabled={busy} title="Edit with prompt" aria-label="Edit with prompt">
                 <Pencil size={17}/>
               </button>
+            </div>
             {aiOpen && (
               <div className="cz-ai-panel">
                 <div className="cz-ai-head">
