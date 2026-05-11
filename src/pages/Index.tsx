@@ -498,14 +498,19 @@ function HomePage({ onGenerate }) {
   return (
     <div style={{ background:T.bg, minHeight:"100vh" }}>
 
-      {/* ── ANNOUNCEMENT STRIP ── */}
+      {/* ── TRUST TICKER ── */}
       <div style={{ position:"fixed", top:0, left:0, right:0, zIndex:201, height:30,
-        background:T.gold,
-        display:"flex", alignItems:"center", justifyContent:"center", gap:10,
+        background:"#B91C1C",
+        display:"flex", alignItems:"center", justifyContent:"center", gap:22,
         fontFamily:"'Poppins',sans-serif", fontSize:11, letterSpacing:".14em",
-        textTransform:"uppercase", color:T.bg, fontWeight:600 }}>
-        <Truck size={13} strokeWidth={2}/>
-        <span>Free Worldwide Shipping On All Prints</span>
+        textTransform:"uppercase", color:"#fff", fontWeight:600 }}>
+        <span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>
+          <Truck size={13} strokeWidth={2}/> Free Worldwide Shipping
+        </span>
+        <span style={{ opacity:.5 }}>·</span>
+        <span>30-Day Guarantee</span>
+        <span style={{ opacity:.5 }}>·</span>
+        <span>4.9★ Rated</span>
       </div>
 
       {/* ── NAV ── */}
