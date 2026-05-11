@@ -1184,7 +1184,7 @@ export default function Customize() {
                 <span style={{ fontSize:13, fontWeight:600, color:INK }}>Total</span>
                 {totalSavings > 0 && (
                   <span style={{ fontSize:11, color:"#16a34a", fontWeight:600 }}>
-                    You're saving ${totalSavings} ({savingsPct}% off)
+                    You're Saving ${totalSavings} ({savingsPct}% Off)
                   </span>
                 )}
               </div>
