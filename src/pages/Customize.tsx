@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send } from "lucide-react";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
-import affirmLogo from "@/assets/payment-logos/affirm.svg";
+import affirmLogo from "@/assets/payment-logos/affirm-reference.png";
 import klarnaLogo from "@/assets/payment-logos/klarna.svg";
 import afterpayLogo from "@/assets/payment-logos/afterpay.png";
 
@@ -798,7 +798,7 @@ export default function Customize() {
             <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
               {[
                 { name: "Shop Pay", logo: shopPayLogo, bg: "#5A31F4", scale: "86%" },
-                { name: "Affirm", logo: affirmLogo, bg: "#00A6EF", scale: "82%" },
+                { name: "Affirm", logo: affirmLogo, bg: "transparent", scale: "100%" },
                 { name: "Klarna", logo: klarnaLogo, bg: "#FFA8CD", scale: "80%" },
                 { name: "Afterpay", logo: afterpayLogo, bg: "#B2FCE4", scale: "84%" },
               ].map((provider) => (
@@ -807,7 +807,7 @@ export default function Customize() {
                   display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden",
                 }}>
                   <img src={provider.logo} alt={provider.name} style={{
-                    width:provider.scale, maxHeight:13, objectFit:"contain", display:"block",
+                    width:provider.scale, maxHeight:23, objectFit:"contain", display:"block",
                   }}/>
                 </div>
               ))}
