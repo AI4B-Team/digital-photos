@@ -263,6 +263,20 @@ export default function Customize() {
   const [borderColor, setBorderColor] = useState(session.customization?.borderColor || "soft-white");
   const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
+  // Regeneration state
+  const [busy, setBusy]               = useState(false);
+  const [busyLabel, setBusyLabel]     = useState("");
+  const [busyElapsed, setBusyElapsed] = useState(0);
+  const [editOpen, setEditOpen]       = useState(false);
+  const [editPrompt, setEditPrompt]   = useState("");
+  const [errorMsg, setErrorMsg]       = useState("");
+
+  useEffect(() => {
+    if (!busy) { setBusyElapsed(0); return; }
+    const t = setInterval(() => setBusyElapsed(s => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [busy]);
+
   useEffect(() => { if (!portraitUrl) navigate("/"); }, [portraitUrl, navigate]);
 
   const frameDef  = FRAMES.find(f => f.id === frame)  || FRAMES[1];
@@ -271,6 +285,51 @@ export default function Customize() {
   const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
 
   const total = sizeDef.price + frameDef.add;
+
+  /* ── Regenerate / Edit ── */
+  const runRegenerate = async (extraPrompt) => {
+    setErrorMsg("");
+    setBusy(true);
+    setBusyLabel(extraPrompt ? "Applying your edits…" : "Generating a new variation…");
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const sourceImageUrl = session.photo || portraitUrl;
+      const { data, error } = await supabase.functions.invoke("regenerate-portrait", {
+        body: {
+          sessionId: session.orderId || session.cat ? (session as any).sessionDbId || null : null,
+          sourceImageUrl,
+          style: styleId,
+          extraPrompt: extraPrompt || "",
+        },
+      });
+      if (error) throw new Error(error.message || "Generation failed");
+      if (data?.error) throw new Error(data.error);
+      const newUrl = data?.url;
+      if (!newUrl) throw new Error("No image returned");
+
+      const updated = (session.generatedPortraits || []).map(p =>
+        p.style === styleId ? { ...p, url: newUrl } : p
+      );
+      // Ensure entry exists
+      if (!updated.find(p => p.style === styleId)) {
+        updated.push({ style: styleId, url: newUrl });
+      }
+      setSession({ generatedPortraits: updated });
+    } catch (e) {
+      console.error(e);
+      setErrorMsg(e?.message || "Something went wrong. Please try again.");
+    } finally {
+      setBusy(false);
+      setEditOpen(false);
+      setEditPrompt("");
+    }
+  };
+
+  const handleRetry = () => runRegenerate("");
+  const handleApplyEdit = () => {
+    if (!editPrompt.trim()) return;
+    runRegenerate(editPrompt.trim());
+  };
 
   /* ── Preview ── */
   const renderPreview = () => {
