@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send } from "lucide-react";
@@ -311,17 +311,50 @@ export default function Customize() {
   const params = new URLSearchParams(window.location.search);
   const styleId = params.get("style") || session.generatedPortraits?.[0]?.style || "";
   const PLACEHOLDER = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=80";
-  const portraitUrl = useMemo(() => {
-    const found = session.generatedPortraits?.find(p => p.style === styleId);
-    return found?.url || session.generatedPortraits?.[0]?.url || session.photo || PLACEHOLDER;
-  }, [styleId, session.generatedPortraits, session.photo]);
+  const initialPortraitUrl =
+    session.generatedPortraits?.find(p => p.style === styleId)?.url
+    || session.generatedPortraits?.[0]?.url
+    || session.photo
+    || PLACEHOLDER;
 
-  const [frame,       setFrame]       = useState(session.customization?.frame       || "black");
-  const [size,        setSize]        = useState(session.customization?.size        || '11" x 14"');
-  const [effect,      setEffect]      = useState(session.customization?.effect      || "original");
-  const [border,      setBorder]      = useState(session.customization?.border      || "shallow");
-  const [borderColor, setBorderColor] = useState(session.customization?.borderColor || "soft-white");
-  const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
+  // Multi-image cart: each item is an independent print with its own config
+  const makeItem = (overrides = {}) => ({
+    id: crypto.randomUUID(),
+    photoUrl: initialPortraitUrl,
+    style: styleId,
+    frame: "black",
+    size: '11" x 14"',
+    effect: "original",
+    border: "shallow",
+    borderColor: "soft-white",
+    ...overrides,
+  });
+
+  const [items, setItems] = useState(() => {
+    const saved = (session as any).customizationItems;
+    if (saved?.length) return saved;
+    return [makeItem({
+      frame: session.customization?.frame || "black",
+      size: session.customization?.size || '11" x 14"',
+      effect: session.customization?.effect || "original",
+      border: session.customization?.border || "shallow",
+      borderColor: session.customization?.borderColor || "soft-white",
+    })];
+  });
+  const [selectedId, setSelectedId] = useState(() => items[0].id);
+  const selected = items.find(i => i.id === selectedId) || items[0];
+  const updateSelected = (patch) => {
+    setItems(prev => prev.map(i => i.id === selectedId ? { ...i, ...patch } : i));
+  };
+  const removeItem = (id) => {
+    setItems(prev => {
+      if (prev.length <= 1) return prev;
+      const next = prev.filter(i => i.id !== id);
+      if (id === selectedId) setSelectedId(next[0].id);
+      return next;
+    });
+  };
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Regeneration state
   const [busy, setBusy]               = useState(false);
@@ -332,7 +365,6 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
-  const [qty, setQty]                 = useState(1);
 
   useEffect(() => {
     if (!busy) { setBusyElapsed(0); return; }
@@ -340,32 +372,48 @@ export default function Customize() {
     return () => clearInterval(t);
   }, [busy]);
 
-  useEffect(() => { if (!portraitUrl) navigate("/"); }, [portraitUrl, navigate]);
+  useEffect(() => { if (!initialPortraitUrl) navigate("/"); }, [initialPortraitUrl, navigate]);
+
+  // Selected item's resolved defs (drives left panel + AI ops)
+  const frame = selected.frame, size = selected.size, effect = selected.effect;
+  const border = selected.border, borderColor = selected.borderColor;
+  const portraitUrl = selected.photoUrl;
+  const setFrame = (v) => updateSelected({ frame: v });
+  const setSize = (v) => updateSelected({ size: v });
+  const setEffect = (v) => updateSelected({ effect: v });
+  const setBorder = (v) => updateSelected({ border: v });
+  const setBorderColor = (v) => updateSelected({ borderColor: v });
+  const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
   const frameDef  = FRAMES.find(f => f.id === frame)  || FRAMES[1];
   const sizeDef   = SIZES.find(s => s.id === size)    || SIZES[2];
   const effectDef = EFFECTS.find(e => e.id === effect) || EFFECTS[0];
   const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
 
-  const unitPrice  = sizeDef.price + frameDef.add;
-  const subtotal   = unitPrice * qty;
-  const bundlePct  = qty >= 3 ? 0.15 : qty >= 2 ? 0.10 : 0;
+  // Per-item price + bundle discount based on number of images
+  const itemPrice = (it) => {
+    const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
+    const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
+    return sd.price + fd.add;
+  };
+  const subtotal   = items.reduce((sum, it) => sum + itemPrice(it), 0);
+  const bundlePct  = items.length >= 3 ? 0.15 : items.length >= 2 ? 0.10 : 0;
   const bundleSave = Math.round(subtotal * bundlePct);
   const total      = subtotal - bundleSave;
 
-  /* ── Regenerate / Edit ── */
+  /* ── Regenerate / Edit (acts on selected item) ── */
   const runRegenerate = async (extraPrompt) => {
     setErrorMsg("");
     setBusy(true);
     setBusyLabel(extraPrompt ? "Applying Your Edits…" : "Generating A New Variation…");
     try {
       const { supabase } = await import("@/integrations/supabase/client");
-      const sourceImageUrl = session.photo || portraitUrl;
+      const sourceImageUrl = selected.photoUrl || session.photo;
       const { data, error } = await supabase.functions.invoke("regenerate-portrait", {
         body: {
-          sessionId: session.orderId || session.cat ? (session as any).sessionDbId || null : null,
+          sessionId: (session as any).sessionDbId || null,
           sourceImageUrl,
-          style: styleId,
+          style: selected.style || styleId,
           extraPrompt: extraPrompt || "",
         },
       });
@@ -373,15 +421,7 @@ export default function Customize() {
       if (data?.error) throw new Error(data.error);
       const newUrl = data?.url;
       if (!newUrl) throw new Error("No image returned");
-
-      const updated = (session.generatedPortraits || []).map(p =>
-        p.style === styleId ? { ...p, url: newUrl } : p
-      );
-      // Ensure entry exists
-      if (!updated.find(p => p.style === styleId)) {
-        updated.push({ style: styleId, url: newUrl });
-      }
-      setSession({ generatedPortraits: updated });
+      updateSelected({ photoUrl: newUrl });
     } catch (e) {
       console.error(e);
       setErrorMsg(e?.message || "Something went wrong. Please try again.");
@@ -398,55 +438,137 @@ export default function Customize() {
     runRegenerate(editPrompt.trim());
   };
 
-  /* ── Preview ── */
-  const renderPreview = () => {
-    const woodPad = frameDef.w || 0;
-    const innerBorder = borderDef.px;
-    const isFrameless = frameDef.id === "frameless" || frameDef.id === "digital";
-    const isCanvas    = frameDef.id === "canvas";
+  /* ── Add a new image: file upload, then generate ── */
+  const handleAddImage = () => fileInputRef.current?.click();
+
+  const handleFilePicked = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow same-file reselect
+    if (!file) return;
+
+    // Read as data URL for preview + generation source
+    const dataUrl: string = await new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result as string);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+
+    // Insert new item with current selected's settings as defaults; mark as busy
+    const newItem = makeItem({
+      photoUrl: dataUrl,
+      frame: selected.frame, size: selected.size, effect: selected.effect,
+      border: selected.border, borderColor: selected.borderColor,
+    });
+    setItems(prev => [...prev, newItem]);
+    setSelectedId(newItem.id);
+
+    // Kick off generation in background
+    setBusy(true);
+    setBusyLabel("Generating Your Portrait…");
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("regenerate-portrait", {
+        body: {
+          sessionId: (session as any).sessionDbId || null,
+          sourceImageUrl: dataUrl,
+          style: styleId,
+          extraPrompt: "",
+        },
+      });
+      if (error) throw new Error(error.message || "Generation failed");
+      if (data?.error) throw new Error(data.error);
+      const newUrl = data?.url;
+      if (newUrl) {
+        setItems(prev => prev.map(i => i.id === newItem.id ? { ...i, photoUrl: newUrl } : i));
+      }
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(err?.message || "Couldn't generate that image. The original was added.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  /* ── Preview (per-item, click to select, ✕ to remove) ── */
+  const renderItem = (item, isSelected) => {
+    const fd = FRAMES.find(f => f.id === item.frame) || FRAMES[1];
+    const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
+    const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
+    const bd = BORDERS.find(b => b.id === item.border) || BORDERS[1];
+    const bcd = BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0];
+    const isFrameless = fd.id === "frameless" || fd.id === "digital";
+    const isCanvas    = fd.id === "canvas";
+    const woodPad     = fd.w || 0;
+    const itemBusy = busy && item.id === selectedId;
+    const showRemove = items.length > 1;
 
     return (
-      <div style={{
-        background: isCanvas ? "#fff" : (isFrameless ? "transparent" : frameDef.wood),
-        padding: isFrameless ? 0 : woodPad,
-        borderRadius: isFrameless ? 0 : 3,
-        boxShadow: isFrameless ? "none" : "0 30px 60px -20px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.08)",
-        display: "inline-block",
-        maxWidth: "100%",
-      }}>
-        <div style={{
-          background: borderColorDef.bg,
-          padding: innerBorder,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
+      <div key={item.id}
+        onClick={() => setSelectedId(item.id)}
+        style={{
+          position:"relative", cursor:"pointer", padding:14, borderRadius:14,
+          border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
+          background: isSelected ? "rgba(230,25,25,.04)" : "transparent",
+          transition: "all .2s ease",
+          display:"flex", justifyContent:"center",
         }}>
-          <div className="cz-img-wrap">
-            <img src={portraitUrl} alt="Your portrait"
-              style={{
-                display:"block",
-                height: `${sizeDef.h * 58}vh`,
-                width:  `${sizeDef.w * 58}vh`,
-                maxWidth: "100%",
-                objectFit: "cover",
-                filter: effectDef.filter,
-                transition: "width .25s ease, height .25s ease",
-              }}/>
-            <div className="cz-watermark" aria-hidden="true">
-              <div className="cz-watermark-inner">
-                {Array.from({ length: 9 }).map((_, i) => (
-                  <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
-                ))}
-              </div>
-            </div>
-            {busy && (
-              <div className="cz-busy">
-                <div className="cz-spinner" />
-                <div className="cz-busy-label">{busyLabel}</div>
-                <div className="cz-busy-sub">
-                  This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
+        {showRemove && (
+          <button
+            onClick={(e) => { e.stopPropagation(); removeItem(item.id); }}
+            aria-label="Remove image"
+            style={{
+              position:"absolute", top:6, right:6, zIndex:5,
+              width:28, height:28, borderRadius:"50%",
+              background:"#fff", border:`1px solid ${BORDER}`, color:INK,
+              cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+              boxShadow:"0 4px 12px rgba(0,0,0,.12)",
+            }}>
+            <X size={14}/>
+          </button>
+        )}
+        <div style={{
+          background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+          padding: isFrameless ? 0 : woodPad,
+          borderRadius: isFrameless ? 0 : 3,
+          boxShadow: isFrameless ? "none" : "0 30px 60px -20px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.08)",
+          display: "inline-block",
+          maxWidth: "100%",
+        }}>
+          <div style={{
+            background: bcd.bg,
+            padding: bd.px,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
+          }}>
+            <div className="cz-img-wrap">
+              <img src={item.photoUrl} alt="Your portrait"
+                style={{
+                  display:"block",
+                  height: `${sd.h * 42}vh`,
+                  width:  `${sd.w * 42}vh`,
+                  maxWidth: "100%",
+                  objectFit: "cover",
+                  filter: ed.filter,
+                  transition: "width .25s ease, height .25s ease",
+                }}/>
+              <div className="cz-watermark" aria-hidden="true">
+                <div className="cz-watermark-inner">
+                  {Array.from({ length: 9 }).map((_, i) => (
+                    <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
+                  ))}
                 </div>
               </div>
-            )}
+              {itemBusy && (
+                <div className="cz-busy">
+                  <div className="cz-spinner" />
+                  <div className="cz-busy-label">{busyLabel}</div>
+                  <div className="cz-busy-sub">
+                    This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -456,9 +578,10 @@ export default function Customize() {
   const handleContinue = () => {
     setSession({
       customization: { portraitUrl, style: styleId, frame, size, effect, border, borderColor },
+      customizationItems: items,
       selectedPlan: frameDef.id === "canvas" ? "canvas" : "bundle",
       printSize: size,
-    });
+    } as any);
     navigate("/checkout");
   };
 
@@ -647,11 +770,22 @@ export default function Customize() {
             gap:16, width:"100%", maxWidth:"100%",
             transition:"all .3s cubic-bezier(.22,1,.32,1)",
           }}>
-            {/* Phantom spacer to visually center the image (offsets the toolbar width on the right) */}
+            {/* Phantom spacer to visually center the column (offsets the toolbar width on the right) */}
             <div aria-hidden="true" style={{ width: 66, flex: "0 0 auto" }}/>
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", flex:"0 1 auto", minWidth:0 }}>
-              {renderPreview()}
+            <div style={{
+              flex:"0 1 auto", minWidth:0, maxHeight:"calc(100vh - 180px)",
+              overflowY:"auto", display:"flex", flexDirection:"column",
+              alignItems:"center", gap:8, padding:"4px 6px", scrollbarGutter:"stable",
+            }}>
+              {items.map(it => renderItem(it, it.id === selectedId))}
             </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display:"none" }}
+              onChange={handleFilePicked}
+            />
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools">
               <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
                 <Sparkles size={18}/>
@@ -660,8 +794,8 @@ export default function Customize() {
               <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
                 <RotateCcw size={17}/>
               </button>
-              <button className="cz-tool" onClick={() => setAiOpen(true)} disabled={busy} data-tip="Edit With Prompt" aria-label="Edit with prompt">
-                <Pencil size={17}/>
+              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
+                <Plus size={18}/>
               </button>
             </div>
             {aiOpen && (
@@ -770,110 +904,115 @@ export default function Customize() {
           <div className="cz-section">
             <div className="cz-label" style={{ marginBottom:14 }}><span>Your Cart</span></div>
 
-            {/* Mini preview — mirrors live canvas */}
-            {(() => {
-              const isFrameless = frameDef.id === "frameless" || frameDef.id === "digital";
-              const isCanvas    = frameDef.id === "canvas";
-              const woodPad     = (frameDef.w || 0) * 0.35;
-              const maxDim      = 130;
-              const imgW = sizeDef.w >= sizeDef.h ? maxDim : maxDim * (sizeDef.w / sizeDef.h);
-              const imgH = sizeDef.h >= sizeDef.w ? maxDim : maxDim * (sizeDef.h / sizeDef.w);
-              return (
-                <div style={{
-                  background:BG, borderRadius:12, padding:16,
-                  display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14,
-                  border:`1px solid ${BORDER}`, minHeight:170,
-                }}>
-                  <div style={{
-                    background: isCanvas ? "#fff" : (isFrameless ? "transparent" : frameDef.wood),
-                    padding: isFrameless ? 0 : woodPad,
-                    borderRadius: isFrameless ? 0 : 2,
-                    boxShadow: isFrameless ? "0 8px 20px rgba(0,0,0,.12)" : "0 12px 24px -8px rgba(0,0,0,.25), 0 4px 10px rgba(0,0,0,.08)",
-                    display:"inline-block",
-                  }}>
-                    <div style={{
-                      background: borderColorDef.bg,
-                      padding: borderDef.px * 0.4,
-                      display:"flex",
+            {/* Itemized cart — one row per image */}
+            <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+              {items.map((it, idx) => {
+                const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
+                const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
+                const ed = EFFECTS.find(e => e.id === it.effect) || EFFECTS[0];
+                const bd = BORDERS.find(b => b.id === it.border) || BORDERS[1];
+                const bcd = BORDER_COLORS.find(c => c.id === it.borderColor) || BORDER_COLORS[0];
+                const isFrameless = fd.id === "frameless" || fd.id === "digital";
+                const isCanvas    = fd.id === "canvas";
+                const woodPad     = (fd.w || 0) * 0.3;
+                const thumb       = 56;
+                const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
+                const imgH = sd.h >= sd.w ? thumb : thumb * (sd.h / sd.w);
+                const price = sd.price + fd.add;
+                const isSel = it.id === selectedId;
+                return (
+                  <div key={it.id}
+                    onClick={() => setSelectedId(it.id)}
+                    style={{
+                      display:"flex", gap:10, padding:10, borderRadius:10,
+                      border: isSel ? `1.5px solid ${RED}` : `1px solid ${BORDER}`,
+                      background: isSel ? "rgba(230,25,25,.04)" : "#fff",
+                      cursor:"pointer", position:"relative",
                     }}>
-                      <img src={portraitUrl} alt="" style={{
-                        display:"block",
-                        width: imgW, height: imgH,
-                        objectFit:"cover",
-                        filter: effectDef.filter,
-                        transition:"width .25s ease, height .25s ease",
-                      }}/>
+                    <div style={{
+                      width:80, minWidth:80, display:"flex", alignItems:"center", justifyContent:"center",
+                      background:BG, borderRadius:6, padding:6,
+                    }}>
+                      <div style={{
+                        background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+                        padding: isFrameless ? 0 : woodPad, display:"inline-block",
+                      }}>
+                        <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
+                          <img src={it.photoUrl} alt="" style={{
+                            width: imgW, height: imgH, objectFit:"cover", display:"block",
+                            filter: ed.filter,
+                          }}/>
+                        </div>
+                      </div>
                     </div>
+                    <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
+                      <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>
+                        Portrait #{idx + 1}
+                      </div>
+                      <div style={{ fontSize:11, color:MUTED, lineHeight:1.4 }}>
+                        {sd.label}″ · {fd.label} · {ed.label}
+                      </div>
+                      <div style={{ fontSize:13, fontWeight:600, color:INK, marginTop:2 }}>
+                        ${price}
+                      </div>
+                    </div>
+                    {items.length > 1 && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); removeItem(it.id); }}
+                        aria-label="Remove"
+                        style={{
+                          position:"absolute", top:6, right:6,
+                          width:22, height:22, borderRadius:"50%",
+                          background:"transparent", border:"none", color:MUTED,
+                          cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+                        }}>
+                        <X size={14}/>
+                      </button>
+                    )}
                   </div>
-                </div>
-              );
-            })()}
-
-            <div className="cz-serif" style={{ fontSize:15, fontWeight:600, color:INK, marginBottom:2 }}>
-              Custom Portrait
-            </div>
-            <div style={{ fontSize:12, color:MUTED, marginBottom:14 }}>
-              {sizeDef.label}″ · {frameDef.label} · {effectDef.label}
+                );
+              })}
             </div>
 
-            {/* Quantity stepper */}
-            <div style={{
-              display:"flex", alignItems:"center", justifyContent:"space-between",
-              padding:"10px 0", borderTop:`1px solid ${BORDER}`,
-            }}>
-              <span style={{ fontSize:13, color:TXT, fontWeight:500 }}>Quantity</span>
-              <div style={{ display:"flex", alignItems:"center", gap:0, border:`1px solid ${BORDER}`, borderRadius:8, overflow:"hidden" }}>
-                <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{
-                  width:30, height:30, border:"none", background:"#fff", cursor:"pointer",
-                  fontSize:16, color:INK, fontWeight:600,
-                }}>−</button>
-                <span style={{
-                  minWidth:32, textAlign:"center", fontSize:13, fontWeight:600, color:INK,
-                  borderLeft:`1px solid ${BORDER}`, borderRight:`1px solid ${BORDER}`, padding:"6px 4px",
-                }}>{qty}</span>
-                <button onClick={() => setQty(q => Math.min(10, q + 1))} style={{
-                  width:30, height:30, border:"none", background:"#fff", cursor:"pointer",
-                  fontSize:16, color:INK, fontWeight:600,
-                }}>+</button>
-              </div>
-            </div>
+            {/* Add another image button */}
+            <button
+              onClick={handleAddImage}
+              disabled={busy}
+              style={{
+                marginTop:12, width:"100%", padding:"10px",
+                border:`1.5px dashed ${BORDER}`, borderRadius:10,
+                background:"transparent", cursor:"pointer",
+                fontFamily:"'Poppins',sans-serif", fontSize:12.5, fontWeight:600, color:INK,
+                display:"flex", alignItems:"center", justifyContent:"center", gap:6,
+                opacity: busy ? .5 : 1,
+              }}>
+              <Plus size={14}/> Add Another Photo
+            </button>
 
             {/* Bundle hint */}
             <div style={{
               fontSize:11.5, color: bundlePct > 0 ? "#16a34a" : MUTED,
-              padding:"6px 10px", background: bundlePct > 0 ? "#F0FDF4" : "#FAFAF7",
-              borderRadius:8, marginBottom:8, fontWeight: bundlePct > 0 ? 600 : 500,
+              padding:"8px 10px", background: bundlePct > 0 ? "#F0FDF4" : "#FAFAF7",
+              borderRadius:8, marginTop:10, fontWeight: bundlePct > 0 ? 600 : 500, textAlign:"center",
             }}>
               {bundlePct > 0
                 ? `🎉 ${Math.round(bundlePct*100)}% bundle discount applied!`
-                : qty === 1
-                  ? "Add 2 prints — save 10% · Add 3+ — save 15%"
-                  : ""}
+                : "Add 2 photos — save 10% · Add 3+ — save 15%"}
             </div>
 
-            {/* Line items */}
-            <div style={{ display:"flex", flexDirection:"column", gap:8, fontSize:13, paddingTop:12, borderTop:`1px solid ${BORDER}` }}>
+            {/* Subtotals */}
+            <div style={{ display:"flex", flexDirection:"column", gap:6, fontSize:13, paddingTop:12, marginTop:12, borderTop:`1px solid ${BORDER}` }}>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>{sizeDef.label}″ {(frameDef as any).digital ? "Digital File" : "Print"} {qty > 1 && `× ${qty}`}</span><span>${sizeDef.price * qty}</span>
+                <span>Subtotal ({items.length} {items.length === 1 ? "photo" : "photos"})</span>
+                <span>${subtotal}</span>
               </div>
-              {frameDef.add > 0 && (
-                <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                  <span>{frameDef.label} Frame {qty > 1 && `× ${qty}`}</span><span>+${frameDef.add * qty}</span>
-                </div>
-              )}
-              {frameDef.add < 0 && (
-                <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
-                  <span>Digital Discount</span><span>−${Math.abs(frameDef.add) * qty}</span>
-                </div>
-              )}
               {bundleSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
                   <span>Bundle Discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
                 </div>
               )}
               <div style={{ display:"flex", justifyContent:"space-between", color:MUTED, fontSize:12 }}>
-                <span>{(frameDef as any).digital ? "Delivery" : "Shipping"}</span>
-                <span>{(frameDef as any).digital ? "Instant Email" : "Free"}</span>
+                <span>Shipping</span><span>Free</span>
               </div>
             </div>
 
