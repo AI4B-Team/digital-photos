@@ -548,9 +548,10 @@ export default function Customize() {
   const handleContinue = () => {
     setSession({
       customization: { portraitUrl, style: styleId, frame, size, effect, border, borderColor },
+      customizationItems: items,
       selectedPlan: frameDef.id === "canvas" ? "canvas" : "bundle",
       printSize: size,
-    });
+    } as any);
     navigate("/checkout");
   };
 
