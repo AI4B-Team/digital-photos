@@ -617,7 +617,7 @@ export default function Customize() {
               </div>
             </div>
           </div>
-          {isToolbarItem && (
+          {true && (
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools" onClick={(e) => e.stopPropagation()}>
               <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
                 <Sparkles size={18}/>
