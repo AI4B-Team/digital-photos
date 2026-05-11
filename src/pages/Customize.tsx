@@ -332,6 +332,7 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
+  const [qty, setQty]                 = useState(1);
 
   useEffect(() => {
     if (!busy) { setBusyElapsed(0); return; }
