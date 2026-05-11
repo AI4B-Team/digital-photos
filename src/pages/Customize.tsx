@@ -534,7 +534,7 @@ export default function Customize() {
   };
 
   /* ── Preview (per-item, click to select, ✕ to remove) ── */
-  const renderItem = (item, isSelected) => {
+  const renderItem = (item, isSelected, isToolbarItem) => {
     const fd = FRAMES.find(f => f.id === item.frame) || FRAMES[1];
     const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
     const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
