@@ -324,17 +324,19 @@ export default function Customize() {
           {/* Effect */}
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(5, minmax(0, 1fr))", gap:8 }}>
+            <div className="cz-size-scroll">
               {EFFECTS.map(e => {
                 const on = effect === e.id;
                 return (
                   <button key={e.id} onClick={() => setEffect(e.id)} title={e.label}
                     style={{
+                      flex:"0 0 76px",
                       display:"flex", flexDirection:"column", alignItems:"center", gap:6,
                       padding:6, borderRadius:10,
                       border:`1.5px solid ${on ? INK : BORDER}`,
                       background: on ? "#fff" : "transparent",
                       cursor:"pointer", transition:"all .15s ease",
+                      scrollSnapAlign:"start",
                     }}>
                     <div style={{
                       width:"100%", aspectRatio:"1", borderRadius:6, overflow:"hidden",
