@@ -1019,7 +1019,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
           Choose Your Format
         </h2>
 
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:40 }} className="plangrid">
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:40 }} className="plangrid">
 
           {/* ── CARD 1: INSTANT MASTERPIECE ── */}
           <div style={{ position:"relative", background:T.sur, border:`1px solid ${T.border}`,
