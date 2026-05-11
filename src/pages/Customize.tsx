@@ -881,12 +881,14 @@ export default function Customize() {
                     disabled={busy}
                     onClick={() => runRegenerate("")}
                     style={{
-                      alignSelf:"flex-start", background:"transparent", border:"none", cursor:"pointer",
-                      color:MUTED, fontFamily:"'Poppins',sans-serif", fontSize:12.5,
-                      fontWeight:500, padding:"4px 0", display:"inline-flex", alignItems:"center", gap:6,
+                      width:"100%", padding:"10px 12px", borderRadius:8,
+                      border:`1px solid ${BORDER}`, background:"#fafafa", cursor:"pointer",
+                      color:INK, fontFamily:"'Poppins',sans-serif", fontSize:12.5,
+                      fontWeight:500, display:"inline-flex", alignItems:"center", gap:8,
+                      textAlign:"left",
                     }}
                   >
-                    <Sparkles size={12} color={RED}/> New Variation
+                    <Sparkles size={13} color={RED}/> New Variation
                   </button>
                 </div>
                 <div style={{
