@@ -552,8 +552,10 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center", gap:10,
           scrollSnapAlign:"start",
         }}>
-        {/* Image + inline toolbar (toolbar floats to the right so the image stays centered) */}
-        <div style={{ position:"relative", display:"inline-block" }}>
+        {/* Image + inline toolbar — symmetric spacer keeps image visually centered */}
+        <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+          {/* Invisible spacer matching toolbar width to keep image centered */}
+          <div aria-hidden="true" style={{ width:48, flexShrink:0, visibility:"hidden" }}/>
           <div style={{
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
             padding: (isFrameless ? 6 : woodPad + 6),
@@ -602,7 +604,7 @@ export default function Customize() {
           </div>
           <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
             onClick={(e) => e.stopPropagation()}
-            style={{ position:"absolute", left:"calc(100% + 16px)", top:"50%", transform:"translateY(-50%)" }}>
+            style={{ flexShrink:0 }}>
             <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
               <Sparkles size={18}/>
             </button>
