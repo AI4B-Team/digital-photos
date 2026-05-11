@@ -554,7 +554,7 @@ export default function Customize() {
           border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
           background: isSelected ? "rgba(230,25,25,.04)" : "transparent",
           transition: "all .2s ease",
-          display:"flex", justifyContent:"center",
+          display:"flex", flexDirection:"column", alignItems:"center", gap:10,
           scrollSnapAlign:"start",
         }}>
         {showRemove && (
