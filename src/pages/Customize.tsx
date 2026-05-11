@@ -1051,19 +1051,127 @@ export default function Customize() {
                 : "Add 2 photos — save 10% · Add 3+ — save 15%"}
             </div>
 
+            {/* Low-resolution warning */}
+            {lowResCount > 0 && (
+              <div style={{
+                marginTop:10, padding:"10px 12px", borderRadius:10,
+                background:"#FFFBEB", border:"1px solid #FDE68A",
+                display:"flex", alignItems:"flex-start", gap:8,
+              }}>
+                <span style={{
+                  flexShrink:0, width:18, height:18, borderRadius:"50%",
+                  background:"#1A1614", color:"#fff", display:"flex",
+                  alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700,
+                }}>!</span>
+                <div style={{ fontSize:11.5, color:INK, lineHeight:1.45 }}>
+                  {lowResCount === 1 ? "One of your photos is low resolution" : `${lowResCount} photos are low resolution`}, consider replacing{" "}
+                  <button
+                    onClick={() => {
+                      const first = items.find(i => i.lowRes);
+                      if (first) { setSelectedId(first.id); handleAddImage(); }
+                    }}
+                    style={{ background:"none", border:"none", padding:0, color:INK, fontWeight:600, textDecoration:"underline", cursor:"pointer", fontFamily:"inherit", fontSize:11.5 }}
+                  >Review and replace</button>.
+                </div>
+              </div>
+            )}
+
+            {/* Promo code */}
+            <div style={{ marginTop:10 }}>
+              {promoApplied ? (
+                <div style={{
+                  display:"flex", alignItems:"center", justifyContent:"space-between",
+                  padding:"10px 12px", borderRadius:10, background:"#F0FDF4", border:"1px solid #BBF7D0",
+                }}>
+                  <div style={{ fontSize:12, color:"#15803D", fontWeight:600 }}>
+                    Promo: {promoApplied.code}
+                  </div>
+                  <button onClick={clearPromo} style={{
+                    background:"none", border:"none", color:MUTED, cursor:"pointer",
+                    fontSize:11.5, textDecoration:"underline", fontFamily:"inherit",
+                  }}>Remove</button>
+                </div>
+              ) : promoOpen ? (
+                <div>
+                  <div style={{ display:"flex", gap:6 }}>
+                    <input
+                      value={promoCode}
+                      onChange={e => { setPromoCode(e.target.value); setPromoError(""); }}
+                      onKeyDown={e => e.key === "Enter" && applyPromo()}
+                      placeholder="Enter code"
+                      style={{
+                        flex:1, padding:"9px 11px", borderRadius:8,
+                        border:`1px solid ${promoError ? "#DC2626" : BORDER}`,
+                        fontFamily:"inherit", fontSize:12.5, outline:"none", background:"#fff",
+                      }}
+                    />
+                    <button onClick={applyPromo} style={{
+                      padding:"9px 14px", borderRadius:8, border:"none",
+                      background:INK, color:"#fff", fontWeight:600, fontSize:12, cursor:"pointer", fontFamily:"inherit",
+                    }}>Apply</button>
+                  </div>
+                  {promoError && <div style={{ fontSize:11, color:"#DC2626", marginTop:4 }}>{promoError}</div>}
+                </div>
+              ) : (
+                <button onClick={() => setPromoOpen(true)} style={{
+                  background:"none", border:"none", padding:0, color:INK, fontWeight:600,
+                  fontSize:12, cursor:"pointer", fontFamily:"inherit", textDecoration:"underline",
+                }}>+ Add promo code</button>
+              )}
+            </div>
+
+            {/* Gift note */}
+            <div style={{ marginTop:8 }}>
+              {giftOpen || giftNote ? (
+                <div>
+                  <div style={{ fontSize:11, color:MUTED, fontWeight:600, marginBottom:5, letterSpacing:".08em", textTransform:"uppercase" }}>
+                    Gift Note
+                  </div>
+                  <textarea
+                    value={giftNote}
+                    onChange={e => setGiftNote(e.target.value)}
+                    placeholder="Add a personal message…"
+                    maxLength={250}
+                    rows={2}
+                    style={{
+                      width:"100%", padding:"9px 11px", borderRadius:8, border:`1px solid ${BORDER}`,
+                      fontFamily:"inherit", fontSize:12.5, outline:"none", background:"#fff", resize:"vertical",
+                    }}
+                  />
+                </div>
+              ) : (
+                <button onClick={() => setGiftOpen(true)} style={{
+                  background:"none", border:"none", padding:0, color:INK, fontWeight:600,
+                  fontSize:12, cursor:"pointer", fontFamily:"inherit", textDecoration:"underline",
+                }}>+ Add gift note</button>
+              )}
+            </div>
+
             {/* Subtotals */}
             <div style={{ display:"flex", flexDirection:"column", gap:6, fontSize:13, paddingTop:12, marginTop:12, borderTop:`1px solid ${BORDER}` }}>
+              <div style={{ display:"flex", justifyContent:"space-between", color:MUTED }}>
+                <span>List price</span>
+                <span style={{ textDecoration:"line-through" }}>${listSubtotal}</span>
+              </div>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
                 <span>Subtotal ({items.length} {items.length === 1 ? "photo" : "photos"})</span>
                 <span>${subtotal}</span>
               </div>
               {bundleSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
-                  <span>Bundle Discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
+                  <span>Bundle discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
                 </div>
               )}
-              <div style={{ display:"flex", justifyContent:"space-between", color:MUTED, fontSize:12 }}>
-                <span>Shipping</span><span>Free</span>
+              {promoSave > 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
+                  <span>Promo {promoApplied?.code} ({Math.round(promoPct*100)}%)</span><span>−${promoSave}</span>
+                </div>
+              )}
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", color:INK, fontSize:12 }}>
+                <span style={{ display:"flex", alignItems:"center", gap:6 }}>
+                  <Check size={13} style={{ color:"#16a34a" }}/> Eligible for free shipping
+                </span>
+                <span style={{ color:MUTED }}>$0</span>
               </div>
             </div>
 
@@ -1072,7 +1180,14 @@ export default function Customize() {
               display:"flex", justifyContent:"space-between", alignItems:"baseline",
               paddingTop:14, marginTop:14, borderTop:`1px solid ${BORDER}`,
             }}>
-              <span style={{ fontSize:13, fontWeight:600, color:INK }}>Total</span>
+              <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+                <span style={{ fontSize:13, fontWeight:600, color:INK }}>Total</span>
+                {totalSavings > 0 && (
+                  <span style={{ fontSize:11, color:"#16a34a", fontWeight:600 }}>
+                    You're saving ${totalSavings} ({savingsPct}% off)
+                  </span>
+                )}
+              </div>
               <span className="cz-serif" style={{ fontSize:24, fontWeight:700, color:INK }}>${total}</span>
             </div>
           </div>
