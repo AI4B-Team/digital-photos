@@ -203,7 +203,7 @@ export default function Customize() {
         maxWidth: "100%",
       }}>
         <div style={{
-          background: borderColor,
+          background: borderColorDef.bg,
           padding: innerBorder,
           display: "flex", alignItems: "center", justifyContent: "center",
           boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
@@ -452,7 +452,7 @@ export default function Customize() {
                     display:"inline-block",
                   }}>
                     <div style={{
-                      background: borderColor,
+                      background: borderColorDef.bg,
                       padding: borderDef.px * 0.4,
                       display:"flex",
                     }}>
