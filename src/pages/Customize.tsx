@@ -838,7 +838,7 @@ export default function Customize() {
             <div className="cz-canvas-scroll" style={{
               flex:"0 1 auto", minWidth:0, maxHeight:"calc(100vh - 180px)",
               overflowY:"auto", display:"flex", flexDirection:"column",
-              alignItems:"center", gap:8, padding:"4px 6px", scrollbarGutter:"stable",
+              alignItems:"center", gap:8, padding:"4px 6px",
               scrollBehavior:"smooth", scrollSnapType:"y proximity",
               WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
             }}>
