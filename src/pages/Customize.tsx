@@ -124,6 +124,7 @@ const G = `
 
 /* ── Options ── */
 const FRAMES = [
+  { id: "digital",     label: "Digital",     add: -8, wood: null, digital: true },
   { id: "frameless",   label: "Frameless",   add: 0,  wood: null },
   { id: "black",       label: "Black",       add: 0,  wood: "#1a1a1a", w: 14 },
   { id: "white",       label: "White",       add: 0,  wood: "#f4f4f4", w: 14 },
@@ -218,6 +219,28 @@ function FrameSwatch({ frame, on }) {
       </div>
     </div>
   );
+
+  // Digital — file/download look
+  if (frame.id === "digital") {
+    return wrap(
+      <div style={{
+        width: 32, height: 26, borderRadius: 3,
+        background: "linear-gradient(160deg,#1a1a1a,#3a3a3a)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: "0 2px 6px rgba(0,0,0,.18)",
+        position: "relative",
+      }}>
+        <div style={{
+          width: 22, height: 17, borderRadius: 1,
+          background: "linear-gradient(160deg,#9fb3c8,#6b87a4)",
+        }}/>
+        <div style={{
+          position:"absolute", bottom:-3, left:"50%", transform:"translateX(-50%)",
+          width:14, height:2, borderRadius:1, background:"#1a1a1a",
+        }}/>
+      </div>
+    );
+  }
 
   // Frameless — floating photo on white
   if (frame.id === "frameless") {
@@ -374,7 +397,7 @@ export default function Customize() {
   const renderPreview = () => {
     const woodPad = frameDef.w || 0;
     const innerBorder = borderDef.px;
-    const isFrameless = frameDef.id === "frameless";
+    const isFrameless = frameDef.id === "frameless" || frameDef.id === "digital";
     const isCanvas    = frameDef.id === "canvas";
 
     return (
@@ -711,7 +734,7 @@ export default function Customize() {
 
             {/* Mini preview — mirrors live canvas */}
             {(() => {
-              const isFrameless = frameDef.id === "frameless";
+              const isFrameless = frameDef.id === "frameless" || frameDef.id === "digital";
               const isCanvas    = frameDef.id === "canvas";
               const woodPad     = (frameDef.w || 0) * 0.35;
               const maxDim      = 130;
@@ -758,15 +781,21 @@ export default function Customize() {
             {/* Line items */}
             <div style={{ display:"flex", flexDirection:"column", gap:8, fontSize:13, paddingTop:12, borderTop:`1px solid ${BORDER}` }}>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>{sizeDef.label}″ Print</span><span>${sizeDef.price}</span>
+                <span>{sizeDef.label}″ {(frameDef as any).digital ? "Digital File" : "Print"}</span><span>${sizeDef.price}</span>
               </div>
               {frameDef.add > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
                   <span>{frameDef.label} Frame</span><span>+${frameDef.add}</span>
                 </div>
               )}
+              {frameDef.add < 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
+                  <span>Digital Discount</span><span>−${Math.abs(frameDef.add)}</span>
+                </div>
+              )}
               <div style={{ display:"flex", justifyContent:"space-between", color:MUTED, fontSize:12 }}>
-                <span>Shipping</span><span>Free</span>
+                <span>{(frameDef as any).digital ? "Delivery" : "Shipping"}</span>
+                <span>{(frameDef as any).digital ? "Instant Email" : "Free"}</span>
               </div>
             </div>
 
