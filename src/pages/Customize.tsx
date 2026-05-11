@@ -324,12 +324,34 @@ export default function Customize() {
           {/* Effect */}
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
-            <div className="cz-row">
-              {EFFECTS.map(e => (
-                <button key={e.id} className={`cz-chip ${effect===e.id?"on":""}`} onClick={() => setEffect(e.id)}>
-                  {e.label}
-                </button>
-              ))}
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(5, minmax(0, 1fr))", gap:8 }}>
+              {EFFECTS.map(e => {
+                const on = effect === e.id;
+                return (
+                  <button key={e.id} onClick={() => setEffect(e.id)} title={e.label}
+                    style={{
+                      display:"flex", flexDirection:"column", alignItems:"center", gap:6,
+                      padding:6, borderRadius:10,
+                      border:`1.5px solid ${on ? INK : BORDER}`,
+                      background: on ? "#fff" : "transparent",
+                      cursor:"pointer", transition:"all .15s ease",
+                    }}>
+                    <div style={{
+                      width:"100%", aspectRatio:"1", borderRadius:6, overflow:"hidden",
+                      background:"#eee",
+                    }}>
+                      <img src={portraitUrl} alt="" style={{
+                        width:"100%", height:"100%", objectFit:"cover",
+                        filter: e.filter,
+                      }}/>
+                    </div>
+                    <span style={{
+                      fontSize:10.5, fontWeight: on ? 600 : 500,
+                      color: on ? INK : MUTED, whiteSpace:"nowrap",
+                    }}>{e.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
