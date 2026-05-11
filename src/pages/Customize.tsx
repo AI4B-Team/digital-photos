@@ -803,19 +803,59 @@ export default function Customize() {
               {sizeDef.label}″ · {frameDef.label} · {effectDef.label}
             </div>
 
+            {/* Quantity stepper */}
+            <div style={{
+              display:"flex", alignItems:"center", justifyContent:"space-between",
+              padding:"10px 0", borderTop:`1px solid ${BORDER}`,
+            }}>
+              <span style={{ fontSize:13, color:TXT, fontWeight:500 }}>Quantity</span>
+              <div style={{ display:"flex", alignItems:"center", gap:0, border:`1px solid ${BORDER}`, borderRadius:8, overflow:"hidden" }}>
+                <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{
+                  width:30, height:30, border:"none", background:"#fff", cursor:"pointer",
+                  fontSize:16, color:INK, fontWeight:600,
+                }}>−</button>
+                <span style={{
+                  minWidth:32, textAlign:"center", fontSize:13, fontWeight:600, color:INK,
+                  borderLeft:`1px solid ${BORDER}`, borderRight:`1px solid ${BORDER}`, padding:"6px 4px",
+                }}>{qty}</span>
+                <button onClick={() => setQty(q => Math.min(10, q + 1))} style={{
+                  width:30, height:30, border:"none", background:"#fff", cursor:"pointer",
+                  fontSize:16, color:INK, fontWeight:600,
+                }}>+</button>
+              </div>
+            </div>
+
+            {/* Bundle hint */}
+            <div style={{
+              fontSize:11.5, color: bundlePct > 0 ? "#16a34a" : MUTED,
+              padding:"6px 10px", background: bundlePct > 0 ? "#F0FDF4" : "#FAFAF7",
+              borderRadius:8, marginBottom:8, fontWeight: bundlePct > 0 ? 600 : 500,
+            }}>
+              {bundlePct > 0
+                ? `🎉 ${Math.round(bundlePct*100)}% bundle discount applied!`
+                : qty === 1
+                  ? "Add 2 prints — save 10% · Add 3+ — save 15%"
+                  : ""}
+            </div>
+
             {/* Line items */}
             <div style={{ display:"flex", flexDirection:"column", gap:8, fontSize:13, paddingTop:12, borderTop:`1px solid ${BORDER}` }}>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>{sizeDef.label}″ {(frameDef as any).digital ? "Digital File" : "Print"}</span><span>${sizeDef.price}</span>
+                <span>{sizeDef.label}″ {(frameDef as any).digital ? "Digital File" : "Print"} {qty > 1 && `× ${qty}`}</span><span>${sizeDef.price * qty}</span>
               </div>
               {frameDef.add > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                  <span>{frameDef.label} Frame</span><span>+${frameDef.add}</span>
+                  <span>{frameDef.label} Frame {qty > 1 && `× ${qty}`}</span><span>+${frameDef.add * qty}</span>
                 </div>
               )}
               {frameDef.add < 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
-                  <span>Digital Discount</span><span>−${Math.abs(frameDef.add)}</span>
+                  <span>Digital Discount</span><span>−${Math.abs(frameDef.add) * qty}</span>
+                </div>
+              )}
+              {bundleSave > 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
+                  <span>Bundle Discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
                 </div>
               )}
               <div style={{ display:"flex", justifyContent:"space-between", color:MUTED, fontSize:12 }}>
