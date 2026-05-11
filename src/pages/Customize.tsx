@@ -128,40 +128,95 @@ const BORDER_COLORS = [
   { id: "pampas",       label: "Pampas Grass", bg: "repeating-linear-gradient(90deg,#E8E4D8 0 6px,#DDD7C7 6px 7px)" },
 ];
 
-/* ── Frame swatch (mini) ── */
+/* ── Frame swatch (photorealistic mini) ── */
 function FrameSwatch({ frame, on }) {
-  const wood = frame.wood;
-  let inner = (
-    <div style={{ width: 22, height: 18, background: "linear-gradient(135deg,#a4b6c8,#7390ad)", borderRadius: 1 }} />
-  );
-  if (frame.id === "frameless") {
-    return (
-      <div style={{
-        width: 38, height: 38, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
-        background: "#fff", border: on ? `2px solid ${RED}` : `1px solid ${BORDER}`,
-      }}>
-        {inner}
-      </div>
-    );
-  }
-  if (frame.id === "canvas") {
-    return (
-      <div style={{
-        width: 38, height: 38, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
-        background: "#fff", border: on ? `2px solid ${RED}` : `1px solid ${BORDER}`,
-      }}>
-        <div style={{ width: 22, height: 18, background: "linear-gradient(135deg,#b8c4d2,#869fb8)", boxShadow: "inset 0 0 0 3px #e8e2d4" }} />
-      </div>
-    );
-  }
-  return (
+  const SIZE = 56;
+  const ringColor = on ? RED : "transparent";
+  const ringW = on ? 2 : 0;
+
+  // Inner "photo" — soft blue gradient like Mixtiles reference
+  const photo = (size) => (
     <div style={{
-      width: 38, height: 38, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
-      background: wood, border: on ? `2px solid ${RED}` : "1px solid rgba(0,0,0,.1)",
-      padding: 4,
+      width: size, height: size * 0.78,
+      background: "linear-gradient(160deg,#9fb3c8 0%,#7993b0 60%,#6b87a4 100%)",
+      borderRadius: 1.5,
+      boxShadow: "inset 0 1px 2px rgba(255,255,255,.25), inset 0 -2px 4px rgba(0,0,0,.18)",
+    }}/>
+  );
+
+  const wrap = (children, bg = "#fff") => (
+    <div style={{
+      width: SIZE, height: SIZE, borderRadius: 12, padding: 3,
+      background: ringColor, transition: "background .15s",
     }}>
-      {inner}
+      <div style={{
+        width: "100%", height: "100%", borderRadius: 10,
+        background: bg, display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: on ? "none" : "inset 0 0 0 1px rgba(0,0,0,.06)",
+      }}>
+        {children}
+      </div>
     </div>
+  );
+
+  // Frameless — floating photo on white
+  if (frame.id === "frameless") {
+    return wrap(
+      <div style={{
+        width: 30, height: 24, borderRadius: 1.5,
+        background: "linear-gradient(160deg,#9fb3c8,#6b87a4)",
+        boxShadow: "0 2px 6px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.04)",
+      }}/>
+    );
+  }
+
+  // Canvas — gallery wrap, white edge bevel
+  if (frame.id === "canvas") {
+    return wrap(
+      <div style={{
+        width: 30, height: 24, padding: 2,
+        background: "#fafafa",
+        boxShadow: "0 2px 5px rgba(0,0,0,.18), inset 0 0 0 1px #ece7d8",
+        borderRadius: 1,
+      }}>
+        <div style={{ width: "100%", height: "100%",
+          background: "linear-gradient(160deg,#9fb3c8,#6b87a4)" }}/>
+      </div>
+    );
+  }
+
+  // Wood / painted frames — render moulding with bevel + inner shadow
+  const wood = frame.wood;
+  const isWide = frame.id.startsWith("wide-");
+  const isLight = frame.id === "white" || frame.id === "wide-white";
+  const moulding = isLight
+    ? `linear-gradient(135deg, #ffffff 0%, ${wood} 45%, #e6e6e6 100%)`
+    : frame.id === "oak"
+      ? `linear-gradient(135deg, #e3b988 0%, #c89968 50%, #9d7444 100%)`
+      : frame.id === "walnut"
+        ? `linear-gradient(135deg, #7d5638 0%, #5a3a24 55%, #3a2414 100%)`
+        : `linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 50%, #050505 100%)`;
+  const pad = isWide ? 8 : 5;
+  const innerSize = SIZE - 6 - pad * 2; // inside ringWrap padding
+
+  return wrap(
+    <div style={{
+      width: "100%", height: "100%", borderRadius: 6,
+      background: moulding,
+      padding: pad,
+      boxShadow: `inset 0 0 0 1px rgba(255,255,255,${isLight ? .6 : .12}),
+                  inset 0 -1px 2px rgba(0,0,0,.25),
+                  0 1px 2px rgba(0,0,0,.12)`,
+      display: "flex", alignItems: "center", justifyContent: "center",
+    }}>
+      <div style={{
+        width: innerSize, height: innerSize * 0.78,
+        background: "linear-gradient(160deg,#9fb3c8 0%,#7993b0 60%,#6b87a4 100%)",
+        borderRadius: 1,
+        boxShadow: "inset 0 0 0 1px rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.2)",
+      }}/>
+    </div>,
+    "#fff"
   );
 }
 
