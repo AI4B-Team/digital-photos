@@ -1125,7 +1125,7 @@ export default function Customize() {
               {giftOpen || giftNote ? (
                 <div>
                   <div style={{ fontSize:11, color:MUTED, fontWeight:600, marginBottom:5, letterSpacing:".08em", textTransform:"uppercase" }}>
-                    Gift Note
+                    Gift note
                   </div>
                   <textarea
                     value={giftNote}
