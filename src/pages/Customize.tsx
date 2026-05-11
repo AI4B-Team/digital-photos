@@ -604,7 +604,92 @@ export default function Customize() {
               Make It Yours.
             </h1>
           </div>
-          {renderPreview()}
+          <div className="cz-stage-row" style={{
+            display:"flex", alignItems:"center", justifyContent:"center",
+            gap:16, width:"100%", maxWidth:"100%",
+            transition:"all .3s cubic-bezier(.22,1,.32,1)",
+          }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", flex:"0 1 auto", minWidth:0 }}>
+              {renderPreview()}
+            </div>
+            <div className="cz-toolbar" role="toolbar" aria-label="Image tools">
+              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} title="AI Assistant" aria-label="AI Assistant">
+                <Sparkles size={18}/>
+              </button>
+              <div className="cz-tool-divider"/>
+              <button className="cz-tool" onClick={handleRetry} disabled={busy} title="Regenerate" aria-label="Regenerate">
+                <RotateCcw size={17}/>
+              </button>
+              <button className="cz-tool" onClick={() => setEditOpen(true)} disabled={busy} title="Edit with prompt" aria-label="Edit with prompt">
+                <Pencil size={17}/>
+              </button>
+              <button className="cz-tool" title="Add layer" aria-label="Add layer"><Plus size={18}/></button>
+              <button className="cz-tool" title="Duplicate" aria-label="Duplicate"><Copy size={16}/></button>
+              <button className="cz-tool" title="Lock" aria-label="Lock"><Lock size={16}/></button>
+              <button className="cz-tool" title="Hide" aria-label="Hide"><EyeOff size={16}/></button>
+              <button className="cz-tool" title="Download preview" aria-label="Download preview"><Download size={16}/></button>
+              <button className="cz-tool" title="Delete" aria-label="Delete"><Trash2 size={16}/></button>
+              <div className="cz-tool-divider"/>
+              <button className="cz-tool" title="Move up" aria-label="Move up"><ChevronUp size={18}/></button>
+              <button className="cz-tool" title="Move down" aria-label="Move down"><ChevronDown size={18}/></button>
+              <button className="cz-tool" title="Adjust" aria-label="Adjust"><SlidersHorizontal size={16}/></button>
+            </div>
+            {aiOpen && (
+              <div className="cz-ai-panel">
+                <div className="cz-ai-head">
+                  <div className="cz-ai-title">
+                    <span className="cz-ai-icon"><Sparkles size={14}/></span>
+                    AI Assistant
+                  </div>
+                  <button className="cz-ai-close" onClick={() => setAiOpen(false)} aria-label="Close">
+                    <X size={16}/>
+                  </button>
+                </div>
+                <div className="cz-ai-body">
+                  <div className="cz-ai-intro">
+                    Ask Me Anything About Your Portrait. I'll Analyze, Rewrite, And Optimize.
+                  </div>
+                  <div className="cz-ai-quick">
+                    {[
+                      { label: "Make Background Darker", prompt: "Make the background darker and more dramatic" },
+                      { label: "More Cinematic Lighting", prompt: "Add more cinematic lighting with golden highlights" },
+                      { label: "Brighter & More Vibrant", prompt: "Make it brighter and more vibrant" },
+                      { label: "Soften The Colors", prompt: "Soften the overall color palette" },
+                      { label: "Generate A New Variation", prompt: "" },
+                    ].map(q => (
+                      <button key={q.label} disabled={busy} onClick={() => { setAiOpen(false); runRegenerate(q.prompt); }}>
+                        <Sparkles size={13} color={RED}/> {q.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="cz-ai-input">
+                  <input
+                    value={aiInput}
+                    onChange={(e) => setAiInput(e.target.value)}
+                    placeholder="Ask AI anything about this portrait…"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && aiInput.trim() && !busy) {
+                        const p = aiInput.trim();
+                        setAiInput("");
+                        setAiOpen(false);
+                        runRegenerate(p);
+                      }
+                    }}
+                    disabled={busy}
+                  />
+                  <button className="cz-ai-send" disabled={busy || !aiInput.trim()} onClick={() => {
+                    const p = aiInput.trim();
+                    setAiInput("");
+                    setAiOpen(false);
+                    runRegenerate(p);
+                  }} aria-label="Send">
+                    <Send size={15}/>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
           <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
             <span>{sizeDef.label}″</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
