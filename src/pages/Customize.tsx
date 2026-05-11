@@ -533,6 +533,34 @@ export default function Customize() {
             <Check size={18}/> Continue to checkout
           </button>
 
+          {/* Buy Now, Pay Later */}
+          <div style={{
+            marginTop:4, padding:"12px 14px",
+            border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
+          }}>
+            <div style={{ fontSize:12, color:INK, fontWeight:600, marginBottom:8, textAlign:"center" }}>
+              Or 4 interest-free payments of <span className="cz-serif" style={{ fontWeight:700 }}>${(total/4).toFixed(2)}</span>
+            </div>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, flexWrap:"wrap" }}>
+              {/* Shop Pay */}
+              <div title="Shop Pay" style={{ height:26, padding:"0 10px", borderRadius:5, background:"#5A31F4", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:700, fontSize:12, letterSpacing:0.2, fontFamily:"system-ui, -apple-system, Segoe UI, Roboto, sans-serif" }}>
+                <span style={{ fontSize:14, marginRight:3 }}>shop</span><span>Pay</span>
+              </div>
+              {/* Affirm */}
+              <div title="Affirm" style={{ height:26, padding:"0 12px", borderRadius:5, background:"#0FA0EA", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:600, fontSize:13, fontStyle:"italic", fontFamily:"Georgia, serif" }}>
+                affirm
+              </div>
+              {/* Klarna */}
+              <div title="Klarna" style={{ height:26, padding:"0 10px", borderRadius:5, background:"#FFA8CD", display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0A0A", fontWeight:700, fontSize:12, fontFamily:"system-ui, -apple-system, Segoe UI, Roboto, sans-serif" }}>
+                Klarna.
+              </div>
+              {/* Afterpay */}
+              <div title="Afterpay" style={{ height:26, padding:"0 10px", borderRadius:5, background:"#B2FCE4", display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0A0A", fontWeight:800, fontSize:11.5, letterSpacing:0.2, fontFamily:"system-ui, -apple-system, Segoe UI, Roboto, sans-serif" }}>
+                afterpay&gt;
+              </div>
+            </div>
+          </div>
+
           <div style={{ textAlign:"center", color:MUTED, fontSize:11.5 }}>
             Free Shipping · 100-Day Happiness Guarantee
           </div>
