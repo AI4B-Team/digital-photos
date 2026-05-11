@@ -81,8 +81,8 @@ const G = `
 .cz-modal-btn.primary{background:${RED};color:#fff}
 .cz-modal-btn.primary:hover{background:${RED_DK}}
 .cz-modal-btn:disabled{opacity:.5;cursor:not-allowed}
-.cz-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.cz-suggest button{font-size:11.5px;padding:6px 10px;border-radius:999px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif}
+.cz-suggest{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.cz-suggest button{font-size:12.5px;padding:10px 12px;border-radius:8px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif;text-align:left;width:100%}
 .cz-suggest button:hover{border-color:${INK}}
 .cz-toolbar{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid ${BORDER};border-radius:14px;padding:6px;box-shadow:0 12px 30px -10px rgba(0,0,0,.12)}
 .cz-tool{width:38px;height:38px;border-radius:10px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
