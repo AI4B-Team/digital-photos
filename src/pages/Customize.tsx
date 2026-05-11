@@ -290,7 +290,7 @@ export default function Customize() {
   const runRegenerate = async (extraPrompt) => {
     setErrorMsg("");
     setBusy(true);
-    setBusyLabel(extraPrompt ? "Applying your edits…" : "Generating a new variation…");
+    setBusyLabel(extraPrompt ? "Applying Your Edits…" : "Generating A New Variation…");
     try {
       const { supabase } = await import("@/integrations/supabase/client");
       const sourceImageUrl = session.photo || portraitUrl;
