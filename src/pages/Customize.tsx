@@ -552,8 +552,8 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center", gap:10,
           scrollSnapAlign:"start",
         }}>
-        {/* Image + inline toolbar (toolbar anchored next to image regardless of size) */}
-        <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+        {/* Image + inline toolbar (toolbar floats to the right so the image stays centered) */}
+        <div style={{ position:"relative", display:"inline-block" }}>
           <div style={{
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
             padding: (isFrameless ? 6 : woodPad + 6),
@@ -600,28 +600,28 @@ export default function Customize() {
               </div>
             </div>
           </div>
-          {true && (
-            <div className="cz-toolbar" role="toolbar" aria-label="Image tools" onClick={(e) => e.stopPropagation()}>
-              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
-                <Sparkles size={18}/>
-              </button>
-              <div className="cz-tool-divider"/>
-              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
-                <RotateCcw size={17}/>
-              </button>
-              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
-                <Plus size={18}/>
-              </button>
-              {showRemove && (
-                <>
-                  <div className="cz-tool-divider"/>
-                  <button className="cz-tool" onClick={() => removeItem(item.id)} data-tip="Delete Image" aria-label="Delete image">
-                    <Trash2 size={17}/>
-                  </button>
-                </>
-              )}
-            </div>
-          )}
+          <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
+            onClick={(e) => e.stopPropagation()}
+            style={{ position:"absolute", left:"calc(100% + 16px)", top:"50%", transform:"translateY(-50%)" }}>
+            <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
+              <Sparkles size={18}/>
+            </button>
+            <div className="cz-tool-divider"/>
+            <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
+              <RotateCcw size={17}/>
+            </button>
+            <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
+              <Plus size={18}/>
+            </button>
+            {showRemove && (
+              <>
+                <div className="cz-tool-divider"/>
+                <button className="cz-tool" onClick={() => removeItem(item.id)} data-tip="Delete Image" aria-label="Delete image">
+                  <Trash2 size={17}/>
+                </button>
+              </>
+            )}
+          </div>
         </div>
         <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
           <span>{sd.label}″</span>
