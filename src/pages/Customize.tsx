@@ -1150,16 +1150,16 @@ export default function Customize() {
             {/* Subtotals */}
             <div style={{ display:"flex", flexDirection:"column", gap:6, fontSize:13, paddingTop:12, marginTop:12, borderTop:`1px solid ${BORDER}` }}>
               <div style={{ display:"flex", justifyContent:"space-between", color:MUTED }}>
-                <span>List price</span>
+                <span>List Price</span>
                 <span style={{ textDecoration:"line-through" }}>${listSubtotal}</span>
               </div>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>Subtotal ({items.length} {items.length === 1 ? "photo" : "photos"})</span>
+                <span>Subtotal ({items.length} {items.length === 1 ? "Photo" : "Photos"})</span>
                 <span>${subtotal}</span>
               </div>
               {bundleSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
-                  <span>Bundle discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
+                  <span>Bundle Discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
                 </div>
               )}
               {promoSave > 0 && (
@@ -1169,7 +1169,7 @@ export default function Customize() {
               )}
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", color:INK, fontSize:12 }}>
                 <span style={{ display:"flex", alignItems:"center", gap:6 }}>
-                  <Check size={13} style={{ color:"#16a34a" }}/> Eligible for free shipping
+                  <Check size={13} style={{ color:"#16a34a" }}/> Eligible For Free Shipping
                 </span>
                 <span style={{ color:MUTED }}>$0</span>
               </div>
