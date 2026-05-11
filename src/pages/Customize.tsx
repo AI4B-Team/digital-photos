@@ -1064,14 +1064,14 @@ export default function Customize() {
                   alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700,
                 }}>!</span>
                 <div style={{ fontSize:11.5, color:INK, lineHeight:1.45 }}>
-                  {lowResCount === 1 ? "One of your photos is low resolution" : `${lowResCount} photos are low resolution`}, consider replacing{" "}
+                  {lowResCount === 1 ? "One Of Your Photos Is Low Resolution" : `${lowResCount} Photos Are Low Resolution`}, Consider Replacing{" "}
                   <button
                     onClick={() => {
                       const first = items.find(i => i.lowRes);
                       if (first) { setSelectedId(first.id); handleAddImage(); }
                     }}
                     style={{ background:"none", border:"none", padding:0, color:INK, fontWeight:600, textDecoration:"underline", cursor:"pointer", fontFamily:"inherit", fontSize:11.5 }}
-                  >Review and replace</button>.
+                  >Review And Replace</button>.
                 </div>
               </div>
             )}
