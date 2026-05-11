@@ -609,6 +609,8 @@ export default function Customize() {
             gap:16, width:"100%", maxWidth:"100%",
             transition:"all .3s cubic-bezier(.22,1,.32,1)",
           }}>
+            {/* Phantom spacer to visually center the image (offsets the toolbar width on the right) */}
+            <div aria-hidden="true" style={{ width: 66, flex: "0 0 auto" }}/>
             <div style={{ display:"flex", alignItems:"center", justifyContent:"center", flex:"0 1 auto", minWidth:0 }}>
               {renderPreview()}
             </div>
