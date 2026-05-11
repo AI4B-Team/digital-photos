@@ -608,9 +608,11 @@ export default function Customize() {
           {/* Mat / Border */}
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
-            <div className="cz-row" style={{ marginBottom:14 }}>
+            <div style={{ display:"grid", gridTemplateColumns:`repeat(${BORDERS.length}, 1fr)`, gap:8, marginBottom:14 }}>
               {BORDERS.map(b => (
-                <button key={b.id} className={`cz-chip ${border===b.id?"on":""}`} onClick={() => setBorder(b.id)}>
+                <button key={b.id} className={`cz-chip ${border===b.id?"on":""}`}
+                  style={{ justifyContent:"center", padding:"9px 6px" }}
+                  onClick={() => setBorder(b.id)}>
                   {b.label}
                 </button>
               ))}
