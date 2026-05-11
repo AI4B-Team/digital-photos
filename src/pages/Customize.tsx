@@ -574,7 +574,7 @@ export default function Customize() {
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
             padding: isFrameless ? 0 : woodPad,
             borderRadius: isFrameless ? 0 : 3,
-            boxShadow: isFrameless ? "none" : "0 30px 60px -20px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.08)",
+            boxShadow: "none",
             display: "inline-block",
             maxWidth: "100%",
           }}>
