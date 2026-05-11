@@ -54,7 +54,30 @@ const G = `
 .cz-img-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,10,.34);opacity:0;transition:opacity .18s ease;pointer-events:none}
 .cz-img-wrap:hover .cz-img-overlay{opacity:1;pointer-events:auto}
 .cz-overlay-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(20,20,20,.82);color:#fff;border:1px solid rgba(255,255,255,.18);font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(6px);transition:all .15s ease}
-.cz-overlay-btn:hover{background:#fff;color:#0A0A0A;border-color:#fff;transform:translateY(-1px)}
+.cz-overlay-btn.alt{background:#fff;color:#0A0A0A;border-color:#fff}
+.cz-overlay-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.25)}
+.cz-overlay-btn:disabled{opacity:.6;cursor:not-allowed}
+.cz-busy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(10,10,10,.62);backdrop-filter:blur(4px);color:#fff;z-index:5}
+.cz-spinner{width:46px;height:46px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;animation:czSpin .9s linear infinite}
+@keyframes czSpin{to{transform:rotate(360deg)}}
+.cz-busy-label{font-size:13px;font-weight:600;letter-spacing:.02em;text-align:center;max-width:80%}
+.cz-busy-sub{font-size:11.5px;color:rgba(255,255,255,.7);text-align:center}
+.cz-modal-back{position:fixed;inset:0;background:rgba(10,10,10,.55);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:czFade .2s ease}
+.cz-modal{background:#fff;border-radius:18px;padding:24px;width:100%;max-width:460px;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.cz-modal h3{font-family:'Poppins',sans-serif;font-weight:700;font-size:19px;color:${INK};margin:0 0 6px}
+.cz-modal p{font-size:13px;color:${MUTED};margin:0 0 14px;line-height:1.5}
+.cz-modal textarea{width:100%;min-height:96px;padding:12px 14px;border:1px solid ${BORDER};border-radius:10px;font-family:'Poppins',sans-serif;font-size:13.5px;color:${INK};resize:vertical;outline:none;transition:border-color .15s}
+.cz-modal textarea:focus{border-color:${RED}}
+.cz-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+.cz-modal-btn{padding:10px 18px;border-radius:10px;font-family:'Poppins',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.cz-modal-btn.ghost{background:transparent;color:${MUTED}}
+.cz-modal-btn.ghost:hover{color:${INK}}
+.cz-modal-btn.primary{background:${RED};color:#fff}
+.cz-modal-btn.primary:hover{background:${RED_DK}}
+.cz-modal-btn:disabled{opacity:.5;cursor:not-allowed}
+.cz-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.cz-suggest button{font-size:11.5px;padding:6px 10px;border-radius:999px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif}
+.cz-suggest button:hover{border-color:${INK}}
 @media (max-width: 1100px){
   .cz-grid{grid-template-columns:1fr !important}
   .cz-stage{min-height:46vh !important;padding:28px 16px !important}
@@ -240,6 +263,20 @@ export default function Customize() {
   const [borderColor, setBorderColor] = useState(session.customization?.borderColor || "soft-white");
   const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
+  // Regeneration state
+  const [busy, setBusy]               = useState(false);
+  const [busyLabel, setBusyLabel]     = useState("");
+  const [busyElapsed, setBusyElapsed] = useState(0);
+  const [editOpen, setEditOpen]       = useState(false);
+  const [editPrompt, setEditPrompt]   = useState("");
+  const [errorMsg, setErrorMsg]       = useState("");
+
+  useEffect(() => {
+    if (!busy) { setBusyElapsed(0); return; }
+    const t = setInterval(() => setBusyElapsed(s => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [busy]);
+
   useEffect(() => { if (!portraitUrl) navigate("/"); }, [portraitUrl, navigate]);
 
   const frameDef  = FRAMES.find(f => f.id === frame)  || FRAMES[1];
@@ -248,6 +285,51 @@ export default function Customize() {
   const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
 
   const total = sizeDef.price + frameDef.add;
+
+  /* ── Regenerate / Edit ── */
+  const runRegenerate = async (extraPrompt) => {
+    setErrorMsg("");
+    setBusy(true);
+    setBusyLabel(extraPrompt ? "Applying your edits…" : "Generating a new variation…");
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const sourceImageUrl = session.photo || portraitUrl;
+      const { data, error } = await supabase.functions.invoke("regenerate-portrait", {
+        body: {
+          sessionId: session.orderId || session.cat ? (session as any).sessionDbId || null : null,
+          sourceImageUrl,
+          style: styleId,
+          extraPrompt: extraPrompt || "",
+        },
+      });
+      if (error) throw new Error(error.message || "Generation failed");
+      if (data?.error) throw new Error(data.error);
+      const newUrl = data?.url;
+      if (!newUrl) throw new Error("No image returned");
+
+      const updated = (session.generatedPortraits || []).map(p =>
+        p.style === styleId ? { ...p, url: newUrl } : p
+      );
+      // Ensure entry exists
+      if (!updated.find(p => p.style === styleId)) {
+        updated.push({ style: styleId, url: newUrl });
+      }
+      setSession({ generatedPortraits: updated });
+    } catch (e) {
+      console.error(e);
+      setErrorMsg(e?.message || "Something went wrong. Please try again.");
+    } finally {
+      setBusy(false);
+      setEditOpen(false);
+      setEditPrompt("");
+    }
+  };
+
+  const handleRetry = () => runRegenerate("");
+  const handleApplyEdit = () => {
+    if (!editPrompt.trim()) return;
+    runRegenerate(editPrompt.trim());
+  };
 
   /* ── Preview ── */
   const renderPreview = () => {
@@ -290,13 +372,22 @@ export default function Customize() {
               </div>
             </div>
             <div className="cz-img-overlay">
-              <button className="cz-overlay-btn" onClick={() => navigate("/create")} aria-label="Retry">
+              <button className="cz-overlay-btn" onClick={handleRetry} disabled={busy} aria-label="Retry">
                 <RotateCcw size={15}/> Retry
               </button>
-              <button className="cz-overlay-btn" onClick={() => navigate("/create")} aria-label="Edit">
+              <button className="cz-overlay-btn alt" onClick={() => setEditOpen(true)} disabled={busy} aria-label="Edit">
                 <Pencil size={15}/> Edit
               </button>
             </div>
+            {busy && (
+              <div className="cz-busy">
+                <div className="cz-spinner" />
+                <div className="cz-busy-label">{busyLabel}</div>
+                <div className="cz-busy-sub">
+                  This usually takes 20–60 seconds · {busyElapsed}s elapsed
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -621,6 +712,53 @@ export default function Customize() {
           </div>
         </aside>
       </div>
+
+      {/* Edit Modal */}
+      {editOpen && (
+        <div className="cz-modal-back" onClick={() => !busy && setEditOpen(false)}>
+          <div className="cz-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Edit your portrait</h3>
+            <p>Describe what you'd like to change. The AI will regenerate the portrait with your tweaks.</p>
+            <textarea
+              value={editPrompt}
+              onChange={(e) => setEditPrompt(e.target.value)}
+              placeholder="e.g. Make the background darker, add a gold crown, more dramatic lighting…"
+              disabled={busy}
+              autoFocus
+            />
+            <div className="cz-suggest">
+              {[
+                "Make the background darker",
+                "More dramatic lighting",
+                "Brighter and more vibrant",
+                "Add a subtle smile",
+                "Soften the colors",
+              ].map(s => (
+                <button key={s} type="button" onClick={() => setEditPrompt(s)} disabled={busy}>{s}</button>
+              ))}
+            </div>
+            {errorMsg && (
+              <div style={{ marginTop:10, fontSize:12.5, color:RED }}>{errorMsg}</div>
+            )}
+            <div className="cz-modal-actions">
+              <button className="cz-modal-btn ghost" onClick={() => setEditOpen(false)} disabled={busy}>Cancel</button>
+              <button className="cz-modal-btn primary" onClick={handleApplyEdit} disabled={busy || !editPrompt.trim()}>
+                {busy ? "Generating…" : "Apply Edit"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {errorMsg && !editOpen && (
+        <div style={{
+          position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)",
+          background:"#1A1A1A", color:"#fff", padding:"12px 18px", borderRadius:10,
+          fontSize:13, zIndex:90, boxShadow:"0 8px 28px rgba(0,0,0,.3)",
+        }}>
+          {errorMsg}
+        </div>
+      )}
     </div>
   );
 }
