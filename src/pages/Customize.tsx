@@ -623,14 +623,14 @@ export default function Customize() {
               {renderPreview()}
             </div>
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools">
-              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} title="AI Assistant" aria-label="AI Assistant">
+              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
                 <Sparkles size={18}/>
               </button>
               <div className="cz-tool-divider"/>
-              <button className="cz-tool" onClick={handleRetry} disabled={busy} title="Regenerate" aria-label="Regenerate">
+              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
                 <RotateCcw size={17}/>
               </button>
-              <button className="cz-tool" onClick={() => setEditOpen(true)} disabled={busy} title="Edit with prompt" aria-label="Edit with prompt">
+              <button className="cz-tool" onClick={() => setEditOpen(true)} disabled={busy} data-tip="Edit With Prompt" aria-label="Edit with prompt">
                 <Pencil size={17}/>
               </button>
             </div>
