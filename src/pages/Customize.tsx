@@ -385,12 +385,12 @@ export default function Customize() {
                 </button>
               ))}
             </div>
-            <div className="cz-label" style={{ marginBottom:8 }}><span>Mat color</span></div>
+            <div className="cz-label" style={{ marginBottom:8 }}><span>Mat color</span><span className="cz-value">{borderColorDef.label}</span></div>
             <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
               {BORDER_COLORS.map(c => (
-                <button key={c} aria-label={`Mat color ${c}`} onClick={() => setBorderColor(c)}
-                  className={`cz-swatch ${borderColor===c?"on":""}`}
-                  style={{ background:c, border: c==="#FFFFFF"?"1px solid rgba(0,0,0,.12)":"none" }}/>
+                <button key={c.id} aria-label={`Mat color ${c.label}`} title={c.label} onClick={() => setBorderColor(c.id)}
+                  className={`cz-swatch ${borderColor===c.id?"on":""}`}
+                  style={{ background:c.bg, border: "1px solid rgba(0,0,0,.12)" }}/>
               ))}
             </div>
           </div>
