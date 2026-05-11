@@ -550,6 +550,7 @@ export default function Customize() {
           background: isSelected ? "rgba(230,25,25,.04)" : "transparent",
           transition: "all .2s ease",
           display:"flex", justifyContent:"center",
+          scrollSnapAlign:"start",
         }}>
         {showRemove && (
           <button
