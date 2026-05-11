@@ -85,9 +85,13 @@ const SIZES = [
 
 const EFFECTS = [
   { id: "original", label: "Original", filter: "none" },
+  { id: "vivid",    label: "Vivid",    filter: "saturate(1.4) contrast(1.1)" },
+  { id: "warm",     label: "Warm",     filter: "saturate(1.2) hue-rotate(-8deg) brightness(1.05)" },
+  { id: "cool",     label: "Cool",     filter: "hue-rotate(8deg) saturate(1.1)" },
+  { id: "sepia",    label: "Sepia",    filter: "sepia(0.7) contrast(1.02)" },
+  { id: "faded",    label: "Faded",    filter: "contrast(.9) saturate(.85) brightness(1.05)" },
   { id: "silver",   label: "Silver",   filter: "grayscale(0.6) contrast(1.05)" },
   { id: "noir",     label: "Noir",     filter: "grayscale(1) contrast(1.15)" },
-  { id: "vivid",    label: "Vivid",    filter: "saturate(1.4) contrast(1.1)" },
   { id: "dramatic", label: "Dramatic", filter: "contrast(1.25) saturate(1.15) brightness(.95)" },
 ];
 
