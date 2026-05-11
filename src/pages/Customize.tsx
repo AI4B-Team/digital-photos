@@ -174,7 +174,8 @@ export default function Customize() {
   const [size,        setSize]        = useState(session.customization?.size        || '11" x 14"');
   const [effect,      setEffect]      = useState(session.customization?.effect      || "original");
   const [border,      setBorder]      = useState(session.customization?.border      || "shallow");
-  const [borderColor, setBorderColor] = useState(session.customization?.borderColor || "#FFFFFF");
+  const [borderColor, setBorderColor] = useState(session.customization?.borderColor || "soft-white");
+  const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
   useEffect(() => { if (!portraitUrl) navigate("/"); }, [portraitUrl, navigate]);
 
