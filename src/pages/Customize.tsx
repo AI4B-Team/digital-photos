@@ -78,6 +78,35 @@ const G = `
 .cz-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .cz-suggest button{font-size:11.5px;padding:6px 10px;border-radius:999px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif}
 .cz-suggest button:hover{border-color:${INK}}
+.cz-toolbar{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid ${BORDER};border-radius:14px;padding:6px;box-shadow:0 12px 30px -10px rgba(0,0,0,.12)}
+.cz-tool{width:38px;height:38px;border-radius:10px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
+.cz-tool:hover{background:#F4F1EC;color:${INK}}
+.cz-tool.on{background:rgba(230,25,25,.10);color:${RED}}
+.cz-tool:disabled{opacity:.45;cursor:not-allowed}
+.cz-tool-divider{height:1px;background:${BORDER};margin:4px 6px}
+.cz-ai-panel{width:320px;background:#fff;border:1px solid ${BORDER};border-radius:18px;box-shadow:0 18px 50px -12px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;animation:czAiSlide .28s cubic-bezier(.22,1,.32,1) both;align-self:stretch;max-height:560px}
+@keyframes czAiSlide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+.cz-ai-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid ${BORDER}}
+.cz-ai-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:${INK}}
+.cz-ai-icon{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,${RED},#FF6B5B);display:flex;align-items:center;justify-content:center;color:#fff}
+.cz-ai-close{background:transparent;border:none;cursor:pointer;color:${MUTED};padding:4px;border-radius:6px}
+.cz-ai-close:hover{background:#F4F1EC;color:${INK}}
+.cz-ai-body{padding:14px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+.cz-ai-intro{font-size:12.5px;color:${MUTED};line-height:1.5}
+.cz-ai-quick{display:flex;flex-direction:column;gap:6px}
+.cz-ai-quick button{text-align:left;padding:10px 12px;border-radius:10px;border:1px solid ${BORDER};background:#FAFAF7;font-family:'Poppins',sans-serif;font-size:12.5px;color:${INK};cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px}
+.cz-ai-quick button:hover{border-color:${INK};background:#fff}
+.cz-ai-input{display:flex;gap:6px;padding:10px;border-top:1px solid ${BORDER};background:#FAFAF7}
+.cz-ai-input input{flex:1;border:1px solid ${BORDER};border-radius:10px;padding:9px 12px;font-family:'Poppins',sans-serif;font-size:12.5px;outline:none;background:#fff}
+.cz-ai-input input:focus{border-color:${RED}}
+.cz-ai-send{background:${RED};color:#fff;border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cz-ai-send:disabled{opacity:.4;cursor:not-allowed}
+@media (max-width: 1100px){
+  .cz-ai-panel{width:100%;max-width:420px}
+  .cz-stage-row{flex-direction:column !important}
+  .cz-toolbar{flex-direction:row !important}
+  .cz-tool-divider{height:auto;width:1px;margin:6px 4px}
+}
 @media (max-width: 1100px){
   .cz-grid{grid-template-columns:1fr !important}
   .cz-stage{min-height:46vh !important;padding:28px 16px !important}
