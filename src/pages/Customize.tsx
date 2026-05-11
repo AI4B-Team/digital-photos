@@ -1047,8 +1047,8 @@ export default function Customize() {
               borderRadius:8, marginTop:10, fontWeight: bundlePct > 0 ? 600 : 500, textAlign:"center",
             }}>
               {bundlePct > 0
-                ? `🎉 ${Math.round(bundlePct*100)}% bundle discount applied!`
-                : "Add 2 photos — save 10% · Add 3+ — save 15%"}
+                ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
+                : "Add 2 Photos — Save 10% · Add 3+ — Save 15%"}
             </div>
 
             {/* Low-resolution warning */}
@@ -1064,14 +1064,14 @@ export default function Customize() {
                   alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700,
                 }}>!</span>
                 <div style={{ fontSize:11.5, color:INK, lineHeight:1.45 }}>
-                  {lowResCount === 1 ? "One of your photos is low resolution" : `${lowResCount} photos are low resolution`}, consider replacing{" "}
+                  {lowResCount === 1 ? "One Of Your Photos Is Low Resolution" : `${lowResCount} Photos Are Low Resolution`}, Consider Replacing{" "}
                   <button
                     onClick={() => {
                       const first = items.find(i => i.lowRes);
                       if (first) { setSelectedId(first.id); handleAddImage(); }
                     }}
                     style={{ background:"none", border:"none", padding:0, color:INK, fontWeight:600, textDecoration:"underline", cursor:"pointer", fontFamily:"inherit", fontSize:11.5 }}
-                  >Review and replace</button>.
+                  >Review And Replace</button>.
                 </div>
               </div>
             )}
@@ -1116,7 +1116,7 @@ export default function Customize() {
                 <button onClick={() => setPromoOpen(true)} style={{
                   background:"none", border:"none", padding:0, color:INK, fontWeight:600,
                   fontSize:12, cursor:"pointer", fontFamily:"inherit", textDecoration:"underline",
-                }}>+ Add promo code</button>
+                }}>+ Add Promo Code</button>
               )}
             </div>
 
@@ -1125,7 +1125,7 @@ export default function Customize() {
               {giftOpen || giftNote ? (
                 <div>
                   <div style={{ fontSize:11, color:MUTED, fontWeight:600, marginBottom:5, letterSpacing:".08em", textTransform:"uppercase" }}>
-                    Gift note
+                    Gift Note
                   </div>
                   <textarea
                     value={giftNote}
@@ -1143,23 +1143,23 @@ export default function Customize() {
                 <button onClick={() => setGiftOpen(true)} style={{
                   background:"none", border:"none", padding:0, color:INK, fontWeight:600,
                   fontSize:12, cursor:"pointer", fontFamily:"inherit", textDecoration:"underline",
-                }}>+ Add gift note</button>
+                }}>+ Add Gift Note</button>
               )}
             </div>
 
             {/* Subtotals */}
             <div style={{ display:"flex", flexDirection:"column", gap:6, fontSize:13, paddingTop:12, marginTop:12, borderTop:`1px solid ${BORDER}` }}>
               <div style={{ display:"flex", justifyContent:"space-between", color:MUTED }}>
-                <span>List price</span>
+                <span>List Price</span>
                 <span style={{ textDecoration:"line-through" }}>${listSubtotal}</span>
               </div>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>Subtotal ({items.length} {items.length === 1 ? "photo" : "photos"})</span>
+                <span>Subtotal ({items.length} {items.length === 1 ? "Photo" : "Photos"})</span>
                 <span>${subtotal}</span>
               </div>
               {bundleSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
-                  <span>Bundle discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
+                  <span>Bundle Discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
                 </div>
               )}
               {promoSave > 0 && (
@@ -1169,7 +1169,7 @@ export default function Customize() {
               )}
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", color:INK, fontSize:12 }}>
                 <span style={{ display:"flex", alignItems:"center", gap:6 }}>
-                  <Check size={13} style={{ color:"#16a34a" }}/> Eligible for free shipping
+                  <Check size={13} style={{ color:"#16a34a" }}/> Eligible For Free Shipping
                 </span>
                 <span style={{ color:MUTED }}>$0</span>
               </div>
@@ -1184,7 +1184,7 @@ export default function Customize() {
                 <span style={{ fontSize:13, fontWeight:600, color:INK }}>Total</span>
                 {totalSavings > 0 && (
                   <span style={{ fontSize:11, color:"#16a34a", fontWeight:600 }}>
-                    You're saving ${totalSavings} ({savingsPct}% off)
+                    You're Saving ${totalSavings} ({savingsPct}% Off)
                   </span>
                 )}
               </div>
@@ -1196,7 +1196,7 @@ export default function Customize() {
             padding:"16px 18px", fontSize:14.5,
             display:"flex", alignItems:"center", justifyContent:"center", gap:10,
           }}>
-            <Check size={18}/> Continue to checkout
+            <Check size={18}/> Continue To Checkout
           </button>
 
           {/* Buy Now, Pay Later */}
