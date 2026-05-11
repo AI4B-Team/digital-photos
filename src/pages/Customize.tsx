@@ -311,17 +311,50 @@ export default function Customize() {
   const params = new URLSearchParams(window.location.search);
   const styleId = params.get("style") || session.generatedPortraits?.[0]?.style || "";
   const PLACEHOLDER = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=80";
-  const portraitUrl = useMemo(() => {
-    const found = session.generatedPortraits?.find(p => p.style === styleId);
-    return found?.url || session.generatedPortraits?.[0]?.url || session.photo || PLACEHOLDER;
-  }, [styleId, session.generatedPortraits, session.photo]);
+  const initialPortraitUrl =
+    session.generatedPortraits?.find(p => p.style === styleId)?.url
+    || session.generatedPortraits?.[0]?.url
+    || session.photo
+    || PLACEHOLDER;
 
-  const [frame,       setFrame]       = useState(session.customization?.frame       || "black");
-  const [size,        setSize]        = useState(session.customization?.size        || '11" x 14"');
-  const [effect,      setEffect]      = useState(session.customization?.effect      || "original");
-  const [border,      setBorder]      = useState(session.customization?.border      || "shallow");
-  const [borderColor, setBorderColor] = useState(session.customization?.borderColor || "soft-white");
-  const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
+  // Multi-image cart: each item is an independent print with its own config
+  const makeItem = (overrides = {}) => ({
+    id: crypto.randomUUID(),
+    photoUrl: initialPortraitUrl,
+    style: styleId,
+    frame: "black",
+    size: '11" x 14"',
+    effect: "original",
+    border: "shallow",
+    borderColor: "soft-white",
+    ...overrides,
+  });
+
+  const [items, setItems] = useState(() => {
+    const saved = (session as any).customizationItems;
+    if (saved?.length) return saved;
+    return [makeItem({
+      frame: session.customization?.frame || "black",
+      size: session.customization?.size || '11" x 14"',
+      effect: session.customization?.effect || "original",
+      border: session.customization?.border || "shallow",
+      borderColor: session.customization?.borderColor || "soft-white",
+    })];
+  });
+  const [selectedId, setSelectedId] = useState(() => items[0].id);
+  const selected = items.find(i => i.id === selectedId) || items[0];
+  const updateSelected = (patch) => {
+    setItems(prev => prev.map(i => i.id === selectedId ? { ...i, ...patch } : i));
+  };
+  const removeItem = (id) => {
+    setItems(prev => {
+      if (prev.length <= 1) return prev;
+      const next = prev.filter(i => i.id !== id);
+      if (id === selectedId) setSelectedId(next[0].id);
+      return next;
+    });
+  };
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Regeneration state
   const [busy, setBusy]               = useState(false);
@@ -332,7 +365,6 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
-  const [qty, setQty]                 = useState(1);
 
   useEffect(() => {
     if (!busy) { setBusyElapsed(0); return; }
@@ -340,16 +372,32 @@ export default function Customize() {
     return () => clearInterval(t);
   }, [busy]);
 
-  useEffect(() => { if (!portraitUrl) navigate("/"); }, [portraitUrl, navigate]);
+  useEffect(() => { if (!initialPortraitUrl) navigate("/"); }, [initialPortraitUrl, navigate]);
+
+  // Selected item's resolved defs (drives left panel + AI ops)
+  const frame = selected.frame, size = selected.size, effect = selected.effect;
+  const border = selected.border, borderColor = selected.borderColor;
+  const portraitUrl = selected.photoUrl;
+  const setFrame = (v) => updateSelected({ frame: v });
+  const setSize = (v) => updateSelected({ size: v });
+  const setEffect = (v) => updateSelected({ effect: v });
+  const setBorder = (v) => updateSelected({ border: v });
+  const setBorderColor = (v) => updateSelected({ borderColor: v });
+  const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
   const frameDef  = FRAMES.find(f => f.id === frame)  || FRAMES[1];
   const sizeDef   = SIZES.find(s => s.id === size)    || SIZES[2];
   const effectDef = EFFECTS.find(e => e.id === effect) || EFFECTS[0];
   const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
 
-  const unitPrice  = sizeDef.price + frameDef.add;
-  const subtotal   = unitPrice * qty;
-  const bundlePct  = qty >= 3 ? 0.15 : qty >= 2 ? 0.10 : 0;
+  // Per-item price + bundle discount based on number of images
+  const itemPrice = (it) => {
+    const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
+    const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
+    return sd.price + fd.add;
+  };
+  const subtotal   = items.reduce((sum, it) => sum + itemPrice(it), 0);
+  const bundlePct  = items.length >= 3 ? 0.15 : items.length >= 2 ? 0.10 : 0;
   const bundleSave = Math.round(subtotal * bundlePct);
   const total      = subtotal - bundleSave;
 
