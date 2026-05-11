@@ -547,10 +547,8 @@ export default function Customize() {
       <div key={item.id}
         onClick={() => setSelectedId(item.id)}
         style={{
-          position:"relative", cursor:"pointer", padding:14, borderRadius:14,
-          border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
-          background: isSelected ? "rgba(230,25,25,.04)" : "transparent",
-          transition: "all .2s ease",
+          position:"relative", cursor:"pointer", padding:0,
+          border:"none", background:"transparent",
           display:"flex", flexDirection:"column", alignItems:"center", gap:10,
           scrollSnapAlign:"start",
         }}>
@@ -572,11 +570,13 @@ export default function Customize() {
         <div style={{ display:"flex", alignItems:"center", gap:16 }}>
           <div style={{
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
-            padding: isFrameless ? 0 : woodPad,
-            borderRadius: isFrameless ? 0 : 3,
+            padding: (isFrameless ? 6 : woodPad + 6),
+            borderRadius: isFrameless ? 12 : 6,
             boxShadow: "none",
             display: "inline-block",
             maxWidth: "100%",
+            border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
+            transition: "border-color .2s ease",
           }}>
             <div style={{
               background: bcd.bg,
