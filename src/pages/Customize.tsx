@@ -712,6 +712,53 @@ export default function Customize() {
           </div>
         </aside>
       </div>
+
+      {/* Edit Modal */}
+      {editOpen && (
+        <div className="cz-modal-back" onClick={() => !busy && setEditOpen(false)}>
+          <div className="cz-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Edit your portrait</h3>
+            <p>Describe what you'd like to change. The AI will regenerate the portrait with your tweaks.</p>
+            <textarea
+              value={editPrompt}
+              onChange={(e) => setEditPrompt(e.target.value)}
+              placeholder="e.g. Make the background darker, add a gold crown, more dramatic lighting…"
+              disabled={busy}
+              autoFocus
+            />
+            <div className="cz-suggest">
+              {[
+                "Make the background darker",
+                "More dramatic lighting",
+                "Brighter and more vibrant",
+                "Add a subtle smile",
+                "Soften the colors",
+              ].map(s => (
+                <button key={s} type="button" onClick={() => setEditPrompt(s)} disabled={busy}>{s}</button>
+              ))}
+            </div>
+            {errorMsg && (
+              <div style={{ marginTop:10, fontSize:12.5, color:RED }}>{errorMsg}</div>
+            )}
+            <div className="cz-modal-actions">
+              <button className="cz-modal-btn ghost" onClick={() => setEditOpen(false)} disabled={busy}>Cancel</button>
+              <button className="cz-modal-btn primary" onClick={handleApplyEdit} disabled={busy || !editPrompt.trim()}>
+                {busy ? "Generating…" : "Apply Edit"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {errorMsg && !editOpen && (
+        <div style={{
+          position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)",
+          background:"#1A1A1A", color:"#fff", padding:"12px 18px", borderRadius:10,
+          fontSize:13, zIndex:90, boxShadow:"0 8px 28px rgba(0,0,0,.3)",
+        }}>
+          {errorMsg}
+        </div>
+      )}
     </div>
   );
 }
