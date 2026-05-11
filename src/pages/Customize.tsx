@@ -623,17 +623,6 @@ export default function Customize() {
               <button className="cz-tool" onClick={() => setEditOpen(true)} disabled={busy} title="Edit with prompt" aria-label="Edit with prompt">
                 <Pencil size={17}/>
               </button>
-              <button className="cz-tool" title="Add layer" aria-label="Add layer"><Plus size={18}/></button>
-              <button className="cz-tool" title="Duplicate" aria-label="Duplicate"><Copy size={16}/></button>
-              <button className="cz-tool" title="Lock" aria-label="Lock"><Lock size={16}/></button>
-              <button className="cz-tool" title="Hide" aria-label="Hide"><EyeOff size={16}/></button>
-              <button className="cz-tool" title="Download preview" aria-label="Download preview"><Download size={16}/></button>
-              <button className="cz-tool" title="Delete" aria-label="Delete"><Trash2 size={16}/></button>
-              <div className="cz-tool-divider"/>
-              <button className="cz-tool" title="Move up" aria-label="Move up"><ChevronUp size={18}/></button>
-              <button className="cz-tool" title="Move down" aria-label="Move down"><ChevronDown size={18}/></button>
-              <button className="cz-tool" title="Adjust" aria-label="Adjust"><SlidersHorizontal size={16}/></button>
-            </div>
             {aiOpen && (
               <div className="cz-ai-panel">
                 <div className="cz-ai-head">
