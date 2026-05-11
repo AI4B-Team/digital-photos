@@ -1019,7 +1019,7 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
           Choose Your Format
         </h2>
 
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:40 }} className="plangrid">
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:40 }} className="plangrid">
 
           {/* ── CARD 1: INSTANT MASTERPIECE ── */}
           <div style={{ position:"relative", background:T.sur, border:`1px solid ${T.border}`,
@@ -1144,6 +1144,29 @@ function PreviewScreen({ cat, photo, selectedStyles, generatedPortraits = [], on
               background:T.cream, color:T.bg, fontSize:12, fontWeight:600, border:"none",
               cursor:"pointer", letterSpacing:".07em", textTransform:"uppercase" }}>
               Order Canvas
+            </button>
+          </div>
+
+          {/* ── CARD 4: DOWNLOAD ONLY ── */}
+          <div style={{ background:T.sur, border:`1px solid ${T.border}`,
+            borderRadius:10, padding:"26px 18px 20px", textAlign:"center" }}>
+            <Download size={20} color={T.cream} style={{ margin:"0 auto 10px", display:"block" }}/>
+            <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, fontWeight:700, marginBottom:8 }}>
+              Download Only
+            </div>
+            <div style={{ fontSize:32, color:T.cream, fontWeight:700, lineHeight:1, marginBottom:14 }}>$19</div>
+            <p style={{ fontSize:11, color:T.muted, lineHeight:1.6, marginBottom:14 }}>
+              Single high-resolution download — no frills, just your portrait.
+            </p>
+            <div style={{ textAlign:"left", marginBottom:16 }}>
+              {["No Watermark","Instant Download","High-Resolution Portrait","Personal use license"].map(f => (
+                <CheckRow key={f} label={f}/>
+              ))}
+            </div>
+            <button onClick={buyDigital} style={{ width:"100%", padding:"12px", borderRadius:6,
+              background:T.cream, color:T.bg, fontSize:12, fontWeight:600, border:"none",
+              cursor:"pointer", letterSpacing:".07em", textTransform:"uppercase" }}>
+              Download Now
             </button>
           </div>
         </div>
