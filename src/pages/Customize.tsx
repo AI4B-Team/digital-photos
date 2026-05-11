@@ -3,6 +3,10 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send } from "lucide-react";
+import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
+import affirmLogo from "@/assets/payment-logos/affirm.svg";
+import klarnaLogo from "@/assets/payment-logos/klarna.svg";
+import afterpayLogo from "@/assets/payment-logos/afterpay.png";
 
 /* ── Tokens ── */
 const RED = "#E61919";
