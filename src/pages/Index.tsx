@@ -855,8 +855,9 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, onDone }) {
           </div>
           <p style={{ fontSize:12, color:T.gold, marginBottom:38 }}>{Math.round(pct)}%</p>
 
-          <p style={{ fontSize:11, color:T.dim, textAlign:"center", maxWidth:360 }}>
-            AI is generating {active.length} unique portrait{active.length>1?"s":""} from your photo. This may take 1–3 minutes.
+          <p style={{ fontSize:11, color:T.dim, textAlign:"center", maxWidth:360, lineHeight:1.7 }}>
+            AI is generating {active.length} unique portrait{active.length>1?"s":""} from your photo.<br/>
+            This may take 1–3 minutes.
           </p>
         </>
       )}
