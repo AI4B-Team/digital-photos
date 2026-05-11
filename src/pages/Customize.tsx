@@ -103,8 +103,21 @@ const BORDERS = [
 ];
 
 const BORDER_COLORS = [
-  "#FFFFFF", "#EFE6D2", "#F5DCDC", "#DCD8B8",
-  "#7A7A7A", "#9E8669", "#9C5757", "#3F5F8A", "#3F6B5C",
+  { id: "soft-white",   label: "Soft White",   bg: "#F5F2ED" },
+  { id: "dusty-pink",   label: "Dusty Pink",   bg: "#E8D4C8" },
+  { id: "charcoal",     label: "Charcoal Gray",bg: "#2E2E30" },
+  { id: "sage",         label: "Sage",         bg: "#B5BBA3" },
+  { id: "shiplap",      label: "Shiplap",      bg: "repeating-linear-gradient(0deg,#EFEAE2 0 14px,#E4DED4 14px 15px)" },
+  { id: "pampas",       label: "Pampas Grass", bg: "repeating-linear-gradient(90deg,#E8E4D8 0 6px,#DDD7C7 6px 7px)" },
+  { id: "linen",        label: "Linen",        bg: "#EFE6D2" },
+  { id: "blush",        label: "Blush",        bg: "#F5DCDC" },
+  { id: "sand",         label: "Sand",         bg: "#DCD8B8" },
+  { id: "stone",        label: "Stone",        bg: "#7A7A7A" },
+  { id: "walnut",       label: "Walnut",       bg: "#9E8669" },
+  { id: "rust",         label: "Rust",         bg: "#9C5757" },
+  { id: "navy",         label: "Navy",         bg: "#3F5F8A" },
+  { id: "forest",       label: "Forest",       bg: "#3F6B5C" },
+  { id: "white",        label: "White",        bg: "#FFFFFF" },
 ];
 
 /* ── Frame swatch (mini) ── */
@@ -161,7 +174,8 @@ export default function Customize() {
   const [size,        setSize]        = useState(session.customization?.size        || '11" x 14"');
   const [effect,      setEffect]      = useState(session.customization?.effect      || "original");
   const [border,      setBorder]      = useState(session.customization?.border      || "shallow");
-  const [borderColor, setBorderColor] = useState(session.customization?.borderColor || "#FFFFFF");
+  const [borderColor, setBorderColor] = useState(session.customization?.borderColor || "soft-white");
+  const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
   useEffect(() => { if (!portraitUrl) navigate("/"); }, [portraitUrl, navigate]);
 
@@ -189,7 +203,7 @@ export default function Customize() {
         maxWidth: "100%",
       }}>
         <div style={{
-          background: borderColor,
+          background: borderColorDef.bg,
           padding: innerBorder,
           display: "flex", alignItems: "center", justifyContent: "center",
           boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
@@ -371,12 +385,12 @@ export default function Customize() {
                 </button>
               ))}
             </div>
-            <div className="cz-label" style={{ marginBottom:8 }}><span>Mat color</span></div>
+            <div className="cz-label" style={{ marginBottom:8 }}><span>Mat color</span><span className="cz-value">{borderColorDef.label}</span></div>
             <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
               {BORDER_COLORS.map(c => (
-                <button key={c} aria-label={`Mat color ${c}`} onClick={() => setBorderColor(c)}
-                  className={`cz-swatch ${borderColor===c?"on":""}`}
-                  style={{ background:c, border: c==="#FFFFFF"?"1px solid rgba(0,0,0,.12)":"none" }}/>
+                <button key={c.id} aria-label={`Mat color ${c.label}`} title={c.label} onClick={() => setBorderColor(c.id)}
+                  className={`cz-swatch ${borderColor===c.id?"on":""}`}
+                  style={{ background:c.bg, border: "1px solid rgba(0,0,0,.12)" }}/>
               ))}
             </div>
           </div>
@@ -438,7 +452,7 @@ export default function Customize() {
                     display:"inline-block",
                   }}>
                     <div style={{
-                      background: borderColor,
+                      background: borderColorDef.bg,
                       padding: borderDef.px * 0.4,
                       display:"flex",
                     }}>
