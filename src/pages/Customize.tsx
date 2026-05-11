@@ -397,7 +397,7 @@ export default function Customize() {
   const renderPreview = () => {
     const woodPad = frameDef.w || 0;
     const innerBorder = borderDef.px;
-    const isFrameless = frameDef.id === "frameless";
+    const isFrameless = frameDef.id === "frameless" || frameDef.id === "digital";
     const isCanvas    = frameDef.id === "canvas";
 
     return (
