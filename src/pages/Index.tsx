@@ -490,7 +490,7 @@ function HomePage({ onGenerate }) {
   const genLabel = () => {
     if (!cat)          return "CREATE MY PORTRAITS";
     if (!photo)        return "Upload a Photo";
-    if (!styles.length)return "Select at Least One Style";
+    if (!styles.length)return "Select at least one style";
     const c = CATS.find(c=>c.id===cat);
     return `Generate My ${c?.label} Portraits`;
   };
