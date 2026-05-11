@@ -366,6 +366,29 @@ export default function Customize() {
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
 
+  // Promo code, gift note, low-res warnings
+  const PROMOS: Record<string, { pct: number; label: string }> = {
+    MOMGLOW30: { pct: 0.30, label: "Mother's Day 30% off" },
+    WELCOME15: { pct: 0.15, label: "Welcome 15% off" },
+    BUNDLE10:  { pct: 0.10, label: "Bundle 10% off" },
+  };
+  const [promoCode, setPromoCode]     = useState("");
+  const [promoApplied, setPromoApplied] = useState<{ code: string; pct: number; label: string } | null>(null);
+  const [promoOpen, setPromoOpen]     = useState(false);
+  const [promoError, setPromoError]   = useState("");
+  const [giftNote, setGiftNote]       = useState("");
+  const [giftOpen, setGiftOpen]       = useState(false);
+
+  const applyPromo = () => {
+    const code = promoCode.trim().toUpperCase();
+    const p = PROMOS[code];
+    if (!p) { setPromoError("That code isn't valid."); return; }
+    setPromoApplied({ code, ...p });
+    setPromoError("");
+    setPromoOpen(false);
+  };
+  const clearPromo = () => { setPromoApplied(null); setPromoCode(""); };
+
   useEffect(() => {
     if (!busy) { setBusyElapsed(0); return; }
     const t = setInterval(() => setBusyElapsed(s => s + 1), 1000);
