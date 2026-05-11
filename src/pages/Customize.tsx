@@ -124,6 +124,7 @@ const G = `
 
 /* ── Options ── */
 const FRAMES = [
+  { id: "digital",     label: "Digital",     add: -8, wood: null, digital: true },
   { id: "frameless",   label: "Frameless",   add: 0,  wood: null },
   { id: "black",       label: "Black",       add: 0,  wood: "#1a1a1a", w: 14 },
   { id: "white",       label: "White",       add: 0,  wood: "#f4f4f4", w: 14 },
