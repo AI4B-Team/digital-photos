@@ -582,7 +582,7 @@ export default function Customize() {
               background: bcd.bg,
               padding: bd.px,
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
+              boxShadow: "none",
             }}>
               <div className="cz-img-wrap">
                 <img src={item.photoUrl} alt="Your portrait"
