@@ -505,7 +505,7 @@ export default function Customize() {
             padding:"16px 18px", fontSize:14.5,
             display:"flex", alignItems:"center", justifyContent:"center", gap:10,
           }}>
-            <Check size={18}/> Continue to Checkout
+            <Check size={18}/> Continue to checkout
           </button>
 
           <div style={{ textAlign:"center", color:MUTED, fontSize:11.5 }}>
