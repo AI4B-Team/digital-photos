@@ -812,13 +812,18 @@ export default function Customize() {
 
         {/* Preview (middle) */}
         <div className="cz-stage cz-fade" style={{
-          padding:"56px 24px",
+          padding:"0 24px 24px",
           minHeight:"calc(100vh - 70px)",
-          display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
-          gap:24,
+          maxHeight:"calc(100vh - 70px)",
+          display:"flex", flexDirection:"column", alignItems:"center",
+          gap:16,
           background:`radial-gradient(ellipse at 50% 30%, #FFFFFF 0%, ${BG} 70%)`,
+          overflow:"hidden",
         }}>
-          <div style={{ textAlign:"center" }}>
+          <div style={{
+            textAlign:"center", flexShrink:0, padding:"32px 0 8px",
+            position:"sticky", top:0, zIndex:5, width:"100%",
+          }}>
             <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
             <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
               Make It Yours.
