@@ -679,20 +679,6 @@ export default function Customize() {
                   <div className="cz-ai-intro">
                     Describe what you'd like to change. The AI will regenerate the portrait with your tweaks.
                   </div>
-                  <textarea
-                    value={aiInput}
-                    onChange={(e) => setAiInput(e.target.value)}
-                    placeholder="e.g. Make the background darker, add a gold crown, more dramatic lighting…"
-                    disabled={busy}
-                    style={{
-                      width:"100%", minHeight:88, padding:"10px 12px",
-                      border:`1px solid ${BORDER}`, borderRadius:10,
-                      fontFamily:"'Poppins',sans-serif", fontSize:12.5, color:INK,
-                      resize:"vertical", outline:"none", background:"#fff",
-                    }}
-                    onFocus={(e) => e.currentTarget.style.borderColor = RED}
-                    onBlur={(e) => e.currentTarget.style.borderColor = BORDER}
-                  />
                   <div className="cz-suggest" style={{ marginTop:0 }}>
                     {[
                       "Make the background darker",
@@ -704,38 +690,63 @@ export default function Customize() {
                       <button key={s} type="button" disabled={busy} onClick={() => setAiInput(s)}>{s}</button>
                     ))}
                   </div>
-                  <div style={{ display:"flex", justifyContent:"space-between", gap:8, marginTop:4 }}>
-                    <button
-                      type="button"
-                      disabled={busy}
-                      onClick={() => runRegenerate("")}
-                      style={{
-                        background:"transparent", border:"none", cursor:"pointer",
-                        color:MUTED, fontFamily:"'Poppins',sans-serif", fontSize:12.5,
-                        fontWeight:500, padding:"8px 4px",
-                      }}
-                    >
-                      <Sparkles size={12} style={{ marginRight:4, verticalAlign:"-2px" }} color={RED}/>
-                      New Variation
-                    </button>
-                    <button
-                      type="button"
-                      disabled={busy || !aiInput.trim()}
-                      onClick={() => {
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => runRegenerate("")}
+                    style={{
+                      alignSelf:"flex-start", background:"transparent", border:"none", cursor:"pointer",
+                      color:MUTED, fontFamily:"'Poppins',sans-serif", fontSize:12.5,
+                      fontWeight:500, padding:"4px 0", display:"inline-flex", alignItems:"center", gap:6,
+                    }}
+                  >
+                    <Sparkles size={12} color={RED}/> New Variation
+                  </button>
+                </div>
+                <div style={{
+                  position:"relative", padding:10, borderTop:`1px solid ${BORDER}`, background:"#FAFAF7",
+                }}>
+                  <textarea
+                    value={aiInput}
+                    onChange={(e) => setAiInput(e.target.value)}
+                    placeholder="Describe what you'd like to change…"
+                    disabled={busy}
+                    style={{
+                      width:"100%", minHeight:64, padding:"10px 44px 10px 12px",
+                      border:`1px solid ${BORDER}`, borderRadius:10,
+                      fontFamily:"'Poppins',sans-serif", fontSize:12.5, color:INK,
+                      resize:"none", outline:"none", background:"#fff", display:"block",
+                    }}
+                    onFocus={(e) => e.currentTarget.style.borderColor = RED}
+                    onBlur={(e) => e.currentTarget.style.borderColor = BORDER}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey && aiInput.trim() && !busy) {
+                        e.preventDefault();
                         const p = aiInput.trim();
                         setAiInput("");
                         runRegenerate(p);
-                      }}
-                      style={{
-                        background:RED, color:"#fff", border:"none", cursor:"pointer",
-                        padding:"9px 18px", borderRadius:10,
-                        fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:600,
-                        opacity: (busy || !aiInput.trim()) ? .5 : 1,
-                      }}
-                    >
-                      {busy ? "Generating…" : "Apply Edit"}
-                    </button>
-                  </div>
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    aria-label="Generate"
+                    disabled={busy || !aiInput.trim()}
+                    onClick={() => {
+                      const p = aiInput.trim();
+                      setAiInput("");
+                      runRegenerate(p);
+                    }}
+                    style={{
+                      position:"absolute", right:18, bottom:18,
+                      width:32, height:32, borderRadius:8,
+                      background:RED, color:"#fff", border:"none", cursor:"pointer",
+                      display:"flex", alignItems:"center", justifyContent:"center",
+                      opacity: (busy || !aiInput.trim()) ? .5 : 1,
+                    }}
+                  >
+                    <Send size={14}/>
+                  </button>
                 </div>
               </div>
             )}
