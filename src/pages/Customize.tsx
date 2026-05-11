@@ -290,7 +290,7 @@ export default function Customize() {
   const runRegenerate = async (extraPrompt) => {
     setErrorMsg("");
     setBusy(true);
-    setBusyLabel(extraPrompt ? "Applying your edits…" : "Generating a new variation…");
+    setBusyLabel(extraPrompt ? "Applying Your Edits…" : "Generating A New Variation…");
     try {
       const { supabase } = await import("@/integrations/supabase/client");
       const sourceImageUrl = session.photo || portraitUrl;
@@ -384,7 +384,7 @@ export default function Customize() {
                 <div className="cz-spinner" />
                 <div className="cz-busy-label">{busyLabel}</div>
                 <div className="cz-busy-sub">
-                  This usually takes 20–60 seconds · {busyElapsed}s elapsed
+                  This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
                 </div>
               </div>
             )}
