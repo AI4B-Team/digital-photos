@@ -299,6 +299,8 @@ export default function Customize() {
   const [editOpen, setEditOpen]       = useState(false);
   const [editPrompt, setEditPrompt]   = useState("");
   const [errorMsg, setErrorMsg]       = useState("");
+  const [aiOpen, setAiOpen]           = useState(false);
+  const [aiInput, setAiInput]         = useState("");
 
   useEffect(() => {
     if (!busy) { setBusyElapsed(0); return; }
