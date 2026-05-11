@@ -1143,7 +1143,7 @@ export default function Customize() {
                 <button onClick={() => setGiftOpen(true)} style={{
                   background:"none", border:"none", padding:0, color:INK, fontWeight:600,
                   fontSize:12, cursor:"pointer", fontFamily:"inherit", textDecoration:"underline",
-                }}>+ Add gift note</button>
+                }}>+ Add Gift Note</button>
               )}
             </div>
 
