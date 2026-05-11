@@ -984,14 +984,27 @@ export default function Customize() {
                       </div>
                     </div>
                     <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
-                      <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>
-                        Portrait #{idx + 1}
+                      <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                        <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>
+                          Portrait #{idx + 1}
+                        </div>
+                        {it.lowRes && (
+                          <span title="Low resolution photo" style={{
+                            fontSize:9.5, fontWeight:700, letterSpacing:".06em",
+                            color:"#B45309", background:"#FEF3C7", padding:"2px 5px", borderRadius:4,
+                          }}>LOW-RES</span>
+                        )}
                       </div>
                       <div style={{ fontSize:11, color:MUTED, lineHeight:1.4 }}>
                         {sd.label}″ · {fd.label} · {ed.label}
                       </div>
-                      <div style={{ fontSize:13, fontWeight:600, color:INK, marginTop:2 }}>
-                        ${price}
+                      <div style={{ display:"flex", alignItems:"baseline", gap:6, marginTop:2 }}>
+                        <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
+                          ${Math.round(price * 1.4)}
+                        </span>
+                        <span style={{ fontSize:13, fontWeight:700, color:RED }}>
+                          ${price}
+                        </span>
                       </div>
                     </div>
                     {items.length > 1 && (
