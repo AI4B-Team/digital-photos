@@ -904,110 +904,115 @@ export default function Customize() {
           <div className="cz-section">
             <div className="cz-label" style={{ marginBottom:14 }}><span>Your Cart</span></div>
 
-            {/* Mini preview — mirrors live canvas */}
-            {(() => {
-              const isFrameless = frameDef.id === "frameless" || frameDef.id === "digital";
-              const isCanvas    = frameDef.id === "canvas";
-              const woodPad     = (frameDef.w || 0) * 0.35;
-              const maxDim      = 130;
-              const imgW = sizeDef.w >= sizeDef.h ? maxDim : maxDim * (sizeDef.w / sizeDef.h);
-              const imgH = sizeDef.h >= sizeDef.w ? maxDim : maxDim * (sizeDef.h / sizeDef.w);
-              return (
-                <div style={{
-                  background:BG, borderRadius:12, padding:16,
-                  display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14,
-                  border:`1px solid ${BORDER}`, minHeight:170,
-                }}>
-                  <div style={{
-                    background: isCanvas ? "#fff" : (isFrameless ? "transparent" : frameDef.wood),
-                    padding: isFrameless ? 0 : woodPad,
-                    borderRadius: isFrameless ? 0 : 2,
-                    boxShadow: isFrameless ? "0 8px 20px rgba(0,0,0,.12)" : "0 12px 24px -8px rgba(0,0,0,.25), 0 4px 10px rgba(0,0,0,.08)",
-                    display:"inline-block",
-                  }}>
-                    <div style={{
-                      background: borderColorDef.bg,
-                      padding: borderDef.px * 0.4,
-                      display:"flex",
+            {/* Itemized cart — one row per image */}
+            <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+              {items.map((it, idx) => {
+                const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
+                const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
+                const ed = EFFECTS.find(e => e.id === it.effect) || EFFECTS[0];
+                const bd = BORDERS.find(b => b.id === it.border) || BORDERS[1];
+                const bcd = BORDER_COLORS.find(c => c.id === it.borderColor) || BORDER_COLORS[0];
+                const isFrameless = fd.id === "frameless" || fd.id === "digital";
+                const isCanvas    = fd.id === "canvas";
+                const woodPad     = (fd.w || 0) * 0.3;
+                const thumb       = 56;
+                const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
+                const imgH = sd.h >= sd.w ? thumb : thumb * (sd.h / sd.w);
+                const price = sd.price + fd.add;
+                const isSel = it.id === selectedId;
+                return (
+                  <div key={it.id}
+                    onClick={() => setSelectedId(it.id)}
+                    style={{
+                      display:"flex", gap:10, padding:10, borderRadius:10,
+                      border: isSel ? `1.5px solid ${RED}` : `1px solid ${BORDER}`,
+                      background: isSel ? "rgba(230,25,25,.04)" : "#fff",
+                      cursor:"pointer", position:"relative",
                     }}>
-                      <img src={portraitUrl} alt="" style={{
-                        display:"block",
-                        width: imgW, height: imgH,
-                        objectFit:"cover",
-                        filter: effectDef.filter,
-                        transition:"width .25s ease, height .25s ease",
-                      }}/>
+                    <div style={{
+                      width:80, minWidth:80, display:"flex", alignItems:"center", justifyContent:"center",
+                      background:BG, borderRadius:6, padding:6,
+                    }}>
+                      <div style={{
+                        background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+                        padding: isFrameless ? 0 : woodPad, display:"inline-block",
+                      }}>
+                        <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
+                          <img src={it.photoUrl} alt="" style={{
+                            width: imgW, height: imgH, objectFit:"cover", display:"block",
+                            filter: ed.filter,
+                          }}/>
+                        </div>
+                      </div>
                     </div>
+                    <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
+                      <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>
+                        Portrait #{idx + 1}
+                      </div>
+                      <div style={{ fontSize:11, color:MUTED, lineHeight:1.4 }}>
+                        {sd.label}″ · {fd.label} · {ed.label}
+                      </div>
+                      <div style={{ fontSize:13, fontWeight:600, color:INK, marginTop:2 }}>
+                        ${price}
+                      </div>
+                    </div>
+                    {items.length > 1 && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); removeItem(it.id); }}
+                        aria-label="Remove"
+                        style={{
+                          position:"absolute", top:6, right:6,
+                          width:22, height:22, borderRadius:"50%",
+                          background:"transparent", border:"none", color:MUTED,
+                          cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+                        }}>
+                        <X size={14}/>
+                      </button>
+                    )}
                   </div>
-                </div>
-              );
-            })()}
-
-            <div className="cz-serif" style={{ fontSize:15, fontWeight:600, color:INK, marginBottom:2 }}>
-              Custom Portrait
-            </div>
-            <div style={{ fontSize:12, color:MUTED, marginBottom:14 }}>
-              {sizeDef.label}″ · {frameDef.label} · {effectDef.label}
+                );
+              })}
             </div>
 
-            {/* Quantity stepper */}
-            <div style={{
-              display:"flex", alignItems:"center", justifyContent:"space-between",
-              padding:"10px 0", borderTop:`1px solid ${BORDER}`,
-            }}>
-              <span style={{ fontSize:13, color:TXT, fontWeight:500 }}>Quantity</span>
-              <div style={{ display:"flex", alignItems:"center", gap:0, border:`1px solid ${BORDER}`, borderRadius:8, overflow:"hidden" }}>
-                <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{
-                  width:30, height:30, border:"none", background:"#fff", cursor:"pointer",
-                  fontSize:16, color:INK, fontWeight:600,
-                }}>−</button>
-                <span style={{
-                  minWidth:32, textAlign:"center", fontSize:13, fontWeight:600, color:INK,
-                  borderLeft:`1px solid ${BORDER}`, borderRight:`1px solid ${BORDER}`, padding:"6px 4px",
-                }}>{qty}</span>
-                <button onClick={() => setQty(q => Math.min(10, q + 1))} style={{
-                  width:30, height:30, border:"none", background:"#fff", cursor:"pointer",
-                  fontSize:16, color:INK, fontWeight:600,
-                }}>+</button>
-              </div>
-            </div>
+            {/* Add another image button */}
+            <button
+              onClick={handleAddImage}
+              disabled={busy}
+              style={{
+                marginTop:12, width:"100%", padding:"10px",
+                border:`1.5px dashed ${BORDER}`, borderRadius:10,
+                background:"transparent", cursor:"pointer",
+                fontFamily:"'Poppins',sans-serif", fontSize:12.5, fontWeight:600, color:INK,
+                display:"flex", alignItems:"center", justifyContent:"center", gap:6,
+                opacity: busy ? .5 : 1,
+              }}>
+              <Plus size={14}/> Add Another Photo
+            </button>
 
             {/* Bundle hint */}
             <div style={{
               fontSize:11.5, color: bundlePct > 0 ? "#16a34a" : MUTED,
-              padding:"6px 10px", background: bundlePct > 0 ? "#F0FDF4" : "#FAFAF7",
-              borderRadius:8, marginBottom:8, fontWeight: bundlePct > 0 ? 600 : 500,
+              padding:"8px 10px", background: bundlePct > 0 ? "#F0FDF4" : "#FAFAF7",
+              borderRadius:8, marginTop:10, fontWeight: bundlePct > 0 ? 600 : 500, textAlign:"center",
             }}>
               {bundlePct > 0
                 ? `🎉 ${Math.round(bundlePct*100)}% bundle discount applied!`
-                : qty === 1
-                  ? "Add 2 prints — save 10% · Add 3+ — save 15%"
-                  : ""}
+                : "Add 2 photos — save 10% · Add 3+ — save 15%"}
             </div>
 
-            {/* Line items */}
-            <div style={{ display:"flex", flexDirection:"column", gap:8, fontSize:13, paddingTop:12, borderTop:`1px solid ${BORDER}` }}>
+            {/* Subtotals */}
+            <div style={{ display:"flex", flexDirection:"column", gap:6, fontSize:13, paddingTop:12, marginTop:12, borderTop:`1px solid ${BORDER}` }}>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>{sizeDef.label}″ {(frameDef as any).digital ? "Digital File" : "Print"} {qty > 1 && `× ${qty}`}</span><span>${sizeDef.price * qty}</span>
+                <span>Subtotal ({items.length} {items.length === 1 ? "photo" : "photos"})</span>
+                <span>${subtotal}</span>
               </div>
-              {frameDef.add > 0 && (
-                <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                  <span>{frameDef.label} Frame {qty > 1 && `× ${qty}`}</span><span>+${frameDef.add * qty}</span>
-                </div>
-              )}
-              {frameDef.add < 0 && (
-                <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
-                  <span>Digital Discount</span><span>−${Math.abs(frameDef.add) * qty}</span>
-                </div>
-              )}
               {bundleSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", color:"#16a34a" }}>
                   <span>Bundle Discount ({Math.round(bundlePct*100)}%)</span><span>−${bundleSave}</span>
                 </div>
               )}
               <div style={{ display:"flex", justifyContent:"space-between", color:MUTED, fontSize:12 }}>
-                <span>{(frameDef as any).digital ? "Delivery" : "Shipping"}</span>
-                <span>{(frameDef as any).digital ? "Instant Email" : "Free"}</span>
+                <span>Shipping</span><span>Free</span>
               </div>
             </div>
 
