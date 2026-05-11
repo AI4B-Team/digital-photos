@@ -1248,6 +1248,7 @@ export default function App() {
   const [screen,      setScreen]   = useState("home");
   const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, styles:[], sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
+  const navigate                   = useNavigate();
 
   const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl }) => {
     let sessionId = null;
@@ -1269,8 +1270,9 @@ export default function App() {
   const handleGenDone = useCallback((portraits) => {
     setLocal(prev => ({ ...prev, generatedPortraits: portraits }));
     setSession({ generatedPortraits: portraits.map(p => ({ style: p.style, url: p.url })) });
-    setScreen("preview");
-  }, [setSession]);
+    const featured = portraits[0]?.style || "";
+    navigate(`/customize?style=${encodeURIComponent(featured)}`);
+  }, [setSession, navigate]);
 
   return (
     <>
