@@ -983,20 +983,22 @@ export default function Customize() {
                         </div>
                       </div>
                     </div>
-                    <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
-                      <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-                        <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>
-                          Portrait #{idx + 1}
-                        </div>
-                        {it.lowRes && (
-                          <span title="Low resolution photo" style={{
-                            fontSize:9.5, fontWeight:700, letterSpacing:".06em",
-                            color:"#B45309", background:"#FEF3C7", padding:"2px 5px", borderRadius:4,
-                          }}>LOW-RES</span>
-                        )}
+                    <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:3 }}>
+                      <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>
+                        Portrait #{idx + 1}
+                      </div>
+                      {it.lowRes && (
+                        <span title="Low resolution photo" style={{
+                          alignSelf:"flex-start",
+                          fontSize:9.5, fontWeight:700, letterSpacing:".06em",
+                          color:"#B45309", background:"#FEF3C7", padding:"2px 5px", borderRadius:4,
+                        }}>LOW-RES</span>
+                      )}
+                      <div style={{ fontSize:11, color:MUTED, lineHeight:1.4 }}>
+                        {sd.label}″
                       </div>
                       <div style={{ fontSize:11, color:MUTED, lineHeight:1.4 }}>
-                        {sd.label}″ · {fd.label} · {ed.label}
+                        {fd.label} · {ed.label}
                       </div>
                       <div style={{ display:"flex", alignItems:"baseline", gap:6, marginTop:2 }}>
                         <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
