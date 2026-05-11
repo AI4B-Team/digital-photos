@@ -789,7 +789,7 @@ export default function Customize() {
             border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
           }}>
             <div style={{ fontSize:12, color:INK, fontWeight:600, marginBottom:10, textAlign:"center" }}>
-              Or 4 interest-free payments of <span className="cz-serif" style={{ fontWeight:700 }}>${(total/4).toFixed(2)}</span>
+              Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(total/4).toFixed(2)}</span>
             </div>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
               {[
