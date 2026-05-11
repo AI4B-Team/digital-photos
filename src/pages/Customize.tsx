@@ -1073,7 +1073,7 @@ export default function Customize() {
                       if (first) { setSelectedId(first.id); handleAddImage(); }
                     }}
                     style={{ background:"none", border:"none", padding:0, color:INK, fontWeight:600, textDecoration:"underline", cursor:"pointer", fontFamily:"inherit", fontSize:11.5 }}
-                  >Review And Replace</button>.
+                  >Review & Replace.</button>
                 </div>
               </div>
             )}
