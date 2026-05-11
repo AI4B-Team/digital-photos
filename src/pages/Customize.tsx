@@ -386,11 +386,11 @@ export default function Customize() {
               ))}
             </div>
             <div className="cz-label" style={{ marginBottom:8 }}><span>Mat color</span><span className="cz-value">{borderColorDef.label}</span></div>
-            <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(6, 1fr)", gap:10 }}>
               {BORDER_COLORS.map(c => (
                 <button key={c.id} aria-label={`Mat color ${c.label}`} title={c.label} onClick={() => setBorderColor(c.id)}
                   className={`cz-swatch ${borderColor===c.id?"on":""}`}
-                  style={{ background:c.bg, border: "1px solid rgba(0,0,0,.12)" }}/>
+                  style={{ background:c.bg, border: "1px solid rgba(0,0,0,.12)", width:"100%", aspectRatio:"1 / 1", height:"auto" }}/>
               ))}
             </div>
           </div>
