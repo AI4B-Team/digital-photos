@@ -602,28 +602,32 @@ export default function Customize() {
               </div>
             </div>
           </div>
-          <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
-            onClick={(e) => e.stopPropagation()}
-            style={{ flexShrink:0 }}>
-            <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
-              <Sparkles size={18}/>
-            </button>
-            <div className="cz-tool-divider"/>
-            <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
-              <RotateCcw size={17}/>
-            </button>
-            <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
-              <Plus size={18}/>
-            </button>
-            {showRemove && (
-              <>
-                <div className="cz-tool-divider"/>
-                <button className="cz-tool" onClick={() => removeItem(item.id)} data-tip="Delete Image" aria-label="Delete image">
-                  <Trash2 size={17}/>
-                </button>
-              </>
-            )}
-          </div>
+          {isSelected ? (
+            <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
+              onClick={(e) => e.stopPropagation()}
+              style={{ flexShrink:0 }}>
+              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
+                <Sparkles size={18}/>
+              </button>
+              <div className="cz-tool-divider"/>
+              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
+                <RotateCcw size={17}/>
+              </button>
+              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
+                <Plus size={18}/>
+              </button>
+              {showRemove && (
+                <>
+                  <div className="cz-tool-divider"/>
+                  <button className="cz-tool" onClick={() => removeItem(item.id)} data-tip="Delete Image" aria-label="Delete image">
+                    <Trash2 size={17}/>
+                  </button>
+                </>
+              )}
+            </div>
+          ) : (
+            <div aria-hidden="true" style={{ width:48, flexShrink:0, visibility:"hidden" }}/>
+          )}
         </div>
         <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
           <span>{sd.label}″</span>
