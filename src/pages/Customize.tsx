@@ -347,7 +347,11 @@ export default function Customize() {
   const effectDef = EFFECTS.find(e => e.id === effect) || EFFECTS[0];
   const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
 
-  const total = sizeDef.price + frameDef.add;
+  const unitPrice  = sizeDef.price + frameDef.add;
+  const subtotal   = unitPrice * qty;
+  const bundlePct  = qty >= 3 ? 0.15 : qty >= 2 ? 0.10 : 0;
+  const bundleSave = Math.round(subtotal * bundlePct);
+  const total      = subtotal - bundleSave;
 
   /* ── Regenerate / Edit ── */
   const runRegenerate = async (extraPrompt) => {
