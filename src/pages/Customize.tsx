@@ -831,13 +831,13 @@ export default function Customize() {
           </div>
           <div className="cz-stage-row" style={{
             display:"flex", alignItems:"center", justifyContent:"center",
-            gap:16, width:"100%", maxWidth:"100%",
+            gap:16, width:"100%", maxWidth:"100%", flex:"1 1 auto", minHeight:0,
             transition:"all .3s cubic-bezier(.22,1,.32,1)",
           }}>
             <div className="cz-canvas-scroll" style={{
-              flex:"0 1 auto", minWidth:0, maxHeight:"calc(100vh - 180px)",
+              flex:"0 1 auto", minWidth:0, maxHeight:"100%", height:"100%",
               overflowY:"auto", display:"flex", flexDirection:"column",
-              alignItems:"center", gap:8, padding:"4px 6px",
+              alignItems:"center", justifyContent:"flex-start", gap:8, padding:"4px 6px",
               scrollBehavior:"smooth", scrollSnapType:"y proximity",
               WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
             }}>
