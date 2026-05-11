@@ -574,7 +574,7 @@ export default function Customize() {
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
             padding: isFrameless ? 0 : woodPad,
             borderRadius: isFrameless ? 0 : 3,
-            boxShadow: isFrameless ? "none" : "0 30px 60px -20px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.08)",
+            boxShadow: "none",
             display: "inline-block",
             maxWidth: "100%",
           }}>
@@ -582,7 +582,7 @@ export default function Customize() {
               background: bcd.bg,
               padding: bd.px,
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
+              boxShadow: "none",
             }}>
               <div className="cz-img-wrap">
                 <img src={item.photoUrl} alt="Your portrait"
