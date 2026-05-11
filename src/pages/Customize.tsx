@@ -552,20 +552,6 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center", gap:10,
           scrollSnapAlign:"start",
         }}>
-        {showRemove && (
-          <button
-            onClick={(e) => { e.stopPropagation(); removeItem(item.id); }}
-            aria-label="Remove image"
-            style={{
-              position:"absolute", top:6, right:6, zIndex:5,
-              width:28, height:28, borderRadius:"50%",
-              background:"#fff", border:`1px solid ${BORDER}`, color:INK,
-              cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
-              boxShadow:"0 4px 12px rgba(0,0,0,.12)",
-            }}>
-            <X size={14}/>
-          </button>
-        )}
         {/* Image + inline toolbar (toolbar anchored next to image regardless of size) */}
         <div style={{ display:"flex", alignItems:"center", gap:16 }}>
           <div style={{
