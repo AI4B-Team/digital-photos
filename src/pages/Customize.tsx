@@ -220,6 +220,28 @@ function FrameSwatch({ frame, on }) {
     </div>
   );
 
+  // Digital — file/download look
+  if (frame.id === "digital") {
+    return wrap(
+      <div style={{
+        width: 32, height: 26, borderRadius: 3,
+        background: "linear-gradient(160deg,#1a1a1a,#3a3a3a)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: "0 2px 6px rgba(0,0,0,.18)",
+        position: "relative",
+      }}>
+        <div style={{
+          width: 22, height: 17, borderRadius: 1,
+          background: "linear-gradient(160deg,#9fb3c8,#6b87a4)",
+        }}/>
+        <div style={{
+          position:"absolute", bottom:-3, left:"50%", transform:"translateX(-50%)",
+          width:14, height:2, borderRadius:1, background:"#1a1a1a",
+        }}/>
+      </div>
+    );
+  }
+
   // Frameless — floating photo on white
   if (frame.id === "frameless") {
     return wrap(
