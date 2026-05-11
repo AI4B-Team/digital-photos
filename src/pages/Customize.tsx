@@ -1047,8 +1047,8 @@ export default function Customize() {
               borderRadius:8, marginTop:10, fontWeight: bundlePct > 0 ? 600 : 500, textAlign:"center",
             }}>
               {bundlePct > 0
-                ? `🎉 ${Math.round(bundlePct*100)}% bundle discount applied!`
-                : "Add 2 photos — save 10% · Add 3+ — save 15%"}
+                ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
+                : "Add 2 Photos — Save 10% · Add 3+ — Save 15%"}
             </div>
 
             {/* Low-resolution warning */}
