@@ -734,7 +734,7 @@ export default function Customize() {
 
             {/* Mini preview — mirrors live canvas */}
             {(() => {
-              const isFrameless = frameDef.id === "frameless";
+              const isFrameless = frameDef.id === "frameless" || frameDef.id === "digital";
               const isCanvas    = frameDef.id === "canvas";
               const woodPad     = (frameDef.w || 0) * 0.35;
               const maxDim      = 130;
