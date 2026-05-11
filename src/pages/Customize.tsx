@@ -384,7 +384,7 @@ export default function Customize() {
                 <div className="cz-spinner" />
                 <div className="cz-busy-label">{busyLabel}</div>
                 <div className="cz-busy-sub">
-                  This usually takes 20–60 seconds · {busyElapsed}s elapsed
+                  This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
                 </div>
               </div>
             )}
