@@ -484,9 +484,17 @@ export default function Customize() {
       r.readAsDataURL(file);
     });
 
+    // Detect low resolution
+    const lowRes: boolean = await new Promise((resolve) => {
+      const im = new window.Image();
+      im.onload = () => resolve(im.naturalWidth < 1200 || im.naturalHeight < 1200);
+      im.onerror = () => resolve(false);
+      im.src = dataUrl;
+    });
+
     // Insert new item with current selected's settings as defaults; mark as busy
     const newItem = makeItem({
-      photoUrl: dataUrl,
+      photoUrl: dataUrl, lowRes,
       frame: selected.frame, size: selected.size, effect: selected.effect,
       border: selected.border, borderColor: selected.borderColor,
     });
