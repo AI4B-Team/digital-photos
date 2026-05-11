@@ -46,6 +46,11 @@ const G = `
 .cz-size-scroll::-webkit-scrollbar{height:6px}
 .cz-size-scroll::-webkit-scrollbar-thumb{background:#cfc7bd;border-radius:3px}
 .cz-size-scroll::-webkit-scrollbar-track{background:transparent}
+.cz-canvas-scroll{scrollbar-width:thin;scrollbar-color:#cfc7bd transparent;scroll-padding-top:12px}
+.cz-canvas-scroll::-webkit-scrollbar{width:6px}
+.cz-canvas-scroll::-webkit-scrollbar-thumb{background:#cfc7bd;border-radius:3px}
+.cz-canvas-scroll::-webkit-scrollbar-thumb:hover{background:#a8a098}
+.cz-canvas-scroll::-webkit-scrollbar-track{background:transparent}
 .cz-size-card{flex:0 0 auto;scroll-snap-align:start;background:#fff;border:1px solid ${BORDER};border-radius:12px;padding:12px 14px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-family:'Poppins',sans-serif;transition:all .15s;min-width:88px}
 .cz-size-card:hover{border-color:rgba(0,0,0,.25);transform:translateY(-1px)}
 .cz-size-card.on{border-color:${RED};box-shadow:0 0 0 1px ${RED}}
@@ -550,6 +555,7 @@ export default function Customize() {
           background: isSelected ? "rgba(230,25,25,.04)" : "transparent",
           transition: "all .2s ease",
           display:"flex", justifyContent:"center",
+          scrollSnapAlign:"start",
         }}>
         {showRemove && (
           <button
@@ -810,10 +816,12 @@ export default function Customize() {
           }}>
             {/* Phantom spacer to visually center the column (offsets the toolbar width on the right) */}
             <div aria-hidden="true" style={{ width: 66, flex: "0 0 auto" }}/>
-            <div style={{
+            <div className="cz-canvas-scroll" style={{
               flex:"0 1 auto", minWidth:0, maxHeight:"calc(100vh - 180px)",
               overflowY:"auto", display:"flex", flexDirection:"column",
               alignItems:"center", gap:8, padding:"4px 6px", scrollbarGutter:"stable",
+              scrollBehavior:"smooth", scrollSnapType:"y proximity",
+              WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
             }}>
               {items.map(it => renderItem(it, items.length > 1 && it.id === selectedId))}
             </div>
