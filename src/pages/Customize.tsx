@@ -402,14 +402,6 @@ export default function Customize() {
                 ))}
               </div>
             </div>
-            <div className="cz-img-overlay">
-              <button className="cz-overlay-btn" onClick={handleRetry} disabled={busy} aria-label="Retry">
-                <RotateCcw size={15}/> Retry
-              </button>
-              <button className="cz-overlay-btn alt" onClick={() => setEditOpen(true)} disabled={busy} aria-label="Edit">
-                <Pencil size={15}/> Edit
-              </button>
-            </div>
             {busy && (
               <div className="cz-busy">
                 <div className="cz-spinner" />
