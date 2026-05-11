@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronRight } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil } from "lucide-react";
 
 /* ── Tokens ── */
 const RED = "#E61919";
@@ -47,6 +47,13 @@ const G = `
 .cz-size-card.on{border-color:${RED};box-shadow:0 0 0 1px ${RED}}
 @keyframes czFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .cz-fade{animation:czFade .35s cubic-bezier(.23,1,.32,1) both}
+.cz-img-wrap{position:relative;display:inline-block;line-height:0}
+.cz-watermark{position:absolute;inset:0;pointer-events:none;overflow:hidden;mix-blend-mode:overlay;opacity:.55;display:flex;align-items:center;justify-content:center}
+.cz-watermark-inner{transform:rotate(-22deg);width:180%;font-family:'Poppins',sans-serif;font-weight:800;letter-spacing:.18em;color:rgba(255,255,255,.85);text-shadow:0 1px 2px rgba(0,0,0,.35);line-height:1.9;font-size:clamp(18px,2.4vw,30px);text-align:center;white-space:nowrap}
+.cz-img-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,10,.34);opacity:0;transition:opacity .18s ease;pointer-events:none}
+.cz-img-wrap:hover .cz-img-overlay{opacity:1;pointer-events:auto}
+.cz-overlay-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(20,20,20,.82);color:#fff;border:1px solid rgba(255,255,255,.18);font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(6px);transition:all .15s ease}
+.cz-overlay-btn:hover{background:#fff;color:#0A0A0A;border-color:#fff;transform:translateY(-1px)}
 @media (max-width: 1100px){
   .cz-grid{grid-template-columns:1fr !important}
   .cz-stage{min-height:46vh !important;padding:28px 16px !important}
@@ -208,16 +215,33 @@ export default function Customize() {
           display: "flex", alignItems: "center", justifyContent: "center",
           boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
         }}>
-          <img src={portraitUrl} alt="Your portrait"
-            style={{
-              display:"block",
-              height: `${sizeDef.h * 58}vh`,
-              width:  `${sizeDef.w * 58}vh`,
-              maxWidth: "100%",
-              objectFit: "cover",
-              filter: effectDef.filter,
-              transition: "width .25s ease, height .25s ease",
-            }}/>
+          <div className="cz-img-wrap">
+            <img src={portraitUrl} alt="Your portrait"
+              style={{
+                display:"block",
+                height: `${sizeDef.h * 58}vh`,
+                width:  `${sizeDef.w * 58}vh`,
+                maxWidth: "100%",
+                objectFit: "cover",
+                filter: effectDef.filter,
+                transition: "width .25s ease, height .25s ease",
+              }}/>
+            <div className="cz-watermark" aria-hidden="true">
+              <div className="cz-watermark-inner">
+                {Array.from({ length: 9 }).map((_, i) => (
+                  <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
+                ))}
+              </div>
+            </div>
+            <div className="cz-img-overlay">
+              <button className="cz-overlay-btn" onClick={() => navigate("/create")} aria-label="Retry">
+                <RotateCcw size={15}/> Retry
+              </button>
+              <button className="cz-overlay-btn" onClick={() => navigate("/create")} aria-label="Edit">
+                <Pencil size={15}/> Edit
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
