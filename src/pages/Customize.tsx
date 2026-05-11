@@ -90,10 +90,10 @@ const G = `
 .cz-tool.on{background:rgba(230,25,25,.10);color:${RED}}
 .cz-tool:disabled{opacity:.45;cursor:not-allowed}
 .cz-tool-divider{height:1px;background:${BORDER};margin:4px 6px}
-.cz-tool[data-tip]::after{content:attr(data-tip);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%) translateX(-4px);background:#fff;color:${INK};font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;padding:6px 10px;border-radius:8px;border:1px solid ${BORDER};box-shadow:0 6px 18px -6px rgba(0,0,0,.18);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s ease,transform .15s ease;z-index:20}
-.cz-tool[data-tip]::before{content:"";position:absolute;left:calc(100% + 4px);top:50%;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:#fff;border-left:1px solid ${BORDER};border-bottom:1px solid ${BORDER};rotate:45deg;pointer-events:none;opacity:0;transition:opacity .15s ease,transform .15s ease;z-index:20}
-.cz-tool[data-tip]:hover::after,.cz-tool[data-tip]:hover::before{opacity:1;transform:translateY(-50%) translateX(0)}
-.cz-tool[data-tip]:hover::before{transform:translateY(-50%) translateX(0) rotate(45deg)}
+.cz-tool[data-tip]::after{content:attr(data-tip);position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%) translateX(4px);background:#fff;color:${INK};font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;padding:6px 10px;border-radius:8px;border:1px solid ${BORDER};box-shadow:0 6px 18px -6px rgba(0,0,0,.18);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s ease,transform .15s ease;z-index:50}
+.cz-tool[data-tip]::before{content:"";position:absolute;right:calc(100% + 4px);top:50%;transform:translateY(-50%) translateX(4px) rotate(45deg);width:8px;height:8px;background:#fff;border-right:1px solid ${BORDER};border-top:1px solid ${BORDER};pointer-events:none;opacity:0;transition:opacity .15s ease,transform .15s ease;z-index:50}
+.cz-tool[data-tip]:hover::after{opacity:1;transform:translateY(-50%) translateX(0)}
+.cz-tool[data-tip]:hover::before{opacity:1;transform:translateY(-50%) translateX(0) rotate(45deg)}
 .cz-ai-panel{width:320px;background:#fff;border:1px solid ${BORDER};border-radius:18px;box-shadow:0 18px 50px -12px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;animation:czAiSlide .28s cubic-bezier(.22,1,.32,1) both;align-self:stretch;max-height:560px}
 @keyframes czAiSlide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
 .cz-ai-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid ${BORDER}}
