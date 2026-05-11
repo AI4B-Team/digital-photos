@@ -815,7 +815,7 @@ export default function Customize() {
               overflowY:"auto", display:"flex", flexDirection:"column",
               alignItems:"center", gap:8, padding:"4px 6px", scrollbarGutter:"stable",
             }}>
-              {items.map(it => renderItem(it, it.id === selectedId))}
+              {items.map(it => renderItem(it, items.length > 1 && it.id === selectedId))}
             </div>
             <input
               ref={fileInputRef}
