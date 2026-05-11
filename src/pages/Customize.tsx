@@ -816,7 +816,7 @@ export default function Customize() {
               alignItems:"center", gap:8, padding:"4px 6px", scrollbarGutter:"stable",
               scrollBehavior:"smooth", scrollSnapType:"y proximity",
               WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
-            }}>;
+            }}>
               {items.map(it => renderItem(it, items.length > 1 && it.id === selectedId))}
             </div>
             <input
