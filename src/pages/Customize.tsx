@@ -534,7 +534,7 @@ export default function Customize() {
   };
 
   /* ── Preview (per-item, click to select, ✕ to remove) ── */
-  const renderItem = (item, isSelected) => {
+  const renderItem = (item, isSelected, isToolbarItem) => {
     const fd = FRAMES.find(f => f.id === item.frame) || FRAMES[1];
     const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
     const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
@@ -571,49 +571,66 @@ export default function Customize() {
             <X size={14}/>
           </button>
         )}
-        <div style={{
-          background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
-          padding: isFrameless ? 0 : woodPad,
-          borderRadius: isFrameless ? 0 : 3,
-          boxShadow: isFrameless ? "none" : "0 30px 60px -20px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.08)",
-          display: "inline-block",
-          maxWidth: "100%",
-        }}>
+        {/* Image + inline toolbar (toolbar anchored next to image regardless of size) */}
+        <div style={{ display:"flex", alignItems:"center", gap:16 }}>
           <div style={{
-            background: bcd.bg,
-            padding: bd.px,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
+            background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+            padding: isFrameless ? 0 : woodPad,
+            borderRadius: isFrameless ? 0 : 3,
+            boxShadow: isFrameless ? "none" : "0 30px 60px -20px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.08)",
+            display: "inline-block",
+            maxWidth: "100%",
           }}>
-            <div className="cz-img-wrap">
-              <img src={item.photoUrl} alt="Your portrait"
-                style={{
-                  display:"block",
-                  height: `${sd.h * 42}vh`,
-                  width:  `${sd.w * 42}vh`,
-                  maxWidth: "100%",
-                  objectFit: "cover",
-                  filter: ed.filter,
-                  transition: "width .25s ease, height .25s ease",
-                }}/>
-              <div className="cz-watermark" aria-hidden="true">
-                <div className="cz-watermark-inner">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
-                  ))}
-                </div>
-              </div>
-              {itemBusy && (
-                <div className="cz-busy">
-                  <div className="cz-spinner" />
-                  <div className="cz-busy-label">{busyLabel}</div>
-                  <div className="cz-busy-sub">
-                    This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
+            <div style={{
+              background: bcd.bg,
+              padding: bd.px,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
+            }}>
+              <div className="cz-img-wrap">
+                <img src={item.photoUrl} alt="Your portrait"
+                  style={{
+                    display:"block",
+                    height: `${sd.h * 42}vh`,
+                    width:  `${sd.w * 42}vh`,
+                    maxWidth: "100%",
+                    objectFit: "cover",
+                    filter: ed.filter,
+                    transition: "width .25s ease, height .25s ease",
+                  }}/>
+                <div className="cz-watermark" aria-hidden="true">
+                  <div className="cz-watermark-inner">
+                    {Array.from({ length: 9 }).map((_, i) => (
+                      <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
+                    ))}
                   </div>
                 </div>
-              )}
+                {itemBusy && (
+                  <div className="cz-busy">
+                    <div className="cz-spinner" />
+                    <div className="cz-busy-label">{busyLabel}</div>
+                    <div className="cz-busy-sub">
+                      This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+          {isToolbarItem && (
+            <div className="cz-toolbar" role="toolbar" aria-label="Image tools" onClick={(e) => e.stopPropagation()}>
+              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
+                <Sparkles size={18}/>
+              </button>
+              <div className="cz-tool-divider"/>
+              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
+                <RotateCcw size={17}/>
+              </button>
+              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
+                <Plus size={18}/>
+              </button>
+            </div>
+          )}
         </div>
         <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
           <span>{sd.label}″</span>
@@ -821,8 +838,6 @@ export default function Customize() {
             gap:16, width:"100%", maxWidth:"100%",
             transition:"all .3s cubic-bezier(.22,1,.32,1)",
           }}>
-            {/* Phantom spacer to visually center the column (offsets the toolbar width on the right) */}
-            <div aria-hidden="true" style={{ width: 66, flex: "0 0 auto" }}/>
             <div className="cz-canvas-scroll" style={{
               flex:"0 1 auto", minWidth:0, maxHeight:"calc(100vh - 180px)",
               overflowY:"auto", display:"flex", flexDirection:"column",
@@ -830,7 +845,7 @@ export default function Customize() {
               scrollBehavior:"smooth", scrollSnapType:"y proximity",
               WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
             }}>
-              {items.map(it => renderItem(it, items.length > 1 && it.id === selectedId))}
+              {items.map(it => renderItem(it, items.length > 1 && it.id === selectedId, it.id === selectedId))}
             </div>
             <input
               ref={fileInputRef}
@@ -839,18 +854,6 @@ export default function Customize() {
               style={{ display:"none" }}
               onChange={handleFilePicked}
             />
-            <div className="cz-toolbar" role="toolbar" aria-label="Image tools">
-              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant">
-                <Sparkles size={18}/>
-              </button>
-              <div className="cz-tool-divider"/>
-              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
-                <RotateCcw size={17}/>
-              </button>
-              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
-                <Plus size={18}/>
-              </button>
-            </div>
             {aiOpen && (
               <div className="cz-ai-panel">
                 <div className="cz-ai-head">
