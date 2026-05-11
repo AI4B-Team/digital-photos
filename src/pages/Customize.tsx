@@ -871,7 +871,7 @@ export default function Customize() {
 
       {/* Edit modal merged into AI Assistant panel */}
 
-      {errorMsg && !editOpen && (
+      {errorMsg && (
         <div style={{
           position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)",
           background:"#1A1A1A", color:"#fff", padding:"12px 18px", borderRadius:10,
