@@ -25,7 +25,7 @@ const G = `
 .cz-serif{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-.01em}
 .cz-btn-red{background:${RED};color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Poppins',sans-serif}
 .cz-btn-red:hover{background:${RED_DK};transform:translateY(-1px);box-shadow:0 10px 24px rgba(230,25,25,.28)}
-.cz-chip{padding:8px 14px;border-radius:999px;border:1px solid ${BORDER};background:#fff;cursor:pointer;font-family:'Poppins',sans-serif;font-size:12.5px;font-weight:500;color:${TXT};transition:all .15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.cz-chip{padding:9px 16px;border-radius:10px;border:1px solid ${BORDER};background:#fff;cursor:pointer;font-family:'Poppins',sans-serif;font-size:12.5px;font-weight:500;color:${TXT};transition:all .15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .cz-chip:hover{border-color:rgba(0,0,0,.25)}
 .cz-chip.on{background:${INK};color:#fff;border-color:${INK}}
 .cz-chip.on .cz-chip-meta{color:rgba(255,255,255,.65)}
