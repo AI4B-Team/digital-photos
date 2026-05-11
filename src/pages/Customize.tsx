@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronRight } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil } from "lucide-react";
 
 /* ── Tokens ── */
 const RED = "#E61919";
