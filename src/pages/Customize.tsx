@@ -215,16 +215,33 @@ export default function Customize() {
           display: "flex", alignItems: "center", justifyContent: "center",
           boxShadow: isFrameless ? "0 12px 28px rgba(0,0,0,.14)" : "inset 0 0 14px rgba(0,0,0,.06)",
         }}>
-          <img src={portraitUrl} alt="Your portrait"
-            style={{
-              display:"block",
-              height: `${sizeDef.h * 58}vh`,
-              width:  `${sizeDef.w * 58}vh`,
-              maxWidth: "100%",
-              objectFit: "cover",
-              filter: effectDef.filter,
-              transition: "width .25s ease, height .25s ease",
-            }}/>
+          <div className="cz-img-wrap">
+            <img src={portraitUrl} alt="Your portrait"
+              style={{
+                display:"block",
+                height: `${sizeDef.h * 58}vh`,
+                width:  `${sizeDef.w * 58}vh`,
+                maxWidth: "100%",
+                objectFit: "cover",
+                filter: effectDef.filter,
+                transition: "width .25s ease, height .25s ease",
+              }}/>
+            <div className="cz-watermark" aria-hidden="true">
+              <div className="cz-watermark-inner">
+                {Array.from({ length: 9 }).map((_, i) => (
+                  <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
+                ))}
+              </div>
+            </div>
+            <div className="cz-img-overlay">
+              <button className="cz-overlay-btn" onClick={() => navigate("/create")} aria-label="Retry">
+                <RotateCcw size={15}/> Retry
+              </button>
+              <button className="cz-overlay-btn" onClick={() => navigate("/create")} aria-label="Edit">
+                <Pencil size={15}/> Edit
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
