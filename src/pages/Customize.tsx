@@ -648,8 +648,13 @@ export default function Customize() {
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "none",
             }}>
-              <div className="cz-img-wrap">
+              <div
+                className="cz-img-wrap"
+                onMouseDown={(e) => onDragStart(item, e)}
+                style={{ cursor: (item.zoom || 1) > 1 ? (dragRef.current?.id === item.id ? "grabbing" : "grab") : "default" }}
+              >
                 <img src={item.photoUrl} alt="Your portrait"
+                  draggable={false}
                   style={{
                     display:"block",
                     height: `${sd.h * 42}vh`,
@@ -657,9 +662,13 @@ export default function Customize() {
                     maxWidth: "100%",
                     objectFit: "cover",
                     filter: ed.filter,
-                    transform: `scale(${item.zoom || 1})`,
+                    transform: `translate(${item.offsetX || 0}px, ${item.offsetY || 0}px) scale(${item.zoom || 1})`,
                     transformOrigin: "center center",
-                    transition: "width .25s ease, height .25s ease, transform .25s ease",
+                    transition: dragRef.current?.id === item.id
+                      ? "width .25s ease, height .25s ease"
+                      : "width .25s ease, height .25s ease, transform .25s ease",
+                    userSelect: "none",
+                    pointerEvents: "none",
                   }}/>
                 <div className="cz-watermark" aria-hidden="true">
                   <div className="cz-watermark-inner">
