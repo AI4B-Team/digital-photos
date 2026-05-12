@@ -148,7 +148,7 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .teaser-img{width:100%;height:100%;object-fit:cover;transition:opacity .5s ease}
 
 /* Template strip */
-.tmpl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;max-width:100%;min-width:0}
+.tmpl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
 .tmpl-strip::-webkit-scrollbar{display:none}
 .tmpl-card{width:96px;flex-shrink:0;background:#fff;padding:0;cursor:pointer;border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;position:relative;transition:all .18s}
 .tmpl-card:hover{border-color:rgba(0,0,0,.25);transform:translateY(-1px)}
@@ -218,24 +218,6 @@ const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:stri
     { id:"pet-pirate",   label:"Pirate Captain",   desc:"High seas adventurer",
       img:"https://images.unsplash.com/photo-1464998857633-50e59fbf2fe6?w=240&h=300&fit=crop&q=80",
       prompt:"as a swashbuckling pirate captain with tricorn hat, eyepatch, and naval coat, dramatic sea and ship background" },
-    { id:"pet-superhero", label:"Super Hero", desc:"Caped crusader",
-      img:"https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=240&h=300&fit=crop&q=80",
-      prompt:"as a caped superhero with a flowing cape and emblem, dramatic city skyline at sunset background" },
-    { id:"pet-cowboy", label:"Wild West", desc:"Cowboy outlaw",
-      img:"https://images.unsplash.com/photo-1444212477490-ca407925329e?w=240&h=300&fit=crop&q=80",
-      prompt:"as a rugged wild west cowboy with hat, bandana, and leather vest, dusty desert and saloon background" },
-    { id:"pet-detective", label:"Sherlock Sleuth", desc:"Master detective",
-      img:"https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=240&h=300&fit=crop&q=80",
-      prompt:"as a master detective with deerstalker cap, monocle, and tweed coat, foggy Victorian London street" },
-    { id:"pet-samurai", label:"Noble Samurai", desc:"Feudal Japan warrior",
-      img:"https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=240&h=300&fit=crop&q=80",
-      prompt:"as a noble samurai warrior in ornate feudal Japanese armor with katana, cherry blossom temple background" },
-    { id:"pet-chef", label:"Master Chef", desc:"Culinary star",
-      img:"https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=240&h=300&fit=crop&q=80",
-      prompt:"as a master chef in white toque and apron, professional kitchen with copper pots and warm lighting" },
-    { id:"pet-rockstar", label:"Rock Star", desc:"Stage legend",
-      img:"https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?w=240&h=300&fit=crop&q=80",
-      prompt:"as a rock star with leather jacket and sunglasses, electric stage lights and concert crowd background" },
   ],
   babies: [
     { id:"baby-royal",    label:"Royal Baby",       desc:"Prince or princess",
@@ -256,24 +238,6 @@ const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:stri
     { id:"baby-storybook",label:"Storybook Star",   desc:"Once upon a time",
       img:"https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=240&h=300&fit=crop&q=80",
       prompt:"in a whimsical storybook scene with watercolor florals, fairy-tale props, and warm illustration mood" },
-    { id:"baby-dreamland", label:"Cloud Dreamer", desc:"Floating in clouds",
-      img:"https://images.unsplash.com/photo-1547038577-da80abbc4f19?w=240&h=300&fit=crop&q=80",
-      prompt:"peacefully sleeping among soft pastel clouds with stars and crescent moon, dreamy nursery palette" },
-    { id:"baby-woodland", label:"Woodland Friend", desc:"Forest animals",
-      img:"https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=240&h=300&fit=crop&q=80",
-      prompt:"surrounded by gentle woodland animals like deer, foxes, and rabbits in an enchanted forest clearing" },
-    { id:"baby-circus", label:"Little Circus", desc:"Big top star",
-      img:"https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?w=240&h=300&fit=crop&q=80",
-      prompt:"in a vintage circus ringmaster outfit with red and gold details, big top tent and warm carnival lights" },
-    { id:"baby-pilot", label:"Tiny Pilot", desc:"Sky adventurer",
-      img:"https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=240&h=300&fit=crop&q=80",
-      prompt:"as a tiny aviator pilot with leather cap and goggles, vintage biplane and cloudy sky background" },
-    { id:"baby-mermaid", label:"Tiny Mermaid", desc:"Underwater sprite",
-      img:"https://images.unsplash.com/photo-1505159940484-eb2b9f2588e2?w=240&h=300&fit=crop&q=80",
-      prompt:"as an enchanting little mermaid with shimmering tail, pearl crown, and underwater coral reef glow" },
-    { id:"baby-vintage", label:"Vintage Portrait", desc:"Heirloom style",
-      img:"https://images.unsplash.com/photo-1455894127589-22f75500213a?w=240&h=300&fit=crop&q=80",
-      prompt:"in a vintage heirloom baby portrait style with sepia tones, antique blanket, and soft window light" },
   ],
   couples: [
     { id:"cpl-royal",      label:"Royal Court",       desc:"King & queen",
@@ -294,24 +258,6 @@ const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:stri
     { id:"cpl-winter",     label:"Winter Wonderland", desc:"Snowfall romance",
       img:"https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=240&h=300&fit=crop&q=80",
       prompt:"in cozy winter coats and scarves embracing in a romantic snowfall, twinkling lights and pine forest background" },
-    { id:"cpl-beach", label:"Beach Sunset", desc:"Tropical romance",
-      img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
-      prompt:"embracing on a tropical beach at golden hour with warm sunset light, palm silhouettes, and ocean breeze" },
-    { id:"cpl-parisian", label:"Parisian Love", desc:"Eiffel Tower kiss",
-      img:"https://images.unsplash.com/photo-1522413452208-996ff3f3e740?w=240&h=300&fit=crop&q=80",
-      prompt:"sharing a romantic moment in Paris with the Eiffel Tower softly lit at twilight in the background" },
-    { id:"cpl-rustic", label:"Rustic Romance", desc:"Countryside love",
-      img:"https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=240&h=300&fit=crop&q=80",
-      prompt:"in rustic countryside attire embracing in a sunlit wheat field with golden hour glow and warm earth tones" },
-    { id:"cpl-disco", label:"Disco Glow", desc:"70s nightlife",
-      img:"https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=240&h=300&fit=crop&q=80",
-      prompt:"in glamorous 1970s disco attire with sequins and bell sleeves under colorful disco ball lights" },
-    { id:"cpl-cyber", label:"Cyber Future", desc:"Neon-lit duo",
-      img:"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=240&h=300&fit=crop&q=80",
-      prompt:"as a cyberpunk couple in sleek futuristic attire with neon city lights and rain-slicked streets" },
-    { id:"cpl-wedding", label:"Wedding Day", desc:"Aisle moment",
-      img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
-      prompt:"in elegant wedding attire sharing a tender moment with soft floral arch and dreamy bokeh light" },
   ],
   people: [
     { id:"ppl-hollywood",label:"Hollywood Glam",    desc:"Golden Age star",
@@ -332,24 +278,6 @@ const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:stri
     { id:"ppl-noir",     label:"Film Noir",         desc:"Shadowy detective",
       img:"https://images.unsplash.com/photo-1485846234645-a62644f84728?w=240&h=300&fit=crop&q=80",
       prompt:"in classic film noir style with trench coat, fedora, dramatic high-contrast shadows and rainy city street" },
-    { id:"ppl-renaissance", label:"Renaissance Noble", desc:"Old Masters style",
-      img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=240&h=300&fit=crop&q=80",
-      prompt:"as a Renaissance noble in rich brocade attire posed in an Old Masters oil painting with chiaroscuro lighting" },
-    { id:"ppl-samurai", label:"Samurai Warrior", desc:"Feudal Japan", 
-      img:"https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=240&h=300&fit=crop&q=80",
-      prompt:"as an honorable samurai warrior in ornate armor with katana, cherry blossom and temple background" },
-    { id:"ppl-pirate", label:"Pirate Captain", desc:"High seas legend",
-      img:"https://images.unsplash.com/photo-1464998857633-50e59fbf2fe6?w=240&h=300&fit=crop&q=80",
-      prompt:"as a swashbuckling pirate captain with tricorn hat and naval coat, dramatic ship deck and stormy sea" },
-    { id:"ppl-cyberpunk", label:"Cyberpunk", desc:"Neon city dweller",
-      img:"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=240&h=300&fit=crop&q=80",
-      prompt:"as a cyberpunk character in sleek tech wear under bright neon lights of a futuristic city street" },
-    { id:"ppl-superhero", label:"Super Hero", desc:"Caped icon",
-      img:"https://images.unsplash.com/photo-1635805737707-575885ab0820?w=240&h=300&fit=crop&q=80",
-      prompt:"as an iconic caped superhero with bold emblem and dramatic city skyline at sunset" },
-    { id:"ppl-rockstar", label:"Rock Legend", desc:"Stage icon",
-      img:"https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?w=240&h=300&fit=crop&q=80",
-      prompt:"as a rock legend on stage with leather jacket, electric guitar, dramatic stage lighting and crowd glow" },
   ],
   memorial: [
     { id:"mem-angel",    label:"Guardian Angel",   desc:"Heavenly protector",
@@ -370,24 +298,6 @@ const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:stri
     { id:"mem-classic",  label:"Classic Memorial", desc:"Black-tie tribute",
       img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&h=300&fit=crop&q=80",
       prompt:"in elegant formal attire posed for a classic memorial portrait with deep neutral background and reverent lighting" },
-    { id:"mem-rose", label:"Rose Tribute", desc:"Roses & remembrance",
-      img:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=240&h=300&fit=crop&q=80",
-      prompt:"surrounded by elegant white and red roses in a soft tribute portrait with gentle reverent light" },
-    { id:"mem-sunset", label:"Golden Sunset", desc:"Peaceful horizon",
-      img:"https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=240&h=300&fit=crop&q=80",
-      prompt:"set against a serene golden sunset over calm waters as a peaceful memorial tribute" },
-    { id:"mem-lake", label:"Still Waters", desc:"Calm reflection",
-      img:"https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=240&h=300&fit=crop&q=80",
-      prompt:"with a tranquil mountain lake reflection background and soft misty light symbolizing peace" },
-    { id:"mem-candle", label:"Candlelight", desc:"Soft remembrance",
-      img:"https://images.unsplash.com/photo-1481931715705-36f5f6ff21bc?w=240&h=300&fit=crop&q=80",
-      prompt:"illuminated by gentle candlelight with warm amber glow and reverent shadows in a remembrance setting" },
-    { id:"mem-classical", label:"Classical Marble", desc:"Timeless statue mood",
-      img:"https://images.unsplash.com/photo-1526290632330-3da89aa2da40?w=240&h=300&fit=crop&q=80",
-      prompt:"in a classical marble portrait style with soft sculptural light and dignified neutral palette" },
-    { id:"mem-wings", label:"Wings of Peace", desc:"Doves & light",
-      img:"https://images.unsplash.com/photo-1517450084074-abe5e5950bf0?w=240&h=300&fit=crop&q=80",
-      prompt:"with white doves and soft heavenly light surrounding the subject in a peaceful tribute composition" },
   ],
   gifts: [
     { id:"gift-holiday", label:"Christmas Magic",  desc:"Festive twinkle",
@@ -408,24 +318,6 @@ const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:stri
     { id:"gift-anniv",   label:"Anniversary",      desc:"Year of love",
       img:"https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=240&h=300&fit=crop&q=80",
       prompt:"in a romantic anniversary scene with candles, soft florals, and intimate warm lighting commemorating a milestone year" },
-    { id:"gift-graduation", label:"Graduation", desc:"Cap & gown pride",
-      img:"https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=240&h=300&fit=crop&q=80",
-      prompt:"in a proud graduation portrait with cap, gown, and diploma, soft school-color backdrop and warm light" },
-    { id:"gift-fathers", label:"Father's Day", desc:"Hero of the family",
-      img:"https://images.unsplash.com/photo-1511895426328-dc8714191011?w=240&h=300&fit=crop&q=80",
-      prompt:"in a heartfelt Father's Day portrait with warm earth tones and a strong dignified pose" },
-    { id:"gift-mothers", label:"Mother's Day", desc:"Loving tribute",
-      img:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=240&h=300&fit=crop&q=80",
-      prompt:"in a tender Mother's Day portrait with soft pastel florals and warm golden light" },
-    { id:"gift-newhome", label:"New Home", desc:"Housewarming joy",
-      img:"https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=240&h=300&fit=crop&q=80",
-      prompt:"in a cozy housewarming scene with warm interior lighting, fresh flowers, and welcoming home decor" },
-    { id:"gift-retire", label:"Retirement", desc:"Cheers to a journey",
-      img:"https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=240&h=300&fit=crop&q=80",
-      prompt:"in a celebratory retirement portrait with elegant attire and warm celebratory background tones" },
-    { id:"gift-newbaby", label:"New Arrival", desc:"Welcome baby",
-      img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=240&h=300&fit=crop&q=80",
-      prompt:"in a soft welcome-baby portrait with pastel blanket, gentle natural light, and tender atmosphere" },
   ],
 };
 
@@ -962,7 +854,7 @@ function HomePage({ onGenerate }) {
 
               {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
               {cat && (
-                <div style={{ marginBottom:18, minWidth:0, maxWidth:"100%", overflow:"hidden" }}>
+                <div style={{ marginBottom:18 }}>
                   <div style={{ display:"flex", alignItems:"center", marginBottom:8 }}>
                     <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
                       textTransform:"uppercase", fontWeight:500 }}>
@@ -994,8 +886,7 @@ function HomePage({ onGenerate }) {
                         className={`tmpl-card ${selectedTemplate===tmpl.id?"on":""}`}
                         onClick={() => setSelectedTemplate(tmpl.id)}>
                         <div className="tmpl-img">
-                          <img src={tmpl.img} alt={tmpl.label} loading="lazy"
-                            onError={(e)=>{ const t=e.currentTarget; if(!t.dataset.fb){ t.dataset.fb="1"; t.src=`https://picsum.photos/seed/${encodeURIComponent(tmpl.id)}/240/300`; } }}/>
+                          <img src={tmpl.img} alt={tmpl.label}/>
                         </div>
                         <div className="tmpl-meta">
                           <div className="tmpl-l">{tmpl.label}</div>
