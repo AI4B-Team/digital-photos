@@ -964,7 +964,7 @@ function HomePage({ onGenerate }) {
 /* ═══════════════════════════════════════════════════════════
    GENERATING SCREEN — Real AI generation
 ═══════════════════════════════════════════════════════════ */
-function GenScreen({ selectedStyles, sessionId, photoUrl, category, theme, onDone }) {
+function GenScreen({ selectedStyles, sessionId, photoUrl, category, templatePrompt, onDone }) {
   const [pct,  setPct]  = useState(0);
   const [msg,  setMsg]  = useState(0);
   const [done, setDone] = useState([]);
