@@ -147,34 +147,18 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 /* Teaser */
 .teaser-img{width:100%;height:100%;object-fit:cover;transition:opacity .5s ease}
 
-/* Theme picker modal */
-.tm-back{position:fixed;inset:0;background:rgba(10,10,10,.55);backdrop-filter:blur(6px);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease}
-.tm-modal{background:#fff;border-radius:18px;width:100%;max-width:980px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden}
-.tm-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(0,0,0,.08)}
-.tm-head h3{font-family:'Poppins',sans-serif;font-weight:700;font-size:18px;color:#0A0A0A}
-.tm-search{margin:14px 22px 0;display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid rgba(0,0,0,.1);border-radius:999px;background:#FAFAFA}
-.tm-search input{flex:1;border:none;outline:none;background:transparent;font-family:'Poppins',sans-serif;font-size:13px;color:#0A0A0A}
-.tm-grid{padding:18px 22px 22px;overflow-y:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-@media(max-width:760px){.tm-grid{grid-template-columns:1fr}}
-.tm-card{position:relative;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all .2s;background:#000}
-.tm-card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.18)}
-.tm-card.on{border-color:#E61919}
-.tm-collage{display:grid;grid-template-columns:repeat(3,1fr);height:180px}
-.tm-collage img{width:100%;height:100%;object-fit:cover;display:block}
-.tm-meta{position:absolute;left:14px;bottom:12px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-.tm-meta .h{font-size:10.5px;letter-spacing:.18em;text-transform:lowercase;opacity:.85;font-weight:500}
-.tm-meta .l{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:15px;margin-top:2px}
-.tm-close{background:transparent;border:none;cursor:pointer;color:#525252;padding:4px;border-radius:6px}
-.tm-close:hover{background:#F4F4F4;color:#0A0A0A}
-
-/* Theme summary chip */
-.theme-pick{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 8px;border:1px solid rgba(230,25,25,.4);background:rgba(230,25,25,.05);border-radius:12px;cursor:pointer}
-.theme-pick:hover{background:rgba(230,25,25,.09)}
-.theme-pick .tp-thumbs{display:flex;gap:2px;border-radius:6px;overflow:hidden}
-.theme-pick .tp-thumbs img{width:24px;height:24px;object-fit:cover;display:block}
-.theme-pick .tp-l{font-family:'Poppins',sans-serif;font-weight:600;font-size:12.5px;color:#E61919;letter-spacing:.04em;text-transform:uppercase}
-.theme-pick .tp-x{margin-left:auto;color:#E61919;background:transparent;border:none;cursor:pointer;padding:2px;border-radius:6px;display:flex}
-.theme-pick .tp-x:hover{background:rgba(230,25,25,.12)}
+/* Template strip */
+.tmpl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.tmpl-strip::-webkit-scrollbar{display:none}
+.tmpl-card{width:96px;flex-shrink:0;background:#fff;padding:0;cursor:pointer;border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;position:relative;transition:all .18s}
+.tmpl-card:hover{border-color:rgba(0,0,0,.25);transform:translateY(-1px)}
+.tmpl-card.on{border-color:#E61919;box-shadow:0 0 0 2px rgba(230,25,25,.2)}
+.tmpl-img{height:84px;overflow:hidden;background:#FAFAFA;display:flex;align-items:center;justify-content:center}
+.tmpl-img img{width:100%;height:100%;object-fit:cover;display:block}
+.tmpl-meta{padding:6px 5px 7px;text-align:center}
+.tmpl-l{font-family:'Poppins',sans-serif;font-size:10px;color:#0A0A0A;font-weight:600;letter-spacing:.02em;line-height:1.25}
+.tmpl-d{font-size:8.5px;color:#8C8C8C;margin-top:2px;line-height:1.2}
+.tmpl-check{position:absolute;top:5px;right:5px;width:16px;height:16px;background:#E61919;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 
 /* Responsive */
 @media(max-width:960px){
@@ -212,46 +196,128 @@ const STYLES = [
   { id:"minimal",     label:"Minimal",     desc:"Clean · Modern Fine Art",   preview:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=520&h=650&fit=crop&q=80" },
 ];
 
-/* Photoshoot Themes — category-specific template sets.
-   Each theme adds extra creative direction to the AI prompt. */
-const u = (id, w=400, h=400) => `https://images.unsplash.com/${id}?w=${w}&h=${h}&fit=crop&q=80`;
-const THEMES = {
+/* TEMPLATE SETS — category-specific scene/costume prompts.
+   Each adds an "Additionally, depict the subject ..." clause to every style. */
+const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string }[]> = {
   pets: [
-    { id:"royal-paws",   tag:"royalpup",   label:"Royal Paws",       prompt:"Regal pet portrait with velvet drapery, ornate crown collar, and soft window light.", thumbs:[u("photo-1583511655857-d19b40a7a54e"),u("photo-1517849845537-4d257902454a"),u("photo-1561037404-61cd46aa615b")] },
-    { id:"adventure",    tag:"wildtail",   label:"Adventure",        prompt:"Outdoor adventure setting — mountain trails, golden hour light, dynamic action pose.", thumbs:[u("photo-1450778869180-41d0601e046e"),u("photo-1444212477490-ca407925329e"),u("photo-1507146426996-ef05306b995a")] },
-    { id:"cozy-cottage", tag:"warmpaws",   label:"Cozy Cottage",     prompt:"Warm cottage interior, knitted blanket, soft fireplace glow, hygge mood.", thumbs:[u("photo-1561037404-61cd46aa615b"),u("photo-1494256997604-768d1f608cac"),u("photo-1574144611937-0df059b5ef3e")] },
-    { id:"studio-pro",   tag:"poshpet",    label:"Studio Pro",       prompt:"Professional studio portrait, seamless backdrop, beauty dish lighting, magazine quality.", thumbs:[u("photo-1543466835-00a7907e9de1"),u("photo-1546238232-20216dec9f72"),u("photo-1583337130417-3346a1be7dee")] },
+    { id:"pet-royal",    label:"Royal Nobility",   desc:"Crown & velvet robes",
+      img:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=240&h=300&fit=crop&q=80",
+      prompt:"dressed as royalty wearing a golden crown and velvet robes, seated on a gilded throne, 18th century European court portrait setting" },
+    { id:"pet-knight",   label:"Medieval Knight",  desc:"In shining armor",
+      img:"https://images.unsplash.com/photo-1574158622682-e40e69881006?w=240&h=300&fit=crop&q=80",
+      prompt:"as a heroic medieval knight in gleaming plate armor with a plumed helmet, epic stone castle background" },
+    { id:"pet-pharaoh",  label:"Egyptian Pharaoh", desc:"Ancient ruler",
+      img:"https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=240&h=300&fit=crop&q=80",
+      prompt:"as an ancient Egyptian pharaoh with a golden headdress and ceremonial collar, pyramid and desert background with hieroglyphics" },
+    { id:"pet-space",    label:"Space Explorer",   desc:"Intergalactic captain",
+      img:"https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=240&h=300&fit=crop&q=80",
+      prompt:"as a heroic space captain in a sleek futuristic spacesuit, cosmic nebula and galaxy background" },
+    { id:"pet-wizard",   label:"Wizard Familiar",  desc:"Mystical magic bearer",
+      img:"https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=240&h=300&fit=crop&q=80",
+      prompt:"as a mystical wizard's familiar with flowing magical robes and glowing spell effects, enchanted forest background" },
+    { id:"pet-pirate",   label:"Pirate Captain",   desc:"High seas adventurer",
+      img:"https://images.unsplash.com/photo-1464998857633-50e59fbf2fe6?w=240&h=300&fit=crop&q=80",
+      prompt:"as a swashbuckling pirate captain with tricorn hat, eyepatch, and naval coat, dramatic sea and ship background" },
   ],
   babies: [
-    { id:"newborn-dream",tag:"tinydream",  label:"Newborn Dream",    prompt:"Soft pastel newborn setup, dreamy linen wraps, gentle natural light, fine-art baby portrait.", thumbs:[u("photo-1519689680058-324335c77eba"),u("photo-1492725764893-90b379c2b6e7"),u("photo-1555252333-9f8e92e65df9")] },
-    { id:"storybook",    tag:"littletale", label:"Storybook",        prompt:"Whimsical storybook scene with watercolor florals, fairy-tale props and warm illustration mood.", thumbs:[u("photo-1492725764893-90b379c2b6e7"),u("photo-1519689680058-324335c77eba"),u("photo-1555252333-9f8e92e65df9")] },
-    { id:"first-year",   tag:"firstyear",  label:"First Year",       prompt:"Milestone celebration backdrop with balloons, soft pastel cake-smash setting.", thumbs:[u("photo-1555252333-9f8e92e65df9"),u("photo-1519689680058-324335c77eba"),u("photo-1492725764893-90b379c2b6e7")] },
-    { id:"woodland",     tag:"wildbloom",  label:"Woodland",         prompt:"Enchanted woodland nursery, mushrooms, ferns, dappled forest light.", thumbs:[u("photo-1444212477490-ca407925329e"),u("photo-1448375240586-882707db888b"),u("photo-1441974231531-c6227db76b6e")] },
+    { id:"baby-royal",    label:"Royal Baby",       desc:"Prince or princess",
+      img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=240&h=300&fit=crop&q=80",
+      prompt:"as a royal baby prince or princess in a silk christening gown with pearl accessories, opulent palace background" },
+    { id:"baby-fairy",    label:"Garden Fairy",     desc:"Magical nature sprite",
+      img:"https://images.unsplash.com/photo-1537089949457-63fa3d7d74b5?w=240&h=300&fit=crop&q=80",
+      prompt:"as a magical garden fairy with delicate translucent wings, surrounded by giant flowers, dewdrops, and soft pastel light" },
+    { id:"baby-angel",    label:"Cherub Angel",     desc:"Heaven-sent cherub",
+      img:"https://images.unsplash.com/photo-1491013516836-7db643ee125a?w=240&h=300&fit=crop&q=80",
+      prompt:"as a classic cherub angel with soft white feathered wings, floating among golden clouds in heavenly light" },
+    { id:"baby-explorer", label:"Tiny Explorer",    desc:"Mini adventurer",
+      img:"https://images.unsplash.com/photo-1486218119243-13301543a0d4?w=240&h=300&fit=crop&q=80",
+      prompt:"as a tiny adventurer in a pith helmet and explorer outfit, lush jungle and waterfall background" },
+    { id:"baby-prince",   label:"Little Royal",     desc:"Tiny aristocrat",
+      img:"https://images.unsplash.com/photo-1492725764893-90b379c2b6e7?w=240&h=300&fit=crop&q=80",
+      prompt:"in a tiny aristocratic outfit with sash and miniature regalia, gilded nursery throne setting" },
+    { id:"baby-storybook",label:"Storybook Star",   desc:"Once upon a time",
+      img:"https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=240&h=300&fit=crop&q=80",
+      prompt:"in a whimsical storybook scene with watercolor florals, fairy-tale props, and warm illustration mood" },
   ],
   couples: [
-    { id:"old-money",    tag:"luxelife",   label:"Old Money",        prompt:"Old-money editorial — tailored knitwear, marble interiors, refined natural light, quiet luxury.", thumbs:[u("photo-1507003211169-0a1dd7228f2d"),u("photo-1494790108377-be9c29b29330"),u("photo-1500648767791-00dcc994a43e")] },
-    { id:"editorial",    tag:"lostsignal", label:"Editorial Shots",  prompt:"High-fashion editorial spread, dramatic colored gels, modern poses, magazine cover energy.", thumbs:[u("photo-1502323777036-f29e3972d82f"),u("photo-1488161628813-04466f872be2"),u("photo-1469334031218-e382a71b716b")] },
-    { id:"cinematic-romance", tag:"goldenhour", label:"Golden Romance", prompt:"Romantic golden-hour cinematic frame, sun flares, film grain, intimate close composition.", thumbs:[u("photo-1519741497674-611481863552"),u("photo-1525258946800-98cfd641d0de"),u("photo-1529634806980-85c3dd6d34ac")] },
-    { id:"winter",       tag:"frostbyte",  label:"Winter Special",   prompt:"Snowy winter scene, soft cool tones, cashmere coats, breath in cold air.", thumbs:[u("photo-1483921020237-2ff51e8e4b22"),u("photo-1457269449834-928af64c684d"),u("photo-1483728642387-6c3bdd6c93e5")] },
+    { id:"cpl-royal",      label:"Royal Court",       desc:"King & queen",
+      img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
+      prompt:"as a regal king and queen in matching royal attire with crowns and velvet robes, throne room palace setting" },
+    { id:"cpl-vintage",    label:"Vintage Romance",   desc:"1940s glamour",
+      img:"https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=240&h=300&fit=crop&q=80",
+      prompt:"in 1940s vintage romance attire with classic Hollywood lighting, sepia-warm tones, and timeless glamour" },
+    { id:"cpl-fantasy",    label:"Fantasy Lovers",    desc:"Mythic enchantment",
+      img:"https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=240&h=300&fit=crop&q=80",
+      prompt:"as mythic fantasy lovers in flowing enchanted robes, ethereal forest with glowing fireflies and magical mist" },
+    { id:"cpl-gatsby",     label:"Roaring 20s",       desc:"Gatsby gala",
+      img:"https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=240&h=300&fit=crop&q=80",
+      prompt:"in lavish 1920s Gatsby-era formal wear with art deco gold details, chandeliers and champagne party background" },
+    { id:"cpl-renaissance",label:"Renaissance Love",  desc:"Old Masters portrait",
+      img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=240&h=300&fit=crop&q=80",
+      prompt:"in Renaissance period attire posed like an Old Masters double portrait with rich oil-painting tones" },
+    { id:"cpl-winter",     label:"Winter Wonderland", desc:"Snowfall romance",
+      img:"https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=240&h=300&fit=crop&q=80",
+      prompt:"in cozy winter coats and scarves embracing in a romantic snowfall, twinkling lights and pine forest background" },
   ],
   people: [
-    { id:"editorial",    tag:"lostsignal", label:"Editorial Shots",  prompt:"High-fashion editorial frame, dramatic colored lighting, sculptural pose, magazine quality.", thumbs:[u("photo-1488161628813-04466f872be2"),u("photo-1502323777036-f29e3972d82f"),u("photo-1469334031218-e382a71b716b")] },
-    { id:"old-money",    tag:"luxelife",   label:"Old Money",        prompt:"Refined corporate portrait, charcoal blazer, marble lobby, soft window light.", thumbs:[u("photo-1500648767791-00dcc994a43e"),u("photo-1494790108377-be9c29b29330"),u("photo-1507003211169-0a1dd7228f2d")] },
-    { id:"hair-goals",   tag:"stylemaven", label:"Hair Goals",       prompt:"Salon-style hair-feature portrait, glossy lighting, beauty-shoot polish.", thumbs:[u("photo-1492106087820-71f1a00d2b11"),u("photo-1487412947147-5cebf100ffc2"),u("photo-1605497788044-5a32c7078486")] },
-    { id:"makeup-glam",  tag:"beatface",   label:"Makeup Glam",      prompt:"Beauty close-up, bold makeup, ring-light highlights, editorial gloss.", thumbs:[u("photo-1487412947147-5cebf100ffc2"),u("photo-1522335789203-aaa1b59a4f04"),u("photo-1599733589046-8e4b04123f4f")] },
-    { id:"fall",         tag:"autumnleaf", label:"Fall Aesthetic",   prompt:"Autumn outdoor scene, golden foliage, warm earth tones, crisp afternoon light.", thumbs:[u("photo-1500382017468-9049fed747ef"),u("photo-1507371341162-763b5e419408"),u("photo-1444930694458-01babe71870a")] },
-    { id:"spring",       tag:"cherryblsm", label:"Spring Bloom",     prompt:"Spring bloom backdrop, cherry blossoms, pastel sky, soft pink light.", thumbs:[u("photo-1490750967868-88aa4486c946"),u("photo-1520763185298-1b434c919102"),u("photo-1522383225653-ed111181a951")] },
+    { id:"ppl-hollywood",label:"Hollywood Glam",    desc:"Golden Age star",
+      img:"https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=240&h=300&fit=crop&q=80",
+      prompt:"in golden age Hollywood glamour style with dramatic studio lighting, fur stole, and cinematic background" },
+    { id:"ppl-military", label:"Military Honor",    desc:"Distinguished officer",
+      img:"https://images.unsplash.com/photo-1504203700686-f21e703e5f1c?w=240&h=300&fit=crop&q=80",
+      prompt:"in a formal military dress uniform adorned with ribbons, medals, and insignia, dignified regimental portrait style" },
+    { id:"ppl-victorian",label:"Victorian Elegance",desc:"19th century portrait",
+      img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=240&h=300&fit=crop&q=80",
+      prompt:"in Victorian-era formal dress with period hairstyle, gloves, and accessories, oil painting portrait style" },
+    { id:"ppl-cosmic",   label:"Cosmic Traveler",   desc:"Interstellar explorer",
+      img:"https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=240&h=300&fit=crop&q=80",
+      prompt:"as an interstellar traveler in a sleek cosmic suit, surrounded by stars, nebulas, and galactic light streams" },
+    { id:"ppl-warrior",  label:"Epic Warrior",      desc:"Fantasy battle hero",
+      img:"https://images.unsplash.com/photo-1553481187-be93c21490a9?w=240&h=300&fit=crop&q=80",
+      prompt:"as an epic fantasy warrior in ornate battle armor with a dramatic stormy sky and battlefield background" },
+    { id:"ppl-noir",     label:"Film Noir",         desc:"Shadowy detective",
+      img:"https://images.unsplash.com/photo-1485846234645-a62644f84728?w=240&h=300&fit=crop&q=80",
+      prompt:"in classic film noir style with trench coat, fedora, dramatic high-contrast shadows and rainy city street" },
   ],
   memorial: [
-    { id:"in-loving",    tag:"foreverwarm",label:"In Loving Memory", prompt:"Soft, dignified memorial portrait, warm light, gentle florals, treated with reverence.", thumbs:[u("photo-1490750967868-88aa4486c946"),u("photo-1520763185298-1b434c919102"),u("photo-1469474968028-56623f02e42e")] },
-    { id:"heaven-light", tag:"goldenray",  label:"Heavenly Light",   prompt:"Soft heavenly light beams, peaceful sky composition, golden glow.", thumbs:[u("photo-1469474968028-56623f02e42e"),u("photo-1500534314209-a25ddb2bd429"),u("photo-1418065460487-3e41a6c84dc5")] },
-    { id:"garden",       tag:"stillgarden",label:"Memorial Garden",  prompt:"Tranquil garden backdrop, soft greens, gentle dappled light, peaceful mood.", thumbs:[u("photo-1444930694458-01babe71870a"),u("photo-1490750967868-88aa4486c946"),u("photo-1520763185298-1b434c919102")] },
+    { id:"mem-angel",    label:"Guardian Angel",   desc:"Heavenly protector",
+      img:"https://images.unsplash.com/photo-1517450084074-abe5e5950bf0?w=240&h=300&fit=crop&q=80",
+      prompt:"as a peaceful guardian angel with luminous white wings and celestial golden light, soft clouds and heavenly background" },
+    { id:"mem-garden",   label:"Heaven's Garden",  desc:"Serene meadow",
+      img:"https://images.unsplash.com/photo-1490750967868-88df5691cc9d?w=240&h=300&fit=crop&q=80",
+      prompt:"in a serene heavenly flower garden with golden light filtering through ancient trees, butterflies, and soft mist" },
+    { id:"mem-timeless", label:"Timeless Portrait",desc:"Dignified & enduring",
+      img:"https://images.unsplash.com/photo-1541804048018-5975f15fc6b4?w=240&h=300&fit=crop&q=80",
+      prompt:"in a dignified timeless oil painting portrait with warm neutral background and soft classical Rembrandt-style lighting" },
+    { id:"mem-light",    label:"Eternal Light",    desc:"Glow of remembrance",
+      img:"https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=240&h=300&fit=crop&q=80",
+      prompt:"surrounded by warm rays of eternal light, soft golden glow, peaceful and reverent composition" },
+    { id:"mem-sky",      label:"Among The Stars",  desc:"Watching from above",
+      img:"https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=240&h=300&fit=crop&q=80",
+      prompt:"set against a serene starry night sky with gentle moonlight and constellations as a peaceful tribute" },
+    { id:"mem-classic",  label:"Classic Memorial", desc:"Black-tie tribute",
+      img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&h=300&fit=crop&q=80",
+      prompt:"in elegant formal attire posed for a classic memorial portrait with deep neutral background and reverent lighting" },
   ],
   gifts: [
-    { id:"holiday",      tag:"hollydays",  label:"Christmas Magic",  prompt:"Festive holiday set with twinkling lights, evergreen, red & gold accents, cozy magic.", thumbs:[u("photo-1543589077-47d81606c1bf"),u("photo-1512389142860-9c449e58a543"),u("photo-1482517967863-00e15c9b44be")] },
-    { id:"birthday",     tag:"bdaybash",   label:"Birthday Bash",    prompt:"Colorful birthday celebration, balloons, confetti, party lighting.", thumbs:[u("photo-1530103862676-de8c9debad1d"),u("photo-1464349095431-e9a21285b5f3"),u("photo-1515187029135-18ee286d815b")] },
-    { id:"anniversary",  tag:"foreverours",label:"Anniversary",      prompt:"Romantic anniversary scene with candles, soft florals, intimate warm lighting.", thumbs:[u("photo-1519741497674-611481863552"),u("photo-1525258946800-98cfd641d0de"),u("photo-1529634806980-85c3dd6d34ac")] },
-    { id:"thank-you",    tag:"warmthanks", label:"Thank You",        prompt:"Warm grateful portrait setting, soft floral arrangement, gentle golden light.", thumbs:[u("photo-1490750967868-88aa4486c946"),u("photo-1520763185298-1b434c919102"),u("photo-1444930694458-01babe71870a")] },
+    { id:"gift-holiday", label:"Christmas Magic",  desc:"Festive twinkle",
+      img:"https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=240&h=300&fit=crop&q=80",
+      prompt:"in a festive Christmas scene with twinkling lights, evergreen garlands, red and gold accents, cozy fireside warmth" },
+    { id:"gift-birthday",label:"Birthday Bash",    desc:"Confetti party",
+      img:"https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=240&h=300&fit=crop&q=80",
+      prompt:"in a colorful birthday celebration scene with balloons, confetti, festive party lighting and joyful mood" },
+    { id:"gift-love",    label:"Love Story",       desc:"Valentine's romance",
+      img:"https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=240&h=300&fit=crop&q=80",
+      prompt:"in a romantic Valentine's love story portrait with heart motifs, red roses, and warm crimson and gold tones" },
+    { id:"gift-legacy",  label:"Family Legacy",    desc:"Timeless heirloom",
+      img:"https://images.unsplash.com/photo-1511895426328-dc8714191011?w=240&h=300&fit=crop&q=80",
+      prompt:"in a formal family legacy portrait style, dignified and classic, suitable to be treasured for generations" },
+    { id:"gift-thanks",  label:"With Gratitude",   desc:"Thank you gift",
+      img:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=240&h=300&fit=crop&q=80",
+      prompt:"in a warm grateful portrait setting with soft floral arrangement and gentle golden light, expressing heartfelt thanks" },
+    { id:"gift-anniv",   label:"Anniversary",      desc:"Year of love",
+      img:"https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=240&h=300&fit=crop&q=80",
+      prompt:"in a romantic anniversary scene with candles, soft florals, and intimate warm lighting commemorating a milestone year" },
   ],
 };
 
@@ -524,9 +590,7 @@ function HomePage({ onGenerate }) {
   const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
   const [cat,     setCat]     = useState("");
   const [styles,  setStyles]  = useState([]);
-  const [theme,   setTheme]   = useState(null);    // { id, label, prompt, thumbs, tag } | null
-  const [themeOpen, setThemeOpen] = useState(false);
-  const [themeQuery, setThemeQuery] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
@@ -605,7 +669,7 @@ function HomePage({ onGenerate }) {
             const NavIcon = c.Icon;
             return (
               <button key={c.id} onClick={() => {
-                  setCat(c.id); setTheme(null);
+                  setCat(c.id); setSelectedTemplate(null);
                   heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
                 }}
                 style={{ background:"none", border:"none", cursor:"pointer",
@@ -699,7 +763,7 @@ function HomePage({ onGenerate }) {
                   {CATS.map(c => {
                     const CIcon = c.Icon;
                     return (
-                      <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => { setCat(c.id); setTheme(null); }}>
+                      <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => { setCat(c.id); setSelectedTemplate(null); }}>
                         <CIcon size={14} strokeWidth={1.8}/>{c.label}
                       </button>
                     );
@@ -788,6 +852,55 @@ function HomePage({ onGenerate }) {
                   }}/>
               </div>
 
+              {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
+              {cat && (
+                <div style={{ marginBottom:18 }}>
+                  <div style={{ display:"flex", alignItems:"center", marginBottom:8 }}>
+                    <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
+                      textTransform:"uppercase", fontWeight:500 }}>
+                      Choose A Template
+                      <span style={{ color:T.dim, fontSize:8, letterSpacing:".05em",
+                        textTransform:"none", fontWeight:400, marginLeft:8 }}>
+                        (optional — AI Decides by default)
+                      </span>
+                    </div>
+                  </div>
+                  <div className="tmpl-strip">
+                    {/* AI Decides default card */}
+                    <button className={`tmpl-card ${selectedTemplate===null?"on":""}`}
+                      onClick={() => setSelectedTemplate(null)}>
+                      <div className="tmpl-img" style={{ background:"linear-gradient(135deg,rgba(230,25,25,.08),rgba(230,25,25,.18))" }}>
+                        <Sparkles size={26} color={T.gold}/>
+                      </div>
+                      <div className="tmpl-meta">
+                        <div className="tmpl-l">AI Decides</div>
+                        <div className="tmpl-d">Let AI choose</div>
+                      </div>
+                      {selectedTemplate===null && (
+                        <div className="tmpl-check"><Check size={9} color="#fff" strokeWidth={3}/></div>
+                      )}
+                    </button>
+                    {/* Category-specific template cards */}
+                    {(TEMPLATES[cat] || []).map(tmpl => (
+                      <button key={tmpl.id}
+                        className={`tmpl-card ${selectedTemplate===tmpl.id?"on":""}`}
+                        onClick={() => setSelectedTemplate(tmpl.id)}>
+                        <div className="tmpl-img">
+                          <img src={tmpl.img} alt={tmpl.label}/>
+                        </div>
+                        <div className="tmpl-meta">
+                          <div className="tmpl-l">{tmpl.label}</div>
+                          <div className="tmpl-d">{tmpl.desc}</div>
+                        </div>
+                        {selectedTemplate===tmpl.id && (
+                          <div className="tmpl-check"><Check size={9} color="#fff" strokeWidth={3}/></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* ── CHOOSE STYLES ── */}
               <div style={{ marginBottom:18 }}>
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
@@ -809,50 +922,17 @@ function HomePage({ onGenerate }) {
                 </div>
               </div>
 
-              {/* ── PHOTOSHOOT THEME (optional) ── */}
-              <div style={{ marginBottom:18 }}>
-                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
-                  <div style={{ fontSize:9, letterSpacing:".24em", color:cat?T.gold:T.dim,
-                    textTransform:"uppercase", fontWeight:500, transition:"color .28s" }}>
-                    Photoshoot Theme <span style={{ color:T.dim, marginLeft:4 }}>(Optional)</span>
-                  </div>
-                  {theme && (
-                    <button onClick={() => setTheme(null)}
-                      style={{ fontSize:9, color:T.dim, background:"none", border:"none", cursor:"pointer",
-                        letterSpacing:".12em", textTransform:"uppercase", fontFamily:"'Poppins',sans-serif" }}>
-                      Clear
-                    </button>
-                  )}
-                </div>
-                {theme ? (
-                  <div className="theme-pick" onClick={() => cat && setThemeOpen(true)}>
-                    <div className="tp-thumbs">
-                      {theme.thumbs.slice(0,3).map((t,i) => <img key={i} src={t} alt=""/>)}
-                    </div>
-                    <span className="tp-l">{theme.label}</span>
-                    <button className="tp-x" onClick={(e) => { e.stopPropagation(); setTheme(null); }} aria-label="Remove theme">
-                      <X size={14}/>
-                    </button>
-                  </div>
-                ) : (
-                  <button onClick={() => cat && setThemeOpen(true)} disabled={!cat}
-                    style={{ width:"100%", padding:"11px 14px", borderRadius:10,
-                      border:`1px dashed ${cat ? "rgba(230,25,25,.4)" : "rgba(0,0,0,.12)"}`,
-                      background: cat ? "rgba(230,25,25,.04)" : "#FAFAFA",
-                      color: cat ? T.gold : T.dim, cursor: cat ? "pointer" : "not-allowed",
-                      fontFamily:"'Poppins',sans-serif", fontSize:12.5, fontWeight:600,
-                      display:"flex", alignItems:"center", justifyContent:"center", gap:8, transition:"all .2s" }}>
-                    <ImageIcon size={14}/> {cat ? "Browse Photoshoot Themes" : "Pick a category first"}
-                  </button>
-                )}
-              </div>
-
               {/* ── GENERATE ── */}
               <button className="btn-gold" disabled={!canGo}
                 style={{ width:"100%", padding:"15px", fontSize:13, borderRadius:6,
                   display:"flex", alignItems:"center", justifyContent:"center", gap:9,
                   animation:canGo?"glow 2s infinite":"none" }}
-                onClick={() => onGenerate({ cat, photo, styles, uploadedUrl, theme })}>
+                onClick={() => {
+                  const tmplObj = selectedTemplate
+                    ? (TEMPLATES[cat] || []).find(t => t.id === selectedTemplate)
+                    : null;
+                  onGenerate({ cat, photo, styles, uploadedUrl, templatePrompt: tmplObj?.prompt || "" });
+                }}>
                 <Wand2 size={15}/>{genLabel()}
               </button>
 
@@ -877,39 +957,6 @@ function HomePage({ onGenerate }) {
         </div>
       </footer>
 
-      {/* ── PHOTOSHOOT THEMES MODAL ── */}
-      {themeOpen && cat && (
-        <div className="tm-back" onClick={() => setThemeOpen(false)}>
-          <div className="tm-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="tm-head">
-              <h3>Photoshoot Themes <span style={{ color:T.muted, fontWeight:500, fontSize:13, marginLeft:8 }}>· {CATS.find(c=>c.id===cat)?.label}</span></h3>
-              <button className="tm-close" onClick={() => setThemeOpen(false)} aria-label="Close">
-                <X size={20}/>
-              </button>
-            </div>
-            <div className="tm-search">
-              <Search size={15} color={T.muted}/>
-              <input value={themeQuery} onChange={(e) => setThemeQuery(e.target.value)} placeholder="Search themes…"/>
-            </div>
-            <div className="tm-grid">
-              {(THEMES[cat] || [])
-                .filter(t => !themeQuery.trim() || (t.label + " " + t.tag).toLowerCase().includes(themeQuery.toLowerCase()))
-                .map(t => (
-                  <button key={t.id} className={`tm-card ${theme?.id===t.id?"on":""}`}
-                    onClick={() => { setTheme(t); setThemeOpen(false); }}>
-                    <div className="tm-collage">
-                      {t.thumbs.slice(0,3).map((src,i) => <img key={i} src={src} alt=""/>)}
-                    </div>
-                    <div className="tm-meta">
-                      <div className="h">{t.tag}</div>
-                      <div className="l">{t.label}</div>
-                    </div>
-                  </button>
-                ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -917,7 +964,7 @@ function HomePage({ onGenerate }) {
 /* ═══════════════════════════════════════════════════════════
    GENERATING SCREEN — Real AI generation
 ═══════════════════════════════════════════════════════════ */
-function GenScreen({ selectedStyles, sessionId, photoUrl, category, theme, onDone }) {
+function GenScreen({ selectedStyles, sessionId, photoUrl, category, templatePrompt, onDone }) {
   const [pct,  setPct]  = useState(0);
   const [msg,  setMsg]  = useState(0);
   const [done, setDone] = useState([]);
@@ -943,7 +990,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, theme, onDon
     (async () => {
       try {
         const { data, error: fnError } = await supabase.functions.invoke("generate-portraits", {
-          body: { sessionId, photoUrl, styles: selectedStyles, category, theme: theme ? { id: theme.id, label: theme.label, prompt: theme.prompt } : null },
+          body: { sessionId, photoUrl, styles: selectedStyles, category, templatePrompt: templatePrompt || "" },
         });
 
         clearInterval(iv);
@@ -1023,13 +1070,13 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, theme, onDon
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, styles:[], theme:null, sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, styles:[], templatePrompt:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
-  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, theme }) => {
+  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, templatePrompt = "" }) => {
     let sessionId = null;
-    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles, theme }));
+    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles, templatePrompt }));
     setSession({ cat, photo, styles });
 
     // Create a Supabase session record to track generation
@@ -1059,7 +1106,7 @@ export default function App() {
                                 sessionId={localSession.sessionId}
                                 photoUrl={localSession.photoUrl || localSession.photo}
                                 category={localSession.cat}
-                                theme={localSession.theme}
+                                templatePrompt={localSession.templatePrompt}
                                 onDone={handleGenDone}/>}
     </>
   );
