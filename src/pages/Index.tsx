@@ -703,7 +703,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
 function HomePage({ onGenerate }) {
   const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
   const [cat,     setCat]     = useState("");
-  const [styles,  setStyles]  = useState([]);
+  const [styles,  setStyles]  = useState(STYLES.map(s => s.id));
   const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
   const tmplStripRef = useRef<HTMLDivElement|null>(null);
   const [tmplCanL, setTmplCanL] = useState(false);
