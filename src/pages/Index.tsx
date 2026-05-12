@@ -1054,27 +1054,6 @@ function HomePage({ onGenerate }) {
                 </div>
               )}
 
-              {/* ── CHOOSE STYLES ── */}
-              <div style={{ marginBottom:18 }}>
-                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
-                  <div style={{ fontSize:9, letterSpacing:".24em", color:cat&&photo?T.gold:T.dim,
-                    textTransform:"uppercase", fontWeight:500, transition:"color .28s" }}>Choose Styles</div>
-                  <button onClick={() => setStyles(allOn ? [] : STYLES.map(s=>s.id))}
-                    style={{ fontSize:9, color:allOn?T.gold:T.dim, background:"none", border:"none", cursor:"pointer",
-                      letterSpacing:".12em", textTransform:"uppercase", fontFamily:"'Poppins',sans-serif", transition:"color .2s" }}>
-                    {allOn ? "Deselect All" : "Select All"}
-                  </button>
-                </div>
-                <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
-                  {STYLES.map(s => (
-                    <button key={s.id} className={`chip ${styles.includes(s.id)?"on":""}`} onClick={() => toggleStyle(s.id)}>
-                      {styles.includes(s.id) && <Check size={9} color={T.gold}/>}
-                      {s.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               {/* ── GENERATE ── */}
               <button className="btn-gold" disabled={!canGo}
                 style={{ width:"100%", padding:"15px", fontSize:13, borderRadius:6,
