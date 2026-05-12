@@ -6,7 +6,7 @@ import { useUpload }    from "@/hooks/useUpload";
 import { createSession } from "@/lib/supabaseHelpers";
 import { supabase }     from "@/integrations/supabase/client";
 import {
-  Upload, X, Check, ChevronRight, ChevronDown, Download,
+  Upload, X, Check, ChevronLeft, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Heart, Truck, RefreshCw,
   Lock, Wand2, Sparkles, AlertCircle, Copy, Gift,
   ArrowRight, Shield, Star, Instagram, Facebook,
