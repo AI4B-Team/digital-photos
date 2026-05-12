@@ -590,9 +590,7 @@ function HomePage({ onGenerate }) {
   const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
   const [cat,     setCat]     = useState("");
   const [styles,  setStyles]  = useState([]);
-  const [theme,   setTheme]   = useState(null);    // { id, label, prompt, thumbs, tag } | null
-  const [themeOpen, setThemeOpen] = useState(false);
-  const [themeQuery, setThemeQuery] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
