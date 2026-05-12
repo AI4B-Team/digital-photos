@@ -1375,6 +1375,29 @@ export default function Customize() {
             </div>
           </div>
 
+          {/* Trust signals */}
+          <div style={{
+            display:"flex", flexDirection:"column", gap:8,
+            padding:"12px 14px", border:`1px solid ${BORDER}`,
+            borderRadius:10, background:"#FAFAF7",
+          }}>
+            <div style={{
+              display:"flex", alignItems:"center", gap:8,
+              fontSize:12.5, fontWeight:600, color:"#B45309",
+            }}>
+              <span>🚀</span>
+              <span>Going Fast · Ships In 5–7 Days</span>
+            </div>
+            <div style={{ display:"flex", alignItems:"center", gap:8, fontSize:12.5, color:INK }}>
+              <Check size={14} style={{ color:"#16a34a", flexShrink:0 }}/>
+              <span>Free Worldwide Shipping</span>
+            </div>
+            <div style={{ display:"flex", alignItems:"center", gap:8, fontSize:12.5, color:INK }}>
+              <Check size={14} style={{ color:"#16a34a", flexShrink:0 }}/>
+              <span>100% Satisfaction Guarantee</span>
+            </div>
+          </div>
+
           <button onClick={handleContinue} className="cz-btn-red" style={{
             padding:"16px 18px", fontSize:14.5,
             display:"flex", alignItems:"center", justifyContent:"center", gap:10,
