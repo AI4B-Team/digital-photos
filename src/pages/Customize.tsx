@@ -702,9 +702,6 @@ export default function Customize() {
               <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
                 <RotateCcw size={17}/>
               </button>
-              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
-                <Plus size={18}/>
-              </button>
               <div className="cz-tool-divider"/>
               <button
                 className="cz-tool"
@@ -723,6 +720,10 @@ export default function Customize() {
                 disabled={(item.zoom || 1) <= 1}
                 data-tip="Zoom Out" aria-label="Zoom out">
                 <ZoomOut size={17}/>
+              </button>
+              <div className="cz-tool-divider"/>
+              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
+                <Plus size={18}/>
               </button>
               {showRemove && (
                 <>
