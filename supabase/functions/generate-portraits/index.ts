@@ -28,7 +28,7 @@ serve(async (req) => {
   }
 
   try {
-    const { sessionId, photoUrl, styles, category } = await req.json();
+    const { sessionId, photoUrl, styles, category, theme } = await req.json();
 
     if (!photoUrl || !styles?.length) {
       throw new Error("photoUrl and styles are required");
@@ -85,7 +85,7 @@ serve(async (req) => {
                   content: [
                     {
                       type: "text",
-                      text: `${prompt}\n\n${categoryContext}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
+                      text: `${prompt}\n\n${categoryContext}${theme?.prompt ? `\n\nPhotoshoot Theme — ${theme.label}: ${theme.prompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
                     },
                     {
                       type: "image_url",
