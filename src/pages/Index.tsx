@@ -148,8 +148,14 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .teaser-img{width:100%;height:100%;object-fit:cover;transition:opacity .5s ease}
 
 /* Template strip */
-.tmpl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.tmpl-wrap{position:relative}
+.tmpl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;scroll-behavior:smooth}
 .tmpl-strip::-webkit-scrollbar{display:none}
+.tmpl-arrow{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid rgba(0,0,0,.12);box-shadow:0 2px 8px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;transition:all .15s;color:#0A0A0A}
+.tmpl-arrow:hover{background:#FAFAFA;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.tmpl-arrow:disabled{opacity:0;pointer-events:none}
+.tmpl-arrow.l{left:-10px}
+.tmpl-arrow.r{right:-10px}
 .tmpl-card{width:96px;flex-shrink:0;background:#fff;padding:0;cursor:pointer;border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;position:relative;transition:all .18s}
 .tmpl-card:hover{border-color:rgba(0,0,0,.25);transform:translateY(-1px)}
 .tmpl-card.on{border-color:#E61919;box-shadow:0 0 0 2px rgba(230,25,25,.2)}
