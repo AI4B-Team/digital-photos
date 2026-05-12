@@ -1240,7 +1240,7 @@ export default function Customize() {
                 <span style={{ textDecoration:"line-through" }}>${listSubtotal}</span>
               </div>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>Subtotal ({items.length} {items.length === 1 ? "Photo" : "Photos"})</span>
+                <span>Subtotal ({totalPhotoCount} {totalPhotoCount === 1 ? "Photo" : "Photos"})</span>
                 <span>${subtotal}</span>
               </div>
               {bundleSave > 0 && (
