@@ -666,7 +666,7 @@ export default function Customize() {
                     height: `${sd.h * 42}vh`,
                     width:  `${sd.w * 42}vh`,
                     maxWidth: "100%",
-                    objectFit: "cover",
+                    objectFit: "contain",
                     filter: ed.filter,
                     transform: `translate(${item.offsetX || 0}px, ${item.offsetY || 0}px) scale(${item.zoom || 1})`,
                     transformOrigin: "center center",
