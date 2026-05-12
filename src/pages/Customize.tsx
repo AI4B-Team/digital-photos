@@ -438,8 +438,6 @@ export default function Customize() {
     const saved = (session as any).customizationItems;
     if (saved?.length) return saved;
     return [makeItem({
-      frame: session.customization?.frame || "black",
-      size: session.customization?.size || '11" x 14"',
       effect: session.customization?.effect || "original",
       border: session.customization?.border || "shallow",
       borderColor: session.customization?.borderColor || "soft-white",
@@ -472,7 +470,7 @@ export default function Customize() {
     e.preventDefault();
     const wrap = e.currentTarget as HTMLElement;
     const rect = wrap.getBoundingClientRect();
-    const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
+    const sd = getSizeDef(item);
     const frameAspect = sd.w / sd.h;
     const photoAspect = item.photoAspect || frameAspect;
     const baseW = photoAspect > frameAspect ? rect.height * photoAspect : rect.width;
@@ -557,16 +555,27 @@ export default function Customize() {
   const setBorderColor = (v) => updateSelected({ borderColor: v });
   const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
-  const frameDef  = FRAMES.find(f => f.id === frame)  || FRAMES[1];
-  const sizeDef   = SIZES.find(s => s.id === size)    || SIZES[2];
-  const effectDef = EFFECTS.find(e => e.id === effect) || EFFECTS[0];
-  const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
+  const productType   = selected.productType || "classic-frame";
+  const frameColor    = selected.frameColor  || "black";
+  const canvasEdge    = selected.canvasEdge  || "mirror";
+  const currentSizes  = SIZES_BY_PRODUCT[productType] || SIZES_BY_PRODUCT["classic-frame"];
+  const sizeDef       = currentSizes.find(s => s.id === selected.size) || currentSizes[1];
+  const frameColorDef = (FRAME_COLORS[productType] || []).find(c => c.id === frameColor) || (FRAME_COLORS[productType] || [])[0];
+  const canvasEdgeDef = CANVAS_EDGES.find(e => e.id === canvasEdge) || CANVAS_EDGES[0];
+  const frameDef      = FRAMES.find(f => f.id === toFrameId(productType, frameColor)) || FRAMES[1];
+  const effectDef     = EFFECTS.find(e => e.id === effect) || EFFECTS[0];
+  const borderDef     = BORDERS.find(b => b.id === border) || BORDERS[1];
+  const isDigital     = productType === "digital";
+  const isFramed      = productType === "classic-frame" || productType === "box-frame";
+  const isCanvas      = productType === "canvas";
 
   // Per-item price + bundle discount based on number of images
   const itemUnitPrice = (it) => {
-    const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
-    const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
-    return sd.price + fd.add;
+    if (it.productType === "digital") return 27;
+    const pt = it.productType || "classic-frame";
+    const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
+    const sd = sizes.find(s => s.id === it.size) || sizes[1];
+    return sd?.price || 97;
   };
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
@@ -722,7 +731,7 @@ export default function Customize() {
   /* ── Preview (per-item, click to select, ✕ to remove) ── */
   const renderItem = (item, isSelected, isToolbarItem) => {
     const fd = FRAMES.find(f => f.id === item.frame) || FRAMES[1];
-    const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
+    const sd = getSizeDef(item);
     const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
     const bd = BORDERS.find(b => b.id === item.border) || BORDERS[1];
     const bcd = BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0];
