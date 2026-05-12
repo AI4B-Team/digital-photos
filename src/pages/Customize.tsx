@@ -928,11 +928,28 @@ export default function Customize() {
   };
 
   const handleContinue = () => {
+    const primaryItem = items[0];
     setSession({
-      customization: { portraitUrl, style: styleId, frame, size, effect, border, borderColor },
+      customization: {
+        portraitUrl,
+        style:       styleId,
+        productType: primaryItem.productType,
+        size:        primaryItem.size,
+        sizeLabel:   sizeDef?.label,
+        sku:         primaryItem.sku,
+        frameColor:  primaryItem.frameColor,
+        canvasEdge:  primaryItem.canvasEdge,
+        effect:      primaryItem.effect,
+        border:      primaryItem.border,
+        borderColor: primaryItem.borderColor,
+        frame:       toFrameId(primaryItem.productType, primaryItem.frameColor),
+      },
       customizationItems: items,
-      selectedPlan: frameDef.id === "canvas" ? "canvas" : "bundle",
-      printSize: size,
+      selectedPlan:
+        primaryItem.productType === "digital" ? "digital" :
+        primaryItem.productType === "canvas"  ? "canvas"  : "bundle",
+      printSize: sizeDef?.label,
+      printSku:  primaryItem.sku,
     } as any);
     navigate("/checkout");
   };
@@ -995,56 +1012,155 @@ export default function Customize() {
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
         }}>
-          {/* Size */}
+          {/* Product Type */}
           <div className="cz-section">
-            <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef.label}″</span></div>
-            <div className="cz-size-scroll">
-              {SIZES.map(s => {
-                const on = size === s.id;
-                const SHAPE_BOX = 44;
+            <div className="cz-label">
+              <span>Product</span>
+              <span className="cz-value">{PRODUCT_TYPES.find(p => p.id === productType)?.label}</span>
+            </div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:8 }}>
+              {PRODUCT_TYPES.map(pt => {
+                const on = productType === pt.id;
                 return (
-                  <button key={s.id} onClick={() => setSize(s.id)} className={`cz-size-card ${on?"on":""}`}>
-                    <div style={{
-                      width: SHAPE_BOX, height: SHAPE_BOX,
-                      display:"flex", alignItems:"center", justifyContent:"center", marginBottom:8,
+                  <button key={pt.id}
+                    onClick={() => {
+                      const sizes = SIZES_BY_PRODUCT[pt.id] || [];
+                      const defaultSize = sizes[1] || sizes[0];
+                      const defaultFrame = (FRAME_COLORS[pt.id] || [])[0]?.id || "black";
+                      updateSelected({
+                        productType: pt.id,
+                        frameColor:  defaultFrame,
+                        size:        defaultSize?.id || "11x14",
+                        sku:         defaultSize?.sku || "",
+                        frame:       toFrameId(pt.id, defaultFrame),
+                      });
+                    }}
+                    style={{
+                      border:`1.5px solid ${on ? RED : BORDER}`,
+                      borderRadius:10, background: on ? "rgba(230,25,25,.05)" : "#fff",
+                      padding:"10px 10px 9px", cursor:"pointer", textAlign:"left",
+                      display:"flex", flexDirection:"column", gap:2, transition:"all .15s",
                     }}>
-                      <div style={{
-                        width: SHAPE_BOX * s.w,
-                        height: SHAPE_BOX * s.h,
-                        border: `1.5px solid ${on ? RED : "#B8B0A8"}`,
-                        borderRadius: 3,
-                        background: on ? "rgba(230,25,25,0.06)" : "transparent",
-                      }}/>
-                    </div>
-                    <div style={{ fontSize:12, fontWeight:600, color:INK, lineHeight:1.1, whiteSpace:"nowrap" }}>{s.label}″</div>
-                    <div style={{ fontSize:10.5, color:MUTED, marginTop:2, whiteSpace:"nowrap" }}>From ${s.price}</div>
+                    <span style={{ fontSize:16, lineHeight:1 }}>{pt.icon}</span>
+                    <span style={{
+                      fontSize:11.5, fontWeight:600, color: on ? RED : INK,
+                      fontFamily:"'Poppins',sans-serif", marginTop:3,
+                    }}>{pt.label}</span>
+                    <span style={{ fontSize:10, color:MUTED }}>{pt.desc}</span>
+                    {pt.price && (
+                      <span style={{ fontSize:11, fontWeight:700, color:RED, marginTop:2 }}>
+                        ${pt.price}
+                      </span>
+                    )}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Frame */}
-          <div className="cz-section">
-            <div className="cz-label"><span>Frame</span><span className="cz-value">{frameDef.label}{frameDef.add?` · +$${frameDef.add}`:""}</span></div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(64px, 1fr))", gap:10, marginBottom:10 }}>
-              {FRAMES.map(f => (
-                <button key={f.id} onClick={() => setFrame(f.id)} title={f.label}
-                  style={{
-                    border:"none", background:"transparent", padding:0, cursor:"pointer",
-                    display:"flex", flexDirection:"column", alignItems:"center", gap:6,
-                  }}>
-                  <FrameSwatch frame={f} on={frame===f.id}/>
-                  <span style={{
-                    fontSize:10.5, color: frame===f.id ? INK : MUTED, fontWeight: frame===f.id ? 600 : 500,
-                    whiteSpace:"nowrap", textAlign:"center", lineHeight:1.1,
-                  }}>{f.label}</span>
-                </button>
-              ))}
+          {/* Size */}
+          {!isDigital && (
+            <div className="cz-section">
+              <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef?.label}</span></div>
+              <div className="cz-size-scroll">
+                {currentSizes.map(s => {
+                  const on = selected.size === s.id;
+                  const SHAPE_BOX = 44;
+                  return (
+                    <button key={s.id}
+                      onClick={() => updateSelected({ size: s.id, sku: s.sku })}
+                      className={`cz-size-card ${on?"on":""}`}>
+                      <div style={{
+                        width: SHAPE_BOX, height: SHAPE_BOX,
+                        display:"flex", alignItems:"center", justifyContent:"center", marginBottom:8,
+                      }}>
+                        <div style={{
+                          width: SHAPE_BOX * s.w,
+                          height: SHAPE_BOX * s.h,
+                          border: `1.5px solid ${on ? RED : "#B8B0A8"}`,
+                          borderRadius: 3,
+                          background: on ? "rgba(230,25,25,0.06)" : "transparent",
+                        }}/>
+                      </div>
+                      <div style={{ fontSize:12, fontWeight:600, color:INK, lineHeight:1.1, whiteSpace:"nowrap" }}>{s.label}</div>
+                      <div style={{ fontSize:10.5, color:MUTED, marginTop:2, whiteSpace:"nowrap" }}>{s.sub}</div>
+                      <div style={{ fontSize:11, color:RED, fontWeight:700, marginTop:3 }}>${s.price}</div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Effect */}
+          {/* Frame Colour — only for framed products */}
+          {isFramed && (
+            <div className="cz-section">
+              <div className="cz-label"><span>Frame Colour</span><span className="cz-value">{frameColorDef?.label}</span></div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(58px, 1fr))", gap:10 }}>
+                {(FRAME_COLORS[productType] || []).map(fc => {
+                  const on = frameColor === fc.id;
+                  return (
+                    <button key={fc.id}
+                      onClick={() => updateSelected({
+                        frameColor: fc.id,
+                        frame: toFrameId(productType, fc.id),
+                      })}
+                      title={fc.label}
+                      style={{
+                        border:"none", background:"transparent",
+                        padding:0, cursor:"pointer",
+                        display:"flex", flexDirection:"column", alignItems:"center", gap:5,
+                      }}>
+                      <div style={{
+                        width:42, height:42, borderRadius:8,
+                        background: fc.color,
+                        border: on ? `2px solid ${RED}` : "1px solid rgba(0,0,0,.12)",
+                        boxShadow: on ? `0 0 0 2px #fff inset` : "inset 0 1px 2px rgba(0,0,0,.15)",
+                      }}/>
+                      <span style={{
+                        fontSize:9.5, color: on ? INK : MUTED,
+                        fontWeight: on ? 600 : 500, textAlign:"center", lineHeight:1.1,
+                      }}>{fc.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Canvas Edge — only for canvas */}
+          {isCanvas && (
+            <div className="cz-section">
+              <div className="cz-label"><span>Edge Wrap</span><span className="cz-value">{canvasEdgeDef?.label}</span></div>
+              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                {CANVAS_EDGES.map(ce => {
+                  const on = canvasEdge === ce.id;
+                  return (
+                    <button key={ce.id}
+                      onClick={() => updateSelected({ canvasEdge: ce.id })}
+                      style={{
+                        display:"flex", alignItems:"center", gap:10,
+                        padding:"9px 12px", borderRadius:10, cursor:"pointer",
+                        border:`1.5px solid ${on ? RED : BORDER}`,
+                        background: on ? "rgba(230,25,25,.05)" : "#fff",
+                        transition:"all .15s",
+                      }}>
+                      <div style={{
+                        width:28, height:28, borderRadius:6, flexShrink:0,
+                        background: ce.color || "linear-gradient(135deg,#e0d8cc,#c8bfb3)",
+                        border:"1px solid rgba(0,0,0,.1)",
+                      }}/>
+                      <div style={{ textAlign:"left" }}>
+                        <div style={{ fontSize:12, fontWeight:600, color: on ? RED : INK }}>{ce.label}</div>
+                        <div style={{ fontSize:10.5, color:MUTED, marginTop:1 }}>{ce.desc}</div>
+                      </div>
+                      {on && <Check size={14} color={RED} style={{ marginLeft:"auto" }}/>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
             <div className="cz-size-scroll">
@@ -1247,7 +1363,7 @@ export default function Customize() {
             {/* Itemized cart — one row per image */}
             <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
               {items.map((it, idx) => {
-                const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
+                const sd = getSizeDef(it);
                 const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
                 const ed = EFFECTS.find(e => e.id === it.effect) || EFFECTS[0];
                 const bd = BORDERS.find(b => b.id === it.border) || BORDERS[1];
