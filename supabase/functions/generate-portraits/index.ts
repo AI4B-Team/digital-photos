@@ -85,7 +85,7 @@ serve(async (req) => {
                   content: [
                     {
                       type: "text",
-                      text: `${prompt}\n\n${categoryContext}${theme?.prompt ? `\n\nPhotoshoot Theme — ${theme.label}: ${theme.prompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
+                      text: `${prompt}\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
                     },
                     {
                       type: "image_url",
