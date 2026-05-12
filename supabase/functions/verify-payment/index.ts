@@ -56,6 +56,7 @@ serve(async (req) => {
 
     let sessionId = sessions?.[0]?.id;
 
+    let sessionRecord: any = null;
     if (sessionId) {
       await supabase
         .from("sessions")
@@ -65,10 +66,17 @@ serve(async (req) => {
           order_id: checkoutSession.id,
         })
         .eq("id", sessionId);
+
+      const { data: rec } = await supabase
+        .from("sessions")
+        .select("*")
+        .eq("id", sessionId)
+        .maybeSingle();
+      sessionRecord = rec;
     }
 
     // Fetch portraits for this session
-    let portraits = [];
+    let portraits: any[] = [];
     if (sessionId) {
       const { data: portraitData } = await supabase
         .from("portraits")
@@ -77,12 +85,64 @@ serve(async (req) => {
       portraits = portraitData || [];
     }
 
+    // ── Trigger Prodigi fulfillment for physical orders ──────
+    let prodigiOrderId: string | null = sessionRecord?.prodigi_order_id || null;
+    const isPhysical = orderProduct === "print" || orderProduct === "canvas" || orderProduct === "bundle";
+
+    if (isPhysical && sessionId && !prodigiOrderId) {
+      try {
+        const portraitUrl =
+          portraits?.[0]?.url_hd ||
+          portraits?.[0]?.url ||
+          checkoutSession.metadata?.portraitUrl ||
+          null;
+
+        const shipping: any = (checkoutSession as any).shipping_details?.address
+          || (checkoutSession as any).customer_details?.address;
+        const shippingName =
+          (checkoutSession as any).shipping_details?.name ||
+          checkoutSession.customer_details?.name || "";
+        const shippingEmail = checkoutSession.customer_details?.email || "";
+
+        if (portraitUrl && shipping?.line1) {
+          const { data: prodigiData, error: prodigiErr } = await supabase.functions.invoke(
+            "create-prodigi-order",
+            {
+              body: {
+                sessionId,
+                portraitUrl,
+                size: sessionRecord?.print_size || checkoutSession.metadata?.printSize || '12" x 16"',
+                frame: sessionRecord?.print_frame || checkoutSession.metadata?.printFrame || "frameless",
+                shippingName,
+                shippingEmail,
+                shippingLine1: shipping.line1,
+                shippingCity: shipping.city || "",
+                shippingZip: shipping.postal_code || "",
+                shippingCountry: shipping.country || "US",
+              },
+            }
+          );
+          if (prodigiErr) {
+            console.error("Prodigi invoke error:", prodigiErr);
+          } else {
+            console.log("Prodigi order result:", prodigiData);
+            prodigiOrderId = prodigiData?.prodigiOrderId || null;
+          }
+        } else {
+          console.warn("Skipping Prodigi: missing portraitUrl or shipping address");
+        }
+      } catch (prodigiErr) {
+        console.error("Prodigi trigger failed (non-fatal):", prodigiErr);
+      }
+    }
+
     return new Response(
       JSON.stringify({
         verified: true,
         orderProduct,
         sessionId,
         portraits,
+        prodigiOrderId,
         customerEmail: checkoutSession.customer_details?.email,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
