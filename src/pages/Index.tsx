@@ -873,50 +873,17 @@ function HomePage({ onGenerate }) {
                 </div>
               </div>
 
-              {/* ── PHOTOSHOOT THEME (optional) ── */}
-              <div style={{ marginBottom:18 }}>
-                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
-                  <div style={{ fontSize:9, letterSpacing:".24em", color:cat?T.gold:T.dim,
-                    textTransform:"uppercase", fontWeight:500, transition:"color .28s" }}>
-                    Photoshoot Theme <span style={{ color:T.dim, marginLeft:4 }}>(Optional)</span>
-                  </div>
-                  {theme && (
-                    <button onClick={() => setSelectedTemplate(null)}
-                      style={{ fontSize:9, color:T.dim, background:"none", border:"none", cursor:"pointer",
-                        letterSpacing:".12em", textTransform:"uppercase", fontFamily:"'Poppins',sans-serif" }}>
-                      Clear
-                    </button>
-                  )}
-                </div>
-                {theme ? (
-                  <div className="theme-pick" onClick={() => cat && setThemeOpen(true)}>
-                    <div className="tp-thumbs">
-                      {theme.thumbs.slice(0,3).map((t,i) => <img key={i} src={t} alt=""/>)}
-                    </div>
-                    <span className="tp-l">{theme.label}</span>
-                    <button className="tp-x" onClick={(e) => { e.stopPropagation(); setSelectedTemplate(null); }} aria-label="Remove theme">
-                      <X size={14}/>
-                    </button>
-                  </div>
-                ) : (
-                  <button onClick={() => cat && setThemeOpen(true)} disabled={!cat}
-                    style={{ width:"100%", padding:"11px 14px", borderRadius:10,
-                      border:`1px dashed ${cat ? "rgba(230,25,25,.4)" : "rgba(0,0,0,.12)"}`,
-                      background: cat ? "rgba(230,25,25,.04)" : "#FAFAFA",
-                      color: cat ? T.gold : T.dim, cursor: cat ? "pointer" : "not-allowed",
-                      fontFamily:"'Poppins',sans-serif", fontSize:12.5, fontWeight:600,
-                      display:"flex", alignItems:"center", justifyContent:"center", gap:8, transition:"all .2s" }}>
-                    <ImageIcon size={14}/> {cat ? "Browse Photoshoot Themes" : "Pick a category first"}
-                  </button>
-                )}
-              </div>
-
               {/* ── GENERATE ── */}
               <button className="btn-gold" disabled={!canGo}
                 style={{ width:"100%", padding:"15px", fontSize:13, borderRadius:6,
                   display:"flex", alignItems:"center", justifyContent:"center", gap:9,
                   animation:canGo?"glow 2s infinite":"none" }}
-                onClick={() => onGenerate({ cat, photo, styles, uploadedUrl, theme })}>
+                onClick={() => {
+                  const tmplObj = selectedTemplate
+                    ? (TEMPLATES[cat] || []).find(t => t.id === selectedTemplate)
+                    : null;
+                  onGenerate({ cat, photo, styles, uploadedUrl, templatePrompt: tmplObj?.prompt || "" });
+                }}>
                 <Wand2 size={15}/>{genLabel()}
               </button>
 
