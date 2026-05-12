@@ -7,31 +7,22 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Map size IDs → Prodigi Fine Art Print SKUs
-const SIZE_TO_SKU: Record<string, string> = {
-  '8" x 8"':   "GLOBAL-FAP-8X8",
-  '8" x 11"':  "GLOBAL-FAP-8X11",
-  '11" x 8"':  "GLOBAL-FAP-11X8",
-  '12" x 12"': "GLOBAL-FAP-12X12",
-  '12" x 16"': "GLOBAL-FAP-12X16",
-  '16" x 12"': "GLOBAL-FAP-16X12",
-  '20" x 20"': "GLOBAL-FAP-20X20",
-  '20" x 27"': "GLOBAL-FAP-20X27",
-  '27" x 20"': "GLOBAL-FAP-27X20",
-  '27" x 36"': "GLOBAL-FAP-27X36",
-  '36" x 27"': "GLOBAL-FAP-36X27",
-  '22" x 44"': "GLOBAL-FAP-22X44",
-  '44" x 22"': "GLOBAL-FAP-44X22",
+// Map frame colour ids to Prodigi attribute values
+const FRAME_COLOR_ATTR: Record<string, string> = {
+  "black":          "black",
+  "white":          "white",
+  "natural":        "natural",
+  "antique-silver": "antiqueSilver",
+  "antique-gold":   "antiqueGold",
+  "dark-grey":      "darkGrey",
+  "light-grey":     "lightGrey",
+  "brown":          "brown",
 };
 
-const CANVAS_SIZE_TO_SKU: Record<string, string> = {
-  '8" x 8"':   "GLOBAL-CFPM-8X8",
-  '12" x 12"': "GLOBAL-CFPM-12X12",
-  '12" x 16"': "GLOBAL-CFPM-12X16",
-  '16" x 12"': "GLOBAL-CFPM-16X12",
-  '20" x 20"': "GLOBAL-CFPM-20X20",
-  '20" x 27"': "GLOBAL-CFPM-20X27",
-  '27" x 36"': "GLOBAL-CFPM-27X36",
+const CANVAS_EDGE_ATTR: Record<string, string> = {
+  "mirror":       "mirror",
+  "museum-black": "black",
+  "museum-white": "white",
 };
 
 serve(async (req) => {
@@ -41,8 +32,10 @@ serve(async (req) => {
     const {
       sessionId,
       portraitUrl,
-      size,
-      frame,
+      sku,
+      productType,
+      frameColor,
+      canvasEdge,
       shippingName,
       shippingEmail,
       shippingLine1,
@@ -51,14 +44,9 @@ serve(async (req) => {
       shippingCountry = "US",
     } = await req.json();
 
-    if (!portraitUrl || !size || !shippingLine1) {
-      throw new Error("portraitUrl, size, and shipping address are required");
+    if (!portraitUrl || !sku || !shippingLine1) {
+      throw new Error("portraitUrl, sku, and shipping address are required");
     }
-
-    const isCanvas = frame === "canvas";
-    const skuMap = isCanvas ? CANVAS_SIZE_TO_SKU : SIZE_TO_SKU;
-    const sku = skuMap[size];
-    if (!sku) throw new Error(`No Prodigi SKU found for size: ${size}`);
 
     const isSandbox = Deno.env.get("PRODIGI_SANDBOX") !== "false";
     const baseUrl = isSandbox
@@ -68,11 +56,20 @@ serve(async (req) => {
     const apiKey = Deno.env.get("PRODIGI_API_KEY");
     if (!apiKey) throw new Error("PRODIGI_API_KEY secret not set");
 
+    // Build per-product attributes
+    const attributes: Record<string, string> = {};
+    if ((productType === "classic-frame" || productType === "box-frame") && frameColor) {
+      attributes.color = FRAME_COLOR_ATTR[frameColor] || frameColor;
+    }
+    if (productType === "canvas" && canvasEdge) {
+      attributes.wrap = CANVAS_EDGE_ATTR[canvasEdge] || canvasEdge;
+    }
+
     const orderPayload = {
       merchantReference: sessionId || `dp-${Date.now()}`,
       shippingMethod: "Budget",
       recipient: {
-        name: shippingName || "DigitalPhotos Customer",
+        name: shippingName || "REAL ART Customer",
         email: shippingEmail || "",
         address: {
           line1: shippingLine1,
@@ -87,6 +84,7 @@ serve(async (req) => {
           sku,
           copies: 1,
           sizing: "fillPrintArea",
+          ...(Object.keys(attributes).length ? { attributes } : {}),
           assets: [{ printArea: "default", url: portraitUrl }],
         },
       ],
@@ -123,8 +121,7 @@ serve(async (req) => {
           shipping_zip: shippingZip,
           shipping_country: shippingCountry,
           print_sku: sku,
-          print_size: size,
-          print_frame: frame,
+          print_frame: frameColor || canvasEdge || productType,
         })
         .eq("id", sessionId);
     }
