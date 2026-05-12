@@ -861,7 +861,7 @@ function HomePage({ onGenerate }) {
                       Choose A Template
                       <span style={{ color:T.dim, fontSize:8, letterSpacing:".05em",
                         textTransform:"none", fontWeight:400, marginLeft:8 }}>
-                        (optional — AI Decides by default)
+                        (Optional - AI Decides By Default)
                       </span>
                     </div>
                   </div>
