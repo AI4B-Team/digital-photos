@@ -669,7 +669,7 @@ function HomePage({ onGenerate }) {
             const NavIcon = c.Icon;
             return (
               <button key={c.id} onClick={() => {
-                  setCat(c.id); setTheme(null);
+                  setCat(c.id); setSelectedTemplate(null);
                   heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
                 }}
                 style={{ background:"none", border:"none", cursor:"pointer",
@@ -763,7 +763,7 @@ function HomePage({ onGenerate }) {
                   {CATS.map(c => {
                     const CIcon = c.Icon;
                     return (
-                      <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => { setCat(c.id); setTheme(null); }}>
+                      <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => { setCat(c.id); setSelectedTemplate(null); }}>
                         <CIcon size={14} strokeWidth={1.8}/>{c.label}
                       </button>
                     );
@@ -881,7 +881,7 @@ function HomePage({ onGenerate }) {
                     Photoshoot Theme <span style={{ color:T.dim, marginLeft:4 }}>(Optional)</span>
                   </div>
                   {theme && (
-                    <button onClick={() => setTheme(null)}
+                    <button onClick={() => setSelectedTemplate(null)}
                       style={{ fontSize:9, color:T.dim, background:"none", border:"none", cursor:"pointer",
                         letterSpacing:".12em", textTransform:"uppercase", fontFamily:"'Poppins',sans-serif" }}>
                       Clear
@@ -894,7 +894,7 @@ function HomePage({ onGenerate }) {
                       {theme.thumbs.slice(0,3).map((t,i) => <img key={i} src={t} alt=""/>)}
                     </div>
                     <span className="tp-l">{theme.label}</span>
-                    <button className="tp-x" onClick={(e) => { e.stopPropagation(); setTheme(null); }} aria-label="Remove theme">
+                    <button className="tp-x" onClick={(e) => { e.stopPropagation(); setSelectedTemplate(null); }} aria-label="Remove theme">
                       <X size={14}/>
                     </button>
                   </div>
