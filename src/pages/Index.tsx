@@ -6,7 +6,7 @@ import { useUpload }    from "@/hooks/useUpload";
 import { createSession } from "@/lib/supabaseHelpers";
 import { supabase }     from "@/integrations/supabase/client";
 import {
-  Upload, X, Check, ChevronRight, ChevronDown, Download,
+  Upload, X, Check, ChevronLeft, ChevronRight, ChevronDown, Download,
   Printer, FrameIcon, Heart, Truck, RefreshCw,
   Lock, Wand2, Sparkles, AlertCircle, Copy, Gift,
   ArrowRight, Shield, Star, Instagram, Facebook,
@@ -148,8 +148,14 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .teaser-img{width:100%;height:100%;object-fit:cover;transition:opacity .5s ease}
 
 /* Template strip */
-.tmpl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.tmpl-wrap{position:relative}
+.tmpl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;scroll-behavior:smooth}
 .tmpl-strip::-webkit-scrollbar{display:none}
+.tmpl-arrow{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid rgba(0,0,0,.12);box-shadow:0 2px 8px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;transition:all .15s;color:#0A0A0A}
+.tmpl-arrow:hover{background:#FAFAFA;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.tmpl-arrow:disabled{opacity:0;pointer-events:none}
+.tmpl-arrow.l{left:-10px}
+.tmpl-arrow.r{right:-10px}
 .tmpl-card{width:96px;flex-shrink:0;background:#fff;padding:0;cursor:pointer;border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;position:relative;transition:all .18s}
 .tmpl-card:hover{border-color:rgba(0,0,0,.25);transform:translateY(-1px)}
 .tmpl-card.on{border-color:#E61919;box-shadow:0 0 0 2px rgba(230,25,25,.2)}
@@ -699,6 +705,25 @@ function HomePage({ onGenerate }) {
   const [cat,     setCat]     = useState("");
   const [styles,  setStyles]  = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
+  const tmplStripRef = useRef<HTMLDivElement|null>(null);
+  const [tmplCanL, setTmplCanL] = useState(false);
+  const [tmplCanR, setTmplCanR] = useState(false);
+  const updateTmplArrows = useCallback(() => {
+    const el = tmplStripRef.current; if (!el) return;
+    setTmplCanL(el.scrollLeft > 4);
+    setTmplCanR(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+  useEffect(() => {
+    const el = tmplStripRef.current; if (!el) return;
+    updateTmplArrows();
+    el.addEventListener("scroll", updateTmplArrows, { passive: true });
+    window.addEventListener("resize", updateTmplArrows);
+    return () => { el.removeEventListener("scroll", updateTmplArrows); window.removeEventListener("resize", updateTmplArrows); };
+  }, [updateTmplArrows, cat]);
+  const scrollTmpl = (dir: 1|-1) => {
+    const el = tmplStripRef.current; if (!el) return;
+    el.scrollBy({ left: dir * Math.max(200, el.clientWidth * 0.7), behavior: "smooth" });
+  };
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
@@ -973,7 +998,14 @@ function HomePage({ onGenerate }) {
                       </span>
                     </div>
                   </div>
-                  <div className="tmpl-strip">
+                  <div className="tmpl-wrap">
+                    <button type="button" aria-label="Scroll left" className="tmpl-arrow l" disabled={!tmplCanL} onClick={() => scrollTmpl(-1)}>
+                      <ChevronLeft size={16}/>
+                    </button>
+                    <button type="button" aria-label="Scroll right" className="tmpl-arrow r" disabled={!tmplCanR} onClick={() => scrollTmpl(1)}>
+                      <ChevronRight size={16}/>
+                    </button>
+                  <div className="tmpl-strip" ref={tmplStripRef}>
                     {/* AI Decides default card */}
                     <button className={`tmpl-card ${selectedTemplate===null?"on":""}`}
                       onClick={() => setSelectedTemplate(null)}>
@@ -1005,6 +1037,7 @@ function HomePage({ onGenerate }) {
                         )}
                       </button>
                     ))}
+                  </div>
                   </div>
                 </div>
               )}
