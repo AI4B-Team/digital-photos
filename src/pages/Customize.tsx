@@ -627,6 +627,9 @@ export default function Customize() {
     const isFrameless = fd.id === "frameless" || fd.id === "digital";
     const isCanvas    = fd.id === "canvas";
     const woodPad     = fd.w || 0;
+    const frameAspect = sd.w / sd.h;
+    const photoAspect = item.photoAspect || frameAspect;
+    const coverByHeight = photoAspect > frameAspect;
     const itemBusy = busy && item.id === selectedId;
     const showRemove = items.length > 1;
 
@@ -679,9 +682,11 @@ export default function Customize() {
                   }}
                   style={{
                     display:"block",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
+                    width: coverByHeight ? "auto" : "100%",
+                    height: coverByHeight ? "100%" : "auto",
+                    minWidth: "100%",
+                    minHeight: "100%",
+                    maxWidth: "none",
                     filter: ed.filter,
                     transform: `translate(${item.offsetX || 0}px, ${item.offsetY || 0}px) scale(${item.zoom || 1})`,
                     transformOrigin: "center center",
