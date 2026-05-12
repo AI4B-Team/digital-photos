@@ -192,6 +192,101 @@ const BORDER_COLORS = [
   { id: "pampas",       label: "Pampas Grass", bg: "repeating-linear-gradient(90deg,#E8E4D8 0 6px,#DDD7C7 6px 7px)" },
 ];
 
+/* ── Prodigi product catalogue ── */
+const PRODUCT_TYPES = [
+  { id:"digital",       label:"Digital Only",     desc:"Hi-res download",              icon:"⬇", price:27   },
+  { id:"print",         label:"Fine Art Print",   desc:"Ships rolled, frame yourself", icon:"🖼", price:null },
+  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",    icon:"🏛", price:null },
+  { id:"box-frame",     label:"Box Frame",        desc:"Deep shadow box · premium",    icon:"◳", price:null },
+  { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang", icon:"▣", price:null },
+];
+
+const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sku:string; price:number; w:number; h:number }[]> = {
+  print: [
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-FAP-8x10",  price:47,  w:0.80, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-FAP-10x10", price:47,  w:1,    h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-FAP-11x14", price:57,  w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-FAP-12x12", price:57,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-FAP-12x16", price:67,  w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-FAP-16x20", price:87,  w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-FAP-18x24", price:107, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-FAP-20x24", price:127, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-FAP-24x36", price:167, w:0.67, h:1 },
+  ],
+  "classic-frame": [
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CFPM-8x10",  price:87,  w:0.80, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-CFPM-11x14", price:107, w:0.79, h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CFPM-12x16", price:127, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CFPM-16x20", price:157, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CFPM-20x24", price:227, w:0.83, h:1 },
+  ],
+  "box-frame": [
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-BOXM-8x10",  price:97,  w:0.80, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-BOXM-11x14", price:117, w:0.79, h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-BOXM-12x16", price:137, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-BOXM-16x20", price:167, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
+  ],
+  canvas: [
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10x10", price:77,  w:1,    h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12x12", price:87,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12x16", price:107, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16x20", price:127, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18x24", price:147, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:167, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:217, w:0.67, h:1 },
+  ],
+};
+
+const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> = {
+  "classic-frame": [
+    { id:"black",          label:"Black",          color:"#1a1a1a" },
+    { id:"white",          label:"White",          color:"#f4f4f4" },
+    { id:"natural",        label:"Natural",        color:"#c89968" },
+    { id:"antique-silver", label:"Antique Silver", color:"#9a9a9a" },
+    { id:"antique-gold",   label:"Antique Gold",   color:"#c4963a" },
+    { id:"dark-grey",      label:"Dark Grey",      color:"#555555" },
+    { id:"light-grey",     label:"Light Grey",     color:"#d0d0d0" },
+    { id:"brown",          label:"Brown",          color:"#8B5E3C" },
+  ],
+  "box-frame": [
+    { id:"black",   label:"Black",   color:"#1a1a1a" },
+    { id:"white",   label:"White",   color:"#f4f4f4" },
+    { id:"natural", label:"Natural", color:"#c89968" },
+    { id:"brown",   label:"Brown",   color:"#8B5E3C" },
+  ],
+};
+
+const CANVAS_EDGES = [
+  { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
+  { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",  color:"#1a1a1a" },
+  { id:"museum-white", label:"Museum (White edge)", desc:"Clean solid white edges",  color:"#f4f4f4" },
+];
+
+const toFrameId = (productType:string, frameColor:string): string => {
+  if (productType === "digital" || productType === "print") return "frameless";
+  if (productType === "canvas") return "canvas";
+  if (productType === "box-frame") return frameColor === "white" ? "wide-white" : "wide-black";
+  const map: Record<string,string> = {
+    "black":"black","white":"white","natural":"oak","antique-silver":"white",
+    "antique-gold":"oak","dark-grey":"black","light-grey":"white","brown":"walnut",
+  };
+  return map[frameColor] || "black";
+};
+
+// Resolve a size def for any item (new id format or legacy fallback)
+const getSizeDef = (it:any) => {
+  const pt = it?.productType || "classic-frame";
+  const list = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
+  const found = list.find(s => s.id === it?.size);
+  if (found) return found;
+  // Legacy fallback for items saved with old size IDs like '11" x 14"'
+  const legacy = SIZES.find(s => s.id === it?.size);
+  if (legacy) return { id: legacy.id, label: legacy.label, sub: legacy.sub, sku: "", price: legacy.price, w: legacy.w, h: legacy.h };
+  return list[1] || list[0];
+};
+
 /* ── Frame swatch (photorealistic mini) ── */
 function FrameSwatch({ frame, on }) {
   const SIZE = 56;
