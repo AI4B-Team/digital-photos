@@ -705,6 +705,25 @@ function HomePage({ onGenerate }) {
   const [cat,     setCat]     = useState("");
   const [styles,  setStyles]  = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
+  const tmplStripRef = useRef<HTMLDivElement|null>(null);
+  const [tmplCanL, setTmplCanL] = useState(false);
+  const [tmplCanR, setTmplCanR] = useState(false);
+  const updateTmplArrows = useCallback(() => {
+    const el = tmplStripRef.current; if (!el) return;
+    setTmplCanL(el.scrollLeft > 4);
+    setTmplCanR(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+  useEffect(() => {
+    const el = tmplStripRef.current; if (!el) return;
+    updateTmplArrows();
+    el.addEventListener("scroll", updateTmplArrows, { passive: true });
+    window.addEventListener("resize", updateTmplArrows);
+    return () => { el.removeEventListener("scroll", updateTmplArrows); window.removeEventListener("resize", updateTmplArrows); };
+  }, [updateTmplArrows, cat]);
+  const scrollTmpl = (dir: 1|-1) => {
+    const el = tmplStripRef.current; if (!el) return;
+    el.scrollBy({ left: dir * Math.max(200, el.clientWidth * 0.7), behavior: "smooth" });
+  };
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
