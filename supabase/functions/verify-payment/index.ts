@@ -111,8 +111,10 @@ serve(async (req) => {
               body: {
                 sessionId,
                 portraitUrl,
-                size: sessionRecord?.print_size || checkoutSession.metadata?.printSize || '12" x 16"',
-                frame: sessionRecord?.print_frame || checkoutSession.metadata?.printFrame || "frameless",
+                sku: sessionRecord?.print_sku || checkoutSession.metadata?.printSku || "",
+                productType: sessionRecord?.order_product || orderProduct,
+                frameColor: sessionRecord?.print_frame || checkoutSession.metadata?.printFrame || "",
+                canvasEdge: sessionRecord?.print_canvas_edge || "mirror",
                 shippingName,
                 shippingEmail,
                 shippingLine1: shipping.line1,
