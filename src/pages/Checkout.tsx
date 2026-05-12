@@ -401,7 +401,7 @@ function ProductSelectScreen({ selected, setSelected, onNext }) {
 }
 
 // ── SCREEN 2: ORDER BUMPS + PAYMENT FORM ──────────────────────
-function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack, sessionId }) {
+function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack, sessionId, customization }) {
   const [form, setForm] = useState({ email:"", firstName:"", lastName:"", card:"", expiry:"", cvc:"", address:"", city:"", zip:"", country:"US" });
   const [errors, setErrors] = useState({});
   const [processing, setProcessing] = useState(false);
@@ -428,7 +428,11 @@ function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack, sessionI
     if (Object.keys(e).length) { setErrors(e); return; }
     setProcessing(true);
     try {
-      const url = await createCheckoutSession(product, form.email, sessionId);
+      const url = await createCheckoutSession(product, form.email, sessionId, {
+        portraitUrl: customization?.portraitUrl,
+        printSize: customization?.size,
+        printFrame: customization?.frame,
+      });
       // Save order info before redirecting
       onComplete();
       window.location.href = url;
@@ -836,6 +840,7 @@ export default function CheckoutPage() {
               onComplete={handlePaymentComplete}
               onBack={() => setScreen(1)}
               sessionId={session.orderId}
+              customization={session.customization}
             />
           )}
         </div>

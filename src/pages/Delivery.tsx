@@ -510,6 +510,8 @@ export default function DeliveryPage() {
   const [portraits, setPortraits] = useState([]);
   const [orderProduct, setOrderProduct] = useState(session.orderProduct || "digital");
   const [orderNumber, setOrderNumber] = useState(session.orderId || "");
+  const [prodigiOrderId, setProdigiOrderId] = useState<string | null>(null);
+  const [isPrint, setIsPrint] = useState(false);
 
   // On mount, verify payment and fetch portraits
   useEffect(() => {
@@ -528,6 +530,10 @@ export default function DeliveryPage() {
           setOrderProduct(result.orderProduct || "digital");
           if (result.sessionId) setOrderNumber(result.sessionId);
           setSession({ orderProduct: result.orderProduct, orderId: result.sessionId });
+
+          const physical = result.orderProduct === "print" || result.orderProduct === "canvas" || result.orderProduct === "bundle";
+          if (physical) setIsPrint(true);
+          if (result.prodigiOrderId) setProdigiOrderId(result.prodigiOrderId);
 
           if (result.portraits?.length) {
             // Map DB portraits to display format
@@ -603,6 +609,30 @@ export default function DeliveryPage() {
 
         {/* Confirmation header */}
         <ConfirmationHeader orderProduct={orderProduct}/>
+
+        {/* Print fulfillment status */}
+        {isPrint && (
+          <div style={{
+            margin:"18px auto 0", maxWidth:560,
+            background:C.successBg, border:`1px solid ${C.success}`,
+            borderRadius:10, padding:"14px 18px",
+            display:"flex", gap:12, alignItems:"flex-start"
+          }}>
+            <Truck size={20} color={C.success} style={{ flexShrink:0, marginTop:2 }}/>
+            <div>
+              <div style={{ fontSize:13, fontWeight:600, color:C.cream, marginBottom:4, letterSpacing:"0.04em", textTransform:"uppercase" }}>
+                Your print is in production
+              </div>
+              <div style={{ fontSize:12, color:C.creamMuted, lineHeight:1.6 }}>
+                We've sent your portrait to our print studio. It will be printed,
+                quality-checked, and shipped to you within 5–7 business days.
+                {prodigiOrderId && (
+                  <> Tracking reference: <span style={{ color:C.gold, fontWeight:500 }}>{prodigiOrderId}</span>.</>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Portrait grid */}
         <PortraitGrid

@@ -7,9 +7,21 @@ export const PRICE_IDS: Record<string, string> = {
   canvas:  "price_1TB257GOIj3eWyeWKYJ7HFpn",
 };
 
-export async function createCheckoutSession(product: string, email?: string, sessionId?: string) {
+export async function createCheckoutSession(
+  product: string,
+  email?: string,
+  sessionId?: string,
+  opts?: { portraitUrl?: string; printSize?: string; printFrame?: string },
+) {
   const { data, error } = await supabase.functions.invoke("create-payment", {
-    body: { product, email, sessionId },
+    body: {
+      product,
+      email,
+      sessionId,
+      portraitUrl: opts?.portraitUrl || "",
+      printSize: opts?.printSize || "",
+      printFrame: opts?.printFrame || "",
+    },
   });
 
   if (error) throw new Error(error.message || "Failed to create checkout session");
