@@ -365,6 +365,29 @@ export default function Customize() {
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dragRef = useRef<{ id: string; startX: number; startY: number; baseX: number; baseY: number } | null>(null);
+
+  const onDragStart = (item, e) => {
+    if ((item.zoom || 1) <= 1) return;
+    e.preventDefault();
+    dragRef.current = {
+      id: item.id, startX: e.clientX, startY: e.clientY,
+      baseX: item.offsetX || 0, baseY: item.offsetY || 0,
+    };
+    const onMove = (ev: MouseEvent) => {
+      const d = dragRef.current; if (!d) return;
+      const dx = ev.clientX - d.startX;
+      const dy = ev.clientY - d.startY;
+      setItems(prev => prev.map(i => i.id === d.id ? { ...i, offsetX: d.baseX + dx, offsetY: d.baseY + dy } : i));
+    };
+    const onUp = () => {
+      dragRef.current = null;
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  };
 
   // Regeneration state
   const [busy, setBusy]               = useState(false);
@@ -625,8 +648,13 @@ export default function Customize() {
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "none",
             }}>
-              <div className="cz-img-wrap">
+              <div
+                className="cz-img-wrap"
+                onMouseDown={(e) => onDragStart(item, e)}
+                style={{ cursor: (item.zoom || 1) > 1 ? (dragRef.current?.id === item.id ? "grabbing" : "grab") : "default" }}
+              >
                 <img src={item.photoUrl} alt="Your portrait"
+                  draggable={false}
                   style={{
                     display:"block",
                     height: `${sd.h * 42}vh`,
@@ -634,9 +662,13 @@ export default function Customize() {
                     maxWidth: "100%",
                     objectFit: "cover",
                     filter: ed.filter,
-                    transform: `scale(${item.zoom || 1})`,
+                    transform: `translate(${item.offsetX || 0}px, ${item.offsetY || 0}px) scale(${item.zoom || 1})`,
                     transformOrigin: "center center",
-                    transition: "width .25s ease, height .25s ease, transform .25s ease",
+                    transition: dragRef.current?.id === item.id
+                      ? "width .25s ease, height .25s ease"
+                      : "width .25s ease, height .25s ease, transform .25s ease",
+                    userSelect: "none",
+                    pointerEvents: "none",
                   }}/>
                 <div className="cz-watermark" aria-hidden="true">
                   <div className="cz-watermark-inner">
@@ -683,7 +715,11 @@ export default function Customize() {
               </button>
               <button
                 className="cz-tool"
-                onClick={() => setItems(prev => prev.map(i => i.id === item.id ? { ...i, zoom: Math.max(1, +(((i.zoom || 1) - 0.15)).toFixed(2)) } : i))}
+                onClick={() => setItems(prev => prev.map(i => {
+                  if (i.id !== item.id) return i;
+                  const z = Math.max(1, +(((i.zoom || 1) - 0.15)).toFixed(2));
+                  return z <= 1 ? { ...i, zoom: 1, offsetX: 0, offsetY: 0 } : { ...i, zoom: z };
+                }))}
                 disabled={(item.zoom || 1) <= 1}
                 data-tip="Zoom Out" aria-label="Zoom out">
                 <ZoomOut size={17}/>
