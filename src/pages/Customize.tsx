@@ -329,8 +329,10 @@ export default function Customize() {
     effect: "original",
     border: "shallow",
     borderColor: "soft-white",
+    qty: 1,
     ...overrides,
   });
+
 
   const [items, setItems] = useState(() => {
     const saved = (session as any).customizationItems;
