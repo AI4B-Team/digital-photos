@@ -366,6 +366,7 @@ export default function Customize() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragRef = useRef<{ id: string; startX: number; startY: number; baseX: number; baseY: number } | null>(null);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
 
   const onDragStart = (item, e) => {
     const z = item.zoom || 1;
@@ -384,6 +385,7 @@ export default function Customize() {
       id: item.id, startX: e.clientX, startY: e.clientY,
       baseX: item.offsetX || 0, baseY: item.offsetY || 0,
     };
+    setDraggingId(item.id);
     const clamp = (v: number, m: number) => Math.max(-m, Math.min(m, v));
     const onMove = (ev: MouseEvent) => {
       const d = dragRef.current; if (!d) return;
@@ -393,6 +395,7 @@ export default function Customize() {
     };
     const onUp = () => {
       dragRef.current = null;
+      setDraggingId(null);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);
     };
@@ -662,62 +665,82 @@ export default function Customize() {
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "none",
             }}>
-              <div
-                className="cz-img-wrap"
-                onMouseDown={(e) => onDragStart(item, e)}
-                style={{
-                  width: `${sd.w * 42}vh`,
-                  height: `${sd.h * 42}vh`,
-                  maxWidth: "100%",
-                  cursor: dragRef.current?.id === item.id ? "grabbing" : "grab",
-                }}
-              >
-                <img src={item.photoUrl} alt="Your portrait"
-                  draggable={false}
-                  onLoad={(e) => {
-                    const img = e.currentTarget;
-                    if (!img.naturalWidth || !img.naturalHeight) return;
-                    const photoAspect = img.naturalWidth / img.naturalHeight;
-                    setItems(prev => prev.map(i => i.id === item.id ? { ...i, photoAspect } : i));
-                  }}
-                  style={{
-                    position: "absolute",
-                    left: "50%",
-                    top: "50%",
-                    display:"block",
-                    width: coverByHeight ? "auto" : "100%",
-                    height: coverByHeight ? "100%" : "auto",
-                    minWidth: "100%",
-                    minHeight: "100%",
-                    maxWidth: "none",
-                    filter: ed.filter,
-                    transform: `translate(calc(-50% + ${item.offsetX || 0}px), calc(-50% + ${item.offsetY || 0}px)) scale(${item.zoom || 1})`,
-                    transformOrigin: "center center",
-                    transition: dragRef.current?.id === item.id
-                      ? "width .25s ease, height .25s ease"
-                      : "width .25s ease, height .25s ease, transform .25s ease",
-                    userSelect: "none",
-                    pointerEvents: "none",
-                  }}/>
-                <div className="cz-watermark" aria-hidden="true">
-                  <div className="cz-watermark-inner">
-                    {Array.from({ length: 9 }).map((_, i) => (
-                      <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
-                    ))}
-                  </div>
-                </div>
-                {itemBusy && (
-                  <div className="cz-busy">
-                    <div className="cz-spinner" />
-                    <div className="cz-busy-label">{busyLabel}</div>
-                    <div className="cz-busy-sub">
-                      {busyLabel.includes("Variation") || busyLabel.includes("Edited")
-                        ? `${choicesLoaded} of 6 ready · ${busyElapsed}s elapsed`
-                        : `This Usually Takes 20–60 Seconds · ${busyElapsed}s Elapsed`}
+              {(() => {
+                const isDraggingThis = draggingId === item.id;
+                const imgStyle: React.CSSProperties = {
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  display: "block",
+                  width: coverByHeight ? "auto" : "100%",
+                  height: coverByHeight ? "100%" : "auto",
+                  minWidth: "100%",
+                  minHeight: "100%",
+                  maxWidth: "none",
+                  filter: ed.filter,
+                  transform: `translate(calc(-50% + ${item.offsetX || 0}px), calc(-50% + ${item.offsetY || 0}px)) scale(${item.zoom || 1})`,
+                  transformOrigin: "center center",
+                  transition: isDraggingThis
+                    ? "width .25s ease, height .25s ease"
+                    : "width .25s ease, height .25s ease, transform .25s ease",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                };
+                return (
+                  <div
+                    className="cz-img-wrap"
+                    onMouseDown={(e) => onDragStart(item, e)}
+                    style={{
+                      width: `${sd.w * 42}vh`,
+                      height: `${sd.h * 42}vh`,
+                      maxWidth: "100%",
+                      cursor: isDraggingThis ? "grabbing" : "grab",
+                      overflow: isDraggingThis ? "visible" : "hidden",
+                    }}
+                  >
+                    {/* Faded ghost of the full image — visible while dragging so user can see edges */}
+                    {isDraggingThis && (
+                      <img
+                        src={item.photoUrl}
+                        alt=""
+                        aria-hidden="true"
+                        draggable={false}
+                        style={{ ...imgStyle, opacity: 0.32, zIndex: 0, transition: "none" }}
+                      />
+                    )}
+                    {/* Frame-clipped sharp image */}
+                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, outline: isDraggingThis ? "2px dashed rgba(255,255,255,.9)" : "none", outlineOffset: "-1px" }}>
+                      <img src={item.photoUrl} alt="Your portrait"
+                        draggable={false}
+                        onLoad={(e) => {
+                          const img = e.currentTarget;
+                          if (!img.naturalWidth || !img.naturalHeight) return;
+                          const photoAspect = img.naturalWidth / img.naturalHeight;
+                          setItems(prev => prev.map(i => i.id === item.id ? { ...i, photoAspect } : i));
+                        }}
+                        style={imgStyle}/>
+                      <div className="cz-watermark" aria-hidden="true">
+                        <div className="cz-watermark-inner">
+                          {Array.from({ length: 9 }).map((_, i) => (
+                            <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
+                    {itemBusy && (
+                      <div className="cz-busy" style={{ zIndex: 2 }}>
+                        <div className="cz-spinner" />
+                        <div className="cz-busy-label">{busyLabel}</div>
+                        <div className="cz-busy-sub">
+                          {busyLabel.includes("Variation") || busyLabel.includes("Edited")
+                            ? `${choicesLoaded} of 6 ready · ${busyElapsed}s elapsed`
+                            : `This Usually Takes 20–60 Seconds · ${busyElapsed}s Elapsed`}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                );
+              })()}
             </div>
           </div>
           {isSelected ? (
