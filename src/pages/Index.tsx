@@ -699,7 +699,7 @@ function HomePage({ onGenerate }) {
                   {CATS.map(c => {
                     const CIcon = c.Icon;
                     return (
-                      <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => setCat(c.id)}>
+                      <button key={c.id} className={`chip cat ${cat===c.id?"on":""}`} onClick={() => { setCat(c.id); setTheme(null); }}>
                         <CIcon size={14} strokeWidth={1.8}/>{c.label}
                       </button>
                     );
