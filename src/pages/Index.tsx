@@ -844,7 +844,7 @@ function HomePage({ onGenerate }) {
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, alignItems:"stretch" }} className="hg hero-grid">
 
           {/* LEFT PANEL — teaser */}
-          <div style={{ display:"flex", flexDirection:"column", gap:24, height:"100%" }}>
+          <div style={{ display:"flex", flexDirection:"column", gap:24, height:"100%", minWidth:0 }}>
 
             {/* LIVE TEASER moved into left panel */}
             <div className="fu" style={{ animationDelay:".3s", width:"100%",
@@ -854,9 +854,9 @@ function HomePage({ onGenerate }) {
           </div>
 
           {/* RIGHT PANEL — BUILDER CARD */}
-          <div className="si" style={{ animationDelay:".1s", width:"100%", justifySelf:"end" }}>
+          <div className="si" style={{ animationDelay:".1s", width:"100%", minWidth:0, justifySelf:"end" }}>
             <div style={{ background:T.sur, border:`1px solid ${T.gold}`, padding:"22px 20px",
-              position:"relative",
+              position:"relative", minWidth:0, overflow:"hidden",
               boxShadow:"inset 0 1px 0 rgba(196,150,58,.08)" }}>
 
               {/* gold top accent */}
