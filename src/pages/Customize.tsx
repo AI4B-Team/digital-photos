@@ -385,6 +385,7 @@ export default function Customize() {
       id: item.id, startX: e.clientX, startY: e.clientY,
       baseX: item.offsetX || 0, baseY: item.offsetY || 0,
     };
+    setDraggingId(item.id);
     const clamp = (v: number, m: number) => Math.max(-m, Math.min(m, v));
     const onMove = (ev: MouseEvent) => {
       const d = dragRef.current; if (!d) return;
@@ -394,6 +395,7 @@ export default function Customize() {
     };
     const onUp = () => {
       dragRef.current = null;
+      setDraggingId(null);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);
     };
