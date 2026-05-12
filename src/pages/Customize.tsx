@@ -673,6 +673,21 @@ export default function Customize() {
               <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
                 <Plus size={18}/>
               </button>
+              <div className="cz-tool-divider"/>
+              <button
+                className="cz-tool"
+                onClick={() => setItems(prev => prev.map(i => i.id === item.id ? { ...i, zoom: Math.min(2.5, +(((i.zoom || 1) + 0.15)).toFixed(2)) } : i))}
+                disabled={(item.zoom || 1) >= 2.5}
+                data-tip="Zoom In" aria-label="Zoom in">
+                <ZoomIn size={17}/>
+              </button>
+              <button
+                className="cz-tool"
+                onClick={() => setItems(prev => prev.map(i => i.id === item.id ? { ...i, zoom: Math.max(1, +(((i.zoom || 1) - 0.15)).toFixed(2)) } : i))}
+                disabled={(item.zoom || 1) <= 1}
+                data-tip="Zoom Out" aria-label="Zoom out">
+                <ZoomOut size={17}/>
+              </button>
               {showRemove && (
                 <>
                   <div className="cz-tool-divider"/>
