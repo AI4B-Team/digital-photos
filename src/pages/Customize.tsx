@@ -369,12 +369,17 @@ export default function Customize() {
 
   const onDragStart = (item, e) => {
     const z = item.zoom || 1;
-    if (z <= 1) return;
     e.preventDefault();
     const wrap = e.currentTarget as HTMLElement;
     const rect = wrap.getBoundingClientRect();
-    const maxX = (rect.width  * (z - 1)) / 2;
-    const maxY = (rect.height * (z - 1)) / 2;
+    const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
+    const frameAspect = sd.w / sd.h;
+    const photoAspect = item.photoAspect || frameAspect;
+    const baseW = photoAspect > frameAspect ? rect.height * photoAspect : rect.width;
+    const baseH = photoAspect > frameAspect ? rect.height : rect.width / photoAspect;
+    const maxX = Math.max(0, ((baseW * z) - rect.width) / 2);
+    const maxY = Math.max(0, ((baseH * z) - rect.height) / 2);
+    if (!maxX && !maxY) return;
     dragRef.current = {
       id: item.id, startX: e.clientX, startY: e.clientY,
       baseX: item.offsetX || 0, baseY: item.offsetY || 0,
@@ -443,8 +448,8 @@ export default function Customize() {
   const frame = selected.frame, size = selected.size, effect = selected.effect;
   const border = selected.border, borderColor = selected.borderColor;
   const portraitUrl = selected.photoUrl;
-  const setFrame = (v) => updateSelected({ frame: v });
-  const setSize = (v) => updateSelected({ size: v });
+  const setFrame = (v) => updateSelected({ frame: v, offsetX: 0, offsetY: 0 });
+  const setSize = (v) => updateSelected({ size: v, offsetX: 0, offsetY: 0 });
   const setEffect = (v) => updateSelected({ effect: v });
   const setBorder = (v) => updateSelected({ border: v });
   const setBorderColor = (v) => updateSelected({ borderColor: v });
@@ -622,6 +627,9 @@ export default function Customize() {
     const isFrameless = fd.id === "frameless" || fd.id === "digital";
     const isCanvas    = fd.id === "canvas";
     const woodPad     = fd.w || 0;
+    const frameAspect = sd.w / sd.h;
+    const photoAspect = item.photoAspect || frameAspect;
+    const coverByHeight = photoAspect > frameAspect;
     const itemBusy = busy && item.id === selectedId;
     const showRemove = items.length > 1;
 
@@ -657,18 +665,33 @@ export default function Customize() {
               <div
                 className="cz-img-wrap"
                 onMouseDown={(e) => onDragStart(item, e)}
-                style={{ cursor: (item.zoom || 1) > 1 ? (dragRef.current?.id === item.id ? "grabbing" : "grab") : "default" }}
+                style={{
+                  width: `${sd.w * 42}vh`,
+                  height: `${sd.h * 42}vh`,
+                  maxWidth: "100%",
+                  cursor: dragRef.current?.id === item.id ? "grabbing" : "grab",
+                }}
               >
                 <img src={item.photoUrl} alt="Your portrait"
                   draggable={false}
+                  onLoad={(e) => {
+                    const img = e.currentTarget;
+                    if (!img.naturalWidth || !img.naturalHeight) return;
+                    const photoAspect = img.naturalWidth / img.naturalHeight;
+                    setItems(prev => prev.map(i => i.id === item.id ? { ...i, photoAspect } : i));
+                  }}
                   style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
                     display:"block",
-                    height: `${sd.h * 42}vh`,
-                    width:  `${sd.w * 42}vh`,
-                    maxWidth: "100%",
-                    objectFit: "contain",
+                    width: coverByHeight ? "auto" : "100%",
+                    height: coverByHeight ? "100%" : "auto",
+                    minWidth: "100%",
+                    minHeight: "100%",
+                    maxWidth: "none",
                     filter: ed.filter,
-                    transform: `translate(${item.offsetX || 0}px, ${item.offsetY || 0}px) scale(${item.zoom || 1})`,
+                    transform: `translate(calc(-50% + ${item.offsetX || 0}px), calc(-50% + ${item.offsetY || 0}px)) scale(${item.zoom || 1})`,
                     transformOrigin: "center center",
                     transition: dragRef.current?.id === item.id
                       ? "width .25s ease, height .25s ease"
