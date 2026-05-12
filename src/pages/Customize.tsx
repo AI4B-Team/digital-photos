@@ -358,6 +358,11 @@ export default function Customize() {
       return next;
     });
   };
+  const setItemQty = (id, qty) => {
+    const q = Math.max(1, Math.min(99, qty|0));
+    setItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
+  };
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Regeneration state
