@@ -734,6 +734,23 @@ export default function Customize() {
               <div className="cz-tool-divider"/>
               <button
                 className="cz-tool"
+                onClick={() => {
+                  const dup = { ...item, id: crypto.randomUUID(), qty: 1 };
+                  setItems(prev => {
+                    const idx = prev.findIndex(i => i.id === item.id);
+                    const next = [...prev];
+                    next.splice(idx + 1, 0, dup);
+                    return next;
+                  });
+                  setSelectedId(dup.id);
+                }}
+                data-tip="Duplicate Image"
+                aria-label="Duplicate image"
+              >
+                <Copy size={17}/>
+              </button>
+              <button
+                className="cz-tool"
                 onClick={() => removeItem(item.id)}
                 disabled={items.length <= 1}
                 data-tip="Delete Image"
