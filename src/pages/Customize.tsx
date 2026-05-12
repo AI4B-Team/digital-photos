@@ -365,6 +365,29 @@ export default function Customize() {
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dragRef = useRef<{ id: string; startX: number; startY: number; baseX: number; baseY: number } | null>(null);
+
+  const onDragStart = (item, e) => {
+    if ((item.zoom || 1) <= 1) return;
+    e.preventDefault();
+    dragRef.current = {
+      id: item.id, startX: e.clientX, startY: e.clientY,
+      baseX: item.offsetX || 0, baseY: item.offsetY || 0,
+    };
+    const onMove = (ev: MouseEvent) => {
+      const d = dragRef.current; if (!d) return;
+      const dx = ev.clientX - d.startX;
+      const dy = ev.clientY - d.startY;
+      setItems(prev => prev.map(i => i.id === d.id ? { ...i, offsetX: d.baseX + dx, offsetY: d.baseY + dy } : i));
+    };
+    const onUp = () => {
+      dragRef.current = null;
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  };
 
   // Regeneration state
   const [busy, setBusy]               = useState(false);
