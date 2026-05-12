@@ -1382,6 +1382,66 @@ export default function Customize() {
         </div>
       )}
 
+      {/* Template picker for newly added photo */}
+      {tmplPickOpen && (
+        <div className="cz-modal-back" onClick={() => generateForNewItem("")}>
+          <div
+            className="cz-modal"
+            style={{ maxWidth: 760 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>Pick A Template (Optional)</h3>
+            <p>Choose a creative direction for this photo, or let our AI decide for you.</p>
+            <button
+              onClick={() => generateForNewItem("")}
+              style={{
+                width:"100%", padding:"12px 14px", marginTop:4, marginBottom:12,
+                border:`1.5px dashed ${BORDER}`, borderRadius:12, background:"#FAFAF7",
+                cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+                fontSize:13.5, fontWeight:600, color:INK,
+                display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+              }}
+            >
+              <Sparkles size={15}/> Let AI Decide (Recommended)
+            </button>
+            <div style={{
+              display:"grid",
+              gridTemplateColumns:"repeat(3, 1fr)",
+              gap:10,
+              maxHeight:"50vh", overflowY:"auto", paddingRight:4,
+            }}>
+              {(TEMPLATES[session.cat] || TEMPLATES["pets"] || []).map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => generateForNewItem(t.prompt)}
+                  style={{
+                    padding:0, border:`1px solid ${BORDER}`, background:"#fff",
+                    borderRadius:12, overflow:"hidden", cursor:"pointer",
+                    display:"flex", flexDirection:"column", textAlign:"left",
+                    transition:"all .15s",
+                  }}
+                  onMouseEnter={(e)=>{(e.currentTarget as HTMLButtonElement).style.borderColor=RED;(e.currentTarget as HTMLButtonElement).style.transform="translateY(-2px)";}}
+                  onMouseLeave={(e)=>{(e.currentTarget as HTMLButtonElement).style.borderColor=BORDER;(e.currentTarget as HTMLButtonElement).style.transform="none";}}
+                >
+                  <img src={t.img} alt={t.label} style={{
+                    width:"100%", aspectRatio:"4 / 5", objectFit:"cover", display:"block",
+                  }}/>
+                  <div style={{ padding:"8px 10px 10px" }}>
+                    <div style={{ fontSize:12.5, fontWeight:700, color:INK, lineHeight:1.2 }}>{t.label}</div>
+                    <div style={{ fontSize:11, color:MUTED, marginTop:3, lineHeight:1.3 }}>{t.desc}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="cz-modal-actions">
+              <button className="cz-modal-btn ghost" onClick={() => generateForNewItem("")}>
+                Skip
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {errorMsg && (
         <div style={{
           position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)",
