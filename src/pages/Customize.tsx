@@ -366,6 +366,7 @@ export default function Customize() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragRef = useRef<{ id: string; startX: number; startY: number; baseX: number; baseY: number } | null>(null);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
 
   const onDragStart = (item, e) => {
     const z = item.zoom || 1;
