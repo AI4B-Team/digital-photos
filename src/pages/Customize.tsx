@@ -426,15 +426,17 @@ export default function Customize() {
   const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
 
   // Per-item price + bundle discount based on number of images
-  const itemPrice = (it) => {
+  const itemUnitPrice = (it) => {
     const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
     const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
     return sd.price + fd.add;
   };
-  const itemListPrice = (it) => Math.round(itemPrice(it) * 1.4); // MSRP for strikethrough
+  const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
+  const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
+  const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
   const subtotal     = items.reduce((sum, it) => sum + itemPrice(it), 0);
   const listSubtotal = items.reduce((sum, it) => sum + itemListPrice(it), 0);
-  const bundlePct    = items.length >= 3 ? 0.15 : items.length >= 2 ? 0.10 : 0;
+  const bundlePct    = totalPhotoCount >= 3 ? 0.15 : totalPhotoCount >= 2 ? 0.10 : 0;
   const bundleSave   = Math.round(subtotal * bundlePct);
   const promoPct     = promoApplied?.pct || 0;
   const promoSave    = Math.round((subtotal - bundleSave) * promoPct);
@@ -442,6 +444,7 @@ export default function Customize() {
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
+
 
   /* ── Regenerate / Edit (acts on selected item) ── */
   const runRegenerate = async (extraPrompt) => {
