@@ -744,7 +744,7 @@ export default function Customize() {
 
         <div style={{
           display:"flex", alignItems:"baseline", gap:6,
-          padding:"7px 14px", borderRadius:999, background:"#fff", border:`1px solid ${BORDER}`,
+          padding:"7px 14px", borderRadius:12, background:"#fff", border:`1px solid ${BORDER}`,
         }}>
           <span style={{ fontSize:10.5, letterSpacing:".14em", color:MUTED, fontWeight:600 }}>TOTAL</span>
           <span className="cz-serif" style={{ fontSize:18, fontWeight:700, color:INK }}>${total}</span>
