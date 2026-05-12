@@ -428,7 +428,11 @@ function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack, sessionI
     if (Object.keys(e).length) { setErrors(e); return; }
     setProcessing(true);
     try {
-      const url = await createCheckoutSession(product, form.email, sessionId);
+      const url = await createCheckoutSession(product, form.email, sessionId, {
+        portraitUrl: customization?.portraitUrl,
+        printSize: customization?.size,
+        printFrame: customization?.frame,
+      });
       // Save order info before redirecting
       onComplete();
       window.location.href = url;
