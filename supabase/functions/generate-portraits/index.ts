@@ -28,7 +28,7 @@ serve(async (req) => {
   }
 
   try {
-    const { sessionId, photoUrl, styles, category } = await req.json();
+    const { sessionId, photoUrl, styles, category, theme } = await req.json();
 
     if (!photoUrl || !styles?.length) {
       throw new Error("photoUrl and styles are required");
