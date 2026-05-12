@@ -634,7 +634,9 @@ export default function Customize() {
                     maxWidth: "100%",
                     objectFit: "cover",
                     filter: ed.filter,
-                    transition: "width .25s ease, height .25s ease",
+                    transform: `scale(${item.zoom || 1})`,
+                    transformOrigin: "center center",
+                    transition: "width .25s ease, height .25s ease, transform .25s ease",
                   }}/>
                 <div className="cz-watermark" aria-hidden="true">
                   <div className="cz-watermark-inner">
