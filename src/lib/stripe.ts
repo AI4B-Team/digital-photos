@@ -11,7 +11,7 @@ export async function createCheckoutSession(
   product: string,
   email?: string,
   sessionId?: string,
-  opts?: { portraitUrl?: string; printSize?: string; printFrame?: string },
+  opts?: { portraitUrl?: string; printSize?: string; printFrame?: string; printSku?: string },
 ) {
   const { data, error } = await supabase.functions.invoke("create-payment", {
     body: {
@@ -21,6 +21,7 @@ export async function createCheckoutSession(
       portraitUrl: opts?.portraitUrl || "",
       printSize: opts?.printSize || "",
       printFrame: opts?.printFrame || "",
+      printSku: opts?.printSku || "",
     },
   });
 

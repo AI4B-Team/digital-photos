@@ -27,6 +27,7 @@ serve(async (req) => {
       portraitUrl = "",
       printSize = "",
       printFrame = "",
+      printSku = "",
     } = await req.json();
 
     const priceId = PRICE_IDS[product];
@@ -50,6 +51,7 @@ serve(async (req) => {
         portraitUrl,
         printSize,
         printFrame,
+        printSku,
       },
     };
 
@@ -81,6 +83,7 @@ serve(async (req) => {
           order_product: product,
           print_size: printSize || null,
           print_frame: printFrame || null,
+          print_sku: printSku || null,
         })
         .eq("id", sessionId);
     }
