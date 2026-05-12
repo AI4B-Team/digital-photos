@@ -1046,11 +1046,9 @@ export default function Customize() {
                       fontSize:11.5, fontWeight:600, color: on ? RED : INK,
                       fontFamily:"'Poppins',sans-serif", marginTop:3,
                     }}>{pt.label}</span>
-                    <span style={{ fontSize:10, color:MUTED }}>{pt.desc}</span>
-                    {pt.price && (
-                      <span style={{ fontSize:11, fontWeight:700, color:RED, marginTop:2 }}>
-                        ${pt.price}
-                      </span>
+                     <span style={{ fontSize:10, color:MUTED }}>{pt.desc}</span>
+                    {pt.id === "digital" && (
+                      <span style={{ fontSize:10, color:MUTED, fontStyle:"italic" }}>No watermark</span>
                     )}
                   </button>
                 );
