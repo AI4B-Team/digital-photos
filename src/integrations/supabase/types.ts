@@ -84,6 +84,17 @@ export type Database = {
           order_id: string | null
           order_product: string | null
           photo_url: string | null
+          print_frame: string | null
+          print_size: string | null
+          print_sku: string | null
+          prodigi_order_id: string | null
+          prodigi_status: string | null
+          shipping_city: string | null
+          shipping_country: string | null
+          shipping_email: string | null
+          shipping_line1: string | null
+          shipping_name: string | null
+          shipping_zip: string | null
           status: string | null
           stripe_session_id: string | null
           styles: string[] | null
@@ -97,6 +108,17 @@ export type Database = {
           order_id?: string | null
           order_product?: string | null
           photo_url?: string | null
+          print_frame?: string | null
+          print_size?: string | null
+          print_sku?: string | null
+          prodigi_order_id?: string | null
+          prodigi_status?: string | null
+          shipping_city?: string | null
+          shipping_country?: string | null
+          shipping_email?: string | null
+          shipping_line1?: string | null
+          shipping_name?: string | null
+          shipping_zip?: string | null
           status?: string | null
           stripe_session_id?: string | null
           styles?: string[] | null
@@ -110,6 +132,17 @@ export type Database = {
           order_id?: string | null
           order_product?: string | null
           photo_url?: string | null
+          print_frame?: string | null
+          print_size?: string | null
+          print_sku?: string | null
+          prodigi_order_id?: string | null
+          prodigi_status?: string | null
+          shipping_city?: string | null
+          shipping_country?: string | null
+          shipping_email?: string | null
+          shipping_line1?: string | null
+          shipping_name?: string | null
+          shipping_zip?: string | null
           status?: string | null
           stripe_session_id?: string | null
           styles?: string[] | null
