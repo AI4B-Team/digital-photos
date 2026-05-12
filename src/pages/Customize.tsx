@@ -367,6 +367,9 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
+  const [choices, setChoices]         = useState<string[]>([]);
+  const [choiceOpen, setChoiceOpen]   = useState(false);
+  const [choicesLoaded, setChoicesLoaded] = useState(0);
 
   // Promo code, gift note, low-res warnings
   const PROMOS: Record<string, { pct: number; label: string }> = {
