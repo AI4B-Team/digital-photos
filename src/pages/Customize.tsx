@@ -902,7 +902,7 @@ export default function Customize() {
               scrollBehavior:"smooth", scrollSnapType:"y proximity",
               WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
             }}>
-              {items.map(it => renderItem(it, items.length > 1 && it.id === selectedId, it.id === selectedId))}
+              {items.map(it => renderItem(it, it.id === selectedId, it.id === selectedId))}
             </div>
             <input
               ref={fileInputRef}
