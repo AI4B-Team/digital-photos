@@ -852,6 +852,55 @@ function HomePage({ onGenerate }) {
                   }}/>
               </div>
 
+              {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
+              {cat && (
+                <div style={{ marginBottom:18 }}>
+                  <div style={{ display:"flex", alignItems:"center", marginBottom:8 }}>
+                    <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
+                      textTransform:"uppercase", fontWeight:500 }}>
+                      Choose A Template
+                      <span style={{ color:T.dim, fontSize:8, letterSpacing:".05em",
+                        textTransform:"none", fontWeight:400, marginLeft:8 }}>
+                        (optional — AI Decides by default)
+                      </span>
+                    </div>
+                  </div>
+                  <div className="tmpl-strip">
+                    {/* AI Decides default card */}
+                    <button className={`tmpl-card ${selectedTemplate===null?"on":""}`}
+                      onClick={() => setSelectedTemplate(null)}>
+                      <div className="tmpl-img" style={{ background:"linear-gradient(135deg,rgba(230,25,25,.08),rgba(230,25,25,.18))" }}>
+                        <Sparkles size={26} color={T.gold}/>
+                      </div>
+                      <div className="tmpl-meta">
+                        <div className="tmpl-l">AI Decides</div>
+                        <div className="tmpl-d">Let AI choose</div>
+                      </div>
+                      {selectedTemplate===null && (
+                        <div className="tmpl-check"><Check size={9} color="#fff" strokeWidth={3}/></div>
+                      )}
+                    </button>
+                    {/* Category-specific template cards */}
+                    {(TEMPLATES[cat] || []).map(tmpl => (
+                      <button key={tmpl.id}
+                        className={`tmpl-card ${selectedTemplate===tmpl.id?"on":""}`}
+                        onClick={() => setSelectedTemplate(tmpl.id)}>
+                        <div className="tmpl-img">
+                          <img src={tmpl.img} alt={tmpl.label}/>
+                        </div>
+                        <div className="tmpl-meta">
+                          <div className="tmpl-l">{tmpl.label}</div>
+                          <div className="tmpl-d">{tmpl.desc}</div>
+                        </div>
+                        {selectedTemplate===tmpl.id && (
+                          <div className="tmpl-check"><Check size={9} color="#fff" strokeWidth={3}/></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* ── CHOOSE STYLES ── */}
               <div style={{ marginBottom:18 }}>
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
