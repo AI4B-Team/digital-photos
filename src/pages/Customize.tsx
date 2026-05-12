@@ -368,17 +368,23 @@ export default function Customize() {
   const dragRef = useRef<{ id: string; startX: number; startY: number; baseX: number; baseY: number } | null>(null);
 
   const onDragStart = (item, e) => {
-    if ((item.zoom || 1) <= 1) return;
+    const z = item.zoom || 1;
+    if (z <= 1) return;
     e.preventDefault();
+    const wrap = e.currentTarget as HTMLElement;
+    const rect = wrap.getBoundingClientRect();
+    const maxX = (rect.width  * (z - 1)) / 2;
+    const maxY = (rect.height * (z - 1)) / 2;
     dragRef.current = {
       id: item.id, startX: e.clientX, startY: e.clientY,
       baseX: item.offsetX || 0, baseY: item.offsetY || 0,
     };
+    const clamp = (v: number, m: number) => Math.max(-m, Math.min(m, v));
     const onMove = (ev: MouseEvent) => {
       const d = dragRef.current; if (!d) return;
-      const dx = ev.clientX - d.startX;
-      const dy = ev.clientY - d.startY;
-      setItems(prev => prev.map(i => i.id === d.id ? { ...i, offsetX: d.baseX + dx, offsetY: d.baseY + dy } : i));
+      const nx = clamp(d.baseX + (ev.clientX - d.startX), maxX);
+      const ny = clamp(d.baseY + (ev.clientY - d.startY), maxY);
+      setItems(prev => prev.map(i => i.id === d.id ? { ...i, offsetX: nx, offsetY: ny } : i));
     };
     const onUp = () => {
       dragRef.current = null;
