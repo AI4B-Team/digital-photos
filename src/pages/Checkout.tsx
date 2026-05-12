@@ -430,8 +430,9 @@ function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack, sessionI
     try {
       const url = await createCheckoutSession(product, form.email, sessionId, {
         portraitUrl: customization?.portraitUrl,
-        printSize: customization?.size,
-        printFrame: customization?.frame,
+        printSize: (customization as any)?.sizeLabel || customization?.size,
+        printFrame: (customization as any)?.frameColor || customization?.frame,
+        printSku: (customization as any)?.sku,
       });
       // Save order info before redirecting
       onComplete();

@@ -192,6 +192,101 @@ const BORDER_COLORS = [
   { id: "pampas",       label: "Pampas Grass", bg: "repeating-linear-gradient(90deg,#E8E4D8 0 6px,#DDD7C7 6px 7px)" },
 ];
 
+/* ── Prodigi product catalogue ── */
+const PRODUCT_TYPES = [
+  { id:"digital",       label:"Digital Only",     desc:"Hi-res download",              icon:"⬇", price:27   },
+  { id:"print",         label:"Fine Art Print",   desc:"Ships rolled, frame yourself", icon:"🖼", price:null },
+  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",    icon:"🏛", price:null },
+  { id:"box-frame",     label:"Box Frame",        desc:"Deep shadow box · premium",    icon:"◳", price:null },
+  { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang", icon:"▣", price:null },
+];
+
+const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sku:string; price:number; w:number; h:number }[]> = {
+  print: [
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-FAP-8x10",  price:47,  w:0.80, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-FAP-10x10", price:47,  w:1,    h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-FAP-11x14", price:57,  w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-FAP-12x12", price:57,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-FAP-12x16", price:67,  w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-FAP-16x20", price:87,  w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-FAP-18x24", price:107, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-FAP-20x24", price:127, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-FAP-24x36", price:167, w:0.67, h:1 },
+  ],
+  "classic-frame": [
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CFPM-8x10",  price:87,  w:0.80, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-CFPM-11x14", price:107, w:0.79, h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CFPM-12x16", price:127, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CFPM-16x20", price:157, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CFPM-20x24", price:227, w:0.83, h:1 },
+  ],
+  "box-frame": [
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-BOXM-8x10",  price:97,  w:0.80, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-BOXM-11x14", price:117, w:0.79, h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-BOXM-12x16", price:137, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-BOXM-16x20", price:167, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
+  ],
+  canvas: [
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10x10", price:77,  w:1,    h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12x12", price:87,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12x16", price:107, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16x20", price:127, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18x24", price:147, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:167, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:217, w:0.67, h:1 },
+  ],
+};
+
+const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> = {
+  "classic-frame": [
+    { id:"black",          label:"Black",          color:"#1a1a1a" },
+    { id:"white",          label:"White",          color:"#f4f4f4" },
+    { id:"natural",        label:"Natural",        color:"#c89968" },
+    { id:"antique-silver", label:"Antique Silver", color:"#9a9a9a" },
+    { id:"antique-gold",   label:"Antique Gold",   color:"#c4963a" },
+    { id:"dark-grey",      label:"Dark Grey",      color:"#555555" },
+    { id:"light-grey",     label:"Light Grey",     color:"#d0d0d0" },
+    { id:"brown",          label:"Brown",          color:"#8B5E3C" },
+  ],
+  "box-frame": [
+    { id:"black",   label:"Black",   color:"#1a1a1a" },
+    { id:"white",   label:"White",   color:"#f4f4f4" },
+    { id:"natural", label:"Natural", color:"#c89968" },
+    { id:"brown",   label:"Brown",   color:"#8B5E3C" },
+  ],
+};
+
+const CANVAS_EDGES = [
+  { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
+  { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",  color:"#1a1a1a" },
+  { id:"museum-white", label:"Museum (White edge)", desc:"Clean solid white edges",  color:"#f4f4f4" },
+];
+
+const toFrameId = (productType:string, frameColor:string): string => {
+  if (productType === "digital" || productType === "print") return "frameless";
+  if (productType === "canvas") return "canvas";
+  if (productType === "box-frame") return frameColor === "white" ? "wide-white" : "wide-black";
+  const map: Record<string,string> = {
+    "black":"black","white":"white","natural":"oak","antique-silver":"white",
+    "antique-gold":"oak","dark-grey":"black","light-grey":"white","brown":"walnut",
+  };
+  return map[frameColor] || "black";
+};
+
+// Resolve a size def for any item (new id format or legacy fallback)
+const getSizeDef = (it:any) => {
+  const pt = it?.productType || "classic-frame";
+  const list = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
+  const found = list.find(s => s.id === it?.size);
+  if (found) return found;
+  // Legacy fallback for items saved with old size IDs like '11" x 14"'
+  const legacy = SIZES.find(s => s.id === it?.size);
+  if (legacy) return { id: legacy.id, label: legacy.label, sub: legacy.sub, sku: "", price: legacy.price, w: legacy.w, h: legacy.h };
+  return list[1] || list[0];
+};
+
 /* ── Frame swatch (photorealistic mini) ── */
 function FrameSwatch({ frame, on }) {
   const SIZE = 56;
@@ -325,12 +420,16 @@ export default function Customize() {
     id: crypto.randomUUID(),
     photoUrl: initialPortraitUrl,
     style: styleId,
-    frame: "black",
-    size: '11" x 14"',
-    effect: "original",
-    border: "shallow",
+    productType: "classic-frame",
+    frameColor:  "black",
+    canvasEdge:  "mirror",
+    sku:         "GLOBAL-CFPM-11x14",
+    frame:       "black",      // legacy — derived, drives visual preview
+    size:        "11x14",      // new id format
+    effect:      "original",
+    border:      "shallow",
     borderColor: "soft-white",
-    qty: 1,
+    qty:         1,
     ...overrides,
   });
 
@@ -339,8 +438,6 @@ export default function Customize() {
     const saved = (session as any).customizationItems;
     if (saved?.length) return saved;
     return [makeItem({
-      frame: session.customization?.frame || "black",
-      size: session.customization?.size || '11" x 14"',
       effect: session.customization?.effect || "original",
       border: session.customization?.border || "shallow",
       borderColor: session.customization?.borderColor || "soft-white",
@@ -373,7 +470,7 @@ export default function Customize() {
     e.preventDefault();
     const wrap = e.currentTarget as HTMLElement;
     const rect = wrap.getBoundingClientRect();
-    const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
+    const sd = getSizeDef(item);
     const frameAspect = sd.w / sd.h;
     const photoAspect = item.photoAspect || frameAspect;
     const baseW = photoAspect > frameAspect ? rect.height * photoAspect : rect.width;
@@ -458,16 +555,27 @@ export default function Customize() {
   const setBorderColor = (v) => updateSelected({ borderColor: v });
   const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
-  const frameDef  = FRAMES.find(f => f.id === frame)  || FRAMES[1];
-  const sizeDef   = SIZES.find(s => s.id === size)    || SIZES[2];
-  const effectDef = EFFECTS.find(e => e.id === effect) || EFFECTS[0];
-  const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
+  const productType   = selected.productType || "classic-frame";
+  const frameColor    = selected.frameColor  || "black";
+  const canvasEdge    = selected.canvasEdge  || "mirror";
+  const currentSizes  = SIZES_BY_PRODUCT[productType] || SIZES_BY_PRODUCT["classic-frame"];
+  const sizeDef       = currentSizes.find(s => s.id === selected.size) || currentSizes[1];
+  const frameColorDef = (FRAME_COLORS[productType] || []).find(c => c.id === frameColor) || (FRAME_COLORS[productType] || [])[0];
+  const canvasEdgeDef = CANVAS_EDGES.find(e => e.id === canvasEdge) || CANVAS_EDGES[0];
+  const frameDef      = FRAMES.find(f => f.id === toFrameId(productType, frameColor)) || FRAMES[1];
+  const effectDef     = EFFECTS.find(e => e.id === effect) || EFFECTS[0];
+  const borderDef     = BORDERS.find(b => b.id === border) || BORDERS[1];
+  const isDigital     = productType === "digital";
+  const isFramed      = productType === "classic-frame" || productType === "box-frame";
+  const isCanvas      = productType === "canvas";
 
   // Per-item price + bundle discount based on number of images
   const itemUnitPrice = (it) => {
-    const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
-    const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
-    return sd.price + fd.add;
+    if (it.productType === "digital") return 27;
+    const pt = it.productType || "classic-frame";
+    const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
+    const sd = sizes.find(s => s.id === it.size) || sizes[1];
+    return sd?.price || 97;
   };
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
@@ -623,7 +731,7 @@ export default function Customize() {
   /* ── Preview (per-item, click to select, ✕ to remove) ── */
   const renderItem = (item, isSelected, isToolbarItem) => {
     const fd = FRAMES.find(f => f.id === item.frame) || FRAMES[1];
-    const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
+    const sd = getSizeDef(item);
     const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
     const bd = BORDERS.find(b => b.id === item.border) || BORDERS[1];
     const bcd = BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0];
@@ -820,11 +928,28 @@ export default function Customize() {
   };
 
   const handleContinue = () => {
+    const primaryItem = items[0];
     setSession({
-      customization: { portraitUrl, style: styleId, frame, size, effect, border, borderColor },
+      customization: {
+        portraitUrl,
+        style:       styleId,
+        productType: primaryItem.productType,
+        size:        primaryItem.size,
+        sizeLabel:   sizeDef?.label,
+        sku:         primaryItem.sku,
+        frameColor:  primaryItem.frameColor,
+        canvasEdge:  primaryItem.canvasEdge,
+        effect:      primaryItem.effect,
+        border:      primaryItem.border,
+        borderColor: primaryItem.borderColor,
+        frame:       toFrameId(primaryItem.productType, primaryItem.frameColor),
+      },
       customizationItems: items,
-      selectedPlan: frameDef.id === "canvas" ? "canvas" : "bundle",
-      printSize: size,
+      selectedPlan:
+        primaryItem.productType === "digital" ? "digital" :
+        primaryItem.productType === "canvas"  ? "canvas"  : "bundle",
+      printSize: sizeDef?.label,
+      printSku:  primaryItem.sku,
     } as any);
     navigate("/checkout");
   };
@@ -887,56 +1012,155 @@ export default function Customize() {
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
         }}>
-          {/* Size */}
+          {/* Product Type */}
           <div className="cz-section">
-            <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef.label}″</span></div>
-            <div className="cz-size-scroll">
-              {SIZES.map(s => {
-                const on = size === s.id;
-                const SHAPE_BOX = 44;
+            <div className="cz-label">
+              <span>Product</span>
+              <span className="cz-value">{PRODUCT_TYPES.find(p => p.id === productType)?.label}</span>
+            </div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:8 }}>
+              {PRODUCT_TYPES.map(pt => {
+                const on = productType === pt.id;
                 return (
-                  <button key={s.id} onClick={() => setSize(s.id)} className={`cz-size-card ${on?"on":""}`}>
-                    <div style={{
-                      width: SHAPE_BOX, height: SHAPE_BOX,
-                      display:"flex", alignItems:"center", justifyContent:"center", marginBottom:8,
+                  <button key={pt.id}
+                    onClick={() => {
+                      const sizes = SIZES_BY_PRODUCT[pt.id] || [];
+                      const defaultSize = sizes[1] || sizes[0];
+                      const defaultFrame = (FRAME_COLORS[pt.id] || [])[0]?.id || "black";
+                      updateSelected({
+                        productType: pt.id,
+                        frameColor:  defaultFrame,
+                        size:        defaultSize?.id || "11x14",
+                        sku:         defaultSize?.sku || "",
+                        frame:       toFrameId(pt.id, defaultFrame),
+                      });
+                    }}
+                    style={{
+                      border:`1.5px solid ${on ? RED : BORDER}`,
+                      borderRadius:10, background: on ? "rgba(230,25,25,.05)" : "#fff",
+                      padding:"10px 10px 9px", cursor:"pointer", textAlign:"left",
+                      display:"flex", flexDirection:"column", gap:2, transition:"all .15s",
                     }}>
-                      <div style={{
-                        width: SHAPE_BOX * s.w,
-                        height: SHAPE_BOX * s.h,
-                        border: `1.5px solid ${on ? RED : "#B8B0A8"}`,
-                        borderRadius: 3,
-                        background: on ? "rgba(230,25,25,0.06)" : "transparent",
-                      }}/>
-                    </div>
-                    <div style={{ fontSize:12, fontWeight:600, color:INK, lineHeight:1.1, whiteSpace:"nowrap" }}>{s.label}″</div>
-                    <div style={{ fontSize:10.5, color:MUTED, marginTop:2, whiteSpace:"nowrap" }}>From ${s.price}</div>
+                    <span style={{ fontSize:16, lineHeight:1 }}>{pt.icon}</span>
+                    <span style={{
+                      fontSize:11.5, fontWeight:600, color: on ? RED : INK,
+                      fontFamily:"'Poppins',sans-serif", marginTop:3,
+                    }}>{pt.label}</span>
+                    <span style={{ fontSize:10, color:MUTED }}>{pt.desc}</span>
+                    {pt.price && (
+                      <span style={{ fontSize:11, fontWeight:700, color:RED, marginTop:2 }}>
+                        ${pt.price}
+                      </span>
+                    )}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Frame */}
-          <div className="cz-section">
-            <div className="cz-label"><span>Frame</span><span className="cz-value">{frameDef.label}{frameDef.add?` · +$${frameDef.add}`:""}</span></div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(64px, 1fr))", gap:10, marginBottom:10 }}>
-              {FRAMES.map(f => (
-                <button key={f.id} onClick={() => setFrame(f.id)} title={f.label}
-                  style={{
-                    border:"none", background:"transparent", padding:0, cursor:"pointer",
-                    display:"flex", flexDirection:"column", alignItems:"center", gap:6,
-                  }}>
-                  <FrameSwatch frame={f} on={frame===f.id}/>
-                  <span style={{
-                    fontSize:10.5, color: frame===f.id ? INK : MUTED, fontWeight: frame===f.id ? 600 : 500,
-                    whiteSpace:"nowrap", textAlign:"center", lineHeight:1.1,
-                  }}>{f.label}</span>
-                </button>
-              ))}
+          {/* Size */}
+          {!isDigital && (
+            <div className="cz-section">
+              <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef?.label}</span></div>
+              <div className="cz-size-scroll">
+                {currentSizes.map(s => {
+                  const on = selected.size === s.id;
+                  const SHAPE_BOX = 44;
+                  return (
+                    <button key={s.id}
+                      onClick={() => updateSelected({ size: s.id, sku: s.sku })}
+                      className={`cz-size-card ${on?"on":""}`}>
+                      <div style={{
+                        width: SHAPE_BOX, height: SHAPE_BOX,
+                        display:"flex", alignItems:"center", justifyContent:"center", marginBottom:8,
+                      }}>
+                        <div style={{
+                          width: SHAPE_BOX * s.w,
+                          height: SHAPE_BOX * s.h,
+                          border: `1.5px solid ${on ? RED : "#B8B0A8"}`,
+                          borderRadius: 3,
+                          background: on ? "rgba(230,25,25,0.06)" : "transparent",
+                        }}/>
+                      </div>
+                      <div style={{ fontSize:12, fontWeight:600, color:INK, lineHeight:1.1, whiteSpace:"nowrap" }}>{s.label}</div>
+                      <div style={{ fontSize:10.5, color:MUTED, marginTop:2, whiteSpace:"nowrap" }}>{s.sub}</div>
+                      <div style={{ fontSize:11, color:RED, fontWeight:700, marginTop:3 }}>${s.price}</div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Effect */}
+          {/* Frame Colour — only for framed products */}
+          {isFramed && (
+            <div className="cz-section">
+              <div className="cz-label"><span>Frame Colour</span><span className="cz-value">{frameColorDef?.label}</span></div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(58px, 1fr))", gap:10 }}>
+                {(FRAME_COLORS[productType] || []).map(fc => {
+                  const on = frameColor === fc.id;
+                  return (
+                    <button key={fc.id}
+                      onClick={() => updateSelected({
+                        frameColor: fc.id,
+                        frame: toFrameId(productType, fc.id),
+                      })}
+                      title={fc.label}
+                      style={{
+                        border:"none", background:"transparent",
+                        padding:0, cursor:"pointer",
+                        display:"flex", flexDirection:"column", alignItems:"center", gap:5,
+                      }}>
+                      <div style={{
+                        width:42, height:42, borderRadius:8,
+                        background: fc.color,
+                        border: on ? `2px solid ${RED}` : "1px solid rgba(0,0,0,.12)",
+                        boxShadow: on ? `0 0 0 2px #fff inset` : "inset 0 1px 2px rgba(0,0,0,.15)",
+                      }}/>
+                      <span style={{
+                        fontSize:9.5, color: on ? INK : MUTED,
+                        fontWeight: on ? 600 : 500, textAlign:"center", lineHeight:1.1,
+                      }}>{fc.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Canvas Edge — only for canvas */}
+          {isCanvas && (
+            <div className="cz-section">
+              <div className="cz-label"><span>Edge Wrap</span><span className="cz-value">{canvasEdgeDef?.label}</span></div>
+              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                {CANVAS_EDGES.map(ce => {
+                  const on = canvasEdge === ce.id;
+                  return (
+                    <button key={ce.id}
+                      onClick={() => updateSelected({ canvasEdge: ce.id })}
+                      style={{
+                        display:"flex", alignItems:"center", gap:10,
+                        padding:"9px 12px", borderRadius:10, cursor:"pointer",
+                        border:`1.5px solid ${on ? RED : BORDER}`,
+                        background: on ? "rgba(230,25,25,.05)" : "#fff",
+                        transition:"all .15s",
+                      }}>
+                      <div style={{
+                        width:28, height:28, borderRadius:6, flexShrink:0,
+                        background: ce.color || "linear-gradient(135deg,#e0d8cc,#c8bfb3)",
+                        border:"1px solid rgba(0,0,0,.1)",
+                      }}/>
+                      <div style={{ textAlign:"left" }}>
+                        <div style={{ fontSize:12, fontWeight:600, color: on ? RED : INK }}>{ce.label}</div>
+                        <div style={{ fontSize:10.5, color:MUTED, marginTop:1 }}>{ce.desc}</div>
+                      </div>
+                      {on && <Check size={14} color={RED} style={{ marginLeft:"auto" }}/>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
             <div className="cz-size-scroll">
@@ -1139,7 +1363,7 @@ export default function Customize() {
             {/* Itemized cart — one row per image */}
             <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
               {items.map((it, idx) => {
-                const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
+                const sd = getSizeDef(it);
                 const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
                 const ed = EFFECTS.find(e => e.id === it.effect) || EFFECTS[0];
                 const bd = BORDERS.find(b => b.id === it.border) || BORDERS[1];
