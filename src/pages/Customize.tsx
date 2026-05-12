@@ -715,7 +715,11 @@ export default function Customize() {
               </button>
               <button
                 className="cz-tool"
-                onClick={() => setItems(prev => prev.map(i => i.id === item.id ? { ...i, zoom: Math.max(1, +(((i.zoom || 1) - 0.15)).toFixed(2)) } : i))}
+                onClick={() => setItems(prev => prev.map(i => {
+                  if (i.id !== item.id) return i;
+                  const z = Math.max(1, +(((i.zoom || 1) - 0.15)).toFixed(2));
+                  return z <= 1 ? { ...i, zoom: 1, offsetX: 0, offsetY: 0 } : { ...i, zoom: z };
+                }))}
                 disabled={(item.zoom || 1) <= 1}
                 data-tip="Zoom Out" aria-label="Zoom out">
                 <ZoomOut size={17}/>
