@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
@@ -194,11 +194,11 @@ const BORDER_COLORS = [
 
 /* ── Prodigi product catalogue ── */
 const PRODUCT_TYPES = [
-  { id:"digital",       label:"Digital Only",     desc:"Hi-res download",              icon:"⬇", price:27   },
-  { id:"print",         label:"Fine Art Print",   desc:"Ships rolled, frame yourself", icon:"🖼", price:null },
-  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",    icon:"🏛", price:null },
-  { id:"box-frame",     label:"Box Frame",        desc:"Deep shadow box · premium",    icon:"◳", price:null },
-  { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang", icon:"▣", price:null },
+  { id:"digital",       label:"Digital Only",     desc:"Hi-res download",              icon:ArrowDownToLine, price:27   },
+  { id:"print",         label:"Fine Art Print",   desc:"Ships rolled, frame yourself", icon:ImageIcon,       price:null },
+  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",    icon:Frame,           price:null },
+  { id:"box-frame",     label:"Box Frame",        desc:"Deep shadow box · premium",    icon:LayoutPanelTop,  price:null },
+  { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang", icon:Square,          price:null },
 ];
 
 const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sku:string; price:number; w:number; h:number }[]> = {
@@ -1041,7 +1041,7 @@ export default function Customize() {
                       padding:"10px 10px 9px", cursor:"pointer", textAlign:"left",
                       display:"flex", flexDirection:"column", gap:2, transition:"all .15s",
                     }}>
-                    <span style={{ fontSize:16, lineHeight:1 }}>{pt.icon}</span>
+                    {(() => { const I = pt.icon; return <I size={18} color={on ? RED : INK} strokeWidth={1.8} />; })()}
                     <span style={{
                       fontSize:11.5, fontWeight:600, color: on ? RED : INK,
                       fontFamily:"'Poppins',sans-serif", marginTop:3,
