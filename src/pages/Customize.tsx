@@ -1008,7 +1008,10 @@ export default function Customize() {
                 const thumb       = 56;
                 const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
                 const imgH = sd.h >= sd.w ? thumb : thumb * (sd.h / sd.w);
-                const price = sd.price + fd.add;
+                const unitPrice = itemUnitPrice(it);
+                const qty = it.qty || 1;
+                const price = unitPrice * qty;
+                const listPrice = Math.round(unitPrice * 1.4) * qty;
                 const isSel = it.id === selectedId;
                 return (
                   <div key={it.id}
