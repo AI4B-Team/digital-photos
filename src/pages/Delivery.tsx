@@ -531,6 +531,10 @@ export default function DeliveryPage() {
           if (result.sessionId) setOrderNumber(result.sessionId);
           setSession({ orderProduct: result.orderProduct, orderId: result.sessionId });
 
+          const physical = result.orderProduct === "print" || result.orderProduct === "canvas" || result.orderProduct === "bundle";
+          if (physical) setIsPrint(true);
+          if (result.prodigiOrderId) setProdigiOrderId(result.prodigiOrderId);
+
           if (result.portraits?.length) {
             // Map DB portraits to display format
             const mapped = result.portraits.map((p, i) => ({
