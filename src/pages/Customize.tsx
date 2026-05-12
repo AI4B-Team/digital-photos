@@ -728,10 +728,6 @@ export default function Customize() {
                 <ZoomOut size={17}/>
               </button>
               <div className="cz-tool-divider"/>
-              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
-                <Plus size={18}/>
-              </button>
-              <div className="cz-tool-divider"/>
               <button
                 className="cz-tool"
                 onClick={() => {
@@ -748,6 +744,9 @@ export default function Customize() {
                 aria-label="Duplicate image"
               >
                 <Copy size={17}/>
+              </button>
+              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
+                <Plus size={18}/>
               </button>
               <button
                 className="cz-tool"
