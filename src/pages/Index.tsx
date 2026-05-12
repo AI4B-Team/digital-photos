@@ -1038,6 +1038,7 @@ function HomePage({ onGenerate }) {
                       </button>
                     ))}
                   </div>
+                  </div>
                 </div>
               )}
 
