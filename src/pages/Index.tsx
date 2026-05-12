@@ -605,7 +605,7 @@ function HomePage({ onGenerate }) {
             const NavIcon = c.Icon;
             return (
               <button key={c.id} onClick={() => {
-                  setCat(c.id);
+                  setCat(c.id); setTheme(null);
                   heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
                 }}
                 style={{ background:"none", border:"none", cursor:"pointer",
