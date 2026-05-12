@@ -662,16 +662,26 @@ export default function Customize() {
               <div
                 className="cz-img-wrap"
                 onMouseDown={(e) => onDragStart(item, e)}
-                style={{ cursor: (item.zoom || 1) > 1 ? (dragRef.current?.id === item.id ? "grabbing" : "grab") : "default" }}
+                style={{
+                  width: `${sd.w * 42}vh`,
+                  height: `${sd.h * 42}vh`,
+                  maxWidth: "100%",
+                  cursor: dragRef.current?.id === item.id ? "grabbing" : "grab",
+                }}
               >
                 <img src={item.photoUrl} alt="Your portrait"
                   draggable={false}
+                  onLoad={(e) => {
+                    const img = e.currentTarget;
+                    if (!img.naturalWidth || !img.naturalHeight) return;
+                    const photoAspect = img.naturalWidth / img.naturalHeight;
+                    setItems(prev => prev.map(i => i.id === item.id ? { ...i, photoAspect } : i));
+                  }}
                   style={{
                     display:"block",
-                    height: `${sd.h * 42}vh`,
-                    width:  `${sd.w * 42}vh`,
-                    maxWidth: "100%",
-                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                     filter: ed.filter,
                     transform: `translate(${item.offsetX || 0}px, ${item.offsetY || 0}px) scale(${item.zoom || 1})`,
                     transformOrigin: "center center",
