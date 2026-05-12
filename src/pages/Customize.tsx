@@ -1055,14 +1055,43 @@ export default function Customize() {
                       <div style={{ fontSize:11, color:MUTED, lineHeight:1.4 }}>
                         {fd.label} · {ed.label}
                       </div>
-                      <div style={{ display:"flex", alignItems:"baseline", gap:6, marginTop:2 }}>
-                        <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                          ${Math.round(price * 1.4)}
-                        </span>
-                        <span style={{ fontSize:13, fontWeight:700, color:RED }}>
-                          ${price}
-                        </span>
+                      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:4 }}>
+                        <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
+                          <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
+                            ${listPrice}
+                          </span>
+                          <span style={{ fontSize:13, fontWeight:700, color:RED }}>
+                            ${price}
+                          </span>
+                        </div>
+                        <div onClick={(e) => e.stopPropagation()} style={{
+                          display:"inline-flex", alignItems:"center",
+                          border:`1px solid ${BORDER}`, borderRadius:8, background:"#fff",
+                        }}>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty - 1); }}
+                            disabled={qty <= 1}
+                            aria-label="Decrease quantity"
+                            style={{
+                              width:24, height:24, border:"none", background:"transparent",
+                              cursor: qty <= 1 ? "not-allowed" : "pointer",
+                              opacity: qty <= 1 ? .35 : 1, color:INK, fontSize:14, fontWeight:600,
+                              display:"flex", alignItems:"center", justifyContent:"center",
+                            }}>−</button>
+                          <span style={{ minWidth:20, textAlign:"center", fontSize:12, fontWeight:600, color:INK }}>
+                            {qty}
+                          </span>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty + 1); }}
+                            aria-label="Increase quantity"
+                            style={{
+                              width:24, height:24, border:"none", background:"transparent",
+                              cursor:"pointer", color:INK, fontSize:14, fontWeight:600,
+                              display:"flex", alignItems:"center", justifyContent:"center",
+                            }}>+</button>
+                        </div>
                       </div>
+
                     </div>
                     {items.length > 1 && (
                       <button
