@@ -1276,7 +1276,12 @@ export default function Customize() {
             }}>
               {bundlePct > 0
                 ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
-                : "Add 2 Photos — Save 10% · Add 3+ — Save 15%"}
+                : (
+                  <>
+                    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 2 }}>Add 2 Photos</div>
+                    <div style={{ fontSize: 11.5 }}>Save 10% · Add 3+ — Save 15%</div>
+                  </>
+                )}
             </div>
 
             {/* Low-resolution warning */}
