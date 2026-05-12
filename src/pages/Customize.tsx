@@ -1278,6 +1278,50 @@ export default function Customize() {
 
       {/* Edit modal merged into AI Assistant panel */}
 
+      {/* Choose-from-6 modal */}
+      {choiceOpen && choices.length > 0 && (
+        <div className="cz-modal-back" onClick={() => setChoiceOpen(false)}>
+          <div
+            className="cz-modal"
+            style={{ maxWidth: 720 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>Pick Your Favorite</h3>
+            <p>We generated 6 variations. Click one to use it on your print.</p>
+            <div style={{
+              display:"grid",
+              gridTemplateColumns:"repeat(3, 1fr)",
+              gap:10,
+              marginTop:6,
+            }}>
+              {choices.map((url, i) => (
+                <button
+                  key={i}
+                  onClick={() => pickChoice(url)}
+                  style={{
+                    padding:0, border:`1px solid ${BORDER}`, background:"#fff",
+                    borderRadius:10, overflow:"hidden", cursor:"pointer",
+                    aspectRatio:"1 / 1", transition:"all .15s",
+                  }}
+                  onMouseEnter={(e)=>{(e.currentTarget as HTMLButtonElement).style.borderColor=RED;(e.currentTarget as HTMLButtonElement).style.transform="translateY(-2px)";}}
+                  onMouseLeave={(e)=>{(e.currentTarget as HTMLButtonElement).style.borderColor=BORDER;(e.currentTarget as HTMLButtonElement).style.transform="none";}}
+                  aria-label={`Choose variation ${i+1}`}
+                >
+                  <img src={url} alt={`Variation ${i+1}`} style={{
+                    width:"100%", height:"100%", objectFit:"cover", display:"block",
+                  }}/>
+                </button>
+              ))}
+            </div>
+            <div className="cz-modal-actions">
+              <button className="cz-modal-btn ghost" onClick={() => setChoiceOpen(false)}>
+                Keep Current
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {errorMsg && (
         <div style={{
           position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)",
