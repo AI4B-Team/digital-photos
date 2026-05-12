@@ -509,6 +509,10 @@ export default function Customize() {
   /* ── Add a new image: file upload, then generate ── */
   const handleAddImage = () => fileInputRef.current?.click();
 
+  const [tmplPickOpen, setTmplPickOpen] = useState(false);
+  const [pendingNewItemId, setPendingNewItemId] = useState<string | null>(null);
+  const [pendingDataUrl, setPendingDataUrl] = useState<string | null>(null);
+
   const handleFilePicked = async (e) => {
     const file = e.target.files?.[0];
     e.target.value = ""; // allow same-file reselect
@@ -530,7 +534,7 @@ export default function Customize() {
       im.src = dataUrl;
     });
 
-    // Insert new item with current selected's settings as defaults; mark as busy
+    // Insert new item with current selected's settings as defaults
     const newItem = makeItem({
       photoUrl: dataUrl, lowRes,
       frame: selected.frame, size: selected.size, effect: selected.effect,
@@ -539,7 +543,20 @@ export default function Customize() {
     setItems(prev => [...prev, newItem]);
     setSelectedId(newItem.id);
 
-    // Kick off generation in background
+    // Open template picker before generating
+    setPendingNewItemId(newItem.id);
+    setPendingDataUrl(dataUrl);
+    setTmplPickOpen(true);
+  };
+
+  const generateForNewItem = async (templatePrompt: string) => {
+    const newItemId = pendingNewItemId;
+    const dataUrl = pendingDataUrl;
+    setTmplPickOpen(false);
+    setPendingNewItemId(null);
+    setPendingDataUrl(null);
+    if (!newItemId || !dataUrl) return;
+
     setBusy(true);
     setBusyLabel("Generating Your Portrait…");
     try {
@@ -549,14 +566,14 @@ export default function Customize() {
           sessionId: (session as any).sessionDbId || null,
           sourceImageUrl: dataUrl,
           style: styleId,
-          extraPrompt: "",
+          extraPrompt: templatePrompt || "",
         },
       });
       if (error) throw new Error(error.message || "Generation failed");
       if (data?.error) throw new Error(data.error);
       const newUrl = data?.url;
       if (newUrl) {
-        setItems(prev => prev.map(i => i.id === newItem.id ? { ...i, photoUrl: newUrl } : i));
+        setItems(prev => prev.map(i => i.id === newItemId ? { ...i, photoUrl: newUrl } : i));
       }
     } catch (err) {
       console.error(err);
