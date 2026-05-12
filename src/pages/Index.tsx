@@ -198,7 +198,7 @@ const STYLES = [
 
 /* TEMPLATE SETS — category-specific scene/costume prompts.
    Each adds an "Additionally, depict the subject ..." clause to every style. */
-const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string }[]> = {
+export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string }[]> = {
   pets: [
     { id:"pet-royal",    label:"Royal Nobility",   desc:"Crown & Velvet Robes",
       img:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=240&h=300&fit=crop&q=80",
