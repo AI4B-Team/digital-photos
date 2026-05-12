@@ -873,8 +873,8 @@ function HomePage({ onGenerate }) {
                         <Sparkles size={26} color={T.gold}/>
                       </div>
                       <div className="tmpl-meta">
-                        <div className="tmpl-l">AI Decides</div>
-                        <div className="tmpl-d">Let AI choose</div>
+                        <div className="tmpl-l">Let AI Choose</div>
+                        <div className="tmpl-d">We'll pick for you</div>
                       </div>
                       {selectedTemplate===null && (
                         <div className="tmpl-check"><Check size={9} color="#fff" strokeWidth={3}/></div>
