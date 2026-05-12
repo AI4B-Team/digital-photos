@@ -836,6 +836,7 @@ export default function CheckoutPage() {
               onComplete={handlePaymentComplete}
               onBack={() => setScreen(1)}
               sessionId={session.orderId}
+              customization={session.customization}
             />
           )}
         </div>
