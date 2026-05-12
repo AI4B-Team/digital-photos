@@ -792,10 +792,22 @@ function HomePage({ onGenerate }) {
         backdropFilter:scrolled?"blur(22px)":"none",
         borderBottom:scrolled?`1px solid ${T.border}`:"none",
         transition:"all .4s" }}>
-        <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, fontWeight:600 }}>
-          Digital<span style={{ color:T.gold }}>Photos</span>
-          <sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
-        </div>
+        <a href="/" aria-label="Real Art home" style={{
+          display:"block", textDecoration:"none", flexShrink:0,
+          background:"#E61919", padding:7, width:140,
+          position:"relative", top:34, /* overlaps nav bottom border */
+        }}>
+          <div style={{ border:"2.5px solid #fff", padding:"6px 18px",
+            display:"flex", flexDirection:"column", alignItems:"center" }}>
+            <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:"2.1rem",
+              fontWeight:900, color:"#fff", letterSpacing:".05em",
+              lineHeight:1, textAlign:"center", display:"block" }}>REAL</span>
+            <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:".52rem",
+              fontWeight:700, letterSpacing:".3em", color:"#fff",
+              textTransform:"uppercase", textAlign:"center",
+              display:"block", marginTop:3 }}>ART</span>
+          </div>
+        </a>
         <div className="hid" style={{ display:"flex", gap:44, alignItems:"center",
           position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)" }}>
           {CATS.map(c => {
@@ -1091,7 +1103,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1240, margin:"0 auto", display:"flex",
           justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:11 }}>
           <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, color:T.cream, fontWeight:600 }}>
-            Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
+            Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
           </div>
           <div style={{ fontSize:11, color:T.dim }}>© 2025 Digital Photos™. All rights reserved.</div>
           <div style={{ fontSize:11, color:T.dim }}>AI-Powered · Fine Art Quality · Yours Forever</div>
@@ -1159,7 +1171,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
     <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
       alignItems:"center", justifyContent:"center", padding:"40px 20px" }}>
       <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, marginBottom:42, fontWeight:600 }}>
-        Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
+        Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
       </div>
 
       {error ? (

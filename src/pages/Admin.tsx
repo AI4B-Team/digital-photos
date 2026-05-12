@@ -118,7 +118,7 @@ export default function AdminPage() {
           <div style={{ maxWidth: 1400, margin: "0 auto", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
               <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 20, color: C.cream, fontWeight: 600 }}>
-                Digital<span style={{ color: C.gold }}>Photos</span>
+                Real<span style={{ color: C.gold }}> Art</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6, background: C.goldBg, border: `1px solid rgba(196,150,58,0.3)`, padding: "4px 12px", fontSize: 10, letterSpacing: "0.15em", color: C.gold, textTransform: "uppercase" }}>
                 <Shield size={10} /> Admin

@@ -51,7 +51,7 @@ export default function ResetPasswordPage() {
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <Link to="/" style={{ textDecoration: "none" }}>
             <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 28, color: C.cream, fontWeight: 600 }}>
-              Digital<span style={{ color: C.gold }}>Photos</span>
+              Real<span style={{ color: C.gold }}> Art</span>
             </div>
           </Link>
         </div>
