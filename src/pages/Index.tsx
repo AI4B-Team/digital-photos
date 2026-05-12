@@ -998,7 +998,14 @@ function HomePage({ onGenerate }) {
                       </span>
                     </div>
                   </div>
-                  <div className="tmpl-strip">
+                  <div className="tmpl-wrap">
+                    <button type="button" aria-label="Scroll left" className="tmpl-arrow l" disabled={!tmplCanL} onClick={() => scrollTmpl(-1)}>
+                      <ChevronLeft size={16}/>
+                    </button>
+                    <button type="button" aria-label="Scroll right" className="tmpl-arrow r" disabled={!tmplCanR} onClick={() => scrollTmpl(1)}>
+                      <ChevronRight size={16}/>
+                    </button>
+                  <div className="tmpl-strip" ref={tmplStripRef}>
                     {/* AI Decides default card */}
                     <button className={`tmpl-card ${selectedTemplate===null?"on":""}`}
                       onClick={() => setSelectedTemplate(null)}>
