@@ -957,39 +957,6 @@ function HomePage({ onGenerate }) {
         </div>
       </footer>
 
-      {/* ── PHOTOSHOOT THEMES MODAL ── */}
-      {themeOpen && cat && (
-        <div className="tm-back" onClick={() => setThemeOpen(false)}>
-          <div className="tm-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="tm-head">
-              <h3>Photoshoot Themes <span style={{ color:T.muted, fontWeight:500, fontSize:13, marginLeft:8 }}>· {CATS.find(c=>c.id===cat)?.label}</span></h3>
-              <button className="tm-close" onClick={() => setThemeOpen(false)} aria-label="Close">
-                <X size={20}/>
-              </button>
-            </div>
-            <div className="tm-search">
-              <Search size={15} color={T.muted}/>
-              <input value={themeQuery} onChange={(e) => setThemeQuery(e.target.value)} placeholder="Search themes…"/>
-            </div>
-            <div className="tm-grid">
-              {(THEMES[cat] || [])
-                .filter(t => !themeQuery.trim() || (t.label + " " + t.tag).toLowerCase().includes(themeQuery.toLowerCase()))
-                .map(t => (
-                  <button key={t.id} className={`tm-card ${theme?.id===t.id?"on":""}`}
-                    onClick={() => { setTheme(t); setThemeOpen(false); }}>
-                    <div className="tm-collage">
-                      {t.thumbs.slice(0,3).map((src,i) => <img key={i} src={src} alt=""/>)}
-                    </div>
-                    <div className="tm-meta">
-                      <div className="h">{t.tag}</div>
-                      <div className="l">{t.label}</div>
-                    </div>
-                  </button>
-                ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
