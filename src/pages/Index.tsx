@@ -943,7 +943,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, theme, onDon
     (async () => {
       try {
         const { data, error: fnError } = await supabase.functions.invoke("generate-portraits", {
-          body: { sessionId, photoUrl, styles: selectedStyles, category },
+          body: { sessionId, photoUrl, styles: selectedStyles, category, theme: theme ? { id: theme.id, label: theme.label, prompt: theme.prompt } : null },
         });
 
         clearInterval(iv);
