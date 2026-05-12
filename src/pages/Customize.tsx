@@ -731,14 +731,16 @@ export default function Customize() {
               <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
                 <Plus size={18}/>
               </button>
-              {showRemove && (
-                <>
-                  <div className="cz-tool-divider"/>
-                  <button className="cz-tool" onClick={() => removeItem(item.id)} data-tip="Delete Image" aria-label="Delete image">
-                    <Trash2 size={17}/>
-                  </button>
-                </>
-              )}
+              <div className="cz-tool-divider"/>
+              <button
+                className="cz-tool"
+                onClick={() => removeItem(item.id)}
+                disabled={items.length <= 1}
+                data-tip="Delete Image"
+                aria-label="Delete image"
+              >
+                <Trash2 size={17}/>
+              </button>
             </div>
           ) : (
             <div aria-hidden="true" style={{ width:48, flexShrink:0, visibility:"hidden" }}/>
