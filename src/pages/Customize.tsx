@@ -448,8 +448,8 @@ export default function Customize() {
   const frame = selected.frame, size = selected.size, effect = selected.effect;
   const border = selected.border, borderColor = selected.borderColor;
   const portraitUrl = selected.photoUrl;
-  const setFrame = (v) => updateSelected({ frame: v });
-  const setSize = (v) => updateSelected({ size: v });
+  const setFrame = (v) => updateSelected({ frame: v, offsetX: 0, offsetY: 0 });
+  const setSize = (v) => updateSelected({ size: v, offsetX: 0, offsetY: 0 });
   const setEffect = (v) => updateSelected({ effect: v });
   const setBorder = (v) => updateSelected({ border: v });
   const setBorderColor = (v) => updateSelected({ borderColor: v });
