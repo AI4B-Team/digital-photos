@@ -1106,7 +1106,7 @@ export default function App() {
                                 sessionId={localSession.sessionId}
                                 photoUrl={localSession.photoUrl || localSession.photo}
                                 category={localSession.cat}
-                                theme={localSession.theme}
+                                templatePrompt={localSession.templatePrompt}
                                 onDone={handleGenDone}/>}
     </>
   );
