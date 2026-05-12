@@ -440,23 +440,39 @@ export default function Customize() {
   const runRegenerate = async (extraPrompt) => {
     setErrorMsg("");
     setBusy(true);
-    setBusyLabel(extraPrompt ? "Applying Your Edits…" : "Generating A New Variation…");
+    setBusyLabel(extraPrompt ? "Generating 6 Edited Variations…" : "Generating 6 New Variations…");
+    setChoices([]);
+    setChoicesLoaded(0);
     try {
       const { supabase } = await import("@/integrations/supabase/client");
       const sourceImageUrl = selected.photoUrl || session.photo;
-      const { data, error } = await supabase.functions.invoke("regenerate-portrait", {
-        body: {
-          sessionId: (session as any).sessionDbId || null,
-          sourceImageUrl,
-          style: selected.style || styleId,
-          extraPrompt: extraPrompt || "",
-        },
-      });
-      if (error) throw new Error(error.message || "Generation failed");
-      if (data?.error) throw new Error(data.error);
-      const newUrl = data?.url;
-      if (!newUrl) throw new Error("No image returned");
-      updateSelected({ photoUrl: newUrl });
+      const N = 6;
+      const tasks = Array.from({ length: N }, (_, i) =>
+        supabase.functions.invoke("regenerate-portrait", {
+          body: {
+            sessionId: (session as any).sessionDbId || null,
+            sourceImageUrl,
+            style: selected.style || styleId,
+            extraPrompt: extraPrompt
+              ? `${extraPrompt} (variation ${i + 1})`
+              : `Variation ${i + 1} — explore a fresh interpretation`,
+          },
+        }).then((res) => {
+          setChoicesLoaded((c) => c + 1);
+          return res;
+        })
+      );
+      const results = await Promise.allSettled(tasks);
+      const urls: string[] = [];
+      for (const r of results) {
+        if (r.status === "fulfilled") {
+          const url = (r.value as any)?.data?.url;
+          if (url) urls.push(url);
+        }
+      }
+      if (!urls.length) throw new Error("No images returned. Please try again.");
+      setChoices(urls);
+      setChoiceOpen(true);
     } catch (e) {
       console.error(e);
       setErrorMsg(e?.message || "Something went wrong. Please try again.");
@@ -465,6 +481,12 @@ export default function Customize() {
       setEditOpen(false);
       setEditPrompt("");
     }
+  };
+
+  const pickChoice = (url: string) => {
+    updateSelected({ photoUrl: url });
+    setChoiceOpen(false);
+    setChoices([]);
   };
 
   const handleRetry = () => runRegenerate("");
