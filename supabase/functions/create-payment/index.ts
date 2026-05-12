@@ -20,7 +20,14 @@ serve(async (req) => {
   }
 
   try {
-    const { product, email, sessionId } = await req.json();
+    const {
+      product,
+      email,
+      sessionId,
+      portraitUrl = "",
+      printSize = "",
+      printFrame = "",
+    } = await req.json();
 
     const priceId = PRICE_IDS[product];
     if (!priceId) throw new Error(`Unknown product: ${product}`);
@@ -31,13 +38,29 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "https://id-preview--7e013cac-1946-4adb-80ef-76aea633d9d1.lovable.app";
 
+    const isPhysical = product === "print" || product === "canvas" || product === "bundle";
+
     const sessionParams: any = {
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "payment",
       success_url: `${origin}/delivery?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/checkout`,
-      metadata: { app_session_id: sessionId || "" },
+      metadata: {
+        app_session_id: sessionId || "",
+        portraitUrl,
+        printSize,
+        printFrame,
+      },
     };
+
+    if (isPhysical) {
+      sessionParams.shipping_address_collection = {
+        allowed_countries: [
+          "US","CA","GB","AU","DE","FR","NL","SE","NO","DK","FI",
+          "BE","AT","CH","ES","IT","PT","IE","NZ","SG","JP",
+        ],
+      };
+    }
 
     if (email) {
       sessionParams.customer_email = email;
@@ -45,7 +68,7 @@ serve(async (req) => {
 
     const checkoutSession = await stripe.checkout.sessions.create(sessionParams);
 
-    // Store stripe_session_id in our DB session
+    // Store stripe_session_id + print details in our DB session
     if (sessionId) {
       const supabase = createClient(
         Deno.env.get("SUPABASE_URL")!,
@@ -53,7 +76,12 @@ serve(async (req) => {
       );
       await supabase
         .from("sessions")
-        .update({ stripe_session_id: checkoutSession.id, order_product: product })
+        .update({
+          stripe_session_id: checkoutSession.id,
+          order_product: product,
+          print_size: printSize || null,
+          print_frame: printFrame || null,
+        })
         .eq("id", sessionId);
     }
 
