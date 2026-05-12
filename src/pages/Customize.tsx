@@ -367,6 +367,9 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
+  const [choices, setChoices]         = useState<string[]>([]);
+  const [choiceOpen, setChoiceOpen]   = useState(false);
+  const [choicesLoaded, setChoicesLoaded] = useState(0);
 
   // Promo code, gift note, low-res warnings
   const PROMOS: Record<string, { pct: number; label: string }> = {
@@ -437,23 +440,39 @@ export default function Customize() {
   const runRegenerate = async (extraPrompt) => {
     setErrorMsg("");
     setBusy(true);
-    setBusyLabel(extraPrompt ? "Applying Your Edits…" : "Generating A New Variation…");
+    setBusyLabel(extraPrompt ? "Generating 6 Edited Variations…" : "Generating 6 New Variations…");
+    setChoices([]);
+    setChoicesLoaded(0);
     try {
       const { supabase } = await import("@/integrations/supabase/client");
       const sourceImageUrl = selected.photoUrl || session.photo;
-      const { data, error } = await supabase.functions.invoke("regenerate-portrait", {
-        body: {
-          sessionId: (session as any).sessionDbId || null,
-          sourceImageUrl,
-          style: selected.style || styleId,
-          extraPrompt: extraPrompt || "",
-        },
-      });
-      if (error) throw new Error(error.message || "Generation failed");
-      if (data?.error) throw new Error(data.error);
-      const newUrl = data?.url;
-      if (!newUrl) throw new Error("No image returned");
-      updateSelected({ photoUrl: newUrl });
+      const N = 6;
+      const tasks = Array.from({ length: N }, (_, i) =>
+        supabase.functions.invoke("regenerate-portrait", {
+          body: {
+            sessionId: (session as any).sessionDbId || null,
+            sourceImageUrl,
+            style: selected.style || styleId,
+            extraPrompt: extraPrompt
+              ? `${extraPrompt} (variation ${i + 1})`
+              : `Variation ${i + 1} — explore a fresh interpretation`,
+          },
+        }).then((res) => {
+          setChoicesLoaded((c) => c + 1);
+          return res;
+        })
+      );
+      const results = await Promise.allSettled(tasks);
+      const urls: string[] = [];
+      for (const r of results) {
+        if (r.status === "fulfilled") {
+          const url = (r.value as any)?.data?.url;
+          if (url) urls.push(url);
+        }
+      }
+      if (!urls.length) throw new Error("No images returned. Please try again.");
+      setChoices(urls);
+      setChoiceOpen(true);
     } catch (e) {
       console.error(e);
       setErrorMsg(e?.message || "Something went wrong. Please try again.");
@@ -462,6 +481,12 @@ export default function Customize() {
       setEditOpen(false);
       setEditPrompt("");
     }
+  };
+
+  const pickChoice = (url: string) => {
+    updateSelected({ photoUrl: url });
+    setChoiceOpen(false);
+    setChoices([]);
   };
 
   const handleRetry = () => runRegenerate("");
@@ -595,7 +620,9 @@ export default function Customize() {
                     <div className="cz-spinner" />
                     <div className="cz-busy-label">{busyLabel}</div>
                     <div className="cz-busy-sub">
-                      This Usually Takes 20–60 Seconds · {busyElapsed}s Elapsed
+                      {busyLabel.includes("Variation") || busyLabel.includes("Edited")
+                        ? `${choicesLoaded} of 6 ready · ${busyElapsed}s elapsed`
+                        : `This Usually Takes 20–60 Seconds · ${busyElapsed}s Elapsed`}
                     </div>
                   </div>
                 )}
@@ -1250,6 +1277,50 @@ export default function Customize() {
       </div>
 
       {/* Edit modal merged into AI Assistant panel */}
+
+      {/* Choose-from-6 modal */}
+      {choiceOpen && choices.length > 0 && (
+        <div className="cz-modal-back" onClick={() => setChoiceOpen(false)}>
+          <div
+            className="cz-modal"
+            style={{ maxWidth: 720 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>Pick Your Favorite</h3>
+            <p>We generated 6 variations. Click one to use it on your print.</p>
+            <div style={{
+              display:"grid",
+              gridTemplateColumns:"repeat(3, 1fr)",
+              gap:10,
+              marginTop:6,
+            }}>
+              {choices.map((url, i) => (
+                <button
+                  key={i}
+                  onClick={() => pickChoice(url)}
+                  style={{
+                    padding:0, border:`1px solid ${BORDER}`, background:"#fff",
+                    borderRadius:10, overflow:"hidden", cursor:"pointer",
+                    aspectRatio:"1 / 1", transition:"all .15s",
+                  }}
+                  onMouseEnter={(e)=>{(e.currentTarget as HTMLButtonElement).style.borderColor=RED;(e.currentTarget as HTMLButtonElement).style.transform="translateY(-2px)";}}
+                  onMouseLeave={(e)=>{(e.currentTarget as HTMLButtonElement).style.borderColor=BORDER;(e.currentTarget as HTMLButtonElement).style.transform="none";}}
+                  aria-label={`Choose variation ${i+1}`}
+                >
+                  <img src={url} alt={`Variation ${i+1}`} style={{
+                    width:"100%", height:"100%", objectFit:"cover", display:"block",
+                  }}/>
+                </button>
+              ))}
+            </div>
+            <div className="cz-modal-actions">
+              <button className="cz-modal-btn ghost" onClick={() => setChoiceOpen(false)}>
+                Keep Current
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {errorMsg && (
         <div style={{
