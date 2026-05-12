@@ -681,6 +681,9 @@ export default function Customize() {
                     setItems(prev => prev.map(i => i.id === item.id ? { ...i, photoAspect } : i));
                   }}
                   style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
                     display:"block",
                     width: coverByHeight ? "auto" : "100%",
                     height: coverByHeight ? "100%" : "auto",
@@ -688,7 +691,7 @@ export default function Customize() {
                     minHeight: "100%",
                     maxWidth: "none",
                     filter: ed.filter,
-                    transform: `translate(${item.offsetX || 0}px, ${item.offsetY || 0}px) scale(${item.zoom || 1})`,
+                    transform: `translate(calc(-50% + ${item.offsetX || 0}px), calc(-50% + ${item.offsetY || 0}px)) scale(${item.zoom || 1})`,
                     transformOrigin: "center center",
                     transition: dragRef.current?.id === item.id
                       ? "width .25s ease, height .25s ease"
