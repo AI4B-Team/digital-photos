@@ -994,7 +994,8 @@ function HomePage({ onGenerate }) {
                         className={`tmpl-card ${selectedTemplate===tmpl.id?"on":""}`}
                         onClick={() => setSelectedTemplate(tmpl.id)}>
                         <div className="tmpl-img">
-                          <img src={tmpl.img} alt={tmpl.label}/>
+                          <img src={tmpl.img} alt={tmpl.label} loading="lazy"
+                            onError={(e)=>{ const t=e.currentTarget; if(!t.dataset.fb){ t.dataset.fb="1"; t.src=`https://picsum.photos/seed/${encodeURIComponent(tmpl.id)}/240/300`; } }}/>
                         </div>
                         <div className="tmpl-meta">
                           <div className="tmpl-l">{tmpl.label}</div>
