@@ -962,7 +962,7 @@ function HomePage({ onGenerate }) {
 
               {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
               {cat && (
-                <div style={{ marginBottom:18 }}>
+                <div style={{ marginBottom:18, minWidth:0, maxWidth:"100%", overflow:"hidden" }}>
                   <div style={{ display:"flex", alignItems:"center", marginBottom:8 }}>
                     <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
                       textTransform:"uppercase", fontWeight:500 }}>
