@@ -1470,7 +1470,7 @@ export default function Customize() {
               fontSize:12.5, fontWeight:600, color:"#B45309",
             }}>
               <span>🚀</span>
-              <span>Going Fast · Ships In 5–7 Days</span>
+              <span>Ships In 5–7 Days</span>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:8, fontSize:12.5, color:INK }}>
               <Check size={14} style={{ color:"#16a34a", flexShrink:0 }}/>
