@@ -1070,13 +1070,13 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, styles:[], theme:null, sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, styles:[], templatePrompt:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
-  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, theme }) => {
+  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, templatePrompt = "" }) => {
     let sessionId = null;
-    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles, theme }));
+    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles, templatePrompt }));
     setSession({ cat, photo, styles });
 
     // Create a Supabase session record to track generation
