@@ -420,12 +420,16 @@ export default function Customize() {
     id: crypto.randomUUID(),
     photoUrl: initialPortraitUrl,
     style: styleId,
-    frame: "black",
-    size: '11" x 14"',
-    effect: "original",
-    border: "shallow",
+    productType: "classic-frame",
+    frameColor:  "black",
+    canvasEdge:  "mirror",
+    sku:         "GLOBAL-CFPM-11x14",
+    frame:       "black",      // legacy — derived, drives visual preview
+    size:        "11x14",      // new id format
+    effect:      "original",
+    border:      "shallow",
     borderColor: "soft-white",
-    qty: 1,
+    qty:         1,
     ...overrides,
   });
 
