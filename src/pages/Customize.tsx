@@ -369,12 +369,17 @@ export default function Customize() {
 
   const onDragStart = (item, e) => {
     const z = item.zoom || 1;
-    if (z <= 1) return;
     e.preventDefault();
     const wrap = e.currentTarget as HTMLElement;
     const rect = wrap.getBoundingClientRect();
-    const maxX = (rect.width  * (z - 1)) / 2;
-    const maxY = (rect.height * (z - 1)) / 2;
+    const sd = SIZES.find(s => s.id === item.size) || SIZES[2];
+    const frameAspect = sd.w / sd.h;
+    const photoAspect = item.photoAspect || frameAspect;
+    const baseW = photoAspect > frameAspect ? rect.height * photoAspect : rect.width;
+    const baseH = photoAspect > frameAspect ? rect.height : rect.width / photoAspect;
+    const maxX = Math.max(0, ((baseW * z) - rect.width) / 2);
+    const maxY = Math.max(0, ((baseH * z) - rect.height) / 2);
+    if (!maxX && !maxY) return;
     dragRef.current = {
       id: item.id, startX: e.clientX, startY: e.clientY,
       baseX: item.offsetX || 0, baseY: item.offsetY || 0,
