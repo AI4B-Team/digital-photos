@@ -329,8 +329,10 @@ export default function Customize() {
     effect: "original",
     border: "shallow",
     borderColor: "soft-white",
+    qty: 1,
     ...overrides,
   });
+
 
   const [items, setItems] = useState(() => {
     const saved = (session as any).customizationItems;
@@ -356,6 +358,11 @@ export default function Customize() {
       return next;
     });
   };
+  const setItemQty = (id, qty) => {
+    const q = Math.max(1, Math.min(99, qty|0));
+    setItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
+  };
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Regeneration state
@@ -419,15 +426,17 @@ export default function Customize() {
   const borderDef = BORDERS.find(b => b.id === border) || BORDERS[1];
 
   // Per-item price + bundle discount based on number of images
-  const itemPrice = (it) => {
+  const itemUnitPrice = (it) => {
     const sd = SIZES.find(s => s.id === it.size) || SIZES[2];
     const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
     return sd.price + fd.add;
   };
-  const itemListPrice = (it) => Math.round(itemPrice(it) * 1.4); // MSRP for strikethrough
+  const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
+  const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
+  const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
   const subtotal     = items.reduce((sum, it) => sum + itemPrice(it), 0);
   const listSubtotal = items.reduce((sum, it) => sum + itemListPrice(it), 0);
-  const bundlePct    = items.length >= 3 ? 0.15 : items.length >= 2 ? 0.10 : 0;
+  const bundlePct    = totalPhotoCount >= 3 ? 0.15 : totalPhotoCount >= 2 ? 0.10 : 0;
   const bundleSave   = Math.round(subtotal * bundlePct);
   const promoPct     = promoApplied?.pct || 0;
   const promoSave    = Math.round((subtotal - bundleSave) * promoPct);
@@ -435,6 +444,7 @@ export default function Customize() {
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
+
 
   /* ── Regenerate / Edit (acts on selected item) ── */
   const runRegenerate = async (extraPrompt) => {
@@ -998,7 +1008,10 @@ export default function Customize() {
                 const thumb       = 56;
                 const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
                 const imgH = sd.h >= sd.w ? thumb : thumb * (sd.h / sd.w);
-                const price = sd.price + fd.add;
+                const unitPrice = itemUnitPrice(it);
+                const qty = it.qty || 1;
+                const price = unitPrice * qty;
+                const listPrice = Math.round(unitPrice * 1.4) * qty;
                 const isSel = it.id === selectedId;
                 return (
                   <div key={it.id}
@@ -1042,14 +1055,43 @@ export default function Customize() {
                       <div style={{ fontSize:11, color:MUTED, lineHeight:1.4 }}>
                         {fd.label} · {ed.label}
                       </div>
-                      <div style={{ display:"flex", alignItems:"baseline", gap:6, marginTop:2 }}>
-                        <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                          ${Math.round(price * 1.4)}
-                        </span>
-                        <span style={{ fontSize:13, fontWeight:700, color:RED }}>
-                          ${price}
-                        </span>
+                      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:4 }}>
+                        <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
+                          <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
+                            ${listPrice}
+                          </span>
+                          <span style={{ fontSize:13, fontWeight:700, color:RED }}>
+                            ${price}
+                          </span>
+                        </div>
+                        <div onClick={(e) => e.stopPropagation()} style={{
+                          display:"inline-flex", alignItems:"center",
+                          border:`1px solid ${BORDER}`, borderRadius:8, background:"#fff",
+                        }}>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty - 1); }}
+                            disabled={qty <= 1}
+                            aria-label="Decrease quantity"
+                            style={{
+                              width:24, height:24, border:"none", background:"transparent",
+                              cursor: qty <= 1 ? "not-allowed" : "pointer",
+                              opacity: qty <= 1 ? .35 : 1, color:INK, fontSize:14, fontWeight:600,
+                              display:"flex", alignItems:"center", justifyContent:"center",
+                            }}>−</button>
+                          <span style={{ minWidth:20, textAlign:"center", fontSize:12, fontWeight:600, color:INK }}>
+                            {qty}
+                          </span>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty + 1); }}
+                            aria-label="Increase quantity"
+                            style={{
+                              width:24, height:24, border:"none", background:"transparent",
+                              cursor:"pointer", color:INK, fontSize:14, fontWeight:600,
+                              display:"flex", alignItems:"center", justifyContent:"center",
+                            }}>+</button>
+                        </div>
                       </div>
+
                     </div>
                     {items.length > 1 && (
                       <button
@@ -1198,7 +1240,7 @@ export default function Customize() {
                 <span style={{ textDecoration:"line-through" }}>${listSubtotal}</span>
               </div>
               <div style={{ display:"flex", justifyContent:"space-between", color:TXT }}>
-                <span>Subtotal ({items.length} {items.length === 1 ? "Photo" : "Photos"})</span>
+                <span>Subtotal ({totalPhotoCount} {totalPhotoCount === 1 ? "Photo" : "Photos"})</span>
                 <span>${subtotal}</span>
               </div>
               {bundleSave > 0 && (
