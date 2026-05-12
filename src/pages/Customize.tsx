@@ -733,8 +733,9 @@ export default function Customize() {
     const fd = FRAMES.find(f => f.id === item.frame) || FRAMES[1];
     const sd = getSizeDef(item);
     const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
-    const bd = BORDERS.find(b => b.id === item.border) || BORDERS[1];
-    const bcd = BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0];
+    const isDigitalItem = item.productType === "digital";
+    const bd = isDigitalItem ? (BORDERS.find(b => b.id === "none") || { id:"none", label:"None", px:0 }) : (BORDERS.find(b => b.id === item.border) || BORDERS[1]);
+    const bcd = isDigitalItem ? { id:"transparent", label:"None", bg:"transparent" } : (BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0]);
     const isFrameless = fd.id === "frameless" || fd.id === "digital";
     const isCanvas    = fd.id === "canvas";
     const woodPad     = fd.w || 0;
@@ -1194,7 +1195,8 @@ export default function Customize() {
             </div>
           </div>
 
-          {/* Mat / Border */}
+          {/* Mat / Border — not for digital */}
+          {!isDigital && (
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
             <div style={{ display:"grid", gridTemplateColumns:`repeat(${BORDERS.length}, 1fr)`, gap:8, marginBottom:14 }}>
@@ -1215,6 +1217,7 @@ export default function Customize() {
               ))}
             </div>
           </div>
+          )}
         </aside>
 
         {/* Preview (middle) */}
