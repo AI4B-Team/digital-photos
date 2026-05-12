@@ -335,7 +335,7 @@ function ShareSection() {
               <Copy size={13} color={C.creamMuted}/>Copy Portrait Link
             </div>
           </div>
-          <p style={{ fontSize:11, color:C.creamMuted, marginTop:16 }}>Tag us @DigitalPhotosAI · Use #DigitalPhotos</p>
+          <p style={{ fontSize:11, color:C.creamMuted, marginTop:16 }}>Tag us @RealArtAI · Use #RealArt</p>
         </div>
 
         {/* Referral */}
@@ -588,7 +588,7 @@ export default function DeliveryPage() {
         <div style={{ position:"sticky", top:0, zIndex:100, background:"rgba(8,7,5,0.97)", backdropFilter:"blur(18px)", borderBottom:`1px solid ${C.border}`, padding:"0 40px" }}>
           <div style={{ maxWidth:1280, margin:"0 auto", height:64, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
             <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:C.cream, cursor:"pointer" }} onClick={() => navigate("/")}>
-              Digital<span style={{ color:C.gold }}>Photos</span><span style={{ fontSize:9, verticalAlign:"super", color:C.goldDim }}>™</span>
+              Real<span style={{ color: C.gold }}> Art</span><span style={{ fontSize:9, verticalAlign:"super", color:C.goldDim }}>™</span>
             </div>
             <div style={{ display:"flex", gap:12, alignItems:"center" }}>
               {orderNumber && <span style={{ fontSize:11, color:C.creamMuted }}>Order #{orderNumber.slice(0,8)}</span>}
@@ -655,7 +655,7 @@ export default function DeliveryPage() {
         <div style={{ borderTop:`1px solid ${C.border}`, padding:"32px 40px" }}>
           <div style={{ maxWidth:1280, margin:"0 auto", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:16 }}>
             <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:18, color:C.cream }}>
-              Digital<span style={{ color:C.gold }}>Photos</span><span style={{ fontSize:8, verticalAlign:"super", color:C.goldDim }}>™</span>
+              Real<span style={{ color: C.gold }}> Art</span><span style={{ fontSize:8, verticalAlign:"super", color:C.goldDim }}>™</span>
             </div>
             <div style={{ display:"flex", gap:20, flexWrap:"wrap" }}>
               {["Help Center","Refund Policy","Contact Us","Community Gallery"].map(l => (

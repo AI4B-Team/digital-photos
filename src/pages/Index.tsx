@@ -1103,7 +1103,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1240, margin:"0 auto", display:"flex",
           justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:11 }}>
           <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, color:T.cream, fontWeight:600 }}>
-            Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
+            Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
           </div>
           <div style={{ fontSize:11, color:T.dim }}>© 2025 Digital Photos™. All rights reserved.</div>
           <div style={{ fontSize:11, color:T.dim }}>AI-Powered · Fine Art Quality · Yours Forever</div>
@@ -1171,7 +1171,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
     <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
       alignItems:"center", justifyContent:"center", padding:"40px 20px" }}>
       <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, marginBottom:42, fontWeight:600 }}>
-        Digital<span style={{ color:T.gold }}>Photos</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
+        Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
       </div>
 
       {error ? (

@@ -804,7 +804,7 @@ export default function CheckoutPage() {
         <div style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, background:"rgba(8,7,5,0.97)", backdropFilter:"blur(18px)", borderBottom:`1px solid ${C.border}`, padding:"0 40px" }}>
           <div style={{ maxWidth:1280, margin:"0 auto", height:64, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
             <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:C.cream }}>
-              Digital<span style={{ color:C.gold }}>Photos</span><span style={{ fontSize:9, verticalAlign:"super", color:C.goldDim }}>™</span>
+              Real<span style={{ color: C.gold }}> Art</span><span style={{ fontSize:9, verticalAlign:"super", color:C.goldDim }}>™</span>
             </div>
             {/* Step indicator */}
             <div style={{ display:"flex", gap:8, alignItems:"center" }}>
