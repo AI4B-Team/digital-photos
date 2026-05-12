@@ -54,7 +54,7 @@ const G = `
 .cz-size-card.on{border-color:${RED};box-shadow:0 0 0 1px ${RED}}
 @keyframes czFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .cz-fade{animation:czFade .35s cubic-bezier(.23,1,.32,1) both}
-.cz-img-wrap{position:relative;display:inline-block;line-height:0}
+.cz-img-wrap{position:relative;display:inline-block;line-height:0;overflow:hidden}
 .cz-watermark{position:absolute;inset:0;pointer-events:none;overflow:hidden;mix-blend-mode:overlay;opacity:.32;display:flex;align-items:center;justify-content:center}
 .cz-watermark-inner{transform:rotate(-22deg);width:200%;font-family:'Poppins',sans-serif;font-weight:400;letter-spacing:.22em;color:rgba(255,255,255,.7);line-height:2.4;font-size:clamp(13px,1.5vw,18px);text-align:center;white-space:nowrap;animation:czWmScroll 22s linear infinite}
 @keyframes czWmScroll{from{transform:rotate(-22deg) translateX(0)}to{transform:rotate(-22deg) translateX(-12%)}}
