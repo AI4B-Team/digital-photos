@@ -1375,6 +1375,40 @@ export default function Customize() {
             </div>
           </div>
 
+          {/* ── Social proof review ── */}
+          {(() => {
+            const reviews = [
+              { quote: "Absolutely stunning — better than I imagined.", name: "Sarah M.", stars: 5 },
+              { quote: "Ordered for my mom's birthday. She cried happy tears.", name: "James R.", stars: 5 },
+              { quote: "My dog looks like actual royalty. 10/10.", name: "Priya K.", stars: 5 },
+              { quote: "The quality blew me away. Framed it the same day.", name: "Tom W.", stars: 5 },
+              { quote: "Got one for every room. My family is obsessed.", name: "Dana L.", stars: 5 },
+            ];
+            const r = reviews[Math.floor(Date.now() / 86400000) % reviews.length];
+            return (
+              <div style={{
+                padding: "11px 14px", marginBottom: 10,
+                background: "#FFFDF8", border: `1px solid ${BORDER}`,
+                borderRadius: 10, borderLeft: `3px solid ${RED}`,
+              }}>
+                <div style={{ display: "flex", gap: 2, marginBottom: 5 }}>
+                  {Array.from({ length: r.stars }).map((_, i) => (
+                    <span key={i} style={{ color: "#F59E0B", fontSize: 12 }}>★</span>
+                  ))}
+                </div>
+                <p style={{
+                  fontSize: 12.5, color: INK, fontStyle: "italic",
+                  lineHeight: 1.55, margin: "0 0 5px",
+                }}>
+                  "{r.quote}"
+                </p>
+                <span style={{ fontSize: 11, color: MUTED, fontWeight: 600 }}>
+                  — {r.name}, verified buyer
+                </span>
+              </div>
+            );
+          })()}
+
           {/* Trust signals */}
           <div style={{
             display:"flex", flexDirection:"column", gap:8,
