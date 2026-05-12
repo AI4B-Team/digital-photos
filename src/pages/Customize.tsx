@@ -1194,7 +1194,8 @@ export default function Customize() {
             </div>
           </div>
 
-          {/* Mat / Border */}
+          {/* Mat / Border — not for digital */}
+          {!isDigital && (
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
             <div style={{ display:"grid", gridTemplateColumns:`repeat(${BORDERS.length}, 1fr)`, gap:8, marginBottom:14 }}>
@@ -1215,6 +1216,7 @@ export default function Customize() {
               ))}
             </div>
           </div>
+          )}
         </aside>
 
         {/* Preview (middle) */}
