@@ -1416,9 +1416,18 @@ export default function Customize() {
 
           <div>
             <h3 style={{ fontSize:18, fontWeight:800, color:INK,
-              fontFamily:"'Poppins',sans-serif", margin:"0 0 12px" }}>
+              fontFamily:"'Poppins',sans-serif", margin:"0 0 8px" }}>
               Choose Your Print
             </h3>
+            {discountAmt > 0 && (
+              <div style={{ fontSize:11.5, color:MUTED, fontWeight:600,
+                fontFamily:"'Poppins',sans-serif", letterSpacing:".02em",
+                margin:"0 0 14px", display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+                Sale Pricing Automatically Applied:
+                <span style={{ color:RED, fontWeight:800,
+                  fontFamily:"'Courier New',monospace" }}>{fmtCountdown(discountSec)}</span>
+              </div>
+            )}
             {[
               { id:"digital", label:"Digital Only", sub:"Instant download.", badge:null,
                 features:["All 6 portrait styles, hi-res files","Instant download, no waiting","Print-ready — use any local print shop"],
