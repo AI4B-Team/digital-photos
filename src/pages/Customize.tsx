@@ -196,7 +196,7 @@ const BORDER_COLORS = [
 const PRODUCT_TYPES = [
   { id:"digital",       label:"Digital Only",     desc:"Hi-res download",              icon:ArrowDownToLine, price:27   },
   { id:"print",         label:"Fine Art Print",   desc:"Ships rolled, frame yourself", icon:ImageIcon,       price:null },
-  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",    icon:Frame,           price:null },
+  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colors",    icon:Frame,           price:null },
   { id:"box-frame",     label:"Box Frame",        desc:"Deep shadow box · premium",    icon:LayoutPanelTop,  price:null },
   { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang", icon:Square,          price:null },
   { id:"acrylic-glass", label:"Acrylic Glass",    desc:"Museum-grade glass",            icon:Square,          price:null },
@@ -1390,13 +1390,13 @@ export default function Customize() {
                 features:["All 6 portrait styles, hi-res files","Instant download, no waiting","Print-ready — use any local print shop"],
                 delivery:"Instant" },
               { id:"print", label:"Art Print", sub:"Ships rolled, unframed.", badge:null,
-                features:["Premium 230gsm archival paper, fade-resistant","Vivid colours, sunlight resistant","Ships rolled in a protective tube","Hi-res digital download included"],
+                features:["Premium 230gsm archival paper, fade-resistant","Vivid colors, sunlight resistant","Ships rolled in a protective tube","Hi-res digital download included"],
                 delivery:"5–7 Business Days" },
-              { id:"classic-frame", label:"Framed Print", sub:"Ready to hang, 8 frame colours.", badge:"Most Popular",
+              { id:"classic-frame", label:"Framed Print", sub:"Ready to hang, 8 frame colors.", badge:"Most Popular",
                 features:["Museum-grade cotton art paper with white mount","Hand-finished solid frame, conservation-grade mount","Ready to hang — arrives fully assembled","Hi-res digital download included"],
                 delivery:"5–9 Business Days", frameColors:true },
               { id:"canvas", label:"Canvas Print", sub:"Ready to hang.", badge:null,
-                features:["Fine-textured canvas, vivid detail & colour","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included","Hi-res digital download included"],
+                features:["Fine-textured canvas, vivid detail & color","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included","Hi-res digital download included"],
                 delivery:"4–7 Business Days", canvasAddon:true },
               { id:"acrylic-glass", label:"Acrylic Glass", sub:"Museum-grade glass.", badge:"Premium",
                 features:["Printed behind crystal-clear acrylic for unmatched depth","Museum archival inks, UV-protected","Ready to hang — floating mount hardware included","Hi-res digital download included"],
@@ -1624,7 +1624,7 @@ export default function Customize() {
                         <>
                           <div style={{ fontSize:11, color:MUTED, fontWeight:600,
                             letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            Frame Colour
+                            Frame Color
                           </div>
                           <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:12 }}>
                             {(FRAME_COLORS["classic-frame"]||[]).map(fc => (

@@ -1132,7 +1132,7 @@ function HomePage({ onGenerate }) {
             {[
               { n:"1", Icon:Upload,             title:"Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
               { n:"2", Icon:Sparkles,           title:"AI Brings It To Life",       body:"In seconds, our AI transforms your photo into a stunning portrait across six timeless art styles — Royal, Renaissance, Storybook, Fantasy, Cinematic, and Minimal." },
-              { n:"3", Icon:SlidersHorizontal,  title:"Make It Truly Yours",        body:"Preview every style side by side. Choose your favourite, then customise every detail — size, frame colour, and finish." },
+              { n:"3", Icon:SlidersHorizontal,  title:"Make It Truly Yours",        body:"Preview every style side by side. Choose your favourite, then customise every detail — size, frame color, and finish." },
               { n:"4", Icon:Heart,              title:"Delivered & Cherished",      body:"Your portrait is printed on museum-quality archival fine art paper, carefully packaged, and delivered free to your door worldwide." },
             ].map((step) => (
               <div key={step.n} style={{ position:"relative", border:`1px solid ${T.border}`, borderRadius:18, padding:"28px 22px", background:T.bg }}>
@@ -1209,7 +1209,7 @@ function HomePage({ onGenerate }) {
             <p style={{ fontSize:15, color:T.muted, maxWidth:680, margin:"0 auto 24px", lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every REAL ART portrait is printed using the same archival standards used by the world's leading museums and galleries. Made to be passed down through generations.</p>
             <div style={{ display:"flex", justifyContent:"center", gap:10, flexWrap:"wrap" }}>
               {[
-                { Icon:Star,   label:"100-Year Colour Guarantee" },
+                { Icon:Star,   label:"100-Year Color Guarantee" },
                 { Icon:Truck,  label:"Free Worldwide Shipping" },
                 { Icon:Shield, label:"100-Day Guarantee" },
               ].map(chip => (
@@ -1222,7 +1222,7 @@ function HomePage({ onGenerate }) {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:18 }} className="pg3">
             {[
               { Icon:Droplets, title:"Archival Pigment Inks",       body:"Giclée printing with pigment-based inks that resist fading for over a century when displayed indoors — the gold standard in fine art reproduction." },
-              { Icon:FileText, title:"Museum-Grade Fine Art Paper", body:"200gsm enhanced matte art paper with a velvety surface that brings exceptional depth, detail, and colour to every portrait." },
+              { Icon:FileText, title:"Museum-Grade Fine Art Paper", body:"200gsm enhanced matte art paper with a velvety surface that brings exceptional depth, detail, and color to every portrait." },
               { Icon:Package,  title:"Beautifully Packaged",        body:"Ships in rigid, protective packaging with no third-party branding — just REAL ART, beautifully presented and ready to gift." },
               { Icon:Globe,    title:"Free Global Delivery",        body:"Produced at certified fine art studios and shipped free worldwide. Every portrait arrives in 5–7 business days, ready to hang." },
             ].map(spec => (
@@ -1253,7 +1253,7 @@ function HomePage({ onGenerate }) {
             {[
               { q:"I ordered the Royal portrait of my golden retriever for my mom's birthday and she cried the moment she opened it. The quality blew me away — it looks like it belongs in a museum.", author:"Sarah M.", tag:"Pet Portrait" },
               { q:"Got the Renaissance portrait of my husband and me for our 10th anniversary. The framed print arrived perfectly packaged. Every visitor asks about it.", author:"James R.", tag:"Couples Portrait" },
-              { q:"I ordered a memorial portrait of our cat Milo in the Storybook style. The detail and colour are incredible. The most meaningful piece of art we own.", author:"Priya K.", tag:"Memorial Portrait" },
+              { q:"I ordered a memorial portrait of our cat Milo in the Storybook style. The detail and color are incredible. The most meaningful piece of art we own.", author:"Priya K.", tag:"Memorial Portrait" },
             ].map((rev, i) => (
               <div key={i} style={{ border:`1px solid ${T.border}`, borderRadius:16, padding:"24px 22px", background:T.bg }}>
                 <div style={{ marginBottom:12 }}>
@@ -1279,7 +1279,7 @@ function HomePage({ onGenerate }) {
             {[
               { q:"How Does The AI Generation Work?",      a:"You upload a photo and our AI studies every detail to generate an original portrait across six art styles — in 30–60 seconds. You receive a free watermarked preview of every style before purchasing, so you only pay for what you love." },
               { q:"What Photo Works Best?",                a:"Clear, well-lit photos where the subject's face is fully visible work best. Front-facing is ideal. Avoid heavy shadows, sunglasses, or blur. Any recent smartphone photo taken in natural daylight is usually perfect." },
-              { q:"What Sizes And Formats Do You Offer?",  a:"Fine Art Prints from 8×10\" to 24×36\". Framed Prints from 8×10\" to 20×24\" in 8 frame colour options. Canvas Prints from 10×10\" to 24×36\". Every physical order includes a full digital download of all six portrait styles." },
+              { q:"What Sizes And Formats Do You Offer?",  a:"Fine Art Prints from 8×10\" to 24×36\". Framed Prints from 8×10\" to 20×24\" in 8 frame color options. Canvas Prints from 10×10\" to 24×36\". Every physical order includes a full digital download of all six portrait styles." },
               { q:"How Long Does Shipping Take?",          a:"Physical prints are produced and shipped within 3–5 business days, typically arriving in 5–7 business days in the US. International orders may take 7–14 days. All orders include free worldwide shipping with tracking." },
               { q:"What Is Your Happiness Guarantee?",     a:"We offer a 100-day happiness guarantee. If you're not completely satisfied for any reason — quality, damage in transit, or simply not what you expected — we'll reprint or refund in full. No questions asked." },
             ].map((item, i) => (
