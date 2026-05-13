@@ -1317,6 +1317,9 @@ export default function Customize() {
               Choose Your Print
             </h3>
             {[
+              { id:"digital", label:"Digital Only", sub:"Instant download.", badge:null,
+                features:["All 6 portrait styles, hi-res files","Instant download, no waiting","Print-ready — use any local print shop"],
+                delivery:"Instant" },
               { id:"print", label:"Art Print", sub:"Ships rolled, unframed.", badge:null,
                 features:["Premium 230gsm archival paper, fade-resistant","Vivid colours, sunlight resistant","Ships rolled in a protective tube"],
                 delivery:"5–7 business days" },
@@ -1329,9 +1332,6 @@ export default function Customize() {
               { id:"acrylic-glass", label:"Acrylic Glass", sub:"Museum-grade glass.", badge:"Premium",
                 features:["Printed behind crystal-clear acrylic for unmatched depth","Museum archival inks, UV-protected","Ready to hang — floating mount hardware included"],
                 delivery:"5–8 business days" },
-              { id:"digital", label:"Digital Only", sub:"Instant download.", badge:null,
-                features:["All 6 portrait styles, hi-res files","Instant download, no waiting","Print-ready — use any local print shop"],
-                delivery:"Instant" },
             ].map((card:any) => {
               const isActive = activeCard === card.id;
               const sizes    = SIMPLE_SIZES[card.id] || [];
