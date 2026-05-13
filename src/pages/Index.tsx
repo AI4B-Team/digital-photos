@@ -1433,6 +1433,24 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
         category,
         source: "portrait_generation",
       });
+      // Persist this client's preview gallery so they can revisit it from the
+      // "My Previews" drawer and receive 7-day expiry reminders.
+      try {
+        await supabase.functions.invoke("save-client-previews", {
+          body: {
+            email: email.trim().toLowerCase(),
+            sessionId: sessionId || null,
+            category,
+            sourcePhotoUrl: photoUrl || null,
+            portraits: (donePortraits || []).map((p: any) => ({
+              url: p.url,
+              style: p.style,
+              hd_url: p.hd_url || p.urlHd || null,
+            })),
+          },
+        });
+        try { localStorage.setItem("dp:previewEmail", email.trim().toLowerCase()); } catch {}
+      } catch (_) { /* non-blocking */ }
     } catch (_) { /* non-blocking */ }
     setEmailBusy(false);
     onDone(donePortraits);

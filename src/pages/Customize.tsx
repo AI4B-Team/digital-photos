@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus } from "lucide-react";
 import { TEMPLATES } from "./Index";
+import PreviewsDrawer from "@/components/PreviewsDrawer";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
 import klarnaLogo from "@/assets/payment-logos/klarna.svg";
@@ -575,6 +576,7 @@ export default function Customize() {
 
   // Cart drawer + extra pack line items
   const [cartOpen, setCartOpen]   = useState(false);
+  const [previewsOpen, setPreviewsOpen] = useState(false);
   const [addedPacks, setAddedPacks] = useState<Array<{ id: string; packId: string; name: string; price: number; qty: number }>>([]);
 
   // Cart items: snapshots of configured prints the user has explicitly added.
@@ -1392,6 +1394,20 @@ export default function Customize() {
             <span style={{ fontSize:10.5, letterSpacing:".14em", color:MUTED, fontWeight:600 }}>TOTAL</span>
             <span className="cz-serif" style={{ fontSize:18, fontWeight:700, color:INK }}>${total}</span>
           </div>
+          <button
+            onClick={() => setPreviewsOpen(true)}
+            aria-label="Open my previews"
+            title="My Previews"
+            style={{
+              position:"relative", display:"flex", alignItems:"center", gap:6,
+              padding:"9px 12px", borderRadius:12, background:"#fff", color:INK,
+              border:`1px solid ${BORDER}`, cursor:"pointer",
+              fontFamily:"'Poppins',sans-serif", fontWeight:600, fontSize:13,
+            }}
+          >
+            <ImageIcon size={15}/>
+            Previews
+          </button>
           <button
             onClick={() => setCartOpen(true)}
             aria-label="Open cart"
@@ -2581,6 +2597,12 @@ export default function Customize() {
           {errorMsg}
         </div>
       )}
+
+      <PreviewsDrawer
+        open={previewsOpen}
+        onClose={() => setPreviewsOpen(false)}
+        defaultEmail={(session as any)?.email || ""}
+      />
     </div>
   );
 }

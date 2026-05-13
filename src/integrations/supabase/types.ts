@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      client_previews: {
+        Row: {
+          category: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          ordered: boolean
+          ordered_at: string | null
+          portraits: Json
+          session_id: string | null
+          source_photo_url: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          ordered?: boolean
+          ordered_at?: string | null
+          portraits?: Json
+          session_id?: string | null
+          source_photo_url?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          ordered?: boolean
+          ordered_at?: string | null
+          portraits?: Json
+          session_id?: string | null
+          source_photo_url?: string | null
+        }
+        Relationships: []
+      }
       lead_captures: {
         Row: {
           category: string | null
@@ -72,6 +111,41 @@ export type Database = {
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      preview_reminder_log: {
+        Row: {
+          email: string
+          id: string
+          preview_id: string
+          queued_at: string
+          reminder_type: string
+          status: string
+        }
+        Insert: {
+          email: string
+          id?: string
+          preview_id: string
+          queued_at?: string
+          reminder_type: string
+          status?: string
+        }
+        Update: {
+          email?: string
+          id?: string
+          preview_id?: string
+          queued_at?: string
+          reminder_type?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "preview_reminder_log_preview_id_fkey"
+            columns: ["preview_id"]
+            isOneToOne: false
+            referencedRelation: "client_previews"
             referencedColumns: ["id"]
           },
         ]
