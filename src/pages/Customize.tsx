@@ -947,21 +947,70 @@ export default function Customize() {
                 <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("ai"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
                   <Sparkles size={18}/>
                 </button>
-                {aiOpen && (() => {
-                  const btn = (window as any).__aiBtn as HTMLElement | undefined;
-                  const r = btn?.getBoundingClientRect();
-                   const top = r ? Math.max(12, Math.min(window.innerHeight - 520, r.top)) : 100;
-                   // Popup sits to the RIGHT of the toolbar (image · toolbar · popup)
-                   const left = r ? Math.max(12, Math.min(window.innerWidth - 372, r.right + 12)) : 100;
-                  return createPortal(
-                  <>
-                    <div onClick={() => { setAiOpen(false); setMpSection(""); }} style={{ position:"fixed", inset:0, zIndex:9998 }}/>
-                    <div onClick={(e) => e.stopPropagation()} style={{
-                      position:"fixed", left, top,
-                      width:360, maxHeight:"80vh", overflowY:"auto",
-                      background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
-                      boxShadow:"0 20px 60px rgba(0,0,0,.18)", padding:14, zIndex:9999,
-                    }}>
+              </span>
+              <div className="cz-tool-divider"/>
+              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
+                <RotateCcw size={17}/>
+              </button>
+              <div className="cz-tool-divider"/>
+              <button
+                className="cz-tool"
+                onClick={() => setItems(prev => prev.map(i => i.id === item.id ? { ...i, zoom: Math.min(2.5, +(((i.zoom || 1) + 0.15)).toFixed(2)) } : i))}
+                disabled={(item.zoom || 1) >= 2.5}
+                data-tip="Zoom In" aria-label="Zoom in">
+                <ZoomIn size={17}/>
+              </button>
+              <button
+                className="cz-tool"
+                onClick={() => setItems(prev => prev.map(i => {
+                  if (i.id !== item.id) return i;
+                  const z = Math.max(1, +(((i.zoom || 1) - 0.15)).toFixed(2));
+                  return z <= 1 ? { ...i, zoom: 1, offsetX: 0, offsetY: 0 } : { ...i, zoom: z };
+                }))}
+                disabled={(item.zoom || 1) <= 1}
+                data-tip="Zoom Out" aria-label="Zoom out">
+                <ZoomOut size={17}/>
+              </button>
+              <div className="cz-tool-divider"/>
+              <button
+                className="cz-tool"
+                onClick={() => {
+                  const dup = { ...item, id: crypto.randomUUID(), qty: 1 };
+                  setItems(prev => {
+                    const idx = prev.findIndex(i => i.id === item.id);
+                    const next = [...prev];
+                    next.splice(idx + 1, 0, dup);
+                    return next;
+                  });
+                  setSelectedId(dup.id);
+                }}
+                data-tip="Duplicate Image"
+                aria-label="Duplicate image"
+              >
+                <Copy size={17}/>
+              </button>
+              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
+                <Plus size={18}/>
+              </button>
+              <button
+                className="cz-tool"
+                onClick={() => removeItem(item.id)}
+                disabled={items.length <= 1}
+                data-tip="Delete Image"
+                aria-label="Delete image"
+              >
+                <Trash2 size={17}/>
+              </button>
+            </div>
+          ) : (
+            <div aria-hidden="true" style={{ width:48, flexShrink:0, visibility:"hidden" }}/>
+          )}
+          {isSelected && aiOpen && (
+            <div onClick={(e) => e.stopPropagation()} style={{
+              width:300, flex:"0 0 300px", maxHeight:"min(560px, calc(100vh - 190px))", overflowY:"auto",
+              background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
+              boxShadow:"0 20px 60px rgba(0,0,0,.18)", padding:14,
+            }}>
                       {/* AI quick fix */}
                       <div style={{
                         border:`1px solid ${mpSection==="ai" ? RED : BORDER}`, borderRadius:12,
