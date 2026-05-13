@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus } from "lucide-react";
 import { TEMPLATES } from "./Index";
+import PreviewsDrawer from "@/components/PreviewsDrawer";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
 import klarnaLogo from "@/assets/payment-logos/klarna.svg";
