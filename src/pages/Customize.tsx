@@ -1855,7 +1855,7 @@ export default function Customize() {
                         borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
                         justifyContent:"center", gap:8 }}>
                         Order My {card.label} —{" "}
-                        <span style={{ fontWeight:900 }}>${price}</span>
+                        <span style={{ fontWeight:900 }}>${total}</span>
                       </button>
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
