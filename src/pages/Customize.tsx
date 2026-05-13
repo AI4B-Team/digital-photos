@@ -1260,7 +1260,7 @@ export default function Customize() {
           display:"flex", flexDirection:"column", gap:14,
         }}>
           <div className="cz-section">
-            <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
+            <div className="cz-label"><span>Style</span><span className="cz-value">{effectDef.label}</span></div>
             <div className="cz-size-scroll">
               {EFFECTS.map(e => {
                 const on = effect === e.id;
