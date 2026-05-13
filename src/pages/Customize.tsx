@@ -576,6 +576,36 @@ export default function Customize() {
   // Cart drawer + extra pack line items
   const [cartOpen, setCartOpen]   = useState(false);
   const [addedPacks, setAddedPacks] = useState<Array<{ id: string; packId: string; name: string; price: number; qty: number }>>([]);
+
+  // Cart items: snapshots of configured prints the user has explicitly added.
+  // Separate from workspace `items` so duplicating a photo does not auto-add it.
+  const [cartItems, setCartItems] = useState<any[]>([]);
+
+  // Build a stable key from the configuration fields that distinguish a SKU,
+  // so adding the same product twice merges into a qty bump.
+  const cartKey = (it: any) =>
+    [it.photoUrl, it.productType, it.size, it.sku || "", it.frameColor || "",
+     it.canvasEdge || "", it.effect || "", it.border || "", it.borderColor || ""].join("|");
+
+  const addToCart = (snapshot: any, qtyToAdd = 1) => {
+    setCartItems(prev => {
+      const k = cartKey(snapshot);
+      const existing = prev.find(i => cartKey(i) === k);
+      if (existing) {
+        return prev.map(i => i === existing
+          ? { ...i, qty: (i.qty || 1) + qtyToAdd }
+          : i);
+      }
+      return [...prev, { ...snapshot, id: crypto.randomUUID(), qty: qtyToAdd }];
+    });
+    setCartOpen(true);
+  };
+  const removeCartItem = (id: string) =>
+    setCartItems(prev => prev.filter(i => i.id !== id));
+  const setCartItemQty = (id: string, qty: number) => {
+    const q = Math.max(1, Math.min(99, qty|0));
+    setCartItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
+  };
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
