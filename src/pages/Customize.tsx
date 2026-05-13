@@ -2447,14 +2447,14 @@ export default function Customize() {
                       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
                         <div style={{ display:"flex", alignItems:"center", gap:4, border:`1px solid ${BORDER}`, borderRadius:8 }}>
                           <button
-                            onClick={() => setItemQty(it.id, (it.qty || 1) - 1)}
+                            onClick={() => setCartItemQty(it.id, (it.qty || 1) - 1)}
                             disabled={(it.qty || 1) <= 1}
                             style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
                             aria-label="Decrease quantity"
                           ><Minus size={12}/></button>
                           <span style={{ fontSize:12, fontWeight:700, minWidth:18, textAlign:"center" }}>{it.qty || 1}</span>
                           <button
-                            onClick={() => setItemQty(it.id, (it.qty || 1) + 1)}
+                            onClick={() => setCartItemQty(it.id, (it.qty || 1) + 1)}
                             style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
                             aria-label="Increase quantity"
                           ><Plus size={12}/></button>
@@ -2462,7 +2462,7 @@ export default function Customize() {
                         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
                           <span style={{ fontSize:13, fontWeight:800, color:INK }}>${unit * (it.qty || 1)}</span>
                           <button
-                            onClick={() => removeItem(it.id)}
+                            onClick={() => removeCartItem(it.id)}
                             disabled={items.length <= 1 && addedPacks.length === 0}
                             style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:2, display:"flex" }}
                             aria-label="Remove"
