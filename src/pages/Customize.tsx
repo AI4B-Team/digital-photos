@@ -1417,7 +1417,8 @@ export default function Customize() {
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
               const cardDiscount = isActive ? Math.min(discountAmt, basePrice + frameAdd) : 0;
               const price    = basePrice + frameAdd - cardDiscount;
-              const origPrice = Math.round(basePrice * 1.4);
+              const origPrice = discountAmt > 0 ? basePrice + discountAmt : Math.round(basePrice * 1.4);
+              const digitalOrig = discountAmt > 0 ? 27 + discountAmt : Math.round(27 * 1.4);
 
               return (
                 <div key={card.id} style={{
@@ -1454,7 +1455,7 @@ export default function Customize() {
                       {!isActive && (
                         <>
                           <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                            ${card.id==="digital"?Math.round(27*1.4):origPrice}
+                            ${card.id==="digital"?digitalOrig:origPrice}
                           </span>
                           <span style={{ fontSize:15, fontWeight:800, color:RED,
                             fontFamily:"'Poppins',sans-serif" }}>
