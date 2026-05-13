@@ -2205,7 +2205,7 @@ export default function Customize() {
                       })()}
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
-                        Delivery: {card.delivery} · 100% Money-Back Guarantee · Cart has {cartCount} item{cartCount === 1 ? "" : "s"}
+                        Delivery: {card.delivery} · 100% Money-Back Guarantee · <span style={{ color: RED, fontWeight:700 }}>Cart Has {cartCount} Item{cartCount === 1 ? "" : "s"}</span>
                       </div>
 
                       {/* Buy Now, Pay Later */}
