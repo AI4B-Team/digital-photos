@@ -2768,8 +2768,7 @@ export default function Customize() {
           `}</style>
         </div>
       )}
-
-
+      <PreviewsDrawer
         open={previewsOpen}
         onClose={() => setPreviewsOpen(false)}
         defaultEmail={(session as any)?.email || ""}
