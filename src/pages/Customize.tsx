@@ -1292,7 +1292,7 @@ export default function Customize() {
           {!isDigital && (
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(82px, 1fr))", gap:8, marginBottom:14 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", gap:6, marginBottom:14 }}>
               {BORDERS.map(b => (
                 <button key={b.id} className={`cz-chip ${border===b.id?"on":""}`}
                   style={{ width:"100%", minWidth:82, justifyContent:"center", padding:"9px 10px" }}
