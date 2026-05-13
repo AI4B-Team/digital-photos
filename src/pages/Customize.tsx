@@ -1192,7 +1192,7 @@ export default function Customize() {
         <div style={{
           background:"#E61919", borderBottom:"1px solid #B91C1C",
           padding:"8px 22px", display:"flex", alignItems:"center", justifyContent:"center",
-          gap:14, flexWrap:"wrap", position:"sticky", top:0, zIndex:30,
+          gap:6, flexWrap:"wrap", position:"sticky", top:0, zIndex:30,
         }}>
           <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>
             {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}: ${discountAmt} OFF
