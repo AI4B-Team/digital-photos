@@ -1254,7 +1254,6 @@ export default function Customize() {
         display:"grid",
         gridTemplateColumns: aiOpen ? "0px 1fr 400px" : "320px 1fr 400px",
         gap:0, maxWidth:1500, margin:"0 auto",
-        transition:"grid-template-columns .25s cubic-bezier(.22,1,.32,1)",
       }}>
         {/* Customize controls (left) */}
         <aside className="cz-side" style={{
