@@ -1630,6 +1630,107 @@ export default function Customize() {
                         </div>
                       )}
 
+                      {/* ── In-box extras: add photo upsell, promo, gift ── */}
+                      <div style={{
+                        border:`1px dashed ${BORDER}`, borderRadius:10, padding:10,
+                        marginBottom:12, display:"flex", flexDirection:"column", gap:8,
+                        background:"#FAFAF7",
+                      }}>
+                        {/* Add another photo upsell */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleAddImage(); }}
+                          disabled={busy}
+                          style={{
+                            width:"100%", padding:"9px",
+                            border:`1.5px dashed ${BORDER}`, borderRadius:8,
+                            background:"#fff", cursor:"pointer",
+                            fontFamily:"'Poppins',sans-serif", fontSize:12.5, fontWeight:600, color:INK,
+                            display:"flex", alignItems:"center", justifyContent:"center", gap:6,
+                            opacity: busy ? .5 : 1,
+                          }}>
+                          <Plus size={14}/> Add Another Photo
+                        </button>
+                        <div style={{
+                          fontSize:11, color: bundlePct > 0 ? "#16a34a" : MUTED,
+                          textAlign:"center", fontWeight: bundlePct > 0 ? 700 : 500,
+                        }}>
+                          {bundlePct > 0
+                            ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
+                            : "Add 2 — Save 10% · Add 3+ — Save 15%"}
+                        </div>
+
+                        {/* Promo code */}
+                        <div>
+                          {promoApplied ? (
+                            <div style={{
+                              display:"flex", alignItems:"center", justifyContent:"space-between",
+                              padding:"7px 10px", borderRadius:8, background:"#F0FDF4", border:"1px solid #BBF7D0",
+                            }}>
+                              <div style={{ fontSize:11.5, color:"#15803D", fontWeight:600 }}>
+                                Promo: {promoApplied.code}
+                              </div>
+                              <button onClick={(e) => { e.stopPropagation(); clearPromo(); }} style={{
+                                background:"none", border:"none", color:MUTED, cursor:"pointer",
+                                fontSize:11, textDecoration:"underline", fontFamily:"inherit",
+                              }}>Remove</button>
+                            </div>
+                          ) : promoOpen ? (
+                            <div onClick={e => e.stopPropagation()}>
+                              <div style={{ display:"flex", gap:6 }}>
+                                <input
+                                  value={promoCode}
+                                  onChange={e => { setPromoCode(e.target.value); setPromoError(""); }}
+                                  onKeyDown={e => e.key === "Enter" && applyPromo()}
+                                  placeholder="Enter code"
+                                  style={{
+                                    flex:1, padding:"7px 10px", borderRadius:7,
+                                    border:`1px solid ${promoError ? "#DC2626" : BORDER}`,
+                                    fontFamily:"inherit", fontSize:12, outline:"none", background:"#fff",
+                                  }}
+                                />
+                                <button onClick={applyPromo} style={{
+                                  padding:"7px 12px", borderRadius:7, border:"none",
+                                  background:INK, color:"#fff", fontWeight:600, fontSize:11.5, cursor:"pointer", fontFamily:"inherit",
+                                }}>Apply</button>
+                              </div>
+                              {promoError && <div style={{ fontSize:10.5, color:"#DC2626", marginTop:3 }}>{promoError}</div>}
+                            </div>
+                          ) : (
+                            <button onClick={(e) => { e.stopPropagation(); setPromoOpen(true); }} style={{
+                              background:"none", border:"none", padding:0, color:INK, fontWeight:600,
+                              fontSize:11.5, cursor:"pointer", fontFamily:"inherit", textDecoration:"underline",
+                            }}>+ Add Promo Code</button>
+                          )}
+                        </div>
+
+                        {/* Gift note */}
+                        <div>
+                          {giftOpen || giftNote ? (
+                            <div onClick={e => e.stopPropagation()}>
+                              <div style={{ fontSize:10.5, color:MUTED, fontWeight:600, marginBottom:4, letterSpacing:".08em", textTransform:"uppercase" }}>
+                                Gift Note
+                              </div>
+                              <textarea
+                                value={giftNote}
+                                onChange={e => setGiftNote(e.target.value)}
+                                placeholder="Add a personal message…"
+                                maxLength={250}
+                                rows={2}
+                                style={{
+                                  width:"100%", padding:"7px 10px", borderRadius:7, border:`1px solid ${BORDER}`,
+                                  fontFamily:"inherit", fontSize:12, outline:"none", background:"#fff", resize:"vertical",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <button onClick={(e) => { e.stopPropagation(); setGiftOpen(true); }} style={{
+                              background:"none", border:"none", padding:0, color:INK, fontWeight:600,
+                              fontSize:11.5, cursor:"pointer", fontFamily:"inherit", textDecoration:"underline",
+                            }}>+ Add Gift Note</button>
+                          )}
+                        </div>
+                      </div>
+
                       <button onClick={() => {
                         updateSelected({
                           productType: card.id,
