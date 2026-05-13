@@ -1279,18 +1279,34 @@ export default function Customize() {
         });
       }
 
-      // Persist for downstream pages
-      setSession({
+      const primaryCartItem = cartItems[0];
+
+      // Persist for downstream pages (preserve existing session like orderId)
+      setSession((prev: any) => ({
+        ...(prev || {}),
         customizationItems: items,
         cart: { items: cartItems, packs: addedPacks, total },
-      } as any);
+        customization: {
+          ...((prev && prev.customization) || {}),
+          portraitUrl: primaryCartItem?.photoUrl || items[0]?.photoUrl || "",
+          productType: primaryCartItem?.productType || "",
+          sku:         primaryCartItem?.sku || "",
+          frameColor:  primaryCartItem?.frameColor || "",
+          canvasEdge:  primaryCartItem?.canvasEdge || "",
+        },
+        printSku: primaryCartItem?.sku || "",
+      }));
 
       const { supabase } = await import("@/integrations/supabase/client");
       const { data, error } = await supabase.functions.invoke("create-payment", {
         body: {
           lineItems,
-          sessionId: (session as any).sessionDbId || null,
-          portraitUrl: cartItems[0]?.photoUrl || items[0]?.photoUrl || "",
+          sessionId: (session as any).orderId || (session as any).sessionDbId || null,
+          portraitUrl: primaryCartItem?.photoUrl || items[0]?.photoUrl || "",
+          // Pass print fulfillment details so verify-payment can trigger Prodigi
+          printSku:   primaryCartItem?.sku || "",
+          productType: primaryCartItem?.productType || "",
+          printFrame: primaryCartItem?.frameColor || primaryCartItem?.canvasEdge || "",
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
