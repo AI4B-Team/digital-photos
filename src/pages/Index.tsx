@@ -706,6 +706,7 @@ function HomePage({ onGenerate }) {
   const [cat,     setCat]     = useState("");
   const [styles,  setStyles]  = useState(STYLES.map(s => s.id));
   const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
+  const [openFaq, setOpenFaq] = useState<number|null>(0);
   const tmplStripRef = useRef<HTMLDivElement|null>(null);
   const [tmplCanL, setTmplCanL] = useState(false);
   const [tmplCanR, setTmplCanR] = useState(false);
