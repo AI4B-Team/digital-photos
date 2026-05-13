@@ -1243,8 +1243,8 @@ export default function Customize() {
 
       {/* Three-column layout */}
       <div className="cz-grid" style={{
-        display:"grid", gridTemplateColumns:"420px 1fr 400px", gap:0,
-        maxWidth:1600, margin:"0 auto",
+        display:"grid", gridTemplateColumns:"320px 1fr 400px", gap:0,
+        maxWidth:1500, margin:"0 auto",
       }}>
         {/* Customize controls (left) */}
         <aside className="cz-side" style={{
