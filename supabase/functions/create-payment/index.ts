@@ -81,6 +81,7 @@ serve(async (req) => {
         printSize,
         printFrame,
         printSku,
+        printMount,
       },
     };
 
