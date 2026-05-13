@@ -1242,17 +1242,27 @@ export default function Customize() {
       {/* Three-column layout */}
       <div className="cz-grid" style={{
         display:"grid",
-        gridTemplateColumns: aiOpen ? "0px 1fr 400px" : "320px 1fr 400px",
+        gridTemplateColumns: aiOpen ? "64px 1fr 400px" : "320px 1fr 400px",
         gap:0, maxWidth:1500, margin:"0 auto",
       }}>
         {/* Customize controls (left) */}
         <aside className="cz-side" style={{
-          padding: aiOpen ? 0 : "24px 10px 24px 18px",
+          padding: aiOpen ? "24px 8px" : "24px 10px 24px 18px",
           position:"sticky", top:70, alignSelf:"start",
-          maxHeight: aiOpen ? 0 : "calc(100vh - 70px)", overflowY:"auto",
-          visibility: aiOpen ? "hidden" : "visible", pointerEvents: aiOpen ? "none" : "auto",
+          maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
         }}>
+          {aiOpen ? (
+            <button onClick={() => setAiOpen(false)} aria-label="Expand customize panel" title="Expand customize panel" style={{
+              width:48, minHeight:132, border:`1px solid ${BORDER}`, borderRadius:16, background:"#fff",
+              cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:10,
+              color:INK, fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:10.5, letterSpacing:".12em", textTransform:"uppercase",
+            }}>
+              <SlidersHorizontal size={18} color={RED}/>
+              <span style={{ writingMode:"vertical-rl", transform:"rotate(180deg)" }}>Customize</span>
+            </button>
+          ) : (
+          <>
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
             <div className="cz-size-scroll">
@@ -1310,6 +1320,8 @@ export default function Customize() {
               ))}
             </div>
           </div>
+          )}
+          </>
           )}
         </aside>
 
