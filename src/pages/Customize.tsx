@@ -1247,10 +1247,11 @@ export default function Customize() {
       }}>
         {/* Customize controls (left) */}
         <aside className="cz-side" style={{
-          padding:"24px 10px 24px 18px",
+          padding: aiOpen ? 0 : "24px 10px 24px 18px",
           position:"sticky", top:70, alignSelf:"start",
-          maxHeight:"calc(100vh - 70px)", overflowY:"auto",
-          display: aiOpen ? "none" : "flex", flexDirection:"column", gap:14,
+          maxHeight: aiOpen ? 0 : "calc(100vh - 70px)", overflowY:"auto",
+          visibility: aiOpen ? "hidden" : "visible", pointerEvents: aiOpen ? "none" : "auto",
+          display:"flex", flexDirection:"column", gap:14,
         }}>
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
