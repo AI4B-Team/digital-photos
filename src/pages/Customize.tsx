@@ -573,6 +573,27 @@ export default function Customize() {
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
+  // Cart drawer + extra pack line items
+  const [cartOpen, setCartOpen]   = useState(false);
+  const [addedPacks, setAddedPacks] = useState<Array<{ id: string; packId: string; name: string; price: number; qty: number }>>([]);
+  const [checkingOut, setCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+
+  const addPackToCart = (pk: { id: string; name: string; price: number }) => {
+    setAddedPacks(prev => {
+      const existing = prev.find(p => p.packId === pk.id);
+      if (existing) return prev.map(p => p.packId === pk.id ? { ...p, qty: p.qty + 1 } : p);
+      return [...prev, { id: crypto.randomUUID(), packId: pk.id, name: pk.name, price: pk.price, qty: 1 }];
+    });
+    setSelectedPackId(pk.id);
+    setCartOpen(true);
+  };
+  const removePackFromCart = (id: string) => setAddedPacks(prev => prev.filter(p => p.id !== id));
+  const setPackQty = (id: string, qty: number) => {
+    const q = Math.max(1, Math.min(99, qty|0));
+    setAddedPacks(prev => prev.map(p => p.id === id ? { ...p, qty: q } : p));
+  };
+
   // Discount timer (welcome $20 → extended $10 → none)
   const [discountAmt, setDiscountAmt]   = useState(0);
   const [discountSec, setDiscountSec]   = useState(0);
