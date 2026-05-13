@@ -1394,7 +1394,7 @@ export default function Customize() {
               { id:"classic-frame", label:"Framed Print", sub:"Ready to hang, 8 frame colours.", badge:"Most Popular",
                 features:["Museum-grade cotton art paper with white mount","Hand-finished solid frame, conservation-grade mount","Ready to hang — arrives fully assembled"],
                 delivery:"5–9 Business Days", frameColors:true },
-              { id:"canvas", label:"Gallery Canvas", sub:"Ready to hang.", badge:null,
+              { id:"canvas", label:"Canvas Print", sub:"Ready to hang.", badge:null,
                 features:["Fine-textured canvas, vivid detail & colour","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included"],
                 delivery:"4–7 Business Days", canvasAddon:true },
               { id:"acrylic-glass", label:"Acrylic Glass", sub:"Museum-grade glass.", badge:"Premium",
