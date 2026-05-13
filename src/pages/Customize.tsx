@@ -1044,9 +1044,30 @@ export default function Customize() {
     <div className="cz-root">
       <style>{G}</style>
 
+      {/* Announcement strip — discount countdown */}
+      {discountAmt > 0 && (
+        <div style={{
+          background:"#FFF7ED", borderBottom:"1px solid #FED7AA",
+          padding:"8px 22px", display:"flex", alignItems:"center", justifyContent:"center",
+          gap:14, flexWrap:"wrap", position:"sticky", top:0, zIndex:30,
+        }}>
+          <span style={{ fontSize:13, fontWeight:700, color:"#C2410C" }}>
+            {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}
+          </span>
+          <span style={{ fontSize:12, color:"#9A3412" }}>
+            Expires when the timer hits zero
+          </span>
+          <div style={{
+            background:"#E61919", color:"#fff", fontSize:12, fontWeight:700,
+            padding:"4px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
+          }}>{fmtCountdown(discountSec)}</div>
+          <span style={{ fontSize:13, fontWeight:800, color:"#E61919" }}>${discountAmt} OFF</span>
+        </div>
+      )}
+
       {/* Header */}
       <header style={{
-        position: "sticky", top: 0, zIndex: 20, background: "rgba(244,241,236,.85)",
+        position: "sticky", top: discountAmt > 0 ? 38 : 0, zIndex: 20, background: "rgba(244,241,236,.85)",
         backdropFilter: "blur(10px)",
         borderBottom: `1px solid ${BORDER}`, padding: "14px 22px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -1288,32 +1309,8 @@ export default function Customize() {
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
         }}>
-          {/* Discount timer banner */}
-          {discountAmt > 0 && (
-            <div style={{
-              background:"#FFF7ED", border:"1px solid #FED7AA",
-              borderRadius:10, padding:"10px 14px",
-              display:"flex", alignItems:"center", justifyContent:"space-between",
-            }}>
-              <div>
-                <span style={{ fontSize:13, fontWeight:700, color:"#C2410C" }}>
-                  {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}
-                </span>
-                <span style={{ fontSize:11, color:"#9A3412", display:"block", marginTop:1 }}>
-                  Expires when the timer hits zero
-                </span>
-              </div>
-              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                <div style={{
-                  background:"#E61919", color:"#fff", fontSize:11, fontWeight:700,
-                  padding:"5px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
-                }}>{fmtCountdown(discountSec)}</div>
-                <span style={{ fontSize:13, fontWeight:800, color:"#E61919" }}>${discountAmt} OFF</span>
-              </div>
-            </div>
-          )}
-
           {/* Choose Your Print — accordion product cards */}
+
           <div>
             <h3 style={{ fontSize:18, fontWeight:800, color:INK,
               fontFamily:"'Poppins',sans-serif", margin:"0 0 12px" }}>
