@@ -203,26 +203,26 @@ const PRODUCT_TYPES = [
 ];
 
 // Simplified S/M/L sizes per product (drives right-panel product cards)
-const SIMPLE_SIZES: Record<string, { id:string; label:string; dim:string; sku:string; price:number; best?:boolean }[]> = {
+const SIMPLE_SIZES: Record<string, { id:string; pid:string; label:string; dim:string; sku:string; price:number; w:number; h:number; best?:boolean }[]> = {
   "print": [
-    { id:"sm", label:"Small",  dim:'8×10"',  sku:"GLOBAL-FAP-8x10",  price:47 },
-    { id:"md", label:"Medium", dim:'16×20"', sku:"GLOBAL-FAP-16x20", price:87, best:true },
-    { id:"lg", label:"Large",  dim:'24×36"', sku:"GLOBAL-FAP-24x36", price:167 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8×10"',  sku:"GLOBAL-FAP-8x10",  price:47,  w:0.80, h:1 },
+    { id:"md", pid:"16x20", label:"Medium", dim:'16×20"', sku:"GLOBAL-FAP-16x20", price:87,  w:0.80, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24×36"', sku:"GLOBAL-FAP-24x36", price:167, w:0.67, h:1 },
   ],
   "canvas": [
-    { id:"sm", label:"Small",  dim:'12×16"', sku:"GLOBAL-CAN-12x16", price:107 },
-    { id:"md", label:"Medium", dim:'16×20"', sku:"GLOBAL-CAN-16x20", price:127, best:true },
-    { id:"lg", label:"Large",  dim:'24×36"', sku:"GLOBAL-CAN-24x36", price:217 },
+    { id:"sm", pid:"12x16", label:"Small",  dim:'12×16"', sku:"GLOBAL-CAN-12x16", price:107, w:0.75, h:1 },
+    { id:"md", pid:"16x20", label:"Medium", dim:'16×20"', sku:"GLOBAL-CAN-16x20", price:127, w:0.80, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24×36"', sku:"GLOBAL-CAN-24x36", price:217, w:0.67, h:1 },
   ],
   "classic-frame": [
-    { id:"sm", label:"Small",  dim:'8×10"',  sku:"GLOBAL-CFPM-8x10",  price:87 },
-    { id:"md", label:"Medium", dim:'12×16"', sku:"GLOBAL-CFPM-12x16", price:127, best:true },
-    { id:"lg", label:"Large",  dim:'18×24"', sku:"GLOBAL-CFPM-18x24", price:197 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8×10"',  sku:"GLOBAL-CFPM-8x10",  price:87,  w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12×16"', sku:"GLOBAL-CFPM-12x16", price:127, w:0.75, h:1, best:true },
+    { id:"lg", pid:"18x24", label:"Large",  dim:'18×24"', sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
   ],
   "acrylic-glass": [
-    { id:"sm", label:"Small",  dim:'8×10"',  sku:"GLOBAL-ACR-8x10",  price:147 },
-    { id:"md", label:"Medium", dim:'16×20"', sku:"GLOBAL-ACR-16x20", price:197, best:true },
-    { id:"lg", label:"Large",  dim:'24×36"', sku:"GLOBAL-ACR-24x36", price:297 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8×10"',  sku:"GLOBAL-ACR-8x10",  price:147, w:0.80, h:1 },
+    { id:"md", pid:"16x20", label:"Medium", dim:'16×20"', sku:"GLOBAL-ACR-16x20", price:197, w:0.80, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24×36"', sku:"GLOBAL-ACR-24x36", price:297, w:0.67, h:1 },
   ],
 };
 
