@@ -662,7 +662,8 @@ export default function Customize() {
   const bundleSave   = Math.round(subtotal * bundlePct);
   const promoPct     = promoApplied?.pct || 0;
   const promoSave    = Math.round((subtotal - bundleSave) * promoPct);
-  const total        = Math.max(0, subtotal - bundleSave - promoSave);
+  const discountSave = discountAmt > 0 ? Math.min(discountAmt, subtotal - bundleSave - promoSave) : 0;
+  const total        = Math.max(0, subtotal - bundleSave - promoSave - discountSave);
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
