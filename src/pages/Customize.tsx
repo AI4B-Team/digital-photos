@@ -1408,9 +1408,13 @@ export default function Customize() {
                             letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
                             Choose Size
                           </div>
-                          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8, marginBottom:12 }}>
+                          <div style={{
+                            display:"flex", gap:8, marginBottom:12,
+                            overflowX:"auto", paddingTop:14, paddingBottom:6,
+                            scrollSnapType:"x mandatory",
+                            WebkitOverflowScrolling:"touch",
+                          }}>
                             {sizes.map(sz => {
-                              const maxDim = 36;
                               const shapeH = 30;
                               const shapeW = Math.round(shapeH * (sz.w / sz.h));
                               return (
@@ -1420,9 +1424,10 @@ export default function Customize() {
                                   updateSelected({ size: sz.pid, sku: sz.sku, productType: card.id });
                                 }}
                                 style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
-                                  borderRadius:10, padding:"16px 6px 10px",
+                                  borderRadius:10, padding:"10px 10px 10px",
                                   background: selSize===sz.id ? "rgba(230,25,25,.05)" : "#fff",
-                                  cursor:"pointer", textAlign:"center", position:"relative" }}>
+                                  cursor:"pointer", textAlign:"center", position:"relative",
+                                  flex:"0 0 auto", minWidth:90, scrollSnapAlign:"start" }}>
                                 {sz.best && (
                                   <span style={{ position:"absolute", top:-9, left:"50%",
                                     transform:"translateX(-50%)", fontSize:8, fontWeight:700,
@@ -1436,8 +1441,8 @@ export default function Customize() {
                                     border:`1.5px solid ${selSize===sz.id?RED:"#bdb6ad"}`,
                                     borderRadius:2, background: selSize===sz.id ? "rgba(230,25,25,.08)" : "#f4f1ec" }}/>
                                 </div>
-                                <div style={{ fontSize:12, fontWeight:700, color:INK }}>{sz.label}</div>
-                                <div style={{ fontSize:10.5, color:MUTED, marginTop:2 }}>{sz.dim}</div>
+                                <div style={{ fontSize:11.5, fontWeight:700, color:INK, whiteSpace:"nowrap" }}>{sz.dim}</div>
+                                <div style={{ fontSize:10, color:MUTED, marginTop:1, whiteSpace:"nowrap" }}>{sz.label}</div>
                                 <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
                                   ${Math.round(sz.price*1.4)}
                                 </div>
