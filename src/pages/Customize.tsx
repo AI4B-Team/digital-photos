@@ -1305,16 +1305,17 @@ export default function Customize() {
       {discountAmt > 0 && (
         <div style={{
           background:"#E61919", borderBottom:"1px solid #B91C1C",
-          padding:"8px 22px", display:"flex", alignItems:"center", justifyContent:"center",
-          gap:6, flexWrap:"wrap", position:"sticky", top:0, zIndex:30,
+          padding:"8px 22px", position:"sticky", top:0, zIndex:30,
+          textAlign:"center",
         }}>
           <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>
             {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}: ${discountAmt} OFF
           </span>
-          <span style={{ fontSize:12, color:"#FFE4E6" }}>
+          <span style={{ fontSize:12, color:"#FFE4E6", marginLeft:6 }}>
             — Expires When The Timer Hits Zero
           </span>
           <div style={{
+            position:"absolute", right:22, top:"50%", transform:"translateY(-50%)",
             background:"#fff", color:"#E61919", fontSize:12, fontWeight:700,
             padding:"4px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
           }}>{fmtCountdown(discountSec)}</div>
@@ -1335,7 +1336,10 @@ export default function Customize() {
           <ArrowLeft size={16}/> Back
         </button>
 
-        <nav style={{ display:"flex", alignItems:"center", gap:2 }}>
+        <nav style={{
+          display:"flex", alignItems:"center", gap:2,
+          position:"absolute", left:"50%", top:"50%", transform:"translate(-50%, -50%)",
+        }}>
           {STEPS.map((s, i) => (
             <div key={s.id} style={{ display:"flex", alignItems:"center", gap:2 }}>
               <button className={`cz-step ${s.id==="customize"?"on":""}`} onClick={() => navigate(s.to)}>
@@ -1513,6 +1517,7 @@ export default function Customize() {
           <div style={{
             textAlign:"center", flexShrink:0, padding:"32px 0 8px",
             position:"sticky", top:0, zIndex:5, width:"100%",
+            transform:"translateX(40px)",
           }}>
             <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
             <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
