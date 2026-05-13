@@ -848,7 +848,7 @@ export default function Customize() {
           {/* Invisible spacer matching toolbar width to keep image centered */}
           <div aria-hidden="true" style={{ width: aiOpen && isSelected ? 0 : 48, flexShrink:0, visibility:"hidden" }}/>
           <div style={{
-            background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+            background: isCanvas ? "#fff" : (isFrameless ? "transparent" : actualWood),
             padding: (isFrameless ? 6 : woodPad + 6),
             borderRadius: isFrameless ? 12 : 6,
             boxShadow: "none",
