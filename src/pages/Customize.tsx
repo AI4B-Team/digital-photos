@@ -1255,8 +1255,10 @@ export default function Customize() {
         <aside className="cz-side" style={{
           padding: aiOpen ? "24px 8px" : "24px 10px 24px 18px",
           position:"sticky", top:70, alignSelf:"start",
+          height: aiOpen ? "calc(100vh - 70px)" : undefined,
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
+          justifyContent: aiOpen ? "center" : "flex-start",
         }}>
           {aiOpen ? (
             <button onClick={() => setAiOpen(false)} aria-label="Expand customize panel" title="Expand customize panel" style={{
