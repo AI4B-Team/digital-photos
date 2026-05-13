@@ -541,6 +541,12 @@ export default function Customize() {
   const [aiInput, setAiInput]         = useState("");
   const [mpSection, setMpSection]     = useState<"" | "ai" | "concierge">("");
   const [conciergeNote, setConciergeNote] = useState("");
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`concierge_note_${selected?.id}`);
+      setConciergeNote(saved || (selected as any)?.conciergeNote || "");
+    } catch { setConciergeNote(""); }
+  }, [selected?.id]);
   const [choices, setChoices]         = useState<string[]>([]);
   const [choiceOpen, setChoiceOpen]   = useState(false);
   const [choicesLoaded, setChoicesLoaded] = useState(0);
