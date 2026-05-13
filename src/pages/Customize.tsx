@@ -1525,7 +1525,7 @@ export default function Customize() {
                                 }}
                                 style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
                                   borderRadius:10, padding:"10px 10px 10px",
-                                  background: selSize===sz.id ? "rgba(230,25,25,.05)" : "#fff",
+                                  background: "#fff",
                                   cursor:"pointer", textAlign:"center", position:"relative",
                                   flex:"0 0 auto", minWidth:90, scrollSnapAlign:"start" }}>
                                 {sz.best && (
