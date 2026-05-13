@@ -1346,9 +1346,7 @@ export default function Customize() {
             display:"flex", alignItems:"center",
             justifyContent: aiOpen ? "flex-start" : "center",
             gap:16, width:"100%", maxWidth:"100%", flex:"1 1 auto", minHeight:0,
-            paddingLeft: aiOpen ? 24 : 0,
-            transform: aiOpen ? "translateX(-220px)" : "translateX(0)",
-            transition:"transform .3s cubic-bezier(.22,1,.32,1), padding .3s cubic-bezier(.22,1,.32,1), justify-content .3s",
+            paddingLeft: aiOpen ? 8 : 0,
           }}>
             <div className="cz-canvas-scroll" style={{
               flex:"0 1 auto", minWidth:0, maxHeight:"100%", height:"100%",
