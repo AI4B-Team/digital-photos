@@ -1149,8 +1149,9 @@ export default function Customize() {
                               }}>
                               <Wand2 size={14}/> Save Notes For Artist
                             </button>
-                            <div style={{ fontSize:11, color:MUTED, marginTop:8, textAlign:"center" }}>
-                              Free with every order · Applied after checkout
+                            <div style={{ fontSize:11, color:MUTED, marginTop:8, textAlign:"center", lineHeight:1.5 }}>
+                              <div>Free With Every Order</div>
+                              <div>Applied After Checkout</div>
                             </div>
                           </div>
                         )}
