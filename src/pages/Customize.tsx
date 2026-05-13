@@ -199,7 +199,32 @@ const PRODUCT_TYPES = [
   { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",    icon:Frame,           price:null },
   { id:"box-frame",     label:"Box Frame",        desc:"Deep shadow box · premium",    icon:LayoutPanelTop,  price:null },
   { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang", icon:Square,          price:null },
+  { id:"acrylic-glass", label:"Acrylic Glass",    desc:"Museum-grade glass",            icon:Square,          price:null },
 ];
+
+// Simplified S/M/L sizes per product (drives right-panel product cards)
+const SIMPLE_SIZES: Record<string, { id:string; label:string; dim:string; sku:string; price:number; best?:boolean }[]> = {
+  "print": [
+    { id:"sm", label:"Small",  dim:'8×10"',  sku:"GLOBAL-FAP-8x10",  price:47 },
+    { id:"md", label:"Medium", dim:'16×20"', sku:"GLOBAL-FAP-16x20", price:87, best:true },
+    { id:"lg", label:"Large",  dim:'24×36"', sku:"GLOBAL-FAP-24x36", price:167 },
+  ],
+  "canvas": [
+    { id:"sm", label:"Small",  dim:'12×16"', sku:"GLOBAL-CAN-12x16", price:107 },
+    { id:"md", label:"Medium", dim:'16×20"', sku:"GLOBAL-CAN-16x20", price:127, best:true },
+    { id:"lg", label:"Large",  dim:'24×36"', sku:"GLOBAL-CAN-24x36", price:217 },
+  ],
+  "classic-frame": [
+    { id:"sm", label:"Small",  dim:'8×10"',  sku:"GLOBAL-CFPM-8x10",  price:87 },
+    { id:"md", label:"Medium", dim:'12×16"', sku:"GLOBAL-CFPM-12x16", price:127, best:true },
+    { id:"lg", label:"Large",  dim:'18×24"', sku:"GLOBAL-CFPM-18x24", price:197 },
+  ],
+  "acrylic-glass": [
+    { id:"sm", label:"Small",  dim:'8×10"',  sku:"GLOBAL-ACR-8x10",  price:147 },
+    { id:"md", label:"Medium", dim:'16×20"', sku:"GLOBAL-ACR-16x20", price:197, best:true },
+    { id:"lg", label:"Large",  dim:'24×36"', sku:"GLOBAL-ACR-24x36", price:297 },
+  ],
+};
 
 const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sku:string; price:number; w:number; h:number }[]> = {
   print: [
