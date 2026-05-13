@@ -1080,129 +1080,16 @@ export default function Customize() {
 
       {/* Three-column layout */}
       <div className="cz-grid" style={{
-        display:"grid", gridTemplateColumns:"300px 1fr 320px", gap:0,
+        display:"grid", gridTemplateColumns:"240px 1fr 400px", gap:0,
         maxWidth:1500, margin:"0 auto",
       }}>
         {/* Customize controls (left) */}
         <aside className="cz-side" style={{
-          padding:"32px 12px 32px 24px",
+          padding:"24px 10px 24px 18px",
           position:"sticky", top:70, alignSelf:"start",
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
         }}>
-          {/* Product Type */}
-          <div className="cz-section">
-            <div className="cz-label">
-              <span>Product</span>
-              <span className="cz-value">{PRODUCT_TYPES.find(p => p.id === productType)?.label}</span>
-            </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:8 }}>
-              {PRODUCT_TYPES.map(pt => {
-                const on = productType === pt.id;
-                return (
-                  <button key={pt.id}
-                    onClick={() => {
-                      const sizes = SIZES_BY_PRODUCT[pt.id] || [];
-                      const defaultSize = sizes[1] || sizes[0];
-                      const defaultFrame = (FRAME_COLORS[pt.id] || [])[0]?.id || "black";
-                      updateSelected({
-                        productType: pt.id,
-                        frameColor:  defaultFrame,
-                        size:        defaultSize?.id || "11x14",
-                        sku:         defaultSize?.sku || "",
-                        frame:       toFrameId(pt.id, defaultFrame),
-                      });
-                    }}
-                    style={{
-                      border:`1.5px solid ${on ? RED : BORDER}`,
-                      borderRadius:10, background: on ? "rgba(230,25,25,.05)" : "#fff",
-                      padding:"10px 10px 9px", cursor:"pointer", textAlign:"left",
-                      display:"flex", flexDirection:"column", gap:2, transition:"all .15s",
-                    }}>
-                    {(() => { const I = pt.icon; return <I size={18} color={on ? RED : INK} strokeWidth={1.8} />; })()}
-                    <span style={{
-                      fontSize:11.5, fontWeight:600, color: on ? RED : INK,
-                      fontFamily:"'Poppins',sans-serif", marginTop:3,
-                    }}>{pt.label}</span>
-                     <span style={{ fontSize:10, color:MUTED }}>{pt.desc}</span>
-                    {pt.id === "digital" && (
-                      <span style={{ fontSize:10, color:MUTED, fontStyle:"italic" }}>No watermark</span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Size */}
-          {!isDigital && (
-            <div className="cz-section">
-              <div className="cz-label"><span>Size</span><span className="cz-value">{sizeDef?.label}</span></div>
-              <div className="cz-size-scroll">
-                {currentSizes.map(s => {
-                  const on = selected.size === s.id;
-                  const SHAPE_BOX = 44;
-                  return (
-                    <button key={s.id}
-                      onClick={() => updateSelected({ size: s.id, sku: s.sku })}
-                      className={`cz-size-card ${on?"on":""}`}>
-                      <div style={{
-                        width: SHAPE_BOX, height: SHAPE_BOX,
-                        display:"flex", alignItems:"center", justifyContent:"center", marginBottom:8,
-                      }}>
-                        <div style={{
-                          width: SHAPE_BOX * s.w,
-                          height: SHAPE_BOX * s.h,
-                          border: `1.5px solid ${on ? RED : "#B8B0A8"}`,
-                          borderRadius: 3,
-                          background: on ? "rgba(230,25,25,0.06)" : "transparent",
-                        }}/>
-                      </div>
-                      <div style={{ fontSize:12, fontWeight:600, color:INK, lineHeight:1.1, whiteSpace:"nowrap" }}>{s.label}</div>
-                      <div style={{ fontSize:10.5, color:MUTED, marginTop:2, whiteSpace:"nowrap" }}>{s.sub}</div>
-                      <div style={{ fontSize:11, color:RED, fontWeight:700, marginTop:3 }}>${s.price}</div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Frame Colour — only for framed products */}
-          {isFramed && (
-            <div className="cz-section">
-              <div className="cz-label"><span>Frame Colour</span><span className="cz-value">{frameColorDef?.label}</span></div>
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(58px, 1fr))", gap:10 }}>
-                {(FRAME_COLORS[productType] || []).map(fc => {
-                  const on = frameColor === fc.id;
-                  return (
-                    <button key={fc.id}
-                      onClick={() => updateSelected({
-                        frameColor: fc.id,
-                        frame: toFrameId(productType, fc.id),
-                      })}
-                      title={fc.label}
-                      style={{
-                        border:"none", background:"transparent",
-                        padding:0, cursor:"pointer",
-                        display:"flex", flexDirection:"column", alignItems:"center", gap:5,
-                      }}>
-                      <div style={{
-                        width:42, height:42, borderRadius:8,
-                        background: fc.color,
-                        border: on ? `2px solid ${RED}` : "1px solid rgba(0,0,0,.12)",
-                        boxShadow: on ? `0 0 0 2px #fff inset` : "inset 0 1px 2px rgba(0,0,0,.15)",
-                      }}/>
-                      <span style={{
-                        fontSize:9.5, color: on ? INK : MUTED,
-                        fontWeight: on ? 600 : 500, textAlign:"center", lineHeight:1.1,
-                      }}>{fc.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
 
           {/* Canvas Edge — only for canvas */}
           {isCanvas && (
