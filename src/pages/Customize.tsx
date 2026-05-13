@@ -1520,7 +1520,7 @@ export default function Customize() {
                       <button onClick={() => {
                         updateSelected({
                           productType: card.id,
-                          size: card.id === "digital" ? selected.size : selSize,
+                          size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
                           sku: cardSizeDef?.sku || "",
                           frameColor: card.frameColors ? cardFrame : undefined,
                           canvasEdge: canvasFrame ? "mirror" : undefined,
