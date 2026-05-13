@@ -1009,7 +1009,7 @@ export default function Customize() {
             <div onClick={(e) => e.stopPropagation()} style={{
               width:300, flex:"0 0 300px", maxHeight:"min(560px, calc(100vh - 190px))", overflowY:"auto",
               background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
-              boxShadow:"0 20px 60px rgba(0,0,0,.18)", padding:14,
+              boxShadow:"none", padding:14,
             }}>
                       {/* AI quick fix */}
                       <div style={{
