@@ -567,6 +567,7 @@ export default function Customize() {
   // Right-panel accordion state
   const [activeCard, setActiveCard]             = useState("classic-frame");
   const [packsOpen, setPacksOpen]               = useState(false);
+  const [selectedPackId, setSelectedPackId]     = useState<string>("digital-pack");
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
   const [canvasFrame, setCanvasFrame]           = useState(false);
@@ -1979,10 +1980,19 @@ export default function Customize() {
                                   { id:"studio-pack", name:"Studio Pack", price:199, per:"$3.32/masterpiece",
                                     badge:"Best Value", featured:false, save:"Save 43%",
                                     feats:["60 masterpieces for total freedom","Download all your masterpieces","Advanced Precision Editor","Priority support"] },
-                                ].map(pk => (
-                                  <div key={pk.id} style={{
-                                    border:`1.5px solid ${pk.featured ? RED : BORDER}`,
-                                    borderRadius:12, padding:"12px 14px", background:"#fff", position:"relative",
+                                ].map(pk => {
+                                  const isSel = selectedPackId === pk.id;
+                                  return (
+                                  <div key={pk.id}
+                                    onClick={(e) => { e.stopPropagation(); setSelectedPackId(pk.id); }}
+                                    role="button"
+                                    style={{
+                                      border:`2px solid ${isSel ? RED : (pk.featured ? RED : BORDER)}`,
+                                      borderRadius:12, padding:"12px 14px",
+                                      background: isSel ? "#FFF8F8" : "#fff",
+                                      position:"relative", cursor:"pointer",
+                                      boxShadow: isSel ? `0 0 0 3px ${RED}22` : "none",
+                                      transition:"all .15s ease",
                                   }}>
                                     {pk.badge && (
                                       <span style={{
@@ -1994,7 +2004,15 @@ export default function Customize() {
                                       }}>{pk.badge}</span>
                                     )}
                                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:6 }}>
-                                      <div style={{ fontSize:14, fontWeight:800, color:INK, fontFamily:"'Poppins',sans-serif" }}>
+                                      <div style={{ fontSize:14, fontWeight:800, color:INK, fontFamily:"'Poppins',sans-serif", display:"flex", alignItems:"center", gap:6 }}>
+                                        <span style={{
+                                          width:16, height:16, borderRadius:"50%",
+                                          border:`2px solid ${isSel ? RED : "#cbd5e1"}`,
+                                          display:"inline-flex", alignItems:"center", justifyContent:"center",
+                                          background: isSel ? RED : "#fff", flexShrink:0,
+                                        }}>
+                                          {isSel && <Check size={10} color="#fff" strokeWidth={3}/>}
+                                        </span>
                                         {pk.name}
                                       </div>
                                       <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
@@ -2016,8 +2034,19 @@ export default function Customize() {
                                         </li>
                                       ))}
                                     </ul>
+                                    <div style={{
+                                      fontSize:11, fontWeight:700, textAlign:"center",
+                                      padding:"6px 10px", borderRadius:8,
+                                      background: isSel ? RED : "#F3F4F6",
+                                      color: isSel ? "#fff" : INK,
+                                      fontFamily:"'Poppins',sans-serif",
+                                      letterSpacing:".04em", textTransform:"uppercase",
+                                    }}>
+                                      {isSel ? "✓ Selected" : "Select This Pack"}
+                                    </div>
                                   </div>
-                                ))}
+                                  );
+                                })}
                               </div>
                             </div>
                           )}
