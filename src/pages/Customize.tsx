@@ -1665,10 +1665,11 @@ export default function Customize() {
               const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[0];
               const basePrice = card.id === "digital" ? 27 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
-              const cardDiscount = isActive ? Math.min(discountAmt, basePrice + frameAdd) : 0;
+              const cardDiscount = Math.min(discountAmt, basePrice + frameAdd);
               const price    = basePrice + frameAdd - cardDiscount;
               const origPrice = discountAmt > 0 ? basePrice + discountAmt : Math.round(basePrice * 1.4);
               const digitalOrig = discountAmt > 0 ? 27 + discountAmt : Math.round(27 * 1.4);
+              const digitalPrice = Math.max(0, 27 - discountAmt);
 
               return (
                 <div key={card.id} style={{
@@ -1710,7 +1711,7 @@ export default function Customize() {
                             </span>
                             <span style={{ fontSize:15, fontWeight:800, color:RED,
                               fontFamily:"'Poppins',sans-serif" }}>
-                              ${card.id==="digital"?27:basePrice}
+                              ${card.id==="digital"?digitalPrice:price}
                             </span>
                           </div>
                         </div>
