@@ -536,6 +536,22 @@ const GEN_MSGS = [
   "Adding final details…",
 ];
 
+// Social proof shown during generation — rotate through customer portraits
+const SOCIAL_PROOF = [
+  { img:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop",
+    style:"Royal", review:'"I cried when I saw it — it\'s perfect." — Jessica T.' },
+  { img:"https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600&h=600&fit=crop",
+    style:"Watercolor", review:'"My dog passed away last year. This is priceless." — Mark R.' },
+  { img:"https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=600&h=600&fit=crop",
+    style:"Renaissance", review:'"Everyone at the office asks where I got it." — Sarah M.' },
+  { img:"https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=600&h=600&fit=crop",
+    style:"Storybook", review:'"The canvas quality blew me away." — David L.' },
+  { img:"https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&h=600&fit=crop",
+    style:"Cinematic", review:'"My mom hasn\'t stopped talking about her portrait." — Amy K.' },
+  { img:"https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&h=600&fit=crop",
+    style:"Fantasy", review:'"Best birthday gift I\'ve ever given." — Tom W.' },
+];
+
 /* ═══════════════════════════════════════════════════════════
    ATOMS
 ═══════════════════════════════════════════════════════════ */
@@ -1348,6 +1364,12 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
   const [msg,  setMsg]  = useState(0);
   const [done, setDone] = useState([]);
   const [error, setError] = useState(null);
+  const [proofIdx, setProofIdx] = useState(0);
+  const [proofFade, setProofFade] = useState(true);
+  const [emailGate, setEmailGate] = useState(false);
+  const [donePortraits, setDonePortraits] = useState<any>(null);
+  const [email, setEmail] = useState("");
+  const [emailBusy, setEmailBusy] = useState(false);
   const active = STYLES.filter(s => selectedStyles.includes(s.id));
   const startedRef = useRef(false);
 
@@ -1355,17 +1377,21 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
     if (startedRef.current) return;
     startedRef.current = true;
 
-    // Start a progress animation that ticks slowly
     let fakePct = 0;
-    const total = active.length;
     const iv = setInterval(() => {
-      // Slowly increment but never reach 100 until real completion
       fakePct = Math.min(fakePct + 0.3, 92);
       setPct(fakePct);
       setMsg(Math.min(Math.floor((fakePct/100) * GEN_MSGS.length), GEN_MSGS.length-1));
     }, 200);
 
-    // Call the edge function
+    const spiv = setInterval(() => {
+      setProofFade(false);
+      setTimeout(() => {
+        setProofIdx(p => (p + 1) % SOCIAL_PROOF.length);
+        setProofFade(true);
+      }, 280);
+    }, 3500);
+
     (async () => {
       try {
         const { data, error: fnError } = await supabase.functions.invoke("generate-portraits", {
@@ -1377,26 +1403,95 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
         if (fnError) throw new Error(fnError.message || "Generation failed");
         if (!data?.portraits?.length) throw new Error("No portraits were generated");
 
-        // Show completion
         setPct(100);
         setMsg(GEN_MSGS.length - 1);
         setDone(active);
+        clearInterval(spiv);
 
-        setTimeout(() => onDone(data.portraits), 700);
+        setTimeout(() => {
+          setDonePortraits(data.portraits);
+          setEmailGate(true);
+        }, 800);
       } catch (err) {
         clearInterval(iv);
+        clearInterval(spiv);
         console.error("Generation error:", err);
         setError(err.message || "Something went wrong generating your portraits.");
       }
     })();
 
-    return () => clearInterval(iv);
+    return () => { clearInterval(iv); clearInterval(spiv); };
   }, []);
+
+  const handleEmailSubmit = async () => {
+    if (!email.includes("@")) return;
+    setEmailBusy(true);
+    try {
+      await supabase.from("lead_captures" as any).insert({
+        email: email.trim().toLowerCase(),
+        session_id: sessionId || null,
+        category,
+        source: "portrait_generation",
+      });
+    } catch (_) { /* non-blocking */ }
+    setEmailBusy(false);
+    onDone(donePortraits);
+  };
+
+  // Email gate screen
+  if (emailGate) {
+    return (
+      <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
+        alignItems:"center", justifyContent:"center", padding:"40px 20px" }}>
+        <div style={{ width:64, height:64, borderRadius:"50%", background:"#16a34a",
+          display:"flex", alignItems:"center", justifyContent:"center", marginBottom:20 }}>
+          <Check size={28} color="#fff" strokeWidth={3}/>
+        </div>
+        <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:28, fontWeight:700,
+          color:T.cream, marginBottom:10, textAlign:"center" }}>
+          Your Portrait Is Ready!
+        </h2>
+        <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center" }}>
+          Where should we send it?
+        </p>
+        <div style={{ width:"100%", maxWidth:380, display:"flex", flexDirection:"column", gap:10 }}>
+          <input
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && handleEmailSubmit()}
+            style={{ padding:"14px 16px", fontSize:14, borderRadius:10,
+              border:`1px solid ${T.border}`, outline:"none",
+              fontFamily:"'Poppins',sans-serif", background:"#fff", color:"#1a1a1a" }}
+          />
+          <button
+            onClick={handleEmailSubmit}
+            disabled={emailBusy || !email.includes("@")}
+            className="btn-gold"
+            style={{ padding:"15px 0", borderRadius:10, fontSize:14,
+              display:"flex", alignItems:"center", justifyContent:"center", gap:10,
+              opacity: (!email.includes("@") || emailBusy) ? .55 : 1 }}>
+            {emailBusy ? "Saving..." : <>Send Me My Portrait <ArrowRight size={17}/></>}
+          </button>
+          <p style={{ color:T.dim, fontSize:11.5, textAlign:"center", marginTop:6 }}>
+            Your portrait will be saved to your gallery — no spam, unsubscribe anytime.
+          </p>
+          <button onClick={() => onDone(donePortraits)}
+            style={{ marginTop:6, background:"none", border:"none",
+              color:T.muted, fontSize:11.5, cursor:"pointer",
+              fontFamily:"'Poppins',sans-serif", textDecoration:"underline" }}>
+            Skip, take me to my portrait →
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
       alignItems:"center", justifyContent:"center", padding:"40px 20px" }}>
-      <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, marginBottom:42, fontWeight:600 }}>
+      <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, marginBottom:32, fontWeight:600 }}>
         Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
       </div>
 
@@ -1412,31 +1507,52 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
         </div>
       ) : (
         <>
-          <div style={{ position:"relative", width:62, height:62, marginBottom:24 }}>
-            <div style={{ position:"absolute", inset:0, border:`1.5px solid ${T.border}`, borderRadius:"50%" }}/>
-            <div className="spn" style={{ position:"absolute", inset:0, border:"2px solid transparent", borderTopColor:T.gold, borderRadius:"50%" }}/>
-            <div style={{ position:"absolute", inset:9, display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <Wand2 size={18} color={T.gold}/>
+          <div style={{ position:"relative", width:56, height:56, marginBottom:18 }}>
+            <div style={{ position:"absolute", inset:0, background:T.gold, borderRadius:"50%",
+              display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <Wand2 size={22} color="#fff"/>
+            </div>
+            <div className="spn" style={{ position:"absolute", inset:-4, border:"2px solid transparent",
+              borderTopColor:T.gold, borderRadius:"50%" }}/>
+          </div>
+
+          <div style={{ width:"100%", maxWidth:380, height:5, background:"rgba(0,0,0,.2)",
+            borderRadius:99, overflow:"hidden", marginBottom:8 }}>
+            <div style={{ height:"100%", background:T.gold,
+              width:`${pct}%`, transition:"width .2s ease", borderRadius:99 }}/>
+          </div>
+          <p style={{ fontSize:12.5, color:T.gold, marginBottom:20, fontWeight:600 }}>{Math.round(pct)}% complete</p>
+          <p style={{ color:T.muted, fontSize:13, marginBottom:28, textAlign:"center", minHeight:18 }}>{GEN_MSGS[msg]}</p>
+
+          {/* Social proof photo */}
+          <div style={{ width:"100%", maxWidth:460, borderRadius:16, overflow:"hidden",
+            border:"1px solid rgba(255,255,255,.08)", background:"#fff", position:"relative",
+            opacity: proofFade ? 1 : 0, transition:"opacity .28s" }}>
+            <img src={SOCIAL_PROOF[proofIdx].img}
+              alt="Customer portrait example"
+              style={{ width:"100%", height:340, objectFit:"cover", display:"block" }}/>
+            <div style={{ position:"absolute", bottom:12, left:12, fontSize:10,
+              letterSpacing:".16em", textTransform:"uppercase", color:"#fff",
+              background:"rgba(0,0,0,.55)", padding:"5px 10px", borderRadius:6, fontWeight:600 }}>
+              {SOCIAL_PROOF[proofIdx].style}
             </div>
           </div>
 
-          <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(24px,5vw,42px)",
-            fontWeight:700, fontStyle:"italic", color:T.cream, textAlign:"center", marginBottom:8 }}>
-            Creating Your Portrait Collection
-          </h2>
-          <p style={{ color:T.muted, fontSize:13, marginBottom:34, textAlign:"center", minHeight:20 }}>{GEN_MSGS[msg]}</p>
-
-          <div style={{ width:"100%", maxWidth:400, height:2, background:T.border,
-            borderRadius:2, overflow:"hidden", marginBottom:6 }}>
-            <div style={{ height:"100%", background:`linear-gradient(90deg,${T.gold},${T.goldLt})`,
-              width:`${pct}%`, transition:"width .15s ease" }}/>
+          {/* Reviews below photo */}
+          <div style={{ marginTop:20, display:"flex", flexDirection:"column", gap:8,
+            width:"100%", maxWidth:460 }}>
+            {[
+              SOCIAL_PROOF[proofIdx],
+              SOCIAL_PROOF[(proofIdx+1) % SOCIAL_PROOF.length],
+              SOCIAL_PROOF[(proofIdx+2) % SOCIAL_PROOF.length],
+            ].slice(0, pct > 20 ? (pct > 50 ? 3 : 2) : 1).map((p, i) => (
+              <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:8,
+                opacity: proofFade ? 1 : 0, transition:"opacity .28s" }}>
+                <span style={{ color:"#F5A623", fontSize:12, flexShrink:0 }}>★★★★★</span>
+                <p style={{ fontSize:12.5, color:T.cream, lineHeight:1.5, fontStyle:"italic", margin:0 }}>{p.review}</p>
+              </div>
+            ))}
           </div>
-          <p style={{ fontSize:12, color:T.gold, marginBottom:38 }}>{Math.round(pct)}%</p>
-
-          <p style={{ fontSize:11, color:T.dim, textAlign:"center", maxWidth:360, lineHeight:1.7 }}>
-            AI is generating {active.length} unique portrait{active.length>1?"s":""} from your photo.<br/>
-            This may take 1–3 minutes.
-          </p>
         </>
       )}
     </div>
