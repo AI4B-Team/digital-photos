@@ -887,7 +887,7 @@ export default function Customize() {
                     className="cz-img-wrap"
                     onMouseDown={(e) => onDragStart(item, e)}
                     style={{
-                      width: `${sd.w * (aiOpen && isSelected ? 34 : 42)}vh`,
+                      width: aiOpen && isSelected ? `clamp(120px, ${sd.w * 28}vh, ${sd.w * 180}px)` : `${sd.w * 42}vh`,
                       aspectRatio: `${sd.w} / ${sd.h}`,
                       maxWidth: "100%",
                       cursor: isDraggingThis ? "grabbing" : "grab",
@@ -1007,7 +1007,7 @@ export default function Customize() {
           )}
           {isSelected && aiOpen && (
             <div onClick={(e) => e.stopPropagation()} style={{
-              width:300, flex:"0 0 300px", maxHeight:"min(560px, calc(100vh - 190px))", overflowY:"auto",
+              width:"clamp(230px, 20vw, 300px)", flex:"0 0 clamp(230px, 20vw, 300px)", maxHeight:"min(560px, calc(100vh - 190px))", overflowY:"auto",
               background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
               boxShadow:"none", padding:14,
             }}>
