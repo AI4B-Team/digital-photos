@@ -539,6 +539,8 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
+  const [mpSection, setMpSection]     = useState<"" | "ai" | "concierge">("");
+  const [conciergeNote, setConciergeNote] = useState("");
   const [choices, setChoices]         = useState<string[]>([]);
   const [choiceOpen, setChoiceOpen]   = useState(false);
   const [choicesLoaded, setChoicesLoaded] = useState(0);
