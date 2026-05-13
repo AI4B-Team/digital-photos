@@ -1539,7 +1539,7 @@ export default function Customize() {
                                   height: shapeH + 4, marginBottom:6 }}>
                                   <div style={{ width: shapeW, height: shapeH,
                                     border:`1.5px solid ${selSize===sz.id?RED:"#bdb6ad"}`,
-                                    borderRadius:2, background: selSize===sz.id ? "rgba(230,25,25,.08)" : "#f4f1ec" }}/>
+                                    borderRadius:2, background: "#f4f1ec" }}/>
                                 </div>
                                 <div style={{ fontSize:11.5, fontWeight:700, color:INK, whiteSpace:"nowrap" }}>{sz.dim}</div>
                                 <div style={{ fontSize:10, color:MUTED, marginTop:1, whiteSpace:"nowrap" }}>{sz.label}</div>
