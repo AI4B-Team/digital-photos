@@ -653,8 +653,8 @@ export default function Customize() {
 
   useEffect(() => {
     const LS_KEY = "ra_discount_start";
-    const TEN_MIN = 10 * 60 * 1000;
-    const FORTY_EIGHT = 48 * 60 * 60 * 1000;
+    const FIFTEEN_MIN = 15 * 60 * 1000;
+    const TOTAL = FIFTEEN_MIN + 2 * 24 * 60 * 60 * 1000; // 15min + 2 days
     let startTs = parseInt(localStorage.getItem(LS_KEY) || "0");
     if (!startTs) {
       startTs = Date.now();
@@ -662,12 +662,12 @@ export default function Customize() {
     }
     const tick = () => {
       const elapsed = Date.now() - startTs;
-      if (elapsed < TEN_MIN) {
+      if (elapsed < FIFTEEN_MIN) {
         setDiscountAmt(20); setDiscountTier("welcome");
-        setDiscountSec(Math.ceil((TEN_MIN - elapsed) / 1000));
-      } else if (elapsed < FORTY_EIGHT) {
+        setDiscountSec(Math.ceil((FIFTEEN_MIN - elapsed) / 1000));
+      } else if (elapsed < TOTAL) {
         setDiscountAmt(10); setDiscountTier("extended");
-        setDiscountSec(Math.ceil((FORTY_EIGHT - elapsed) / 1000));
+        setDiscountSec(Math.ceil((TOTAL - elapsed) / 1000));
       } else {
         setDiscountAmt(0); setDiscountTier(""); setDiscountSec(0);
       }
