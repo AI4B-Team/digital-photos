@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import PreviewsDrawer from "@/components/PreviewsDrawer";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
@@ -582,6 +582,9 @@ export default function Customize() {
   // Cart items: snapshots of configured prints the user has explicitly added.
   // Separate from workspace `items` so duplicating a photo does not auto-add it.
   const [cartItems, setCartItems] = useState<any[]>([]);
+  const [upsellOpen, setUpsellOpen] = useState(false);
+  const [vipAdded, setVipAdded] = useState(false);
+  const [pendingCart, setPendingCart] = useState<{ snapshot: any; qty: number } | null>(null);
 
   // Build a stable key from the configuration fields that distinguish a SKU,
   // so adding the same product twice merges into a qty bump.
@@ -710,6 +713,7 @@ export default function Customize() {
 
   // Per-item price + bundle discount based on number of images
   const itemUnitPrice = (it) => {
+    if (it.productType === "vip") return 17;
     if (it.productType === "digital") return 27;
     const pt = it.productType || "classic-frame";
     const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
@@ -1224,32 +1228,7 @@ export default function Customize() {
     );
   };
 
-  const handleContinue = () => {
-    const primaryItem = items[0];
-    setSession({
-      customization: {
-        portraitUrl,
-        style:       styleId,
-        productType: primaryItem.productType,
-        size:        primaryItem.size,
-        sizeLabel:   sizeDef?.label,
-        sku:         primaryItem.sku,
-        frameColor:  primaryItem.frameColor,
-        canvasEdge:  primaryItem.canvasEdge,
-        effect:      primaryItem.effect,
-        border:      primaryItem.border,
-        borderColor: primaryItem.borderColor,
-        frame:       toFrameId(primaryItem.productType, primaryItem.frameColor),
-      },
-      customizationItems: items,
-      selectedPlan:
-        primaryItem.productType === "digital" ? "digital" :
-        primaryItem.productType === "canvas"  ? "canvas"  : "bundle",
-      printSize: sizeDef?.label,
-      printSku:  primaryItem.sku,
-    } as any);
-    navigate("/checkout");
-  };
+
 
   // Build Stripe line items from current cart and redirect to Checkout
   const checkoutCart = async () => {
@@ -1262,6 +1241,7 @@ export default function Customize() {
       cartItems.forEach((it) => {
         const unit = itemUnitPrice(it);
         const ptLabel =
+          it.productType === "vip"           ? "Portrait VIP Package" :
           it.productType === "digital"       ? "Digital Portrait" :
           it.productType === "canvas"        ? "Canvas Print" :
           it.productType === "box-frame"     ? "Box Frame" :
@@ -1299,18 +1279,34 @@ export default function Customize() {
         });
       }
 
-      // Persist for downstream pages
-      setSession({
+      const primaryCartItem = cartItems[0];
+
+      // Persist for downstream pages (preserve existing session like orderId)
+      setSession((prev: any) => ({
+        ...(prev || {}),
         customizationItems: items,
         cart: { items: cartItems, packs: addedPacks, total },
-      } as any);
+        customization: {
+          ...((prev && prev.customization) || {}),
+          portraitUrl: primaryCartItem?.photoUrl || items[0]?.photoUrl || "",
+          productType: primaryCartItem?.productType || "",
+          sku:         primaryCartItem?.sku || "",
+          frameColor:  primaryCartItem?.frameColor || "",
+          canvasEdge:  primaryCartItem?.canvasEdge || "",
+        },
+        printSku: primaryCartItem?.sku || "",
+      }));
 
       const { supabase } = await import("@/integrations/supabase/client");
       const { data, error } = await supabase.functions.invoke("create-payment", {
         body: {
           lineItems,
-          sessionId: (session as any).sessionDbId || null,
-          portraitUrl: cartItems[0]?.photoUrl || items[0]?.photoUrl || "",
+          sessionId: (session as any).orderId || (session as any).sessionDbId || null,
+          portraitUrl: primaryCartItem?.photoUrl || items[0]?.photoUrl || "",
+          // Pass print fulfillment details so verify-payment can trigger Prodigi
+          printSku:   primaryCartItem?.sku || "",
+          productType: primaryCartItem?.productType || "",
+          printFrame: primaryCartItem?.frameColor || primaryCartItem?.canvasEdge || "",
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
@@ -2211,6 +2207,8 @@ export default function Customize() {
                         return (
                           <button onClick={() => {
                             addToCart(snapshot, lineQty);
+                            setPendingCart({ snapshot, qty: lineQty });
+                            setUpsellOpen(true);
                           }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
                             borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
                             justifyContent:"center", gap:8 }}>
@@ -2614,6 +2612,162 @@ export default function Customize() {
         </div>
       )}
 
+      {/* ■■ Portrait VIP Package Upsell Modal ■■ */}
+      {upsellOpen && (
+        <div
+          onClick={() => { setUpsellOpen(false); checkoutCart(); }}
+          style={{
+            position:"fixed", inset:0, background:"rgba(0,0,0,.55)", zIndex:120,
+            display:"flex", alignItems:"center", justifyContent:"center", padding:16,
+            animation:"vipFadeIn .2s ease",
+          }}
+        >
+          <div onClick={(e) => e.stopPropagation()} style={{
+            background:"#fff", borderRadius:16, width:"100%", maxWidth:460,
+            overflow:"hidden", fontFamily:"'Poppins',sans-serif",
+            boxShadow:"0 30px 80px rgba(0,0,0,.4)",
+            animation:"vipPop .25s cubic-bezier(.2,.8,.2,1)",
+          }}>
+            {/* Red header */}
+            <div style={{
+              background:RED, padding:"12px 18px", display:"flex",
+              alignItems:"center", justifyContent:"space-between",
+            }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                <Star size={14} color="#fff" fill="#fff"/>
+                <span style={{
+                  fontSize:11, fontWeight:700, letterSpacing:".2em",
+                  textTransform:"uppercase", color:"#fff",
+                }}>Exclusive Add-On</span>
+              </div>
+              <button
+                onClick={() => { setUpsellOpen(false); checkoutCart(); }}
+                aria-label="Close"
+                style={{ background:"rgba(255,255,255,.25)", border:"none",
+                  borderRadius:"50%", width:26, height:26, cursor:"pointer",
+                  display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <X size={14} color="#fff"/>
+              </button>
+            </div>
+
+            {/* Body */}
+            <div style={{ padding:"22px 22px 20px" }}>
+              <h2 style={{
+                fontSize:22, fontWeight:800, color:INK, textAlign:"center",
+                marginBottom:6,
+              }}>Portrait VIP Package</h2>
+              <div style={{ fontSize:13, color:MUTED, textAlign:"center", marginBottom:18 }}>
+                Protect, prioritise & guarantee your portrait.
+              </div>
+
+              {/* Three items */}
+              {[
+                { Icon:Zap,    title:"Priority Production",
+                  desc:"Your order jumps to the front — ships in 2–3 days instead of 5–7", price:14 },
+                { Icon:Shield, title:"Shipping Insurance",
+                  desc:"Full replacement if your print is lost or damaged in transit", price:12 },
+                { Icon:RefreshCw, title:"Lifetime Reprint Protection",
+                  desc:"Free reprint anytime if your print ever fades or is damaged", price:11 },
+              ].map((item, i) => (
+                <div key={i} style={{
+                  display:"flex", gap:12, alignItems:"flex-start",
+                  padding:"10px 0",
+                  borderBottom: i < 2 ? `1px solid ${BORDER}` : "none",
+                }}>
+                  <div style={{
+                    flexShrink:0, width:32, height:32, borderRadius:8,
+                    background:"#FFF1F1", display:"flex",
+                    alignItems:"center", justifyContent:"center",
+                  }}>
+                    <item.Icon size={17} color={RED}/>
+                  </div>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontSize:13.5, fontWeight:700, color:INK, marginBottom:2 }}>
+                      {item.title}
+                    </div>
+                    <div style={{ fontSize:11.5, color:MUTED, lineHeight:1.45 }}>
+                      {item.desc}
+                    </div>
+                  </div>
+                  <span style={{ fontSize:13, color:MUTED, flexShrink:0, fontWeight:600 }}>
+                    ${item.price}
+                  </span>
+                </div>
+              ))}
+
+              {/* Pricing summary */}
+              <div style={{
+                marginTop:16, padding:"12px 14px", borderRadius:10,
+                background:"#FAFAF7", border:`1px solid ${BORDER}`,
+              }}>
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:MUTED }}>
+                  <span>Total Value</span>
+                  <span style={{ textDecoration:"line-through" }}>$37</span>
+                </div>
+                <div style={{ fontSize:11.5, color:RED, fontWeight:700, marginTop:2 }}>
+                  You save $20 (54% off)
+                </div>
+                <div style={{
+                  display:"flex", justifyContent:"space-between", marginTop:8,
+                  paddingTop:8, borderTop:`1px solid ${BORDER}`,
+                  fontSize:15, fontWeight:800, color:INK,
+                }}>
+                  <span>Your Price</span>
+                  <span style={{ color:RED }}>$17</span>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div style={{ marginTop:14, display:"flex", flexDirection:"column", gap:8 }}>
+                <button
+                  onClick={() => {
+                    const vipItem = {
+                      id: "vip-package",
+                      productType: "vip",
+                      photoUrl: pendingCart?.snapshot?.photoUrl || "",
+                      sku: "VIP-PACKAGE",
+                      qty: 1,
+                      price: 17,
+                    };
+                    setCartItems((prev: any[]) => {
+                      const existing = prev.find((i) => i.id === "vip-package");
+                      if (existing) return prev;
+                      return [...prev, vipItem];
+                    });
+                    setVipAdded(true);
+                    setUpsellOpen(false);
+                    checkoutCart();
+                  }}
+                  style={{
+                    background:RED, color:"#fff", border:"none",
+                    borderRadius:10, padding:"15px 0", fontSize:14.5,
+                    fontWeight:700, cursor:"pointer",
+                    fontFamily:"'Poppins',sans-serif",
+                    display:"flex", alignItems:"center",
+                    justifyContent:"center", gap:10,
+                  }}>
+                  <Check size={17}/> Yes, Upgrade My Order — $17
+                </button>
+                <button
+                  onClick={() => { setUpsellOpen(false); checkoutCart(); }}
+                  style={{ background:"none", border:"none", cursor:"pointer",
+                    fontSize:12.5, color:MUTED, fontFamily:"'Poppins',sans-serif",
+                    textDecoration:"underline", padding:"4px 0" }}>
+                  No thanks, continue to checkout
+                </button>
+                <div style={{ display:"flex", alignItems:"center", justifyContent:"center",
+                  gap:6, fontSize:11, color:MUTED, marginTop:2 }}>
+                  <Shield size={12} color={MUTED}/> Secure checkout powered by Stripe
+                </div>
+              </div>
+            </div>
+          </div>
+          <style>{`
+            @keyframes vipFadeIn { from { opacity:0 } to { opacity:1 } }
+            @keyframes vipPop { from { opacity:0; transform:translateY(20px) scale(.96) } to { opacity:1; transform:translateY(0) scale(1) } }
+          `}</style>
+        </div>
+      )}
       <PreviewsDrawer
         open={previewsOpen}
         onClose={() => setPreviewsOpen(false)}
