@@ -139,20 +139,29 @@ const FRAMES = [
   { id: "canvas",      label: "Canvas",      add: 15, wood: null },
 ];
 
+// Legacy size fallback — Prodigi-accurate sizes only, all prices end in 7
 const SIZES = [
-  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",    price: 17,  w: 1,     h: 1     },
-  { id: '8" x 11"',  label: '8 × 11',  sub: "Petite",    price: 29,  w: 0.73,  h: 1     },
-  { id: '11" x 8"',  label: '11 × 8',  sub: "Petite",    price: 29,  w: 1,     h: 0.73  },
-  { id: '12" x 12"', label: '12 × 12', sub: "Square",    price: 47,  w: 1,     h: 1     },
-  { id: '12" x 16"', label: '12 × 16', sub: "Classic",   price: 47,  w: 0.75,  h: 1     },
-  { id: '16" x 12"', label: '16 × 12', sub: "Classic",   price: 47,  w: 1,     h: 0.75  },
-  { id: '20" x 20"', label: '20 × 20', sub: "Statement", price: 101, w: 1,     h: 1     },
-  { id: '20" x 27"', label: '20 × 27', sub: "Statement", price: 101, w: 0.74,  h: 1     },
-  { id: '27" x 20"', label: '27 × 20', sub: "Statement", price: 101, w: 1,     h: 0.74  },
-  { id: '27" x 36"', label: '27 × 36', sub: "Grand",     price: 201, w: 0.75,  h: 1     },
-  { id: '36" x 27"', label: '36 × 27', sub: "Grand",     price: 201, w: 1,     h: 0.75  },
-  { id: '22" x 44"', label: '22 × 44', sub: "Panorama",  price: 201, w: 0.5,   h: 1     },
-  { id: '44" x 22"', label: '44 × 22', sub: "Panorama",  price: 201, w: 1,     h: 0.5   },
+  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",    price: 27,  w: 1,    h: 1    },
+  { id: '8" x 10"',  label: '8 × 10',  sub: "Classic",   price: 37,  w: 0.80, h: 1    },
+  { id: '10" x 8"',  label: '10 × 8',  sub: "Classic",   price: 37,  w: 1,    h: 0.80 },
+  { id: '8" x 11"',  label: '8 × 11',  sub: "Portrait",  price: 37,  w: 0.73, h: 1    },
+  { id: '11" x 8"',  label: '11 × 8',  sub: "Landscape", price: 37,  w: 1,    h: 0.73 },
+  { id: '10" x 10"', label: '10 × 10', sub: "Square",    price: 37,  w: 1,    h: 1    },
+  { id: '11" x 14"', label: '11 × 14', sub: "Standard",  price: 47,  w: 0.79, h: 1    },
+  { id: '14" x 11"', label: '14 × 11', sub: "Standard",  price: 47,  w: 1,    h: 0.79 },
+  { id: '12" x 12"', label: '12 × 12', sub: "Square",    price: 47,  w: 1,    h: 1    },
+  { id: '12" x 16"', label: '12 × 16', sub: "Portrait",  price: 57,  w: 0.75, h: 1    },
+  { id: '16" x 12"', label: '16 × 12', sub: "Landscape", price: 57,  w: 1,    h: 0.75 },
+  { id: '16" x 20"', label: '16 × 20', sub: "Large",     price: 77,  w: 0.80, h: 1    },
+  { id: '20" x 16"', label: '20 × 16', sub: "Large",     price: 77,  w: 1,    h: 0.80 },
+  { id: '16" x 16"', label: '16 × 16', sub: "Square",    price: 77,  w: 1,    h: 1    },
+  { id: '20" x 20"', label: '20 × 20', sub: "Statement", price: 97,  w: 1,    h: 1    },
+  { id: '18" x 24"', label: '18 × 24', sub: "XL",        price: 107, w: 0.75, h: 1    },
+  { id: '24" x 18"', label: '24 × 18', sub: "XL",        price: 107, w: 1,    h: 0.75 },
+  { id: '20" x 24"', label: '20 × 24', sub: "Statement", price: 117, w: 0.83, h: 1    },
+  { id: '24" x 20"', label: '24 × 20', sub: "Statement", price: 117, w: 1,    h: 0.83 },
+  { id: '24" x 36"', label: '24 × 36', sub: "Grand",     price: 147, w: 0.67, h: 1    },
+  { id: '36" x 24"', label: '36 × 24', sub: "Grand",     price: 147, w: 1,    h: 0.67 },
 ];
 
 
