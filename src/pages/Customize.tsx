@@ -713,6 +713,7 @@ export default function Customize() {
 
   // Per-item price + bundle discount based on number of images
   const itemUnitPrice = (it) => {
+    if (it.productType === "vip") return 17;
     if (it.productType === "digital") return 27;
     const pt = it.productType || "classic-frame";
     const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
