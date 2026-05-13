@@ -1082,7 +1082,8 @@ export default function Customize() {
                       </div>
                     </div>
                   </>
-                )}
+                  );
+                })()}
               </span>
               <div className="cz-tool-divider"/>
               <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
