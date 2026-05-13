@@ -1323,7 +1323,7 @@ export default function Customize() {
               { id:"print", label:"Art Print", sub:"Ships rolled, unframed.", badge:null,
                 features:["Premium 230gsm archival paper, fade-resistant","Vivid colours, sunlight resistant","Ships rolled in a protective tube"],
                 delivery:"5–7 business days" },
-              { id:"canvas", label:"Gallery Canvas", sub:"Ready to hang.", badge:"Most Loved",
+              { id:"canvas", label:"Gallery Canvas", sub:"Ready to hang.", badge:"Most Popular",
                 features:["Fine-textured canvas, vivid detail & colour","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included"],
                 delivery:"4–7 business days", canvasAddon:true },
               { id:"classic-frame", label:"Framed Print", sub:"Ready to hang, 8 frame colours.", badge:null,
@@ -1361,7 +1361,7 @@ export default function Customize() {
                   {card.badge && (
                     <span style={{
                       position:"absolute", top:-9, left:12, zIndex:1,
-                      fontSize:9, fontWeight:700, background:"#1A1614",
+                      fontSize:9, fontWeight:700, background:RED,
                       color:"#fff", padding:"3px 8px", borderRadius:20,
                       letterSpacing:".08em", textTransform:"uppercase",
                       fontFamily:"'Poppins',sans-serif",
