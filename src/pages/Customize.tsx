@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { useState, useMemo, useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2 } from "lucide-react";
@@ -840,16 +839,18 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center", gap:10,
           scrollSnapAlign:"start",
         }}>
-        {/* Image + inline toolbar — symmetric spacer keeps image visually centered */}
-        <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+        {/* Image + inline toolbar + AI panel stay in one linked row */}
+        <div style={{ display:"flex", alignItems:"center", gap: aiOpen && isSelected ? 10 : 16, maxWidth:"100%", minWidth:0 }}>
           {/* Invisible spacer matching toolbar width to keep image centered */}
-          <div aria-hidden="true" style={{ width:48, flexShrink:0, visibility:"hidden" }}/>
+          <div aria-hidden="true" style={{ width: aiOpen && isSelected ? 0 : 48, flexShrink:0, visibility:"hidden" }}/>
           <div style={{
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : fd.wood),
             padding: (isFrameless ? 6 : woodPad + 6),
             borderRadius: isFrameless ? 12 : 6,
             boxShadow: "none",
             display: "inline-block",
+            flex:"0 1 auto",
+            minWidth:0,
             maxWidth: "100%",
             border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
             transition: "border-color .2s ease",
@@ -886,8 +887,8 @@ export default function Customize() {
                     className="cz-img-wrap"
                     onMouseDown={(e) => onDragStart(item, e)}
                     style={{
-                      width: `${sd.w * 42}vh`,
-                      height: `${sd.h * 42}vh`,
+                      width: `${sd.w * (aiOpen && isSelected ? 34 : 42)}vh`,
+                      aspectRatio: `${sd.w} / ${sd.h}`,
                       maxWidth: "100%",
                       cursor: isDraggingThis ? "grabbing" : "grab",
                       overflow: isDraggingThis ? "visible" : "hidden",
