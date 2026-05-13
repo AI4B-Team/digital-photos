@@ -1346,23 +1346,28 @@ export default function Customize() {
               return (
                 <div key={card.id} style={{
                   border:`1px solid ${isActive ? RED : BORDER}`,
-                  borderRadius:14, marginBottom:8, overflow:"hidden",
+                  borderRadius:14, marginBottom:8,
                   transition:"border-color .15s", background:"#fff",
+                  position:"relative",
                 }}>
+                  {card.badge && (
+                    <span style={{
+                      position:"absolute", top:-9, left:12, zIndex:1,
+                      fontSize:9, fontWeight:700, background:"#1A1614",
+                      color:"#fff", padding:"3px 8px", borderRadius:20,
+                      letterSpacing:".08em", textTransform:"uppercase",
+                      fontFamily:"'Poppins',sans-serif",
+                    }}>{card.badge}</span>
+                  )}
                   <button
                     onClick={() => setActiveCard(isActive ? "" : card.id)}
                     style={{ width:"100%", display:"flex", alignItems:"center",
                       justifyContent:"space-between", padding:"14px 16px",
                       background: isActive ? "rgba(230,25,25,.03)" : "#fff",
-                      border:"none", cursor:"pointer", gap:8 }}>
+                      border:"none", cursor:"pointer", gap:8, borderRadius:14 }}>
                     <div style={{ display:"flex", alignItems:"center", gap:8,
                       flex:1, minWidth:0, textAlign:"left" }}>
-                      {card.badge && (
-                        <span style={{ fontSize:9, fontWeight:700, background:"#1A1614",
-                          color:"#fff", padding:"3px 8px", borderRadius:20,
-                          letterSpacing:".08em", textTransform:"uppercase",
-                          fontFamily:"'Poppins',sans-serif", flexShrink:0 }}>{card.badge}</span>
-                      )}
+
                       <div style={{ minWidth:0 }}>
                         <div style={{ fontSize:14, fontWeight:700, color:INK,
                           fontFamily:"'Poppins',sans-serif" }}>{card.label}</div>
