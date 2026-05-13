@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      lead_captures: {
+        Row: {
+          category: string | null
+          created_at: string
+          email: string
+          id: string
+          session_id: string | null
+          source: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          session_id?: string | null
+          source?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          session_id?: string | null
+          source?: string | null
+        }
+        Relationships: []
+      }
       portraits: {
         Row: {
           created_at: string | null
