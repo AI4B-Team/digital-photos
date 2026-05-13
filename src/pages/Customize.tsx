@@ -576,6 +576,36 @@ export default function Customize() {
   // Cart drawer + extra pack line items
   const [cartOpen, setCartOpen]   = useState(false);
   const [addedPacks, setAddedPacks] = useState<Array<{ id: string; packId: string; name: string; price: number; qty: number }>>([]);
+
+  // Cart items: snapshots of configured prints the user has explicitly added.
+  // Separate from workspace `items` so duplicating a photo does not auto-add it.
+  const [cartItems, setCartItems] = useState<any[]>([]);
+
+  // Build a stable key from the configuration fields that distinguish a SKU,
+  // so adding the same product twice merges into a qty bump.
+  const cartKey = (it: any) =>
+    [it.photoUrl, it.productType, it.size, it.sku || "", it.frameColor || "",
+     it.canvasEdge || "", it.effect || "", it.border || "", it.borderColor || ""].join("|");
+
+  const addToCart = (snapshot: any, qtyToAdd = 1) => {
+    setCartItems(prev => {
+      const k = cartKey(snapshot);
+      const existing = prev.find(i => cartKey(i) === k);
+      if (existing) {
+        return prev.map(i => i === existing
+          ? { ...i, qty: (i.qty || 1) + qtyToAdd }
+          : i);
+      }
+      return [...prev, { ...snapshot, id: crypto.randomUUID(), qty: qtyToAdd }];
+    });
+    setCartOpen(true);
+  };
+  const removeCartItem = (id: string) =>
+    setCartItems(prev => prev.filter(i => i.id !== id));
+  const setCartItemQty = (id: string, qty: number) => {
+    const q = Math.max(1, Math.min(99, qty|0));
+    setCartItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
+  };
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
@@ -687,20 +717,24 @@ export default function Customize() {
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
   const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
-  const printsSubtotal = items.reduce((sum, it) => sum + itemPrice(it), 0);
+  // Cart-derived totals (only what the user actually added to the cart)
+  const cartPrintsSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
+  const cartPrintsListSubtotal = cartItems.reduce((sum, it) => sum + itemListPrice(it), 0);
+  const cartPhotoCount = cartItems.reduce((sum, it) => sum + (it.qty || 1), 0);
   const packsSubtotal  = addedPacks.reduce((sum, p) => sum + p.price * p.qty, 0);
-  const subtotal     = printsSubtotal + packsSubtotal;
-  const listSubtotal = items.reduce((sum, it) => sum + itemListPrice(it), 0) + packsSubtotal;
-  const bundlePct    = totalPhotoCount >= 3 ? 0.15 : totalPhotoCount >= 2 ? 0.10 : 0;
-  const bundleSave   = Math.round(printsSubtotal * bundlePct);
+  const subtotal     = cartPrintsSubtotal + packsSubtotal;
+  const listSubtotal = cartPrintsListSubtotal + packsSubtotal;
+  const bundlePct    = cartPhotoCount >= 3 ? 0.15 : cartPhotoCount >= 2 ? 0.10 : 0;
+  const bundleSave   = Math.round(cartPrintsSubtotal * bundlePct);
   const promoPct     = promoApplied?.pct || 0;
   const promoSave    = Math.round((subtotal - bundleSave) * promoPct);
-  const discountSave = discountAmt > 0 ? Math.min(discountAmt, subtotal - bundleSave - promoSave) : 0;
+  const discountSave = discountAmt > 0 && subtotal > 0 ? Math.min(discountAmt, subtotal - bundleSave - promoSave) : 0;
   const total        = Math.max(0, subtotal - bundleSave - promoSave - discountSave);
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
-  const cartCount    = items.length + addedPacks.reduce((s, p) => s + p.qty, 0);
+  const cartCount    = cartItems.reduce((s, i) => s + (i.qty || 1), 0)
+                     + addedPacks.reduce((s, p) => s + p.qty, 0);
 
 
   /* ── Regenerate / Edit (acts on selected item) ── */
@@ -1223,7 +1257,7 @@ export default function Customize() {
     try {
       const lineItems: any[] = [];
       // Prints
-      items.forEach((it) => {
+      cartItems.forEach((it) => {
         const unit = itemUnitPrice(it);
         const ptLabel =
           it.productType === "digital"       ? "Digital Portrait" :
@@ -1266,7 +1300,7 @@ export default function Customize() {
       // Persist for downstream pages
       setSession({
         customizationItems: items,
-        cart: { items, packs: addedPacks, total },
+        cart: { items: cartItems, packs: addedPacks, total },
       } as any);
 
       const { supabase } = await import("@/integrations/supabase/client");
@@ -1274,7 +1308,7 @@ export default function Customize() {
         body: {
           lineItems,
           sessionId: (session as any).sessionDbId || null,
-          portraitUrl: items[0]?.photoUrl || "",
+          portraitUrl: cartItems[0]?.photoUrl || items[0]?.photoUrl || "",
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
@@ -2130,25 +2164,29 @@ export default function Customize() {
                         </div>
                       )}
 
-                      <button onClick={() => {
-                        const newLine = makeItem({
+                      {(() => {
+                        const snapshot = {
                           ...selected,
-                          id: crypto.randomUUID(),
-                          qty: 1,
                           productType: card.id,
                           size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
                           sku: cardSizeDef?.sku || "",
                           frameColor: card.frameColors ? cardFrame : undefined,
                           canvasEdge: canvasFrame ? "mirror" : undefined,
-                        });
-                        setItems(prev => [...prev, newLine]);
-                        setCartOpen(true);
-                      }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
-                        borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
-                        justifyContent:"center", gap:8 }}>
-                        <ShoppingCart size={15}/> Add {card.label} To Cart —{" "}
-                        <span style={{ fontWeight:900 }}>${total}</span>
-                      </button>
+                          qty: selected.qty || 1,
+                        };
+                        const lineQty = selected.qty || 1;
+                        const linePrice = itemUnitPrice(snapshot) * lineQty;
+                        return (
+                          <button onClick={() => {
+                            addToCart(snapshot, lineQty);
+                          }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
+                            borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
+                            justifyContent:"center", gap:8 }}>
+                            <ShoppingCart size={15}/> Add {card.label} To Cart —{" "}
+                            <span style={{ fontWeight:900 }}>${linePrice}</span>
+                          </button>
+                        );
+                      })()}
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
                         Delivery: {card.delivery} · 100% Money-Back Guarantee · Cart has {cartCount} item{cartCount === 1 ? "" : "s"}
@@ -2383,7 +2421,7 @@ export default function Customize() {
               )}
 
               {/* Print line items */}
-              {items.map((it) => {
+              {cartItems.map((it) => {
                 const ptLabel =
                   it.productType === "digital"   ? "Digital Portrait" :
                   it.productType === "canvas"    ? "Canvas Print" :
@@ -2413,14 +2451,14 @@ export default function Customize() {
                       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
                         <div style={{ display:"flex", alignItems:"center", gap:4, border:`1px solid ${BORDER}`, borderRadius:8 }}>
                           <button
-                            onClick={() => setItemQty(it.id, (it.qty || 1) - 1)}
+                            onClick={() => setCartItemQty(it.id, (it.qty || 1) - 1)}
                             disabled={(it.qty || 1) <= 1}
                             style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
                             aria-label="Decrease quantity"
                           ><Minus size={12}/></button>
                           <span style={{ fontSize:12, fontWeight:700, minWidth:18, textAlign:"center" }}>{it.qty || 1}</span>
                           <button
-                            onClick={() => setItemQty(it.id, (it.qty || 1) + 1)}
+                            onClick={() => setCartItemQty(it.id, (it.qty || 1) + 1)}
                             style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
                             aria-label="Increase quantity"
                           ><Plus size={12}/></button>
@@ -2428,8 +2466,8 @@ export default function Customize() {
                         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
                           <span style={{ fontSize:13, fontWeight:800, color:INK }}>${unit * (it.qty || 1)}</span>
                           <button
-                            onClick={() => removeItem(it.id)}
-                            disabled={items.length <= 1 && addedPacks.length === 0}
+                            onClick={() => removeCartItem(it.id)}
+                            disabled={false}
                             style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:2, display:"flex" }}
                             aria-label="Remove"
                           ><Trash2 size={14}/></button>
