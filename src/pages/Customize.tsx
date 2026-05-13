@@ -1455,6 +1455,13 @@ export default function Customize() {
                     <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
                       {!isActive && (
                         <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:1 }}>
+                          {discountAmt > 0 && (
+                            <div style={{ fontSize:9.5, color:MUTED, fontWeight:600,
+                              fontFamily:"'Poppins',sans-serif", letterSpacing:".02em" }}>
+                              Discount Expires In: <span style={{ color:RED, fontWeight:800,
+                                fontFamily:"'Courier New',monospace" }}>{fmtCountdown(discountSec)}</span>
+                            </div>
+                          )}
                           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
                             <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
                               ${card.id==="digital"?digitalOrig:origPrice}
@@ -1464,13 +1471,6 @@ export default function Customize() {
                               ${card.id==="digital"?27:basePrice}
                             </span>
                           </div>
-                          {discountAmt > 0 && (
-                            <div style={{ fontSize:9.5, color:MUTED, fontWeight:600,
-                              fontFamily:"'Poppins',sans-serif", letterSpacing:".02em" }}>
-                              Expires in <span style={{ color:RED, fontWeight:800,
-                                fontFamily:"'Courier New',monospace" }}>{fmtCountdown(discountSec)}</span>
-                            </div>
-                          )}
                         </div>
                       )}
                       <ChevronDown size={15} color={isActive?RED:MUTED}
