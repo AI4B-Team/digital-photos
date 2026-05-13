@@ -1847,8 +1847,90 @@ export default function Customize() {
                               }}/>
                             </div>
                           ))}
-                        </div>
                       </div>
+
+                      {card.id === "digital" && (
+                        <div style={{
+                          marginTop:14, paddingTop:14, borderTop:`1px solid ${BORDER}`,
+                        }}>
+                          {!packsOpen ? (
+                            <div style={{ textAlign:"center" }}>
+                              <div style={{ fontSize:12, color:MUTED, marginBottom:6 }}>
+                                Want More Styles & Masterpieces?
+                              </div>
+                              <button onClick={(e) => { e.stopPropagation(); setPacksOpen(true); }} style={{
+                                background:"none", border:"none", padding:0, color:INK, fontWeight:700,
+                                fontSize:13, cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+                              }}>View Packs & Pricing →</button>
+                            </div>
+                          ) : (
+                            <div>
+                              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
+                                <div style={{ fontSize:12, fontWeight:700, color:INK,
+                                  fontFamily:"'Poppins',sans-serif", letterSpacing:".04em", textTransform:"uppercase" }}>
+                                  Choose A Pack
+                                </div>
+                                <button onClick={(e) => { e.stopPropagation(); setPacksOpen(false); }} style={{
+                                  background:"none", border:"none", padding:0, color:MUTED, fontSize:11,
+                                  cursor:"pointer", textDecoration:"underline", fontFamily:"inherit",
+                                }}>Hide</button>
+                              </div>
+                              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                                {[
+                                  { id:"digital-pack", name:"Digital Pack", price:39, per:"$7.80/masterpiece",
+                                    badge:"Popular", featured:true,
+                                    feats:["5 masterpieces to perfect your art","2 print-ready downloads","All art styles unlocked","Commercial use rights"] },
+                                  { id:"starter-pack", name:"Starter Pack", price:99, per:"$9.90/masterpiece",
+                                    badge:null, featured:false,
+                                    feats:["10 masterpieces to explore","All 10 downloads included","No watermarks ever","Precision Editor access"] },
+                                  { id:"studio-pack", name:"Studio Pack", price:199, per:"$3.32/masterpiece",
+                                    badge:"Best Value", featured:false, save:"Save 43%",
+                                    feats:["60 masterpieces for total freedom","Download all your masterpieces","Advanced Precision Editor","Priority support"] },
+                                ].map(pk => (
+                                  <div key={pk.id} style={{
+                                    border:`1.5px solid ${pk.featured ? RED : BORDER}`,
+                                    borderRadius:12, padding:"12px 14px", background:"#fff", position:"relative",
+                                  }}>
+                                    {pk.badge && (
+                                      <span style={{
+                                        position:"absolute", top:-8, left:12,
+                                        fontSize:9, fontWeight:700, background: pk.featured ? RED : "#F59E0B",
+                                        color:"#fff", padding:"3px 8px", borderRadius:20,
+                                        letterSpacing:".08em", textTransform:"uppercase",
+                                        fontFamily:"'Poppins',sans-serif",
+                                      }}>{pk.badge}</span>
+                                    )}
+                                    <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:6 }}>
+                                      <div style={{ fontSize:14, fontWeight:800, color:INK, fontFamily:"'Poppins',sans-serif" }}>
+                                        {pk.name}
+                                      </div>
+                                      <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
+                                        <span style={{ fontSize:18, fontWeight:900, color:INK, fontFamily:"'Poppins',sans-serif" }}>
+                                          ${pk.price}
+                                        </span>
+                                        {pk.save && (
+                                          <span style={{ fontSize:10, fontWeight:700, color:"#16a34a" }}>{pk.save}</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                    <div style={{ fontSize:10.5, color:MUTED, marginBottom:8 }}>{pk.per}</div>
+                                    <ul style={{ listStyle:"none", padding:0, margin:"0 0 10px",
+                                      display:"flex", flexDirection:"column", gap:4 }}>
+                                      {pk.feats.map(f => (
+                                        <li key={f} style={{ fontSize:11.5, color:INK, display:"flex", gap:6, alignItems:"flex-start" }}>
+                                          <Check size={12} color={pk.featured ? RED : "#16a34a"} style={{ marginTop:2, flexShrink:0 }}/>
+                                          <span>{f}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                     </div>
                   )}
                 </div>
