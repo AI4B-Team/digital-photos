@@ -1241,6 +1241,7 @@ export default function Customize() {
       cartItems.forEach((it) => {
         const unit = itemUnitPrice(it);
         const ptLabel =
+          it.productType === "vip"           ? "Portrait VIP Package" :
           it.productType === "digital"       ? "Digital Portrait" :
           it.productType === "canvas"        ? "Canvas Print" :
           it.productType === "box-frame"     ? "Box Frame" :
