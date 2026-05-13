@@ -717,20 +717,24 @@ export default function Customize() {
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
   const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
-  const printsSubtotal = items.reduce((sum, it) => sum + itemPrice(it), 0);
+  // Cart-derived totals (only what the user actually added to the cart)
+  const cartPrintsSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
+  const cartPrintsListSubtotal = cartItems.reduce((sum, it) => sum + itemListPrice(it), 0);
+  const cartPhotoCount = cartItems.reduce((sum, it) => sum + (it.qty || 1), 0);
   const packsSubtotal  = addedPacks.reduce((sum, p) => sum + p.price * p.qty, 0);
-  const subtotal     = printsSubtotal + packsSubtotal;
-  const listSubtotal = items.reduce((sum, it) => sum + itemListPrice(it), 0) + packsSubtotal;
-  const bundlePct    = totalPhotoCount >= 3 ? 0.15 : totalPhotoCount >= 2 ? 0.10 : 0;
-  const bundleSave   = Math.round(printsSubtotal * bundlePct);
+  const subtotal     = cartPrintsSubtotal + packsSubtotal;
+  const listSubtotal = cartPrintsListSubtotal + packsSubtotal;
+  const bundlePct    = cartPhotoCount >= 3 ? 0.15 : cartPhotoCount >= 2 ? 0.10 : 0;
+  const bundleSave   = Math.round(cartPrintsSubtotal * bundlePct);
   const promoPct     = promoApplied?.pct || 0;
   const promoSave    = Math.round((subtotal - bundleSave) * promoPct);
-  const discountSave = discountAmt > 0 ? Math.min(discountAmt, subtotal - bundleSave - promoSave) : 0;
+  const discountSave = discountAmt > 0 && subtotal > 0 ? Math.min(discountAmt, subtotal - bundleSave - promoSave) : 0;
   const total        = Math.max(0, subtotal - bundleSave - promoSave - discountSave);
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
-  const cartCount    = items.length + addedPacks.reduce((s, p) => s + p.qty, 0);
+  const cartCount    = cartItems.reduce((s, i) => s + (i.qty || 1), 0)
+                     + addedPacks.reduce((s, p) => s + p.qty, 0);
 
 
   /* ── Regenerate / Edit (acts on selected item) ── */
