@@ -1055,21 +1055,21 @@ export default function Customize() {
       {/* Announcement strip — discount countdown */}
       {discountAmt > 0 && (
         <div style={{
-          background:"#FFF7ED", borderBottom:"1px solid #FED7AA",
+          background:"#E61919", borderBottom:"1px solid #B91C1C",
           padding:"8px 22px", display:"flex", alignItems:"center", justifyContent:"center",
           gap:14, flexWrap:"wrap", position:"sticky", top:0, zIndex:30,
         }}>
-          <span style={{ fontSize:13, fontWeight:700, color:"#C2410C" }}>
+          <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>
             {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}
           </span>
-          <span style={{ fontSize:12, color:"#9A3412" }}>
-            Expires when the timer hits zero
+          <span style={{ fontSize:12, color:"#FFE4E6" }}>
+            Expires When The Timer Hits Zero
           </span>
           <div style={{
-            background:"#E61919", color:"#fff", fontSize:12, fontWeight:700,
+            background:"#fff", color:"#E61919", fontSize:12, fontWeight:700,
             padding:"4px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
           }}>{fmtCountdown(discountSec)}</div>
-          <span style={{ fontSize:13, fontWeight:800, color:"#E61919" }}>${discountAmt} OFF</span>
+          <span style={{ fontSize:13, fontWeight:800, color:"#fff" }}>${discountAmt} OFF</span>
         </div>
       )}
 
