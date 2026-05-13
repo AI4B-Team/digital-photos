@@ -1555,23 +1555,8 @@ export default function Customize() {
               );
             })}
 
-            {/* Add another portrait upsell */}
-            <div style={{ border:`1px dashed ${BORDER}`, borderRadius:12,
-              padding:"12px 14px", marginTop:6, cursor:"pointer" }}
-              onClick={handleAddImage}>
-              <div style={{ display:"flex", alignItems:"center", gap:9 }}>
-                <div style={{ width:32, height:32, borderRadius:8,
-                  background:"rgba(230,25,25,.08)", display:"flex",
-                  alignItems:"center", justifyContent:"center" }}>
-                  <Plus size={16} color={RED}/>
-                </div>
-                <div>
-                  <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>Add Another Portrait</div>
-                  <div style={{ fontSize:11, color:MUTED }}>Save 10% on 2 photos · 15% on 3+</div>
-                </div>
-              </div>
-            </div>
           </div>
+
 
           <div className="cz-section">
             <div className="cz-label" style={{ marginBottom:14 }}><span>Your Cart</span></div>
