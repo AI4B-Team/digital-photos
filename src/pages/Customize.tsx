@@ -1792,7 +1792,7 @@ export default function Customize() {
                       </button>
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
-                        Delivery: {card.delivery} · 100% Money-back guarantee
+                        Delivery: {card.delivery} · 100% Money-Back Guarantee
                       </div>
 
                       {/* Buy Now, Pay Later */}
