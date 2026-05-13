@@ -1215,7 +1215,81 @@ export default function Customize() {
     navigate("/checkout");
   };
 
-  if (!portraitUrl) return null;
+  // Build Stripe line items from current cart and redirect to Checkout
+  const checkoutCart = async () => {
+    if (cartCount === 0) return;
+    setCheckingOut(true);
+    setCheckoutError("");
+    try {
+      const lineItems: any[] = [];
+      // Prints
+      items.forEach((it) => {
+        const unit = itemUnitPrice(it);
+        const ptLabel =
+          it.productType === "digital"       ? "Digital Portrait" :
+          it.productType === "canvas"        ? "Canvas Print" :
+          it.productType === "box-frame"     ? "Box Frame" :
+                                                "Classic Frame";
+        const sizes = SIZES_BY_PRODUCT[it.productType] || SIZES_BY_PRODUCT["classic-frame"];
+        const sd = sizes.find((s) => s.id === it.size);
+        const desc = it.productType === "digital"
+          ? "High-resolution digital download"
+          : `${sd?.label || it.size}${it.frameColor ? " · " + it.frameColor : ""}`;
+        lineItems.push({
+          name: ptLabel,
+          description: desc,
+          unitAmount: Math.round(unit * 100),
+          quantity: it.qty || 1,
+          image: it.photoUrl?.startsWith("http") ? it.photoUrl : undefined,
+        });
+      });
+      // Packs
+      addedPacks.forEach((p) => {
+        lineItems.push({
+          name: p.name,
+          description: "Style & masterpiece pack",
+          unitAmount: Math.round(p.price * 100),
+          quantity: p.qty,
+        });
+      });
+      // Bundle / promo / discount as a single "Discount" negative? Stripe price_data
+      // doesn't allow negatives — instead apply pro-rata to unit amounts.
+      const rawSum = lineItems.reduce((s, li) => s + li.unitAmount * li.quantity, 0);
+      const targetSum = total * 100;
+      if (rawSum > 0 && targetSum < rawSum) {
+        const ratio = targetSum / rawSum;
+        lineItems.forEach((li) => {
+          li.unitAmount = Math.max(50, Math.round(li.unitAmount * ratio));
+        });
+      }
+
+      // Persist for downstream pages
+      setSession({
+        customizationItems: items,
+        cart: { items, packs: addedPacks, total },
+      } as any);
+
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("create-payment", {
+        body: {
+          lineItems,
+          sessionId: (session as any).sessionDbId || null,
+          portraitUrl: items[0]?.photoUrl || "",
+        },
+      });
+      if (error) throw new Error(error.message || "Checkout failed");
+      if (data?.error) throw new Error(data.error);
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setCheckoutError(err?.message || "Couldn't start checkout. Please try again.");
+      setCheckingOut(false);
+    }
+  };
 
   const STEPS = [
     { id:"upload",    label:"Upload",    to:"/" },
