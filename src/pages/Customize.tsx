@@ -825,6 +825,9 @@ export default function Customize() {
     const isFrameless = fd.id === "frameless" || fd.id === "digital";
     const isCanvas    = fd.id === "canvas";
     const woodPad     = fd.w || 0;
+    // Resolve actual selected frame color (so all 8 swatches render distinctly)
+    const itemFrameColorDef = (FRAME_COLORS[item.productType] || []).find(c => c.id === item.frameColor);
+    const actualWood = itemFrameColorDef?.color || fd.wood;
     const frameAspect = sd.w / sd.h;
     const photoAspect = item.photoAspect || frameAspect;
     const coverByHeight = photoAspect > frameAspect;
