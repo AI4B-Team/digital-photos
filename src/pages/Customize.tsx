@@ -847,6 +847,7 @@ export default function Customize() {
         <div style={{ display:"flex", alignItems:"center", gap: aiOpen && isSelected ? 10 : 16, maxWidth:"100%", minWidth:0 }}>
           {/* Invisible spacer matching toolbar width to keep image centered */}
           <div aria-hidden="true" style={{ width: aiOpen && isSelected ? 0 : 48, flexShrink:0, visibility:"hidden" }}/>
+          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, minWidth:0, flex:"0 1 auto" }}>
           <div style={{
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : actualWood),
             padding: (isFrameless ? 6 : woodPad + 6),
