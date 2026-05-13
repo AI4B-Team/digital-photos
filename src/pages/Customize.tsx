@@ -2133,16 +2133,16 @@ export default function Customize() {
                           frameColor: card.frameColors ? cardFrame : undefined,
                           canvasEdge: canvasFrame ? "mirror" : undefined,
                         });
-                        handleContinue();
+                        setCartOpen(true);
                       }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
                         borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
                         justifyContent:"center", gap:8 }}>
-                        Order My {card.label} —{" "}
+                        <ShoppingCart size={15}/> Add {card.label} To Cart —{" "}
                         <span style={{ fontWeight:900 }}>${total}</span>
                       </button>
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
-                        Delivery: {card.delivery} · 100% Money-Back Guarantee
+                        Delivery: {card.delivery} · 100% Money-Back Guarantee · Cart has {cartCount} item{cartCount === 1 ? "" : "s"}
                       </div>
 
                       {/* Buy Now, Pay Later */}
