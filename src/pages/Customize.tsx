@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useState, useMemo, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2 } from "lucide-react";
@@ -948,16 +949,16 @@ export default function Customize() {
                 {aiOpen && (() => {
                   const btn = (window as any).__aiBtn as HTMLElement | undefined;
                   const r = btn?.getBoundingClientRect();
-                  const top = r ? Math.max(12, Math.min(window.innerHeight - 600, r.top)) : 100;
-                  const left = r ? r.right + 12 : 100;
-                  return (
+                  const top = r ? Math.max(12, Math.min(window.innerHeight - 520, r.top)) : 100;
+                  const left = r ? Math.max(12, Math.min(window.innerWidth - 372, r.right + 12)) : 100;
+                  return createPortal(
                   <>
-                    <div onClick={() => { setAiOpen(false); setMpSection(""); }} style={{ position:"fixed", inset:0, zIndex:199 }}/>
+                    <div onClick={() => { setAiOpen(false); setMpSection(""); }} style={{ position:"fixed", inset:0, zIndex:9998 }}/>
                     <div onClick={(e) => e.stopPropagation()} style={{
                       position:"fixed", left, top,
                       width:360, maxHeight:"80vh", overflowY:"auto",
                       background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
-                      boxShadow:"0 20px 60px rgba(0,0,0,.18)", padding:14, zIndex:200,
+                      boxShadow:"0 20px 60px rgba(0,0,0,.18)", padding:14, zIndex:9999,
                     }}>
                       {/* AI quick fix */}
                       <div style={{
@@ -1081,7 +1082,7 @@ export default function Customize() {
                         )}
                       </div>
                     </div>
-                  </>
+                  </>, document.body
                   );
                 })()}
               </span>
