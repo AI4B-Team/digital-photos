@@ -1308,7 +1308,7 @@ export default function Customize() {
         body: {
           lineItems,
           sessionId: (session as any).sessionDbId || null,
-          portraitUrl: items[0]?.photoUrl || "",
+          portraitUrl: cartItems[0]?.photoUrl || items[0]?.photoUrl || "",
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
