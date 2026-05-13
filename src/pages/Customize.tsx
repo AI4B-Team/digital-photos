@@ -1300,7 +1300,7 @@ export default function Customize() {
       // Persist for downstream pages
       setSession({
         customizationItems: items,
-        cart: { items, packs: addedPacks, total },
+        cart: { items: cartItems, packs: addedPacks, total },
       } as any);
 
       const { supabase } = await import("@/integrations/supabase/client");
