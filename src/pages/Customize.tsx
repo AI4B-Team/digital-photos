@@ -2325,6 +2325,206 @@ export default function Customize() {
         </div>
       )}
 
+      {/* ── Cart Drawer ── */}
+      {cartOpen && (
+        <div
+          onClick={() => setCartOpen(false)}
+          style={{
+            position:"fixed", inset:0, background:"rgba(0,0,0,.45)", zIndex:80,
+            animation:"czFade .2s ease both",
+          }}
+        >
+          <aside
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position:"absolute", top:0, right:0, height:"100%",
+              width:"min(420px, 100vw)",
+              background:"#fff", boxShadow:"-12px 0 40px rgba(0,0,0,.18)",
+              display:"flex", flexDirection:"column",
+              fontFamily:"'Poppins',sans-serif",
+              animation:"czFade .25s cubic-bezier(.23,1,.32,1) both",
+            }}
+          >
+            {/* Header */}
+            <div style={{
+              padding:"18px 20px", borderBottom:`1px solid ${BORDER}`,
+              display:"flex", alignItems:"center", justifyContent:"space-between",
+            }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                <ShoppingCart size={18} color={INK}/>
+                <span style={{ fontSize:16, fontWeight:800, color:INK }}>
+                  Your Cart {cartCount > 0 && <span style={{ color:MUTED, fontWeight:600 }}>({cartCount})</span>}
+                </span>
+              </div>
+              <button
+                onClick={() => setCartOpen(false)}
+                aria-label="Close cart"
+                style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:6, display:"flex" }}
+              >
+                <X size={20}/>
+              </button>
+            </div>
+
+            {/* Items */}
+            <div style={{ flex:1, overflowY:"auto", padding:"14px 18px" }}>
+              {cartCount === 0 && (
+                <div style={{ textAlign:"center", color:MUTED, fontSize:13, padding:"40px 10px" }}>
+                  Your cart is empty.<br/>Add prints or packs to get started.
+                </div>
+              )}
+
+              {/* Print line items */}
+              {items.map((it) => {
+                const ptLabel =
+                  it.productType === "digital"   ? "Digital Portrait" :
+                  it.productType === "canvas"    ? "Canvas Print" :
+                  it.productType === "box-frame" ? "Box Frame" :
+                                                   "Classic Frame";
+                const sizes = SIZES_BY_PRODUCT[it.productType] || SIZES_BY_PRODUCT["classic-frame"];
+                const sd = sizes.find((s) => s.id === it.size);
+                const unit = itemUnitPrice(it);
+                return (
+                  <div key={it.id} style={{
+                    display:"flex", gap:12, padding:"12px 0",
+                    borderBottom:`1px solid ${BORDER}`,
+                  }}>
+                    <div style={{
+                      width:62, height:62, borderRadius:8, overflow:"hidden",
+                      background:"#F4F1EC", flexShrink:0,
+                      border:`1px solid ${BORDER}`,
+                    }}>
+                      {it.photoUrl && <img src={it.photoUrl} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>}
+                    </div>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontSize:13.5, fontWeight:700, color:INK, lineHeight:1.3 }}>{ptLabel}</div>
+                      <div style={{ fontSize:11.5, color:MUTED, marginTop:2 }}>
+                        {it.productType !== "digital" && (sd?.label || it.size)}
+                        {it.frameColor && it.productType !== "digital" ? ` · ${it.frameColor}` : ""}
+                      </div>
+                      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:4, border:`1px solid ${BORDER}`, borderRadius:8 }}>
+                          <button
+                            onClick={() => setItemQty(it.id, (it.qty || 1) - 1)}
+                            disabled={(it.qty || 1) <= 1}
+                            style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
+                            aria-label="Decrease quantity"
+                          ><Minus size={12}/></button>
+                          <span style={{ fontSize:12, fontWeight:700, minWidth:18, textAlign:"center" }}>{it.qty || 1}</span>
+                          <button
+                            onClick={() => setItemQty(it.id, (it.qty || 1) + 1)}
+                            style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
+                            aria-label="Increase quantity"
+                          ><Plus size={12}/></button>
+                        </div>
+                        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                          <span style={{ fontSize:13, fontWeight:800, color:INK }}>${unit * (it.qty || 1)}</span>
+                          <button
+                            onClick={() => removeItem(it.id)}
+                            disabled={items.length <= 1 && addedPacks.length === 0}
+                            style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:2, display:"flex" }}
+                            aria-label="Remove"
+                          ><Trash2 size={14}/></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Pack line items */}
+              {addedPacks.map((p) => (
+                <div key={p.id} style={{
+                  display:"flex", gap:12, padding:"12px 0",
+                  borderBottom:`1px solid ${BORDER}`,
+                }}>
+                  <div style={{
+                    width:62, height:62, borderRadius:8, flexShrink:0,
+                    background:"linear-gradient(135deg,#FDECEC,#FFF8F8)",
+                    display:"flex", alignItems:"center", justifyContent:"center",
+                    border:`1px solid ${BORDER}`,
+                  }}>
+                    <Layers size={22} color={RED}/>
+                  </div>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontSize:13.5, fontWeight:700, color:INK, lineHeight:1.3 }}>{p.name}</div>
+                    <div style={{ fontSize:11.5, color:MUTED, marginTop:2 }}>Style & masterpiece pack</div>
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:4, border:`1px solid ${BORDER}`, borderRadius:8 }}>
+                        <button
+                          onClick={() => setPackQty(p.id, p.qty - 1)}
+                          disabled={p.qty <= 1}
+                          style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
+                          aria-label="Decrease quantity"
+                        ><Minus size={12}/></button>
+                        <span style={{ fontSize:12, fontWeight:700, minWidth:18, textAlign:"center" }}>{p.qty}</span>
+                        <button
+                          onClick={() => setPackQty(p.id, p.qty + 1)}
+                          style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
+                          aria-label="Increase quantity"
+                        ><Plus size={12}/></button>
+                      </div>
+                      <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                        <span style={{ fontSize:13, fontWeight:800, color:INK }}>${p.price * p.qty}</span>
+                        <button
+                          onClick={() => removePackFromCart(p.id)}
+                          style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:2, display:"flex" }}
+                          aria-label="Remove"
+                        ><Trash2 size={14}/></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <div style={{ padding:"14px 18px 18px", borderTop:`1px solid ${BORDER}`, background:"#FAFAF7" }}>
+              <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:MUTED, marginBottom:4 }}>
+                <span>Subtotal</span><span>${subtotal}</span>
+              </div>
+              {(bundleSave + promoSave + discountSave) > 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:"#16a34a", marginBottom:4, fontWeight:600 }}>
+                  <span>Discounts</span><span>−${bundleSave + promoSave + discountSave}</span>
+                </div>
+              )}
+              <div style={{ display:"flex", justifyContent:"space-between", fontSize:15, color:INK, fontWeight:800, marginBottom:12 }}>
+                <span>Total</span><span>${total}</span>
+              </div>
+              {checkoutError && (
+                <div style={{ fontSize:11.5, color:RED, marginBottom:8, textAlign:"center" }}>{checkoutError}</div>
+              )}
+              <button
+                onClick={checkoutCart}
+                disabled={cartCount === 0 || checkingOut}
+                className="cz-btn-red"
+                style={{
+                  width:"100%", padding:"14px 0", borderRadius:10, fontSize:14,
+                  display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                  opacity: (cartCount === 0 || checkingOut) ? .55 : 1,
+                  cursor: (cartCount === 0 || checkingOut) ? "not-allowed" : "pointer",
+                }}
+              >
+                {checkingOut ? "Starting Checkout…" : <>Checkout — <span style={{ fontWeight:900 }}>${total}</span></>}
+              </button>
+              <button
+                onClick={() => setCartOpen(false)}
+                style={{
+                  width:"100%", marginTop:8, padding:"10px 0", borderRadius:10,
+                  background:"transparent", border:`1px solid ${BORDER}`,
+                  fontSize:12.5, fontWeight:600, color:INK, cursor:"pointer",
+                  fontFamily:"'Poppins',sans-serif",
+                }}
+              >
+                Continue Shopping
+              </button>
+              <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
+                100% Money-Back Guarantee · Secure Stripe Checkout
+              </div>
+            </div>
+          </aside>
+        </div>
+      )}
+
       {errorMsg && (
         <div style={{
           position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)",
