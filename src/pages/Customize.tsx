@@ -1896,56 +1896,9 @@ export default function Customize() {
                         </div>
                       </div>
 
-                      <button onClick={() => {
-                        updateSelected({
-                          productType: card.id,
-                          size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
-                          sku: cardSizeDef?.sku || "",
-                          frameColor: card.frameColors ? cardFrame : undefined,
-                          canvasEdge: canvasFrame ? "mirror" : undefined,
-                        });
-                        handleContinue();
-                      }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
-                        borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
-                        justifyContent:"center", gap:8 }}>
-                        Order My {card.label} —{" "}
-                        <span style={{ fontWeight:900 }}>${total}</span>
-                      </button>
-
-                      <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
-                        Delivery: {card.delivery} · 100% Money-Back Guarantee
-                      </div>
-
-                      {/* Buy Now, Pay Later */}
-                      <div style={{
-                        marginTop:10, padding:"10px 12px",
-                        border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
-                      }}>
-                        <div style={{ fontSize:11.5, color:INK, fontWeight:600, marginBottom:8, textAlign:"center" }}>
-                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(total/4).toFixed(2)}</span>
-                        </div>
-                        <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
-                          {[
-                            { name: "Shop Pay", logo: shopPayLogo, bg: "#5A31F4", scale: "86%" },
-                            { name: "Klarna", logo: klarnaLogo, bg: "#FFA8CD", scale: "80%" },
-                            { name: "Affirm", logo: affirmLogo, bg: "transparent", scale: "100%", maxHeight: 30, pad: 0 },
-                            { name: "Afterpay", logo: afterpayLogo, bg: "#B2FCE4", scale: "84%" },
-                          ].map((provider:any) => (
-                            <div key={provider.name} title={provider.name} aria-label={provider.name} style={{
-                              height:22, minWidth:0, padding:provider.pad ?? "0 5px", borderRadius:4, background:provider.bg,
-                              display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden",
-                            }}>
-                              <img src={provider.logo} alt={provider.name} style={{
-                                width:provider.scale, maxHeight:provider.maxHeight ?? 12, objectFit:"contain", display:"block",
-                              }}/>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
                       {card.id === "digital" && (
                         <div style={{
-                          marginTop:14, paddingTop:14, borderTop:`1px solid ${BORDER}`,
+                          marginTop:4, marginBottom:14, paddingBottom:14, borderBottom:`1px solid ${BORDER}`,
                         }}>
                           {!packsOpen ? (
                             <div style={{ textAlign:"center" }}>
@@ -2052,6 +2005,54 @@ export default function Customize() {
                           )}
                         </div>
                       )}
+
+                      <button onClick={() => {
+                        updateSelected({
+                          productType: card.id,
+                          size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
+                          sku: cardSizeDef?.sku || "",
+                          frameColor: card.frameColors ? cardFrame : undefined,
+                          canvasEdge: canvasFrame ? "mirror" : undefined,
+                        });
+                        handleContinue();
+                      }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
+                        borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
+                        justifyContent:"center", gap:8 }}>
+                        Order My {card.label} —{" "}
+                        <span style={{ fontWeight:900 }}>${total}</span>
+                      </button>
+
+                      <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
+                        Delivery: {card.delivery} · 100% Money-Back Guarantee
+                      </div>
+
+                      {/* Buy Now, Pay Later */}
+                      <div style={{
+                        marginTop:10, padding:"10px 12px",
+                        border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
+                      }}>
+                        <div style={{ fontSize:11.5, color:INK, fontWeight:600, marginBottom:8, textAlign:"center" }}>
+                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(total/4).toFixed(2)}</span>
+                        </div>
+                        <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
+                          {[
+                            { name: "Shop Pay", logo: shopPayLogo, bg: "#5A31F4", scale: "86%" },
+                            { name: "Klarna", logo: klarnaLogo, bg: "#FFA8CD", scale: "80%" },
+                            { name: "Affirm", logo: affirmLogo, bg: "transparent", scale: "100%", maxHeight: 30, pad: 0 },
+                            { name: "Afterpay", logo: afterpayLogo, bg: "#B2FCE4", scale: "84%" },
+                          ].map((provider:any) => (
+                            <div key={provider.name} title={provider.name} aria-label={provider.name} style={{
+                              height:22, minWidth:0, padding:provider.pad ?? "0 5px", borderRadius:4, background:provider.bg,
+                              display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden",
+                            }}>
+                              <img src={provider.logo} alt={provider.name} style={{
+                                width:provider.scale, maxHeight:provider.maxHeight ?? 12, objectFit:"contain", display:"block",
+                              }}/>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
                     </div>
                   )}
                 </div>
