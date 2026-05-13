@@ -85,7 +85,7 @@ const G = `
 .cz-suggest{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .cz-suggest button{font-size:12.5px;padding:10px 12px;border-radius:8px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif;text-align:left;width:100%}
 .cz-suggest button:hover{border-color:${INK}}
-.cz-toolbar{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid ${BORDER};border-radius:14px;padding:6px;box-shadow:0 12px 30px -10px rgba(0,0,0,.12)}
+.cz-toolbar{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid ${BORDER};border-radius:14px;padding:6px;box-shadow:none}
 .cz-tool{width:38px;height:38px;border-radius:10px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
 .cz-tool:hover{background:#F4F1EC;color:${INK}}
 .cz-tool.on{background:rgba(230,25,25,.10);color:${RED}}
@@ -95,7 +95,7 @@ const G = `
 .cz-tool[data-tip]::before{content:"";position:absolute;right:calc(100% + 4px);top:50%;transform:translateY(-50%) translateX(4px) rotate(45deg);width:8px;height:8px;background:#fff;border-right:1px solid ${BORDER};border-top:1px solid ${BORDER};pointer-events:none;opacity:0;transition:opacity .15s ease,transform .15s ease;z-index:50}
 .cz-tool[data-tip]:hover::after{opacity:1;transform:translateY(-50%) translateX(0)}
 .cz-tool[data-tip]:hover::before{opacity:1;transform:translateY(-50%) translateX(0) rotate(45deg)}
-.cz-ai-panel{width:320px;background:#fff;border:1px solid ${BORDER};border-radius:18px;box-shadow:0 18px 50px -12px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;animation:czAiSlide .28s cubic-bezier(.22,1,.32,1) both;align-self:stretch;max-height:560px}
+.cz-ai-panel{width:320px;background:#fff;border:1px solid ${BORDER};border-radius:18px;box-shadow:none;display:flex;flex-direction:column;overflow:hidden;animation:czAiSlide .28s cubic-bezier(.22,1,.32,1) both;align-self:stretch;max-height:560px}
 @keyframes czAiSlide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
 .cz-ai-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid ${BORDER}}
 .cz-ai-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:${INK}}
@@ -112,13 +112,13 @@ const G = `
 .cz-ai-input input:focus{border-color:${RED}}
 .cz-ai-send{background:${RED};color:#fff;border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .cz-ai-send:disabled{opacity:.4;cursor:not-allowed}
-@media (max-width: 1100px){
+@media (max-width: 760px){
   .cz-ai-panel{width:100%;max-width:420px}
   .cz-stage-row{flex-direction:column !important}
   .cz-toolbar{flex-direction:row !important}
   .cz-tool-divider{height:auto;width:1px;margin:6px 4px}
 }
-@media (max-width: 1100px){
+@media (max-width: 760px){
   .cz-grid{grid-template-columns:1fr !important}
   .cz-stage{min-height:46vh !important;padding:28px 16px !important}
   .cz-side{padding:0 16px 24px !important;position:static !important;max-height:none !important}
@@ -887,7 +887,7 @@ export default function Customize() {
                     className="cz-img-wrap"
                     onMouseDown={(e) => onDragStart(item, e)}
                     style={{
-                      width: `${sd.w * (aiOpen && isSelected ? 34 : 42)}vh`,
+                      width: aiOpen && isSelected ? `clamp(120px, ${sd.w * 26}vh, ${sd.w * 170}px)` : `${sd.w * 42}vh`,
                       aspectRatio: `${sd.w} / ${sd.h}`,
                       maxWidth: "100%",
                       cursor: isDraggingThis ? "grabbing" : "grab",
@@ -1009,7 +1009,7 @@ export default function Customize() {
             <div onClick={(e) => e.stopPropagation()} style={{
               width:300, flex:"0 0 300px", maxHeight:"min(560px, calc(100vh - 190px))", overflowY:"auto",
               background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
-              boxShadow:"0 20px 60px rgba(0,0,0,.18)", padding:14,
+              boxShadow:"none", padding:14,
             }}>
                       {/* AI quick fix */}
                       <div style={{
@@ -1242,17 +1242,27 @@ export default function Customize() {
       {/* Three-column layout */}
       <div className="cz-grid" style={{
         display:"grid",
-        gridTemplateColumns: aiOpen ? "0px 1fr 400px" : "320px 1fr 400px",
+        gridTemplateColumns: aiOpen ? "64px 1fr 400px" : "320px 1fr 400px",
         gap:0, maxWidth:1500, margin:"0 auto",
       }}>
         {/* Customize controls (left) */}
         <aside className="cz-side" style={{
-          padding: aiOpen ? 0 : "24px 10px 24px 18px",
+          padding: aiOpen ? "24px 8px" : "24px 10px 24px 18px",
           position:"sticky", top:70, alignSelf:"start",
-          maxHeight: aiOpen ? 0 : "calc(100vh - 70px)", overflowY:"auto",
-          visibility: aiOpen ? "hidden" : "visible", pointerEvents: aiOpen ? "none" : "auto",
+          maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
         }}>
+          {aiOpen ? (
+            <button onClick={() => setAiOpen(false)} aria-label="Expand customize panel" title="Expand customize panel" style={{
+              width:48, minHeight:132, border:`1px solid ${BORDER}`, borderRadius:16, background:"#fff",
+              cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:10,
+              color:INK, fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:10.5, letterSpacing:".12em", textTransform:"uppercase",
+            }}>
+              <SlidersHorizontal size={18} color={RED}/>
+              <span style={{ writingMode:"vertical-rl", transform:"rotate(180deg)" }}>Customize</span>
+            </button>
+          ) : (
+          <>
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
             <div className="cz-size-scroll">
@@ -1311,6 +1321,8 @@ export default function Customize() {
             </div>
           </div>
           )}
+          </>
+          )}
         </aside>
 
         {/* Preview (middle) */}
@@ -1359,10 +1371,11 @@ export default function Customize() {
 
         {/* Cart + pricing (right) */}
         <aside className="cz-side" style={{
-          padding:"24px 24px 24px 12px",
+          padding: aiOpen ? "24px 10px 24px 6px" : "24px 24px 24px 12px",
           position:"sticky", top:70, alignSelf:"start",
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
+          width: aiOpen ? 360 : "auto",
         }}>
           {/* Choose Your Print — accordion product cards */}
 
