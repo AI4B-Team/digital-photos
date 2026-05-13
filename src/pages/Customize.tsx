@@ -587,6 +587,7 @@ export default function Customize() {
   const [selectedPackId, setSelectedPackId]     = useState<string | null>(null);
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
+  const [mountColor, setMountColor]             = useState("snow-white");
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
