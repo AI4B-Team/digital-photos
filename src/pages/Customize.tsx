@@ -1451,17 +1451,26 @@ export default function Customize() {
                         <div style={{ fontSize:11.5, color:MUTED }}>{card.sub}</div>
                       </div>
                     </div>
-                    <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
                       {!isActive && (
-                        <>
-                          <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                            ${card.id==="digital"?digitalOrig:origPrice}
-                          </span>
-                          <span style={{ fontSize:15, fontWeight:800, color:RED,
-                            fontFamily:"'Poppins',sans-serif" }}>
-                            ${card.id==="digital"?27:basePrice}
-                          </span>
-                        </>
+                        <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:1 }}>
+                          <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                            <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
+                              ${card.id==="digital"?digitalOrig:origPrice}
+                            </span>
+                            <span style={{ fontSize:15, fontWeight:800, color:RED,
+                              fontFamily:"'Poppins',sans-serif" }}>
+                              ${card.id==="digital"?27:basePrice}
+                            </span>
+                          </div>
+                          {discountAmt > 0 && (
+                            <div style={{ fontSize:9.5, color:MUTED, fontWeight:600,
+                              fontFamily:"'Poppins',sans-serif", letterSpacing:".02em" }}>
+                              Expires in <span style={{ color:RED, fontWeight:800,
+                                fontFamily:"'Courier New',monospace" }}>{fmtCountdown(discountSec)}</span>
+                            </div>
+                          )}
+                        </div>
                       )}
                       <ChevronDown size={15} color={isActive?RED:MUTED}
                         style={{ transform:isActive?"rotate(180deg)":"rotate(0)",
