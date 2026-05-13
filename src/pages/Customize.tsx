@@ -1454,7 +1454,7 @@ export default function Customize() {
               return (
                 <div key={card.id} style={{
                   border:`1px solid ${isActive ? RED : BORDER}`,
-                  borderRadius:14, marginBottom:8,
+                  borderRadius:14, marginBottom:18,
                   transition:"border-color .15s", background:"#fff",
                   position:"relative",
                 }}>
