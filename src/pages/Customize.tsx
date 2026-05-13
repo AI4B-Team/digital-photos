@@ -262,6 +262,11 @@ const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sk
     { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:167, w:0.83, h:1 },
     { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:217, w:0.67, h:1 },
   ],
+  "acrylic-glass": [
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-ACR-8x10",  price:147, w:0.80, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Statement", sku:"GLOBAL-ACR-16x20", price:197, w:0.80, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-ACR-24x36", price:297, w:0.67, h:1 },
+  ],
 };
 
 const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> = {
