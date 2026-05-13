@@ -1856,7 +1856,7 @@ export default function Customize() {
             const r = reviews[Math.floor(Date.now() / 86400000) % reviews.length];
             return (
               <div style={{
-                padding: "11px 14px", marginBottom: 10,
+                padding: "11px 14px", marginTop: -8, marginBottom: 10,
                 background: "#FFFDF8", border: `1px solid ${BORDER}`,
                 borderRadius: 10, borderLeft: `3px solid ${RED}`,
               }}>
