@@ -941,9 +941,144 @@ export default function Customize() {
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
               onClick={(e) => e.stopPropagation()}
               style={{ flexShrink:0 }}>
-              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
-                <Sparkles size={18}/>
-              </button>
+              <span style={{ position:"relative", display:"inline-flex" }}>
+                <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => { setAiOpen(v => !v); setMpSection("ai"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
+                  <Sparkles size={18}/>
+                </button>
+                {aiOpen && (
+                  <>
+                    <div onClick={() => { setAiOpen(false); setMpSection(""); }} style={{ position:"fixed", inset:0, zIndex:199 }}/>
+                    <div onClick={(e) => e.stopPropagation()} style={{
+                      position:"absolute", left:"calc(100% + 12px)", top:0,
+                      width:360, maxHeight:"80vh", overflowY:"auto",
+                      background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
+                      boxShadow:"0 20px 60px rgba(0,0,0,.18)", padding:14, zIndex:200,
+                    }}>
+                      {/* AI quick fix */}
+                      <div style={{
+                        border:`1px solid ${mpSection==="ai" ? RED : BORDER}`, borderRadius:12,
+                        padding:14, marginBottom:10, background:"#fff",
+                      }}>
+                        <button onClick={() => setMpSection(mpSection==="ai" ? "" : "ai")}
+                          style={{ width:"100%", background:"transparent", border:"none", cursor:"pointer",
+                            display:"flex", alignItems:"center", gap:12, textAlign:"left", padding:0 }}>
+                          <span style={{ width:36, height:36, borderRadius:"50%",
+                            background:"#FDECEC", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                            <Sparkles size={16} color={RED}/>
+                          </span>
+                          <div style={{ flex:1, minWidth:0 }}>
+                            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                              <span style={{ fontSize:14, fontWeight:700, color:INK,
+                                fontFamily:"'Poppins',sans-serif" }}>AI Quick Fix</span>
+                              <span style={{ fontSize:9, fontWeight:700, color:RED,
+                                background:"#FDECEC", padding:"2px 6px", borderRadius:6,
+                                letterSpacing:".08em", textTransform:"uppercase" }}>Instant</span>
+                            </div>
+                            <div style={{ fontSize:12, color:MUTED, marginTop:2 }}>
+                              See changes instantly — before you order.
+                            </div>
+                          </div>
+                        </button>
+                        {mpSection === "ai" && (
+                          <div style={{ marginTop:14, paddingTop:14, borderTop:`1px solid ${BORDER}` }}>
+                            <div style={{ fontSize:12, color:INK, marginBottom:10, lineHeight:1.5 }}>
+                              Best for small tweaks: 'add a red bandana', 'change background to forest', 'bigger smile'. You'll see the new preview right away.
+                            </div>
+                            <textarea
+                              value={aiInput}
+                              onChange={(e) => setAiInput(e.target.value)}
+                              placeholder="Describe the change you want…"
+                              disabled={busy}
+                              style={{
+                                width:"100%", minHeight:80, padding:"10px 12px",
+                                border:`1px solid ${BORDER}`, borderRadius:10,
+                                fontFamily:"'Poppins',sans-serif", fontSize:13, color:INK,
+                                resize:"vertical", outline:"none", background:"#fff",
+                              }}/>
+                            <button
+                              disabled={busy || !aiInput.trim()}
+                              onClick={() => {
+                                const p = aiInput.trim();
+                                setAiInput("");
+                                setAiOpen(false);
+                                setMpSection("");
+                                runRegenerate(p);
+                              }}
+                              style={{
+                                width:"100%", marginTop:10, padding:"12px 0",
+                                background:RED, color:"#fff", border:"none", borderRadius:10,
+                                fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:13,
+                                cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                                opacity: (busy || !aiInput.trim()) ? .5 : 1,
+                              }}>
+                              <Sparkles size={14}/> Try With AI
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Concierge Touch-Up */}
+                      <div style={{
+                        border:`1px solid ${mpSection==="concierge" ? RED : BORDER}`, borderRadius:12,
+                        padding:14, background:"#fff",
+                      }}>
+                        <button onClick={() => setMpSection(mpSection==="concierge" ? "" : "concierge")}
+                          style={{ width:"100%", background:"transparent", border:"none", cursor:"pointer",
+                            display:"flex", alignItems:"center", gap:12, textAlign:"left", padding:0 }}>
+                          <span style={{ width:36, height:36, borderRadius:"50%",
+                            background:"#FDECEC", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                            <Wand2 size={16} color={RED}/>
+                          </span>
+                          <div style={{ flex:1, minWidth:0 }}>
+                            <div style={{ fontSize:14, fontWeight:700, color:INK,
+                              fontFamily:"'Poppins',sans-serif" }}>Concierge Touch-Up</div>
+                            <div style={{ fontSize:12, color:MUTED, marginTop:2 }}>
+                              For complex edits — applied after you order.
+                            </div>
+                          </div>
+                        </button>
+                        {mpSection === "concierge" && (
+                          <div style={{ marginTop:14, paddingTop:14, borderTop:`1px solid ${BORDER}` }}>
+                            <div style={{ fontSize:12, color:INK, marginBottom:10, lineHeight:1.5 }}>
+                              Choose this when AI Quick Fix can't get it right. A real artist refines eyes, fur, expressions, and likeness after checkout — unlimited revisions until you love it.
+                            </div>
+                            <textarea
+                              value={conciergeNote}
+                              onChange={(e) => setConciergeNote(e.target.value)}
+                              placeholder="Tell our artist what to fix — be as specific as you like…"
+                              style={{
+                                width:"100%", minHeight:90, padding:"10px 12px",
+                                border:`1px solid ${BORDER}`, borderRadius:10,
+                                fontFamily:"'Poppins',sans-serif", fontSize:13, color:INK,
+                                resize:"vertical", outline:"none", background:"#FAF7F2",
+                              }}/>
+                            <button
+                              disabled={!conciergeNote.trim()}
+                              onClick={() => {
+                                try { localStorage.setItem(`concierge_note_${selected.id}`, conciergeNote.trim()); } catch {}
+                                updateSelected({ conciergeNote: conciergeNote.trim() } as any);
+                                setAiOpen(false);
+                                setMpSection("");
+                              }}
+                              style={{
+                                width:"100%", marginTop:10, padding:"12px 0",
+                                background:RED, color:"#fff", border:"none", borderRadius:10,
+                                fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:13,
+                                cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                                opacity: !conciergeNote.trim() ? .5 : 1,
+                              }}>
+                              <Wand2 size={14}/> Save Notes For Artist
+                            </button>
+                            <div style={{ fontSize:11, color:MUTED, marginTop:8, textAlign:"center" }}>
+                              Free with every order · Applied after checkout
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </span>
               <div className="cz-tool-divider"/>
               <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
                 <RotateCcw size={17}/>
