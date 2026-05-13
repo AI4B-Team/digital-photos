@@ -891,7 +891,7 @@ export default function Customize() {
                     className="cz-img-wrap"
                     onMouseDown={(e) => onDragStart(item, e)}
                     style={{
-                      width: aiOpen && isSelected ? `clamp(120px, ${sd.w * 26}vh, ${sd.w * 170}px)` : `${sd.w * 42}vh`,
+                      width: `${sd.w * 42}vh`,
                       aspectRatio: `${sd.w} / ${sd.h}`,
                       maxWidth: "100%",
                       cursor: isDraggingThis ? "grabbing" : "grab",
