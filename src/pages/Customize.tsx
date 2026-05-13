@@ -1855,7 +1855,7 @@ export default function Customize() {
                         borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
                         justifyContent:"center", gap:8 }}>
                         Order My {card.label} —{" "}
-                        <span style={{ fontWeight:900 }}>${price}</span>
+                        <span style={{ fontWeight:900 }}>${total}</span>
                       </button>
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
@@ -1868,7 +1868,7 @@ export default function Customize() {
                         border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
                       }}>
                         <div style={{ fontSize:11.5, color:INK, fontWeight:600, marginBottom:8, textAlign:"center" }}>
-                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(price/4).toFixed(2)}</span>
+                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(total/4).toFixed(2)}</span>
                         </div>
                         <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
                           {[
