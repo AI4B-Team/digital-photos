@@ -1471,7 +1471,7 @@ export default function Customize() {
                     onClick={() => setActiveCard(isActive ? "" : card.id)}
                     style={{ width:"100%", display:"flex", alignItems:"center",
                       justifyContent:"space-between", padding:"14px 16px",
-                      background: isActive ? "rgba(230,25,25,.03)" : "#fff",
+                      background: "#fff",
                       border:"none", cursor:"pointer", gap:8, borderRadius:14 }}>
                     <div style={{ display:"flex", alignItems:"center", gap:8,
                       flex:1, minWidth:0, textAlign:"left" }}>
