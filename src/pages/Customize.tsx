@@ -1257,7 +1257,7 @@ export default function Customize() {
     try {
       const lineItems: any[] = [];
       // Prints
-      items.forEach((it) => {
+      cartItems.forEach((it) => {
         const unit = itemUnitPrice(it);
         const ptLabel =
           it.productType === "digital"       ? "Digital Portrait" :
