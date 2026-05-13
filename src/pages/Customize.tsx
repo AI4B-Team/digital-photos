@@ -652,7 +652,7 @@ export default function Customize() {
   const [discountTier, setDiscountTier] = useState("");
 
   useEffect(() => {
-    const LS_KEY = "ra_discount_start";
+    const LS_KEY = "ra_discount_start_v2";
     const FIFTEEN_MIN = 15 * 60 * 1000;
     const TOTAL = FIFTEEN_MIN + 2 * 24 * 60 * 60 * 1000; // 15min + 2 days
     let startTs = parseInt(localStorage.getItem(LS_KEY) || "0");
@@ -1665,10 +1665,11 @@ export default function Customize() {
               const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[0];
               const basePrice = card.id === "digital" ? 27 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
-              const cardDiscount = isActive ? Math.min(discountAmt, basePrice + frameAdd) : 0;
+              const cardDiscount = Math.min(discountAmt, basePrice + frameAdd);
               const price    = basePrice + frameAdd - cardDiscount;
               const origPrice = discountAmt > 0 ? basePrice + discountAmt : Math.round(basePrice * 1.4);
               const digitalOrig = discountAmt > 0 ? 27 + discountAmt : Math.round(27 * 1.4);
+              const digitalPrice = Math.max(0, 27 - discountAmt);
 
               return (
                 <div key={card.id} style={{
@@ -1710,7 +1711,7 @@ export default function Customize() {
                             </span>
                             <span style={{ fontSize:15, fontWeight:800, color:RED,
                               fontFamily:"'Poppins',sans-serif" }}>
-                              ${card.id==="digital"?27:basePrice}
+                              ${card.id==="digital"?digitalPrice:price}
                             </span>
                           </div>
                         </div>
