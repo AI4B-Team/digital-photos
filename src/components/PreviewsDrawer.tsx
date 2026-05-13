@@ -253,7 +253,7 @@ export default function PreviewsDrawer({
               <button onClick={() => { setSubmittedEmail(""); setRows([]); setEmail(""); }}
                 style={{ background: "none", border: "none", color: MUTED,
                   fontSize: 11, cursor: "pointer", textDecoration: "underline" }}>
-                Use a different email
+                Use A Different Email
               </button>
             </div>
           )}
