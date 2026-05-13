@@ -1334,9 +1334,17 @@ export default function Customize() {
                 delivery:"5–8 business days" },
             ].map((card:any) => {
               const isActive = activeCard === card.id;
-              const sizes    = SIMPLE_SIZES[card.id] || [];
-              const selSize  = cardSize[card.id] || "md";
-              const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[1] || sizes[0];
+              const fullSizes = SIZES_BY_PRODUCT[card.id] || [];
+              const simpleSizes = SIMPLE_SIZES[card.id] || [];
+              const bestPid = simpleSizes.find(s => s.best)?.pid;
+              const sizes = fullSizes.length ? fullSizes.map(s => ({
+                id: s.id, pid: s.id, label: s.sub || s.label, dim: s.label,
+                sku: s.sku, price: s.price, w: s.w, h: s.h,
+                best: s.id === bestPid,
+              })) : simpleSizes;
+              const defaultSize = bestPid || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
+              const selSize  = cardSize[card.id] || defaultSize;
+              const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[0];
               const basePrice = card.id === "digital" ? 27 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
               const cardDiscount = isActive ? Math.min(discountAmt, basePrice + frameAdd) : 0;
