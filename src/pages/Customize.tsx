@@ -95,7 +95,7 @@ const G = `
 .cz-tool[data-tip]::before{content:"";position:absolute;right:calc(100% + 4px);top:50%;transform:translateY(-50%) translateX(4px) rotate(45deg);width:8px;height:8px;background:#fff;border-right:1px solid ${BORDER};border-top:1px solid ${BORDER};pointer-events:none;opacity:0;transition:opacity .15s ease,transform .15s ease;z-index:50}
 .cz-tool[data-tip]:hover::after{opacity:1;transform:translateY(-50%) translateX(0)}
 .cz-tool[data-tip]:hover::before{opacity:1;transform:translateY(-50%) translateX(0) rotate(45deg)}
-.cz-ai-panel{width:320px;background:#fff;border:1px solid ${BORDER};border-radius:18px;box-shadow:0 18px 50px -12px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;animation:czAiSlide .28s cubic-bezier(.22,1,.32,1) both;align-self:stretch;max-height:560px}
+.cz-ai-panel{width:320px;background:#fff;border:1px solid ${BORDER};border-radius:18px;box-shadow:none;display:flex;flex-direction:column;overflow:hidden;animation:czAiSlide .28s cubic-bezier(.22,1,.32,1) both;align-self:stretch;max-height:560px}
 @keyframes czAiSlide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
 .cz-ai-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid ${BORDER}}
 .cz-ai-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:${INK}}
@@ -112,13 +112,13 @@ const G = `
 .cz-ai-input input:focus{border-color:${RED}}
 .cz-ai-send{background:${RED};color:#fff;border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .cz-ai-send:disabled{opacity:.4;cursor:not-allowed}
-@media (max-width: 1100px){
+@media (max-width: 760px){
   .cz-ai-panel{width:100%;max-width:420px}
   .cz-stage-row{flex-direction:column !important}
   .cz-toolbar{flex-direction:row !important}
   .cz-tool-divider{height:auto;width:1px;margin:6px 4px}
 }
-@media (max-width: 1100px){
+@media (max-width: 760px){
   .cz-grid{grid-template-columns:1fr !important}
   .cz-stage{min-height:46vh !important;padding:28px 16px !important}
   .cz-side{padding:0 16px 24px !important;position:static !important;max-height:none !important}
