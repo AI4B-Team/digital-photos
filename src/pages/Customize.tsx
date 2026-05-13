@@ -1350,11 +1350,11 @@ export default function Customize() {
           <span style={{ fontSize:12, color:"#FFE4E6", marginLeft:6 }}>
             — Expires When The Timer Hits Zero
           </span>
-          <div style={{
-            position:"absolute", right:22, top:"50%", transform:"translateY(-50%)",
+          <span style={{
+            display:"inline-block", marginLeft:10, verticalAlign:"middle",
             background:"#fff", color:"#E61919", fontSize:12, fontWeight:700,
             padding:"4px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
-          }}>{fmtCountdown(discountSec)}</div>
+          }}>{fmtCountdown(discountSec)}</span>
         </div>
       )}
 
