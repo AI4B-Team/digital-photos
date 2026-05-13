@@ -2417,7 +2417,7 @@ export default function Customize() {
               )}
 
               {/* Print line items */}
-              {items.map((it) => {
+              {cartItems.map((it) => {
                 const ptLabel =
                   it.productType === "digital"   ? "Digital Portrait" :
                   it.productType === "canvas"    ? "Canvas Print" :
