@@ -1393,6 +1393,20 @@ export default function Customize() {
             <span className="cz-serif" style={{ fontSize:18, fontWeight:700, color:INK }}>${total}</span>
           </div>
           <button
+            onClick={() => setPreviewsOpen(true)}
+            aria-label="Open my previews"
+            title="My Previews"
+            style={{
+              position:"relative", display:"flex", alignItems:"center", gap:6,
+              padding:"9px 12px", borderRadius:12, background:"#fff", color:INK,
+              border:`1px solid ${BORDER}`, cursor:"pointer",
+              fontFamily:"'Poppins',sans-serif", fontWeight:600, fontSize:13,
+            }}
+          >
+            <ImageIcon size={15}/>
+            Previews
+          </button>
+          <button
             onClick={() => setCartOpen(true)}
             aria-label="Open cart"
             style={{
