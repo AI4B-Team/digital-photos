@@ -1336,7 +1336,10 @@ export default function Customize() {
           <ArrowLeft size={16}/> Back
         </button>
 
-        <nav style={{ display:"flex", alignItems:"center", gap:2 }}>
+        <nav style={{
+          display:"flex", alignItems:"center", gap:2,
+          position:"absolute", left:"50%", top:"50%", transform:"translate(-50%, -50%)",
+        }}>
           {STEPS.map((s, i) => (
             <div key={s.id} style={{ display:"flex", alignItems:"center", gap:2 }}>
               <button className={`cz-step ${s.id==="customize"?"on":""}`} onClick={() => navigate(s.to)}>
