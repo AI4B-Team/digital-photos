@@ -556,6 +556,52 @@ export default function Customize() {
   const [giftNote, setGiftNote]       = useState("");
   const [giftOpen, setGiftOpen]       = useState(false);
 
+  // Right-panel accordion state
+  const [activeCard, setActiveCard]             = useState("canvas");
+  const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
+  const [cardFrame, setCardFrame]               = useState("black");
+  const [canvasFrame, setCanvasFrame]           = useState(false);
+  const [canvasFrameColor, setCanvasFrameColor] = useState("black");
+
+  // Discount timer (welcome $20 → extended $10 → none)
+  const [discountAmt, setDiscountAmt]   = useState(0);
+  const [discountSec, setDiscountSec]   = useState(0);
+  const [discountTier, setDiscountTier] = useState("");
+
+  useEffect(() => {
+    const LS_KEY = "ra_discount_start";
+    const TEN_MIN = 10 * 60 * 1000;
+    const FORTY_EIGHT = 48 * 60 * 60 * 1000;
+    let startTs = parseInt(localStorage.getItem(LS_KEY) || "0");
+    if (!startTs) {
+      startTs = Date.now();
+      localStorage.setItem(LS_KEY, String(startTs));
+    }
+    const tick = () => {
+      const elapsed = Date.now() - startTs;
+      if (elapsed < TEN_MIN) {
+        setDiscountAmt(20); setDiscountTier("welcome");
+        setDiscountSec(Math.ceil((TEN_MIN - elapsed) / 1000));
+      } else if (elapsed < FORTY_EIGHT) {
+        setDiscountAmt(10); setDiscountTier("extended");
+        setDiscountSec(Math.ceil((FORTY_EIGHT - elapsed) / 1000));
+      } else {
+        setDiscountAmt(0); setDiscountTier(""); setDiscountSec(0);
+      }
+    };
+    tick();
+    const iv = setInterval(tick, 1000);
+    return () => clearInterval(iv);
+  }, []);
+
+  const fmtCountdown = (s: number) => {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    if (h > 0) return `${h}h ${String(m).padStart(2,"0")}m`;
+    return `${String(m).padStart(2,"0")}m ${String(sec).padStart(2,"0")}s`;
+  };
+
   const applyPromo = () => {
     const code = promoCode.trim().toUpperCase();
     const p = PROMOS[code];
