@@ -1346,12 +1346,35 @@ export default function Customize() {
           ))}
         </nav>
 
-        <div style={{
-          display:"flex", alignItems:"baseline", gap:6,
-          padding:"7px 14px", borderRadius:12, background:"#fff", border:`1px solid ${BORDER}`,
-        }}>
-          <span style={{ fontSize:10.5, letterSpacing:".14em", color:MUTED, fontWeight:600 }}>TOTAL</span>
-          <span className="cz-serif" style={{ fontSize:18, fontWeight:700, color:INK }}>${total}</span>
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          <div style={{
+            display:"flex", alignItems:"baseline", gap:6,
+            padding:"7px 14px", borderRadius:12, background:"#fff", border:`1px solid ${BORDER}`,
+          }}>
+            <span style={{ fontSize:10.5, letterSpacing:".14em", color:MUTED, fontWeight:600 }}>TOTAL</span>
+            <span className="cz-serif" style={{ fontSize:18, fontWeight:700, color:INK }}>${total}</span>
+          </div>
+          <button
+            onClick={() => setCartOpen(true)}
+            aria-label="Open cart"
+            style={{
+              position:"relative", display:"flex", alignItems:"center", gap:6,
+              padding:"9px 14px", borderRadius:12, background:INK, color:"#fff",
+              border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+              fontWeight:600, fontSize:13,
+            }}
+          >
+            <ShoppingCart size={15}/>
+            Cart
+            {cartCount > 0 && (
+              <span style={{
+                position:"absolute", top:-6, right:-6, minWidth:20, height:20, padding:"0 6px",
+                borderRadius:10, background:RED, color:"#fff", fontSize:11, fontWeight:800,
+                display:"inline-flex", alignItems:"center", justifyContent:"center",
+                boxShadow:"0 2px 6px rgba(0,0,0,.2)",
+              }}>{cartCount}</span>
+            )}
+          </button>
         </div>
       </header>
 
