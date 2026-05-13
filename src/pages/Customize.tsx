@@ -2463,7 +2463,7 @@ export default function Customize() {
                           <span style={{ fontSize:13, fontWeight:800, color:INK }}>${unit * (it.qty || 1)}</span>
                           <button
                             onClick={() => removeCartItem(it.id)}
-                            disabled={items.length <= 1 && addedPacks.length === 0}
+                            disabled={false}
                             style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:2, display:"flex" }}
                             aria-label="Remove"
                           ><Trash2 size={14}/></button>
