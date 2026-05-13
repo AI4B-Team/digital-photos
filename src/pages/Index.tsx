@@ -10,7 +10,8 @@ import {
   Printer, FrameIcon, Heart, Truck, RefreshCw,
   Lock, Wand2, Sparkles, AlertCircle, Copy, Gift,
   ArrowRight, Shield, Star, Instagram, Facebook,
-  PawPrint, Baby, Users, Flower2, Search, Image as ImageIcon
+  PawPrint, Baby, Users, Flower2, Search, Image as ImageIcon,
+  SlidersHorizontal, Package, Globe, Droplets, FileText, Award
 } from "lucide-react";
 import scenePets from "@/assets/scene-pets.jpg";
 import sceneBabies from "@/assets/scene-babies.jpg";
@@ -705,6 +706,7 @@ function HomePage({ onGenerate }) {
   const [cat,     setCat]     = useState("");
   const [styles,  setStyles]  = useState(STYLES.map(s => s.id));
   const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
+  const [openFaq, setOpenFaq] = useState<number|null>(0);
   const tmplStripRef = useRef<HTMLDivElement|null>(null);
   const [tmplCanL, setTmplCanL] = useState(false);
   const [tmplCanR, setTmplCanR] = useState(false);
@@ -1078,14 +1080,256 @@ function HomePage({ onGenerate }) {
 
       </section>
 
-      <footer style={{ padding:"26px 24px", borderTop:`1px solid ${T.border}` }}>
-        <div style={{ maxWidth:1240, margin:"0 auto", display:"flex",
-          justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:11 }}>
-          <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, color:T.cream, fontWeight:600 }}>
-            Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:8, color:T.dim, marginLeft:2 }}>™</sup>
+      {/* ■■ Trust Ticker ■■ */}
+      <div style={{ background:"#F9F7F4", borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}`, padding:"12px 0", overflow:"hidden", whiteSpace:"nowrap" }}>
+        <style>{`@keyframes ra-tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+        <div style={{ display:"inline-flex", animation:"ra-tick 26s linear infinite" }}>
+          {[
+            "Free Worldwide Shipping","4.9 Stars · Thousands Of Portraits Created","100-Day Happiness Guarantee","Ships In 5–7 Business Days","Archival Pigment Inks","Museum-Grade Fine Art Paper",
+            "Free Worldwide Shipping","4.9 Stars · Thousands Of Portraits Created","100-Day Happiness Guarantee","Ships In 5–7 Business Days","Archival Pigment Inks","Museum-Grade Fine Art Paper",
+          ].map((t, i) => (
+            <span key={i} style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"0 28px", fontSize:11.5, letterSpacing:".1em", color:T.cream, textTransform:"uppercase", fontWeight:500, fontFamily:"'Poppins',sans-serif" }}>
+              <span style={{ width:5, height:5, borderRadius:"50%", background:T.gold, flexShrink:0, display:"inline-block" }}/>
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ■■ Press ■■ */}
+      <section style={{ padding:"36px 32px", background:T.bg, borderBottom:`1px solid ${T.border}` }}>
+        <div style={{ maxWidth:1000, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"center", flexWrap:"wrap", gap:"8px 36px" }}>
+          <span style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.dim, fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>As Featured In</span>
+          {["CNN","BuzzFeed","People","Good Housekeeping","Apartment Therapy","Today Show"].map(name => (
+            <span key={name} style={{ fontSize:16, fontWeight:800, letterSpacing:"-.02em", color:T.dim, fontStyle:"italic", fontFamily:"'Poppins',sans-serif" }}>{name}</span>
+          ))}
+        </div>
+      </section>
+
+      {/* ■■ How It Works ■■ */}
+      <section style={{ padding:"80px 32px", background:T.bg }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>How It Works</p>
+          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>From Photo To Masterpiece In Four Simple Steps</h2>
+          <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Upload once. Receive a portrait worth treasuring forever.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:20 }} className="sg3">
+            {[
+              { n:"1", Icon:Upload,             title:"Choose & Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
+              { n:"2", Icon:Sparkles,           title:"AI Brings It To Life",       body:"In seconds, our AI transforms your photo into a stunning portrait across six timeless art styles — Royal, Renaissance, Storybook, Fantasy, Cinematic, and Minimal." },
+              { n:"3", Icon:SlidersHorizontal,  title:"Make It Truly Yours",        body:"Preview every style side by side. Choose your favourite, then customise every detail — size, frame colour, and finish." },
+              { n:"4", Icon:Heart,              title:"Cherished & Delivered",      body:"Your portrait is printed on museum-quality archival fine art paper, carefully packaged, and delivered free to your door worldwide." },
+            ].map((step) => (
+              <div key={step.n} style={{ position:"relative", border:`1px solid ${T.border}`, borderRadius:18, padding:"28px 22px", background:T.bg }}>
+                <div style={{ position:"absolute", top:-12, left:22, background:T.gold, color:"#FFFFFF", borderRadius:999, width:26, height:26, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:700, fontFamily:"'Poppins',sans-serif" }}>{step.n}</div>
+                <step.Icon size={26} color={T.gold} style={{ marginBottom:14 }}/>
+                <h3 style={{ fontSize:16, fontWeight:700, color:T.cream, marginBottom:10, lineHeight:1.25, fontFamily:"'Poppins',sans-serif" }}>{step.title}</h3>
+                <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>{step.body}</p>
+              </div>
+            ))}
           </div>
-          <div style={{ fontSize:11, color:T.dim }}>© 2025 Digital Photos™. All rights reserved.</div>
-          <div style={{ fontSize:11, color:T.dim }}>AI-Powered · Fine Art Quality · Yours Forever</div>
+        </div>
+      </section>
+
+      {/* ■■ Style Gallery ■■ */}
+      <section style={{ background:"#F9F7F4", borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}`, padding:"80px 32px" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Six Timeless Art Styles</p>
+          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>Every Photo Reimagined Six Ways</h2>
+          <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>You receive all six styles. Choose which ones to print and keep.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12 }} className="sg3">
+            {STYLES.map(style => {
+              const teaser = TEASERS[0];
+              const portrait = teaser.portraits?.find(p => p.style === style.label) || teaser.portraits?.[0];
+              return (
+                <div key={style.id} onClick={() => pickStyleScroll(style.id)} style={{ position:"relative", borderRadius:16, overflow:"hidden", border:`1px solid ${T.border}`, aspectRatio:".78", cursor:"pointer", transition:"transform .2s" }} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-3px)"} onMouseLeave={e=>e.currentTarget.style.transform="translateY(0)"}>
+                  <img src={portrait?.url || teaser.before} alt={style.label} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                  <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"32px 16px 16px", background:"linear-gradient(transparent,rgba(10,10,10,.82))" }}>
+                    <span style={{ fontSize:13, fontWeight:700, letterSpacing:".18em", textTransform:"uppercase", color:"#FFFFFF", display:"block", fontFamily:"'Poppins',sans-serif" }}>{style.label}</span>
+                    <span style={{ fontSize:11, color:"rgba(255,255,255,.7)", marginTop:3, display:"block", fontFamily:"'Poppins',sans-serif" }}>{style.desc || "Timeless art style"}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ■■ Occasions ■■ */}
+      <section style={{ padding:"80px 32px", background:T.bg }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>A Portrait For Every Occasion</p>
+          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>The Most Personal Gift You Can Give</h2>
+          <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every purchase is a memory made permanent. Every occasion deserves a masterpiece.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16 }} className="pg3">
+            {[
+              { cat:"pets",     Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
+              { cat:"babies",   Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
+              { cat:"couples",  Icon:Heart,    title:"Couples",  body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
+              { cat:"people",   Icon:Users,    title:"People",   body:"Individuals, families, friends, parents. A birthday gift so personal.", cta:"Create A People Portrait" },
+              { cat:"memorial", Icon:Flower2,  title:"Memorial", body:"A tender tribute to the ones who shaped you.", cta:"Create A Memorial Portrait" },
+              { cat:"gifts",    Icon:Gift,     title:"Gifts",    body:"Birthdays, holidays, graduations, new arrivals. The portrait they'll never take down.", cta:"Browse Gift Ideas" },
+            ].map(item => (
+              <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }} style={{ border:`1px solid ${T.border}`, borderRadius:18, padding:"28px 24px", cursor:"pointer", background:T.bg, transition:"all .2s" }} onMouseEnter={e=>{ e.currentTarget.style.borderColor=T.gold; e.currentTarget.style.background=`rgba(230,25,25,.04)`; }} onMouseLeave={e=>{ e.currentTarget.style.borderColor=T.border; e.currentTarget.style.background=T.bg; }}>
+                <div style={{ width:42, height:42, borderRadius:12, background:"rgba(230,25,25,.08)", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}>
+                  <item.Icon size={22} color={T.gold}/>
+                </div>
+                <h3 style={{ fontSize:15, fontWeight:700, color:T.cream, marginBottom:8, fontFamily:"'Poppins',sans-serif" }}>{item.title}</h3>
+                <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>{item.body}</p>
+                <span style={{ fontSize:11, letterSpacing:".14em", textTransform:"uppercase", color:T.gold, fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>{item.cta} →</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ■■ Quality Story ■■ */}
+      <section style={{ background:"#F4F1ED", borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}`, padding:"80px 32px" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <div style={{ textAlign:"center", marginBottom:48 }}>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:6, border:`1px solid rgba(230,25,25,.25)`, background:"rgba(230,25,25,.06)", borderRadius:999, padding:"6px 14px", fontSize:11.5, fontWeight:600, color:T.gold, marginBottom:18, fontFamily:"'Poppins',sans-serif" }}>
+              <Award size={14} color={T.gold}/> Fine Art Quality
+            </div>
+            <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, lineHeight:1.2, marginBottom:18, fontFamily:"'Poppins',sans-serif" }}>Art That Lasts A Hundred Years.</h2>
+            <p style={{ fontSize:15, color:T.muted, maxWidth:680, margin:"0 auto 24px", lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every REAL ART portrait is printed using the same archival standards used by the world's leading museums and galleries. Made to be passed down through generations.</p>
+            <div style={{ display:"flex", justifyContent:"center", gap:10, flexWrap:"wrap" }}>
+              {[
+                { Icon:Star,   label:"100-Year Colour Guarantee" },
+                { Icon:Truck,  label:"Free Worldwide Shipping" },
+                { Icon:Shield, label:"100-Day Guarantee" },
+              ].map(chip => (
+                <span key={chip.label} style={{ border:`1px solid ${T.border}`, background:T.bg, borderRadius:999, padding:"8px 16px", fontSize:12, fontWeight:500, color:T.cream, display:"inline-flex", alignItems:"center", gap:6, fontFamily:"'Poppins',sans-serif" }}>
+                  <chip.Icon size={13} color={T.gold}/> {chip.label}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:18 }} className="pg3">
+            {[
+              { Icon:Droplets, title:"Archival Pigment Inks",       body:"Giclée printing with pigment-based inks that resist fading for over a century when displayed indoors — the gold standard in fine art reproduction." },
+              { Icon:FileText, title:"Museum-Grade Fine Art Paper", body:"200gsm enhanced matte art paper with a velvety surface that brings exceptional depth, detail, and colour to every portrait." },
+              { Icon:Package,  title:"Beautifully Packaged",        body:"Ships in rigid, protective packaging with no third-party branding — just REAL ART, beautifully presented and ready to gift." },
+              { Icon:Globe,    title:"Free Global Delivery",        body:"Produced at certified fine art studios and shipped free worldwide. Every portrait arrives in 5–7 business days, ready to hang." },
+            ].map(spec => (
+              <div key={spec.title} style={{ display:"flex", gap:14, padding:"20px 22px", background:T.bg, border:`1px solid ${T.border}`, borderRadius:14 }}>
+                <div style={{ flexShrink:0, width:34, height:34, borderRadius:10, background:"rgba(230,25,25,.08)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                  <spec.Icon size={17} color={T.gold}/>
+                </div>
+                <div>
+                  <h4 style={{ fontSize:14, fontWeight:700, color:T.cream, marginBottom:3, fontFamily:"'Poppins',sans-serif" }}>{spec.title}</h4>
+                  <p style={{ fontSize:13, color:T.muted, lineHeight:1.6, fontFamily:"'Poppins',sans-serif" }}>{spec.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ■■ Reviews ■■ */}
+      <section style={{ padding:"80px 32px", background:T.bg }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <div style={{ textAlign:"center", marginBottom:14 }}>
+            <span style={{ display:"inline-flex", alignItems:"center", gap:6, fontSize:11, color:T.muted, fontFamily:"'Poppins',sans-serif", fontWeight:600, letterSpacing:".18em", textTransform:"uppercase" }}>
+              <Star size={14} color="#00B67A" fill="#00B67A"/> Trustpilot Reviews
+            </span>
+          </div>
+          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>4.9 Stars · Thousands Of Portraits Created</h2>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
+            {[
+              { q:"I ordered the Royal portrait of my golden retriever for my mom's birthday and she cried the moment she opened it. The quality blew me away — it looks like it belongs in a museum.", author:"Sarah M.", tag:"Pet Portrait" },
+              { q:"Got the Renaissance portrait of my husband and me for our 10th anniversary. The framed print arrived perfectly packaged. Every visitor asks about it.", author:"James R.", tag:"Couples Portrait" },
+              { q:"I ordered a memorial portrait of our cat Milo in the Storybook style. The detail and colour are incredible. The most meaningful piece of art we own.", author:"Priya K.", tag:"Memorial Portrait" },
+            ].map((rev, i) => (
+              <div key={i} style={{ border:`1px solid ${T.border}`, borderRadius:16, padding:"24px 22px", background:T.bg }}>
+                <div style={{ marginBottom:12 }}>
+                  {Array(5).fill(0).map((_,j)=>(<span key={j} style={{ color:"#00B67A", fontSize:15 }}>★</span>))}
+                </div>
+                <p style={{ fontSize:13.5, color:T.cream, lineHeight:1.7, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>"{rev.q}"</p>
+                <div style={{ fontSize:12, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
+                  <strong style={{ color:T.cream, fontWeight:600 }}>{rev.author}</strong>{" · Verified Buyer"}
+                </div>
+                <span style={{ display:"inline-block", marginTop:8, fontSize:10, letterSpacing:".12em", textTransform:"uppercase", background:"rgba(230,25,25,.08)", color:T.gold, borderRadius:6, padding:"3px 8px", fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>{rev.tag}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ■■ FAQ ■■ */}
+      <section style={{ background:"#F9F7F4", borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}`, padding:"64px 32px" }}>
+        <div style={{ maxWidth:780, margin:"0 auto" }}>
+          <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Got Questions?</p>
+          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:36, fontFamily:"'Poppins',sans-serif" }}>Everything You Need To Know</h2>
+          <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+            {[
+              { q:"How Does The AI Generation Work?",      a:"You upload a photo and our AI studies every detail to generate an original portrait across six art styles — in 30–60 seconds. You receive a free watermarked preview of every style before purchasing, so you only pay for what you love." },
+              { q:"What Photo Works Best?",                a:"Clear, well-lit photos where the subject's face is fully visible work best. Front-facing is ideal. Avoid heavy shadows, sunglasses, or blur. Any recent smartphone photo taken in natural daylight is usually perfect." },
+              { q:"What Sizes And Formats Do You Offer?",  a:"Fine Art Prints from 8×10\" to 24×36\". Framed Prints from 8×10\" to 20×24\" in 8 frame colour options. Canvas Prints from 10×10\" to 24×36\". Every physical order includes a full digital download of all six portrait styles." },
+              { q:"How Long Does Shipping Take?",          a:"Physical prints are produced and shipped within 3–5 business days, typically arriving in 5–7 business days in the US. International orders may take 7–14 days. All orders include free worldwide shipping with tracking." },
+              { q:"What Is Your Happiness Guarantee?",     a:"We offer a 100-day happiness guarantee. If you're not completely satisfied for any reason — quality, damage in transit, or simply not what you expected — we'll reprint or refund in full. No questions asked." },
+            ].map((item, i) => (
+              <div key={i} style={{ border:`1px solid ${T.border}`, borderRadius:12, overflow:"hidden", background:T.bg }}>
+                <button onClick={() => setOpenFaq(openFaq===i ? null : i)} style={{ width:"100%", textAlign:"left", background:T.bg, border:"none", padding:"18px 22px", fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:600, color: openFaq===i ? T.gold : T.cream, cursor:"pointer", display:"flex", justifyContent:"space-between", alignItems:"center", gap:12 }}>
+                  {item.q}
+                  <ChevronDown size={16} color={openFaq===i ? T.gold : T.muted} style={{ transition:"transform .2s", flexShrink:0, transform: openFaq===i ? "rotate(180deg)" : "rotate(0deg)" }}/>
+                </button>
+                {openFaq===i && (
+                  <div style={{ padding:"0 22px 20px", fontSize:13.5, color:T.muted, lineHeight:1.7, fontFamily:"'Poppins',sans-serif" }}>{item.a}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ■■ Final CTA ■■ */}
+      <section style={{ background:T.gold, padding:"80px 32px", textAlign:"center" }}>
+        <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:"rgba(255,255,255,.85)", fontWeight:600, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Start Creating</p>
+        <h2 style={{ fontSize:40, fontWeight:800, color:"#FFFFFF", lineHeight:1.2, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Turn Your Favourite Photo Into A Masterpiece.</h2>
+        <p style={{ fontSize:15, color:"rgba(255,255,255,.9)", marginBottom:28, fontFamily:"'Poppins',sans-serif" }}>Free preview before you buy. No subscription. No risk.</p>
+        <button onClick={scrollToHero} style={{ background:"#FFFFFF", color:T.gold, border:"none", padding:"16px 36px", borderRadius:999, fontWeight:700, fontSize:15, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:10, letterSpacing:".01em" }}>
+          <Upload size={17}/> Upload A Photo — It's Free
+        </button>
+        <p style={{ fontSize:11.5, color:"rgba(255,255,255,.85)", marginTop:18, letterSpacing:".06em", fontFamily:"'Poppins',sans-serif" }}>4.9 ★ Rated · Free Worldwide Shipping · 100-Day Guarantee</p>
+      </section>
+
+      {/* ■■ Expanded Footer ■■ */}
+      <footer style={{ background:"#F9F7F4", borderTop:`1px solid ${T.border}` }}>
+        <div style={{ maxWidth:1240, margin:"0 auto", padding:"56px 32px 28px", display:"grid", gridTemplateColumns:"1.4fr 1fr 1fr 1fr", gap:36 }} className="pg3">
+          <div>
+            <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:22, color:T.cream, fontWeight:700, marginBottom:14 }}>
+              Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:10, color:T.dim, marginLeft:2 }}>™</sup>
+            </div>
+            <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, marginBottom:18, maxWidth:300, fontFamily:"'Poppins',sans-serif" }}>
+              AI-powered portrait art printed on archival fine art paper. Delivered to your door, anywhere in the world.
+            </p>
+            <div style={{ display:"flex", gap:12 }}>
+              {[Instagram, Facebook].map((Icon, i) => (
+                <a key={i} href="#" style={{ width:34, height:34, borderRadius:"50%", border:`1px solid ${T.border}`, display:"flex", alignItems:"center", justifyContent:"center", background:T.bg }}>
+                  <Icon size={16} color={T.dim}/>
+                </a>
+              ))}
+            </div>
+          </div>
+          {[
+            { title:"Create",   links:["Pet Portraits","Baby Portraits","Couples Portraits","Memorial Portraits","Gift Portraits"] },
+            { title:"Products", links:["Fine Art Prints","Framed Prints","Canvas Prints","Digital Download","Size Guide"] },
+            { title:"Help",     links:["FAQ","Shipping Info","Returns & Refunds","Contact Us","Privacy Policy"] },
+          ].map(col => (
+            <div key={col.title}>
+              <h4 style={{ fontSize:10.5, letterSpacing:".22em", textTransform:"uppercase", color:T.dim, fontWeight:600, marginBottom:16, fontFamily:"'Poppins',sans-serif" }}>{col.title}</h4>
+              <ul style={{ listStyle:"none", padding:0, margin:0, display:"flex", flexDirection:"column", gap:10 }}>
+                {col.links.map(l => (
+                  <li key={l}><a href="#" style={{ fontSize:13, color:T.cream, textDecoration:"none", fontFamily:"'Poppins',sans-serif" }}>{l}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div style={{ borderTop:`1px solid ${T.border}`, padding:"18px 32px" }}>
+          <div style={{ maxWidth:1240, margin:"0 auto", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:11, fontSize:11, color:T.dim, fontFamily:"'Poppins',sans-serif" }}>
+            <span>© 2025 Real Art™ · Real Advisors, Inc. All rights reserved.</span>
+            <span>AI-Powered · Fine Art Quality · Yours Forever</span>
+          </div>
         </div>
       </footer>
 
