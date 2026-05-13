@@ -2126,13 +2126,17 @@ export default function Customize() {
                       )}
 
                       <button onClick={() => {
-                        updateSelected({
+                        const newLine = makeItem({
+                          ...selected,
+                          id: crypto.randomUUID(),
+                          qty: 1,
                           productType: card.id,
                           size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
                           sku: cardSizeDef?.sku || "",
                           frameColor: card.frameColors ? cardFrame : undefined,
                           canvasEdge: canvasFrame ? "mirror" : undefined,
                         });
+                        setItems(prev => [...prev, newLine]);
                         setCartOpen(true);
                       }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
                         borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
