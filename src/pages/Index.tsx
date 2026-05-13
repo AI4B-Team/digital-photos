@@ -1000,7 +1000,7 @@ function HomePage({ onGenerate }) {
               </div>
 
               {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
-              {cat && (
+              {cat && photo && (
                 <div style={{ marginBottom:18 }}>
                   <div style={{ display:"flex", alignItems:"center", marginBottom:8 }}>
                     <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
