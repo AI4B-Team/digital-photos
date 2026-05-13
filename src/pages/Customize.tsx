@@ -1617,8 +1617,27 @@ export default function Customize() {
                             letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
                             Choose Size
                           </div>
-                          <div style={{
-                            display:"flex", gap:8, marginBottom:12,
+                          <div style={{ position:"relative", marginBottom:12 }}>
+                            {sizes.length > 3 && (
+                              <button
+                                type="button"
+                                aria-label="Scroll sizes left"
+                                onClick={(e) => {
+                                  const sc = e.currentTarget.parentElement?.querySelector("[data-size-scroll]") as HTMLElement | null;
+                                  sc?.scrollBy({ left: -160, behavior: "smooth" });
+                                }}
+                                style={{
+                                  position:"absolute", left:-6, top:"50%", transform:"translateY(-50%)",
+                                  zIndex:2, width:26, height:26, borderRadius:"50%",
+                                  background:"#fff", border:`1px solid ${BORDER}`,
+                                  boxShadow:"0 2px 8px rgba(0,0,0,.08)", cursor:"pointer",
+                                  display:"flex", alignItems:"center", justifyContent:"center", padding:0,
+                                }}>
+                                <ChevronLeft size={14} color={INK}/>
+                              </button>
+                            )}
+                          <div data-size-scroll style={{
+                            display:"flex", gap:8,
                             overflowX:"auto", paddingTop:14, paddingBottom:6,
                             scrollSnapType:"x mandatory",
                             WebkitOverflowScrolling:"touch",
@@ -1659,6 +1678,25 @@ export default function Customize() {
                                 <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>${sz.price}</div>
                               </button>
                             );})}
+                          </div>
+                            {sizes.length > 3 && (
+                              <button
+                                type="button"
+                                aria-label="Scroll sizes right"
+                                onClick={(e) => {
+                                  const sc = e.currentTarget.parentElement?.querySelector("[data-size-scroll]") as HTMLElement | null;
+                                  sc?.scrollBy({ left: 160, behavior: "smooth" });
+                                }}
+                                style={{
+                                  position:"absolute", right:-6, top:"50%", transform:"translateY(-50%)",
+                                  zIndex:2, width:26, height:26, borderRadius:"50%",
+                                  background:"#fff", border:`1px solid ${BORDER}`,
+                                  boxShadow:"0 2px 8px rgba(0,0,0,.08)", cursor:"pointer",
+                                  display:"flex", alignItems:"center", justifyContent:"center", padding:0,
+                                }}>
+                                <ChevronRight size={14} color={INK}/>
+                              </button>
+                            )}
                           </div>
                         </>
                       )}
