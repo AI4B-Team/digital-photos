@@ -139,20 +139,29 @@ const FRAMES = [
   { id: "canvas",      label: "Canvas",      add: 15, wood: null },
 ];
 
+// Legacy size fallback — Prodigi-accurate sizes only, all prices end in 7
 const SIZES = [
-  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",    price: 17,  w: 1,     h: 1     },
-  { id: '8" x 11"',  label: '8 × 11',  sub: "Petite",    price: 29,  w: 0.73,  h: 1     },
-  { id: '11" x 8"',  label: '11 × 8',  sub: "Petite",    price: 29,  w: 1,     h: 0.73  },
-  { id: '12" x 12"', label: '12 × 12', sub: "Square",    price: 47,  w: 1,     h: 1     },
-  { id: '12" x 16"', label: '12 × 16', sub: "Classic",   price: 47,  w: 0.75,  h: 1     },
-  { id: '16" x 12"', label: '16 × 12', sub: "Classic",   price: 47,  w: 1,     h: 0.75  },
-  { id: '20" x 20"', label: '20 × 20', sub: "Statement", price: 101, w: 1,     h: 1     },
-  { id: '20" x 27"', label: '20 × 27', sub: "Statement", price: 101, w: 0.74,  h: 1     },
-  { id: '27" x 20"', label: '27 × 20', sub: "Statement", price: 101, w: 1,     h: 0.74  },
-  { id: '27" x 36"', label: '27 × 36', sub: "Grand",     price: 201, w: 0.75,  h: 1     },
-  { id: '36" x 27"', label: '36 × 27', sub: "Grand",     price: 201, w: 1,     h: 0.75  },
-  { id: '22" x 44"', label: '22 × 44', sub: "Panorama",  price: 201, w: 0.5,   h: 1     },
-  { id: '44" x 22"', label: '44 × 22', sub: "Panorama",  price: 201, w: 1,     h: 0.5   },
+  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",    price: 27,  w: 1,    h: 1    },
+  { id: '8" x 10"',  label: '8 × 10',  sub: "Classic",   price: 37,  w: 0.80, h: 1    },
+  { id: '10" x 8"',  label: '10 × 8',  sub: "Classic",   price: 37,  w: 1,    h: 0.80 },
+  { id: '8" x 11"',  label: '8 × 11',  sub: "Portrait",  price: 37,  w: 0.73, h: 1    },
+  { id: '11" x 8"',  label: '11 × 8',  sub: "Landscape", price: 37,  w: 1,    h: 0.73 },
+  { id: '10" x 10"', label: '10 × 10', sub: "Square",    price: 37,  w: 1,    h: 1    },
+  { id: '11" x 14"', label: '11 × 14', sub: "Standard",  price: 47,  w: 0.79, h: 1    },
+  { id: '14" x 11"', label: '14 × 11', sub: "Standard",  price: 47,  w: 1,    h: 0.79 },
+  { id: '12" x 12"', label: '12 × 12', sub: "Square",    price: 47,  w: 1,    h: 1    },
+  { id: '12" x 16"', label: '12 × 16', sub: "Portrait",  price: 57,  w: 0.75, h: 1    },
+  { id: '16" x 12"', label: '16 × 12', sub: "Landscape", price: 57,  w: 1,    h: 0.75 },
+  { id: '16" x 20"', label: '16 × 20', sub: "Large",     price: 77,  w: 0.80, h: 1    },
+  { id: '20" x 16"', label: '20 × 16', sub: "Large",     price: 77,  w: 1,    h: 0.80 },
+  { id: '16" x 16"', label: '16 × 16', sub: "Square",    price: 77,  w: 1,    h: 1    },
+  { id: '20" x 20"', label: '20 × 20', sub: "Statement", price: 97,  w: 1,    h: 1    },
+  { id: '18" x 24"', label: '18 × 24', sub: "XL",        price: 107, w: 0.75, h: 1    },
+  { id: '24" x 18"', label: '24 × 18', sub: "XL",        price: 107, w: 1,    h: 0.75 },
+  { id: '20" x 24"', label: '20 × 24', sub: "Statement", price: 117, w: 0.83, h: 1    },
+  { id: '24" x 20"', label: '24 × 20', sub: "Statement", price: 117, w: 1,    h: 0.83 },
+  { id: '24" x 36"', label: '24 × 36', sub: "Grand",     price: 147, w: 0.67, h: 1    },
+  { id: '36" x 24"', label: '36 × 24', sub: "Grand",     price: 147, w: 1,    h: 0.67 },
 ];
 
 
@@ -197,80 +206,80 @@ const BORDER_COLORS = [
 const PRODUCT_TYPES = [
   { id:"digital",       label:"Digital Only",     desc:"Hi-res download",              icon:ArrowDownToLine, price:27   },
   { id:"print",         label:"Fine Art Print",   desc:"Ships rolled, frame yourself", icon:ImageIcon,       price:null },
-  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colors",    icon:Frame,           price:null },
-  { id:"box-frame",     label:"Box Frame",        desc:"Deep shadow box · premium",    icon:LayoutPanelTop,  price:null },
+  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",    icon:Frame,           price:null },
+  { id:"box-frame",     label:"Box Frame",        desc:"Shadow box · premium look",    icon:LayoutPanelTop,  price:null },
   { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang", icon:Square,          price:null },
-  { id:"acrylic-glass", label:"Acrylic Glass",    desc:"Museum-grade glass",            icon:Square,          price:null },
 ];
 
 // Simplified S/M/L sizes per product (drives right-panel product cards)
 const SIMPLE_SIZES: Record<string, { id:string; pid:string; label:string; dim:string; sku:string; price:number; w:number; h:number; best?:boolean }[]> = {
   "print": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8×10"',  sku:"GLOBAL-FAP-8x10",  price:47,  w:0.80, h:1 },
-    { id:"md", pid:"16x20", label:"Medium", dim:'16×20"', sku:"GLOBAL-FAP-16x20", price:87,  w:0.80, h:1, best:true },
-    { id:"lg", pid:"24x36", label:"Large",  dim:'24×36"', sku:"GLOBAL-FAP-24x36", price:167, w:0.67, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-FAP-8x10",  price:37,  w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-FAP-12x16", price:57,  w:0.75, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-FAP-24x36", price:147, w:0.67, h:1 },
   ],
   "canvas": [
-    { id:"sm", pid:"12x16", label:"Small",  dim:'12×16"', sku:"GLOBAL-CAN-12x16", price:107, w:0.75, h:1 },
-    { id:"md", pid:"16x20", label:"Medium", dim:'16×20"', sku:"GLOBAL-CAN-16x20", price:127, w:0.80, h:1, best:true },
-    { id:"lg", pid:"24x36", label:"Large",  dim:'24×36"', sku:"GLOBAL-CAN-24x36", price:217, w:0.67, h:1 },
+    { id:"sm", pid:"12x16", label:"Small",  dim:'12 × 16"', sku:"GLOBAL-CAN-12x16", price:97,  w:0.75, h:1 },
+    { id:"md", pid:"16x20", label:"Medium", dim:'16 × 20"', sku:"GLOBAL-CAN-16x20", price:117, w:0.80, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-CAN-24x36", price:207, w:0.67, h:1 },
   ],
   "classic-frame": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8×10"',  sku:"GLOBAL-CFPM-8x10",  price:87,  w:0.80, h:1 },
-    { id:"md", pid:"12x16", label:"Medium", dim:'12×16"', sku:"GLOBAL-CFPM-12x16", price:127, w:0.75, h:1, best:true },
-    { id:"lg", pid:"18x24", label:"Large",  dim:'18×24"', sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-CFPM-8x10",  price:77,  w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-CFPM-12x16", price:117, w:0.75, h:1, best:true },
+    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-CFPM-18x24", price:177, w:0.75, h:1 },
   ],
-  "acrylic-glass": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8×10"',  sku:"GLOBAL-ACR-8x10",  price:147, w:0.80, h:1 },
-    { id:"md", pid:"16x20", label:"Medium", dim:'16×20"', sku:"GLOBAL-ACR-16x20", price:197, w:0.80, h:1, best:true },
-    { id:"lg", pid:"24x36", label:"Large",  dim:'24×36"', sku:"GLOBAL-ACR-24x36", price:297, w:0.67, h:1 },
+  "box-frame": [
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-BOXM-8x10",  price:87,  w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-BOXM-12x16", price:127, w:0.75, h:1, best:true },
+    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-BOXM-18x24", price:187, w:0.75, h:1 },
   ],
 };
 
 const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sku:string; price:number; w:number; h:number }[]> = {
   print: [
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-FAP-8x10",  price:47,  w:0.80, h:1 },
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-FAP-10x10", price:47,  w:1,    h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-FAP-11x14", price:57,  w:0.79, h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-FAP-12x12", price:57,  w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-FAP-12x16", price:67,  w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-FAP-16x20", price:87,  w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-FAP-18x24", price:107, w:0.75, h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-FAP-20x24", price:127, w:0.83, h:1 },
-    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-FAP-24x36", price:167, w:0.67, h:1 },
+    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-FAP-8x8",   price:27,  w:1,    h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-FAP-8x10",  price:37,  w:0.80, h:1 },
+    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-FAP-8x11",  price:37,  w:0.73, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-FAP-10x10", price:37,  w:1,    h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-FAP-11x14", price:47,  w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-FAP-12x12", price:47,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-FAP-12x16", price:57,  w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-FAP-16x20", price:77,  w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-FAP-18x24", price:97,  w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-FAP-20x24", price:117, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-FAP-24x36", price:147, w:0.67, h:1 },
   ],
   "classic-frame": [
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CFPM-8x10",  price:87,  w:0.80, h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-CFPM-11x14", price:107, w:0.79, h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CFPM-12x16", price:127, w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CFPM-16x20", price:157, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CFPM-20x24", price:227, w:0.83, h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CFPM-8x10",  price:77,  w:0.80, h:1 },
+    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-CFPM-8x11",  price:77,  w:0.73, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CFPM-10x10", price:77,  w:1,    h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-CFPM-11x14", price:97,  w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CFPM-12x12", price:97,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CFPM-12x16", price:117, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CFPM-16x20", price:147, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CFPM-18x24", price:177, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CFPM-20x24", price:197, w:0.83, h:1 },
   ],
   "box-frame": [
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-BOXM-8x10",  price:97,  w:0.80, h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-BOXM-11x14", price:117, w:0.79, h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-BOXM-12x16", price:137, w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-BOXM-16x20", price:167, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-BOXM-8x10",  price:87,  w:0.80, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-BOXM-11x14", price:107, w:0.79, h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-BOXM-12x16", price:127, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-BOXM-16x20", price:157, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18x24", price:187, w:0.75, h:1 },
   ],
   canvas: [
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10x10", price:77,  w:1,    h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12x12", price:87,  w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12x16", price:107, w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16x20", price:127, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18x24", price:147, w:0.75, h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:167, w:0.83, h:1 },
-    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:217, w:0.67, h:1 },
-  ],
-  "acrylic-glass": [
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-ACR-8x10",  price:147, w:0.80, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Statement", sku:"GLOBAL-ACR-16x20", price:197, w:0.80, h:1 },
-    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-ACR-24x36", price:297, w:0.67, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10x10", price:67,  w:1,    h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12x12", price:77,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12x16", price:97,  w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16x20", price:117, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18x24", price:137, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:157, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:207, w:0.67, h:1 },
   ],
 };
 
 const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> = {
+  // Classic frames: 8 Prodigi colours (confirmed)
   "classic-frame": [
     { id:"black",          label:"Black",          color:"#1a1a1a" },
     { id:"white",          label:"White",          color:"#f4f4f4" },
@@ -281,13 +290,20 @@ const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> 
     { id:"light-grey",     label:"Light Grey",     color:"#d0d0d0" },
     { id:"brown",          label:"Brown",          color:"#8B5E3C" },
   ],
+  // Box frames: 3 Prodigi colours ONLY (black, white, natural — no brown)
   "box-frame": [
     { id:"black",   label:"Black",   color:"#1a1a1a" },
     { id:"white",   label:"White",   color:"#f4f4f4" },
     { id:"natural", label:"Natural", color:"#c89968" },
-    { id:"brown",   label:"Brown",   color:"#8B5E3C" },
   ],
 };
+
+// Mount/mat colours for framed prints (CFPM / BOXM) — Prodigi confirmed
+const MOUNT_COLORS = [
+  { id:"snow-white", label:"Snow White", color:"#f9f9f7" },
+  { id:"hayseed",    label:"Hayseed",    color:"#e8dfc8" },
+  { id:"black",      label:"Black",      color:"#1a1a1a" },
+];
 
 const CANVAS_EDGES = [
   { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
@@ -571,6 +587,7 @@ export default function Customize() {
   const [selectedPackId, setSelectedPackId]     = useState<string | null>(null);
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
+  const [mountColor, setMountColor]             = useState("snow-white");
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
@@ -1307,6 +1324,7 @@ export default function Customize() {
           printSku:   primaryCartItem?.sku || "",
           productType: primaryCartItem?.productType || "",
           printFrame: primaryCartItem?.frameColor || primaryCartItem?.canvasEdge || "",
+          printMount: mountColor || "snow-white",
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
@@ -1632,9 +1650,6 @@ export default function Customize() {
               { id:"canvas", label:"Canvas Print", sub:"Ready to hang.", badge:null,
                 features:["Fine-textured canvas, vivid detail & color","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included","Hi-res digital download included"],
                 delivery:"4–7 Business Days", canvasAddon:true },
-              { id:"acrylic-glass", label:"Acrylic Glass", sub:"Museum-grade glass.", badge:"Premium",
-                features:["Printed behind crystal-clear acrylic for unmatched depth","Museum archival inks, UV-protected","Ready to hang — floating mount hardware included","Hi-res digital download included"],
-                delivery:"5–8 Business Days" },
             ].map((card:any) => {
               const isActive = activeCard === card.id;
               const fullSizes = SIZES_BY_PRODUCT[card.id] || [];
@@ -1901,6 +1916,34 @@ export default function Customize() {
                                   border:`2px solid ${cardFrame===fc.id?RED:(fc.id==="white"?"#ccc":"transparent")}`,
                                   boxShadow:"0 1px 4px rgba(0,0,0,.15)",
                                   cursor:"pointer", outline:"none" }}/>
+                            ))}
+                          </div>
+                        </>
+                      )}
+
+                      {card.frameColors && (
+                        <>
+                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
+                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
+                            Mount Colour
+                          </div>
+                          <div style={{ display:"flex", gap:10, marginBottom:14 }}>
+                            {MOUNT_COLORS.map(mc => (
+                              <button key={mc.id} title={mc.label}
+                                onClick={() => setMountColor(mc.id)}
+                                style={{ display:"flex", flexDirection:"column",
+                                  alignItems:"center", gap:4, background:"none",
+                                  border:"none", cursor:"pointer", padding:0 }}>
+                                <div style={{ width:30, height:30, borderRadius:7,
+                                  background:mc.color,
+                                  border: mountColor===mc.id
+                                    ? `2px solid ${RED}`
+                                    : `1px solid rgba(0,0,0,.15)`,
+                                  boxShadow:"0 1px 3px rgba(0,0,0,.1)" }}/>
+                                <span style={{ fontSize:9.5, color:mountColor===mc.id?INK:MUTED }}>
+                                  {mc.label}
+                                </span>
+                              </button>
                             ))}
                           </div>
                         </>

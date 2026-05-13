@@ -29,6 +29,7 @@ serve(async (req) => {
       printSize = "",
       printFrame = "",
       printSku = "",
+      printMount = "snow-white",
     } = await req.json();
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
@@ -80,6 +81,7 @@ serve(async (req) => {
         printSize,
         printFrame,
         printSku,
+        printMount,
       },
     };
 
