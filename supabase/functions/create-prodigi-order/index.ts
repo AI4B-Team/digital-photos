@@ -62,6 +62,13 @@ serve(async (req) => {
     if ((productType === "classic-frame" || productType === "box-frame") && frameColor) {
       attributes.color = FRAME_COLOR_ATTR[frameColor] || frameColor;
     }
+    // Mount/mat colour for CFPM and BOXM
+    if ((productType === "classic-frame" || productType === "box-frame") && mountColor) {
+      const mountAttr: Record<string,string> = {
+        "snow-white": "snowWhite", "hayseed": "hayseed", "black": "black",
+      };
+      attributes.mount = mountAttr[mountColor] || "snowWhite";
+    }
     if (productType === "canvas" && canvasEdge) {
       attributes.wrap = CANVAS_EDGE_ATTR[canvasEdge] || canvasEdge;
     }
