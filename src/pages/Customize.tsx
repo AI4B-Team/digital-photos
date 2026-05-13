@@ -1333,8 +1333,10 @@ export default function Customize() {
             </h1>
           </div>
           <div className="cz-stage-row" style={{
-            display:"flex", alignItems:"center", justifyContent:"center",
+            display:"flex", alignItems:"center",
+            justifyContent: aiOpen ? "flex-start" : "center",
             gap:16, width:"100%", maxWidth:"100%", flex:"1 1 auto", minHeight:0,
+            paddingLeft: aiOpen ? 24 : 0,
             transition:"all .3s cubic-bezier(.22,1,.32,1)",
           }}>
             <div className="cz-canvas-scroll" style={{
