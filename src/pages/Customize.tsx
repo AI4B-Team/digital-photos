@@ -1090,40 +1090,6 @@ export default function Customize() {
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
         }}>
-
-          {/* Canvas Edge — only for canvas */}
-          {isCanvas && (
-            <div className="cz-section">
-              <div className="cz-label"><span>Edge Wrap</span><span className="cz-value">{canvasEdgeDef?.label}</span></div>
-              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-                {CANVAS_EDGES.map(ce => {
-                  const on = canvasEdge === ce.id;
-                  return (
-                    <button key={ce.id}
-                      onClick={() => updateSelected({ canvasEdge: ce.id })}
-                      style={{
-                        display:"flex", alignItems:"center", gap:10,
-                        padding:"9px 12px", borderRadius:10, cursor:"pointer",
-                        border:`1.5px solid ${on ? RED : BORDER}`,
-                        background: on ? "rgba(230,25,25,.05)" : "#fff",
-                        transition:"all .15s",
-                      }}>
-                      <div style={{
-                        width:28, height:28, borderRadius:6, flexShrink:0,
-                        background: ce.color || "linear-gradient(135deg,#e0d8cc,#c8bfb3)",
-                        border:"1px solid rgba(0,0,0,.1)",
-                      }}/>
-                      <div style={{ textAlign:"left" }}>
-                        <div style={{ fontSize:12, fontWeight:600, color: on ? RED : INK }}>{ce.label}</div>
-                        <div style={{ fontSize:10.5, color:MUTED, marginTop:1 }}>{ce.desc}</div>
-                      </div>
-                      {on && <Check size={14} color={RED} style={{ marginLeft:"auto" }}/>}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
             <div className="cz-size-scroll">
