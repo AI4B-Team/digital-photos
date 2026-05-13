@@ -1417,7 +1417,8 @@ export default function Customize() {
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
               const cardDiscount = isActive ? Math.min(discountAmt, basePrice + frameAdd) : 0;
               const price    = basePrice + frameAdd - cardDiscount;
-              const origPrice = Math.round(basePrice * 1.4);
+              const origPrice = discountAmt > 0 ? basePrice + discountAmt : Math.round(basePrice * 1.4);
+              const digitalOrig = discountAmt > 0 ? 27 + discountAmt : Math.round(27 * 1.4);
 
               return (
                 <div key={card.id} style={{
