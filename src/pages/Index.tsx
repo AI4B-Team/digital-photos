@@ -1114,7 +1114,7 @@ function HomePage({ onGenerate }) {
           <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Upload once. Receive a portrait worth treasuring forever.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:20 }} className="sg3">
             {[
-              { n:"1", Icon:Upload,             title:"Choose & Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
+              { n:"1", Icon:Upload,             title:"Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
               { n:"2", Icon:Sparkles,           title:"AI Brings It To Life",       body:"In seconds, our AI transforms your photo into a stunning portrait across six timeless art styles — Royal, Renaissance, Storybook, Fantasy, Cinematic, and Minimal." },
               { n:"3", Icon:SlidersHorizontal,  title:"Make It Truly Yours",        body:"Preview every style side by side. Choose your favourite, then customise every detail — size, frame colour, and finish." },
               { n:"4", Icon:Heart,              title:"Delivered & Cherished",      body:"Your portrait is printed on museum-quality archival fine art paper, carefully packaged, and delivered free to your door worldwide." },
