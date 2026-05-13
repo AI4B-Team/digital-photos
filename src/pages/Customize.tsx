@@ -2207,6 +2207,8 @@ export default function Customize() {
                         return (
                           <button onClick={() => {
                             addToCart(snapshot, lineQty);
+                            setPendingCart({ snapshot, qty: lineQty });
+                            setUpsellOpen(true);
                           }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
                             borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
                             justifyContent:"center", gap:8 }}>
