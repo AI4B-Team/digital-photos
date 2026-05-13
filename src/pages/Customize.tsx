@@ -1157,10 +1157,10 @@ export default function Customize() {
           {!isDigital && (
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
-            <div style={{ display:"grid", gridTemplateColumns:`repeat(${BORDERS.length}, 1fr)`, gap:8, marginBottom:14 }}>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:14 }}>
               {BORDERS.map(b => (
                 <button key={b.id} className={`cz-chip ${border===b.id?"on":""}`}
-                  style={{ justifyContent:"center", padding:"9px 6px" }}
+                  style={{ flex:"1 1 calc(25% - 6px)", minWidth:0, justifyContent:"center", padding:"9px 6px" }}
                   onClick={() => setBorder(b.id)}>
                   {b.label}
                 </button>
