@@ -1060,16 +1060,15 @@ export default function Customize() {
           gap:14, flexWrap:"wrap", position:"sticky", top:0, zIndex:30,
         }}>
           <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>
-            {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}
+            {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}: ${discountAmt} OFF
           </span>
           <span style={{ fontSize:12, color:"#FFE4E6" }}>
-            Expires When The Timer Hits Zero
+            — Expires When The Timer Hits Zero
           </span>
           <div style={{
             background:"#fff", color:"#E61919", fontSize:12, fontWeight:700,
             padding:"4px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
           }}>{fmtCountdown(discountSec)}</div>
-          <span style={{ fontSize:13, fontWeight:800, color:"#fff" }}>${discountAmt} OFF</span>
         </div>
       )}
 
