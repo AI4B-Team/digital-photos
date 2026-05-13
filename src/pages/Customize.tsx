@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2 } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
@@ -539,6 +539,14 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
+  const [mpSection, setMpSection]     = useState<"" | "ai" | "concierge">("");
+  const [conciergeNote, setConciergeNote] = useState("");
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`concierge_note_${selected?.id}`);
+      setConciergeNote(saved || (selected as any)?.conciergeNote || "");
+    } catch { setConciergeNote(""); }
+  }, [selected?.id]);
   const [choices, setChoices]         = useState<string[]>([]);
   const [choiceOpen, setChoiceOpen]   = useState(false);
   const [choicesLoaded, setChoicesLoaded] = useState(0);
@@ -933,7 +941,7 @@ export default function Customize() {
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
               onClick={(e) => e.stopPropagation()}
               style={{ flexShrink:0 }}>
-              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
+              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
                 <Sparkles size={18}/>
               </button>
               <div className="cz-tool-divider"/>
@@ -1212,90 +1220,182 @@ export default function Customize() {
               onChange={handleFilePicked}
             />
             {aiOpen && (
-              <div className="cz-ai-panel">
-                <div className="cz-ai-head">
-                  <div className="cz-ai-title">
-                    <span className="cz-ai-icon"><Sparkles size={14}/></span>
-                    AI Assistant
-                  </div>
-                  <button className="cz-ai-close" onClick={() => setAiOpen(false)} aria-label="Close">
-                    <X size={16}/>
-                  </button>
-                </div>
-                <div className="cz-ai-body">
-                  <div className="cz-ai-intro">
-                    Describe what you'd like to change. The AI will regenerate the portrait with your tweaks.
-                  </div>
-                  <div className="cz-suggest" style={{ marginTop:0 }}>
-                    {[
-                      "Make the background darker",
-                      "More dramatic lighting",
-                      "Brighter and more vibrant",
-                      "Add a subtle smile",
-                      "Soften the colors",
-                    ].map(s => (
-                      <button key={s} type="button" disabled={busy} onClick={() => setAiInput(s)}>{s}</button>
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    disabled={busy}
-                    onClick={() => runRegenerate("")}
-                    style={{
-                      width:"100%", padding:"10px 12px", borderRadius:8,
-                      border:`1px solid ${BORDER}`, background:"#fafafa", cursor:"pointer",
-                      color:INK, fontFamily:"'Poppins',sans-serif", fontSize:12.5,
-                      fontWeight:500, display:"inline-flex", alignItems:"center", gap:8,
-                      textAlign:"left",
-                    }}
-                  >
-                    <Sparkles size={13} color={RED}/> New Variation
-                  </button>
-                </div>
-                <div style={{
-                  position:"relative", padding:10, borderTop:`1px solid ${BORDER}`, background:"#FAFAF7",
+              <div
+                onClick={() => { setAiOpen(false); setMpSection(""); }}
+                style={{
+                  position:"fixed", inset:0, background:"rgba(20,16,12,.55)",
+                  zIndex:200, display:"flex", alignItems:"center", justifyContent:"center",
+                  padding:"24px", backdropFilter:"blur(4px)",
                 }}>
-                  <textarea
-                    value={aiInput}
-                    onChange={(e) => setAiInput(e.target.value)}
-                    placeholder="Describe what you'd like to change…"
-                    disabled={busy}
-                    style={{
-                      width:"100%", minHeight:64, padding:"10px 44px 10px 12px",
-                      border:`1px solid ${BORDER}`, borderRadius:10,
-                      fontFamily:"'Poppins',sans-serif", fontSize:12.5, color:INK,
-                      resize:"none", outline:"none", background:"#fff", display:"block",
-                    }}
-                    onFocus={(e) => e.currentTarget.style.borderColor = RED}
-                    onBlur={(e) => e.currentTarget.style.borderColor = BORDER}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey && aiInput.trim() && !busy) {
-                        e.preventDefault();
-                        const p = aiInput.trim();
-                        setAiInput("");
-                        runRegenerate(p);
-                      }
-                    }}
-                  />
-                  <button
-                    type="button"
-                    aria-label="Generate"
-                    disabled={busy || !aiInput.trim()}
-                    onClick={() => {
-                      const p = aiInput.trim();
-                      setAiInput("");
-                      runRegenerate(p);
-                    }}
-                    style={{
-                      position:"absolute", right:18, bottom:18,
-                      width:32, height:32, borderRadius:8,
-                      background:RED, color:"#fff", border:"none", cursor:"pointer",
-                      display:"flex", alignItems:"center", justifyContent:"center",
-                      opacity: (busy || !aiInput.trim()) ? .5 : 1,
-                    }}
-                  >
-                    <Send size={14}/>
-                  </button>
+                <div onClick={(e) => e.stopPropagation()} style={{
+                  background:"#fff", borderRadius:18, width:"100%", maxWidth:520,
+                  maxHeight:"90vh", overflowY:"auto", padding:"22px 22px 24px",
+                  boxShadow:"0 20px 60px rgba(0,0,0,.25)", position:"relative",
+                }}>
+                  <button onClick={() => { setAiOpen(false); setMpSection(""); }} aria-label="Close" style={{
+                    position:"absolute", top:14, right:14, width:30, height:30,
+                    borderRadius:"50%", background:"#F1ECE5", border:"none", cursor:"pointer",
+                    display:"flex", alignItems:"center", justifyContent:"center",
+                  }}><X size={16} color={MUTED}/></button>
+
+                  <div className="cz-serif" style={{ fontSize:22, fontWeight:700, color:INK, lineHeight:1.1 }}>
+                    Make It Perfect
+                  </div>
+                  <div style={{ fontSize:13, color:MUTED, marginTop:4 }}>
+                    Quick retry or tell us what to change
+                  </div>
+
+                  {/* 3 quick actions */}
+                  <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:10, marginTop:18 }}>
+                    {[
+                      { id:"retry",  label:"Retry",        icon:RotateCcw,    onClick:() => { setAiOpen(false); setMpSection(""); handleRetry(); } },
+                      { id:"style",  label:"Change Style", icon:Layers,       onClick:() => { setAiOpen(false); setMpSection(""); navigate(-1); } },
+                      { id:"upload", label:"Upload New",   icon:UploadCloud,  onClick:() => { setAiOpen(false); setMpSection(""); handleAddImage(); } },
+                    ].map(a => {
+                      const Ico = a.icon;
+                      return (
+                        <button key={a.id} onClick={a.onClick} disabled={busy} style={{
+                          display:"flex", flexDirection:"column", alignItems:"center", gap:8,
+                          padding:"16px 8px", borderRadius:12, background:"#FAF7F2",
+                          border:`1px solid ${BORDER}`, cursor:"pointer",
+                          opacity: busy ? .5 : 1,
+                        }}>
+                          <Ico size={20} color={INK}/>
+                          <span style={{ fontSize:12.5, fontWeight:700, color:INK,
+                            fontFamily:"'Poppins',sans-serif" }}>{a.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Divider */}
+                  <div style={{ display:"flex", alignItems:"center", gap:10, margin:"22px 0 14px" }}>
+                    <div style={{ flex:1, height:1, background:BORDER }}/>
+                    <span style={{ fontSize:12, color:MUTED }}>or request changes</span>
+                    <div style={{ flex:1, height:1, background:BORDER }}/>
+                  </div>
+
+                  {/* AI quick fix */}
+                  <div style={{
+                    border:`1px solid ${mpSection==="ai" ? RED : BORDER}`, borderRadius:12,
+                    padding:14, marginBottom:10, background:"#fff",
+                  }}>
+                    <button onClick={() => setMpSection(mpSection==="ai" ? "" : "ai")}
+                      style={{ width:"100%", background:"transparent", border:"none", cursor:"pointer",
+                        display:"flex", alignItems:"center", gap:12, textAlign:"left", padding:0 }}>
+                      <span style={{ width:36, height:36, borderRadius:"50%",
+                        background:"#FDECEC", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <Sparkles size={16} color={RED}/>
+                      </span>
+                      <div style={{ flex:1, minWidth:0 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                          <span style={{ fontSize:14, fontWeight:700, color:INK,
+                            fontFamily:"'Poppins',sans-serif" }}>AI Quick Fix</span>
+                          <span style={{ fontSize:9, fontWeight:700, color:RED,
+                            background:"#FDECEC", padding:"2px 6px", borderRadius:6,
+                            letterSpacing:".08em", textTransform:"uppercase" }}>Instant</span>
+                        </div>
+                        <div style={{ fontSize:12, color:MUTED, marginTop:2 }}>
+                          See changes instantly — before you order.
+                        </div>
+                      </div>
+                    </button>
+                    {mpSection === "ai" && (
+                      <div style={{ marginTop:14, paddingTop:14, borderTop:`1px solid ${BORDER}` }}>
+                        <div style={{ fontSize:12, color:INK, marginBottom:10, lineHeight:1.5 }}>
+                          Best for small tweaks: 'add a red bandana', 'change background to forest', 'bigger smile'. You'll see the new preview right away.
+                        </div>
+                        <textarea
+                          value={aiInput}
+                          onChange={(e) => setAiInput(e.target.value)}
+                          placeholder="Describe the change you want…"
+                          disabled={busy}
+                          style={{
+                            width:"100%", minHeight:80, padding:"10px 12px",
+                            border:`1px solid ${BORDER}`, borderRadius:10,
+                            fontFamily:"'Poppins',sans-serif", fontSize:13, color:INK,
+                            resize:"vertical", outline:"none", background:"#fff",
+                          }}/>
+                        <button
+                          disabled={busy || !aiInput.trim()}
+                          onClick={() => {
+                            const p = aiInput.trim();
+                            setAiInput("");
+                            setAiOpen(false);
+                            setMpSection("");
+                            runRegenerate(p);
+                          }}
+                          style={{
+                            width:"100%", marginTop:10, padding:"12px 0",
+                            background:RED, color:"#fff", border:"none", borderRadius:10,
+                            fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:13,
+                            cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                            opacity: (busy || !aiInput.trim()) ? .5 : 1,
+                          }}>
+                          <Sparkles size={14}/> Try With AI
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Concierge Touch-Up (renamed from Artist refinement) */}
+                  <div style={{
+                    border:`1px solid ${mpSection==="concierge" ? RED : BORDER}`, borderRadius:12,
+                    padding:14, background:"#fff",
+                  }}>
+                    <button onClick={() => setMpSection(mpSection==="concierge" ? "" : "concierge")}
+                      style={{ width:"100%", background:"transparent", border:"none", cursor:"pointer",
+                        display:"flex", alignItems:"center", gap:12, textAlign:"left", padding:0 }}>
+                      <span style={{ width:36, height:36, borderRadius:"50%",
+                        background:"#FDECEC", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <Wand2 size={16} color={RED}/>
+                      </span>
+                      <div style={{ flex:1, minWidth:0 }}>
+                        <div style={{ fontSize:14, fontWeight:700, color:INK,
+                          fontFamily:"'Poppins',sans-serif" }}>Concierge Touch-Up</div>
+                        <div style={{ fontSize:12, color:MUTED, marginTop:2 }}>
+                          For complex edits — applied after you order.
+                        </div>
+                      </div>
+                    </button>
+                    {mpSection === "concierge" && (
+                      <div style={{ marginTop:14, paddingTop:14, borderTop:`1px solid ${BORDER}` }}>
+                        <div style={{ fontSize:12, color:INK, marginBottom:10, lineHeight:1.5 }}>
+                          Choose this when AI Quick Fix can't get it right. A real artist refines eyes, fur, expressions, and likeness after checkout — unlimited revisions until you love it.
+                        </div>
+                        <textarea
+                          value={conciergeNote}
+                          onChange={(e) => setConciergeNote(e.target.value)}
+                          placeholder="Tell our artist what to fix — be as specific as you like…"
+                          style={{
+                            width:"100%", minHeight:90, padding:"10px 12px",
+                            border:`1px solid ${BORDER}`, borderRadius:10,
+                            fontFamily:"'Poppins',sans-serif", fontSize:13, color:INK,
+                            resize:"vertical", outline:"none", background:"#FAF7F2",
+                          }}/>
+                        <button
+                          disabled={!conciergeNote.trim()}
+                          onClick={() => {
+                            try { localStorage.setItem(`concierge_note_${selected.id}`, conciergeNote.trim()); } catch {}
+                            updateSelected({ conciergeNote: conciergeNote.trim() } as any);
+                            setAiOpen(false);
+                            setMpSection("");
+                          }}
+                          style={{
+                            width:"100%", marginTop:10, padding:"12px 0",
+                            background:RED, color:"#fff", border:"none", borderRadius:10,
+                            fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:13,
+                            cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                            opacity: !conciergeNote.trim() ? .5 : 1,
+                          }}>
+                          <Wand2 size={14}/> Save Notes For Artist
+                        </button>
+                        <div style={{ fontSize:11, color:MUTED, marginTop:8, textAlign:"center" }}>
+                          Free with every order · Applied after checkout
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
