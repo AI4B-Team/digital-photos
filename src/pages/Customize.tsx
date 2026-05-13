@@ -1648,9 +1648,6 @@ export default function Customize() {
               { id:"canvas", label:"Canvas Print", sub:"Ready to hang.", badge:null,
                 features:["Fine-textured canvas, vivid detail & color","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included","Hi-res digital download included"],
                 delivery:"4–7 Business Days", canvasAddon:true },
-              { id:"acrylic-glass", label:"Acrylic Glass", sub:"Museum-grade glass.", badge:"Premium",
-                features:["Printed behind crystal-clear acrylic for unmatched depth","Museum archival inks, UV-protected","Ready to hang — floating mount hardware included","Hi-res digital download included"],
-                delivery:"5–8 Business Days" },
             ].map((card:any) => {
               const isActive = activeCard === card.id;
               const fullSizes = SIZES_BY_PRODUCT[card.id] || [];
