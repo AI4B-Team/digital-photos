@@ -1296,8 +1296,11 @@ function HomePage({ onGenerate }) {
       <footer style={{ background:"#F9F7F4", borderTop:`1px solid ${T.border}` }}>
         <div style={{ maxWidth:1240, margin:"0 auto", padding:"56px 32px 28px", display:"grid", gridTemplateColumns:"1.4fr 1fr 1fr 1fr", gap:36 }} className="pg3">
           <div>
-            <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:22, color:T.cream, fontWeight:700, marginBottom:14 }}>
-              Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:10, color:T.dim, marginLeft:2 }}>™</sup>
+            <div style={{ display:"inline-block", background:"#E61919", padding:7, width:120, marginBottom:18 }}>
+              <div style={{ border:"2px solid #fff", padding:"5px 14px", display:"flex", flexDirection:"column", alignItems:"center" }}>
+                <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:"1.7rem", fontWeight:900, color:"#fff", letterSpacing:".05em", lineHeight:1, textAlign:"center", display:"block" }}>REAL</span>
+                <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:".44rem", fontWeight:700, letterSpacing:".3em", color:"#fff", textTransform:"uppercase", textAlign:"center", display:"block", marginTop:3 }}>ART</span>
+              </div>
             </div>
             <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, marginBottom:18, maxWidth:300, fontFamily:"'Poppins',sans-serif" }}>
               AI-powered portrait art printed on archival fine art paper. Delivered to your door, anywhere in the world.
