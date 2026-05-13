@@ -1401,22 +1401,33 @@ export default function Customize() {
                             Choose Size
                           </div>
                           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8, marginBottom:12 }}>
-                            {sizes.map(sz => (
+                            {sizes.map(sz => {
+                              const maxDim = 36;
+                              const shapeH = 30;
+                              const shapeW = Math.round(shapeH * (sz.w / sz.h));
+                              return (
                               <button key={sz.id}
                                 onClick={() => {
                                   setCardSize(prev => ({ ...prev, [card.id]: sz.id }));
-                                  updateSelected({ size: sz.id, sku: sz.sku, productType: card.id });
+                                  updateSelected({ size: sz.pid, sku: sz.sku, productType: card.id });
                                 }}
                                 style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
-                                  borderRadius:10, padding:"10px 6px",
+                                  borderRadius:10, padding:"16px 6px 10px",
                                   background: selSize===sz.id ? "rgba(230,25,25,.05)" : "#fff",
                                   cursor:"pointer", textAlign:"center", position:"relative" }}>
                                 {sz.best && (
-                                  <span style={{ position:"absolute", top:-7, left:"50%",
+                                  <span style={{ position:"absolute", top:-9, left:"50%",
                                     transform:"translateX(-50%)", fontSize:8, fontWeight:700,
-                                    background:RED, color:"#fff", padding:"2px 6px",
-                                    borderRadius:10, letterSpacing:".06em", textTransform:"uppercase" }}>Best Value</span>
+                                    background:RED, color:"#fff", padding:"3px 7px",
+                                    borderRadius:10, letterSpacing:".06em", textTransform:"uppercase",
+                                    whiteSpace:"nowrap" }}>Best Value</span>
                                 )}
+                                <div style={{ display:"flex", justifyContent:"center", alignItems:"flex-end",
+                                  height: shapeH + 4, marginBottom:6 }}>
+                                  <div style={{ width: shapeW, height: shapeH,
+                                    border:`1.5px solid ${selSize===sz.id?RED:"#bdb6ad"}`,
+                                    borderRadius:2, background: selSize===sz.id ? "rgba(230,25,25,.08)" : "#f4f1ec" }}/>
+                                </div>
                                 <div style={{ fontSize:12, fontWeight:700, color:INK }}>{sz.label}</div>
                                 <div style={{ fontSize:10.5, color:MUTED, marginTop:2 }}>{sz.dim}</div>
                                 <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
@@ -1424,7 +1435,7 @@ export default function Customize() {
                                 </div>
                                 <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>${sz.price}</div>
                               </button>
-                            ))}
+                            );})}
                           </div>
                         </>
                       )}
