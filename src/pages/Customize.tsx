@@ -1283,11 +1283,270 @@ export default function Customize() {
 
         {/* Cart + pricing (right) */}
         <aside className="cz-side" style={{
-          padding:"32px 24px 32px 12px",
+          padding:"24px 24px 24px 12px",
           position:"sticky", top:70, alignSelf:"start",
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
         }}>
+          {/* Discount timer banner */}
+          {discountAmt > 0 && (
+            <div style={{
+              background:"#FFF7ED", border:"1px solid #FED7AA",
+              borderRadius:10, padding:"10px 14px",
+              display:"flex", alignItems:"center", justifyContent:"space-between",
+            }}>
+              <div>
+                <span style={{ fontSize:13, fontWeight:700, color:"#C2410C" }}>
+                  {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}
+                </span>
+                <span style={{ fontSize:11, color:"#9A3412", display:"block", marginTop:1 }}>
+                  Expires when the timer hits zero
+                </span>
+              </div>
+              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                <div style={{
+                  background:"#E61919", color:"#fff", fontSize:11, fontWeight:700,
+                  padding:"5px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
+                }}>{fmtCountdown(discountSec)}</div>
+                <span style={{ fontSize:13, fontWeight:800, color:"#E61919" }}>${discountAmt} OFF</span>
+              </div>
+            </div>
+          )}
+
+          {/* Choose Your Print — accordion product cards */}
+          <div>
+            <h3 style={{ fontSize:18, fontWeight:800, color:INK,
+              fontFamily:"'Poppins',sans-serif", margin:"0 0 12px" }}>
+              Choose Your Print
+            </h3>
+            {[
+              { id:"print", label:"Art Print", sub:"Ships rolled, unframed.", badge:null,
+                features:["Premium 230gsm archival paper, fade-resistant","Vivid colours, sunlight resistant","Ships rolled in a protective tube"],
+                delivery:"5–7 business days" },
+              { id:"canvas", label:"Gallery Canvas", sub:"Ready to hang.", badge:"Most Loved",
+                features:["Fine-textured canvas, vivid detail & colour","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included"],
+                delivery:"4–7 business days", canvasAddon:true },
+              { id:"classic-frame", label:"Framed Print", sub:"Ready to hang, 8 frame colours.", badge:null,
+                features:["Museum-grade cotton art paper with white mount","Hand-finished solid frame, conservation-grade mount","Ready to hang — arrives fully assembled"],
+                delivery:"5–9 business days", frameColors:true },
+              { id:"acrylic-glass", label:"Acrylic Glass", sub:"Museum-grade glass.", badge:"Premium",
+                features:["Printed behind crystal-clear acrylic for unmatched depth","Museum archival inks, UV-protected","Ready to hang — floating mount hardware included"],
+                delivery:"5–8 business days" },
+              { id:"digital", label:"Digital Only", sub:"Instant download.", badge:null,
+                features:["All 6 portrait styles, hi-res files","Instant download, no waiting","Print-ready — use any local print shop"],
+                delivery:"Instant" },
+            ].map((card:any) => {
+              const isActive = activeCard === card.id;
+              const sizes    = SIMPLE_SIZES[card.id] || [];
+              const selSize  = cardSize[card.id] || "md";
+              const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[1] || sizes[0];
+              const basePrice = card.id === "digital" ? 27 : (cardSizeDef?.price || 0);
+              const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
+              const cardDiscount = isActive ? Math.min(discountAmt, basePrice + frameAdd) : 0;
+              const price    = basePrice + frameAdd - cardDiscount;
+              const origPrice = Math.round(basePrice * 1.4);
+
+              return (
+                <div key={card.id} style={{
+                  border:`1px solid ${isActive ? RED : BORDER}`,
+                  borderRadius:14, marginBottom:8, overflow:"hidden",
+                  transition:"border-color .15s", background:"#fff",
+                }}>
+                  <button
+                    onClick={() => setActiveCard(isActive ? "" : card.id)}
+                    style={{ width:"100%", display:"flex", alignItems:"center",
+                      justifyContent:"space-between", padding:"14px 16px",
+                      background: isActive ? "rgba(230,25,25,.03)" : "#fff",
+                      border:"none", cursor:"pointer", gap:8 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:8,
+                      flex:1, minWidth:0, textAlign:"left" }}>
+                      {card.badge && (
+                        <span style={{ fontSize:9, fontWeight:700, background:"#1A1614",
+                          color:"#fff", padding:"3px 8px", borderRadius:20,
+                          letterSpacing:".08em", textTransform:"uppercase",
+                          fontFamily:"'Poppins',sans-serif", flexShrink:0 }}>{card.badge}</span>
+                      )}
+                      <div style={{ minWidth:0 }}>
+                        <div style={{ fontSize:14, fontWeight:700, color:INK,
+                          fontFamily:"'Poppins',sans-serif" }}>{card.label}</div>
+                        <div style={{ fontSize:11.5, color:MUTED }}>{card.sub}</div>
+                      </div>
+                    </div>
+                    <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
+                      {!isActive && (
+                        <>
+                          <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
+                            ${card.id==="digital"?Math.round(27*1.4):origPrice}
+                          </span>
+                          <span style={{ fontSize:15, fontWeight:800, color:RED,
+                            fontFamily:"'Poppins',sans-serif" }}>
+                            ${card.id==="digital"?27:basePrice}
+                          </span>
+                        </>
+                      )}
+                      <ChevronDown size={15} color={isActive?RED:MUTED}
+                        style={{ transform:isActive?"rotate(180deg)":"rotate(0)",
+                          transition:"transform .2s", flexShrink:0 }}/>
+                    </div>
+                  </button>
+
+                  {isActive && (
+                    <div style={{ padding:"4px 16px 16px" }}>
+                      {card.id !== "digital" && (
+                        <>
+                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
+                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
+                            Choose Size
+                          </div>
+                          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8, marginBottom:12 }}>
+                            {sizes.map(sz => (
+                              <button key={sz.id}
+                                onClick={() => {
+                                  setCardSize(prev => ({ ...prev, [card.id]: sz.id }));
+                                  updateSelected({ size: sz.id, sku: sz.sku, productType: card.id });
+                                }}
+                                style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
+                                  borderRadius:10, padding:"10px 6px",
+                                  background: selSize===sz.id ? "rgba(230,25,25,.05)" : "#fff",
+                                  cursor:"pointer", textAlign:"center", position:"relative" }}>
+                                {sz.best && (
+                                  <span style={{ position:"absolute", top:-7, left:"50%",
+                                    transform:"translateX(-50%)", fontSize:8, fontWeight:700,
+                                    background:RED, color:"#fff", padding:"2px 6px",
+                                    borderRadius:10, letterSpacing:".06em", textTransform:"uppercase" }}>Best Value</span>
+                                )}
+                                <div style={{ fontSize:12, fontWeight:700, color:INK }}>{sz.label}</div>
+                                <div style={{ fontSize:10.5, color:MUTED, marginTop:2 }}>{sz.dim}</div>
+                                <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
+                                  ${Math.round(sz.price*1.4)}
+                                </div>
+                                <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>${sz.price}</div>
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+
+                      {card.canvasAddon && (
+                        <div onClick={() => setCanvasFrame(p => !p)}
+                          style={{ border:`1px solid ${BORDER}`, borderRadius:10,
+                            padding:"10px 12px", marginBottom:12, cursor:"pointer",
+                            display:"flex", alignItems:"center", gap:10 }}>
+                          <div style={{ width:18, height:18, borderRadius:"50%",
+                            border:`2px solid ${canvasFrame?RED:BORDER}`,
+                            background:canvasFrame?RED:"transparent",
+                            display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                            {canvasFrame && <Check size={10} color="#fff" strokeWidth={3}/>}
+                          </div>
+                          <div style={{ flex:1, minWidth:0 }}>
+                            <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>Add A Floating Wood Frame</div>
+                            <div style={{ fontSize:11, color:MUTED }}>Elegant border around your canvas</div>
+                          </div>
+                          <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>+$49</span>
+                          {canvasFrame && (
+                            <div style={{ display:"flex", gap:6, marginLeft:6 }} onClick={e => e.stopPropagation()}>
+                              {[{id:"black",color:"#1a1a1a"},{id:"white",color:"#f4f4f4"},{id:"walnut",color:"#5a3a24"}].map(fc => (
+                                <button key={fc.id}
+                                  onClick={() => setCanvasFrameColor(fc.id)}
+                                  style={{ width:18, height:18, borderRadius:5,
+                                    background:fc.color, cursor:"pointer",
+                                    border:`2px solid ${canvasFrameColor===fc.id?RED:"rgba(0,0,0,.15)"}`,
+                                    padding:0 }}/>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {card.frameColors && (
+                        <>
+                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
+                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
+                            Frame Colour
+                          </div>
+                          <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:12 }}>
+                            {(FRAME_COLORS["classic-frame"]||[]).map(fc => (
+                              <button key={fc.id} title={fc.label}
+                                onClick={() => { setCardFrame(fc.id);
+                                  updateSelected({ frameColor:fc.id, frame:toFrameId("classic-frame",fc.id) }); }}
+                                style={{ width:30, height:30, borderRadius:7,
+                                  background:fc.color, padding:0,
+                                  border:`2px solid ${cardFrame===fc.id?RED:(fc.id==="white"?"#ccc":"transparent")}`,
+                                  boxShadow:"0 1px 4px rgba(0,0,0,.15)",
+                                  cursor:"pointer", outline:"none" }}/>
+                            ))}
+                          </div>
+                        </>
+                      )}
+
+                      {card.id !== "digital" && (
+                        <div style={{ display:"flex", alignItems:"center", gap:6,
+                          fontSize:12, color:"#16a34a", fontWeight:600, marginBottom:10 }}>
+                          <Truck size={14}/> Free shipping included
+                        </div>
+                      )}
+
+                      <div style={{ fontSize:11, color:MUTED, fontWeight:600,
+                        letterSpacing:".06em", textTransform:"uppercase", marginBottom:6 }}>Included</div>
+                      <ul style={{ listStyle:"none", padding:0, margin:"0 0 12px",
+                        display:"flex", flexDirection:"column", gap:5 }}>
+                        {card.features.map((f:string, i:number) => (
+                          <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
+                            fontSize:12, color:INK, lineHeight:1.5 }}>
+                            <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
+                          </li>
+                        ))}
+                      </ul>
+
+                      {cardDiscount > 0 && (
+                        <div style={{ fontSize:12, color:"#16a34a", fontWeight:700, marginBottom:10 }}>
+                          ■ ${discountAmt} discount applied!
+                        </div>
+                      )}
+
+                      <button onClick={() => {
+                        updateSelected({
+                          productType: card.id,
+                          size: card.id === "digital" ? selected.size : selSize,
+                          sku: cardSizeDef?.sku || "",
+                          frameColor: card.frameColors ? cardFrame : undefined,
+                          canvasEdge: canvasFrame ? "mirror" : undefined,
+                        });
+                        handleContinue();
+                      }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
+                        borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
+                        justifyContent:"center", gap:8 }}>
+                        Order My {card.label} —{" "}
+                        <span style={{ fontWeight:900 }}>${price}</span>
+                      </button>
+
+                      <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
+                        Delivery: {card.delivery} · 100% Money-back guarantee
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+
+            {/* Add another portrait upsell */}
+            <div style={{ border:`1px dashed ${BORDER}`, borderRadius:12,
+              padding:"12px 14px", marginTop:6, cursor:"pointer" }}
+              onClick={handleAddImage}>
+              <div style={{ display:"flex", alignItems:"center", gap:9 }}>
+                <div style={{ width:32, height:32, borderRadius:8,
+                  background:"rgba(230,25,25,.08)", display:"flex",
+                  alignItems:"center", justifyContent:"center" }}>
+                  <Plus size={16} color={RED}/>
+                </div>
+                <div>
+                  <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>Add Another Portrait</div>
+                  <div style={{ fontSize:11, color:MUTED }}>Save 10% on 2 photos · 15% on 3+</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="cz-section">
             <div className="cz-label" style={{ marginBottom:14 }}><span>Your Cart</span></div>
 
