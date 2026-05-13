@@ -854,7 +854,7 @@ export default function Customize() {
             transition: "border-color .2s ease",
           }}>
             <div style={{
-              background: bcd.bg,
+              background: bd.px === 0 ? "transparent" : bcd.bg,
               padding: bd.px,
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "none",
