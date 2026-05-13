@@ -1837,6 +1837,33 @@ export default function Customize() {
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
                         Delivery: {card.delivery} · 100% Money-back guarantee
                       </div>
+
+                      {/* Buy Now, Pay Later */}
+                      <div style={{
+                        marginTop:10, padding:"10px 12px",
+                        border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
+                      }}>
+                        <div style={{ fontSize:11.5, color:INK, fontWeight:600, marginBottom:8, textAlign:"center" }}>
+                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(price/4).toFixed(2)}</span>
+                        </div>
+                        <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
+                          {[
+                            { name: "Shop Pay", logo: shopPayLogo, bg: "#5A31F4", scale: "86%" },
+                            { name: "Klarna", logo: klarnaLogo, bg: "#FFA8CD", scale: "80%" },
+                            { name: "Affirm", logo: affirmLogo, bg: "transparent", scale: "100%", maxHeight: 30, pad: 0 },
+                            { name: "Afterpay", logo: afterpayLogo, bg: "#B2FCE4", scale: "84%" },
+                          ].map((provider:any) => (
+                            <div key={provider.name} title={provider.name} aria-label={provider.name} style={{
+                              height:22, minWidth:0, padding:provider.pad ?? "0 5px", borderRadius:4, background:provider.bg,
+                              display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden",
+                            }}>
+                              <img src={provider.logo} alt={provider.name} style={{
+                                width:provider.scale, maxHeight:provider.maxHeight ?? 12, objectFit:"contain", display:"block",
+                              }}/>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -2201,33 +2228,6 @@ export default function Customize() {
           }}>
             <Check size={18}/> Continue To Checkout
           </button>
-
-          {/* Buy Now, Pay Later */}
-          <div style={{
-            marginTop:4, padding:"12px 14px",
-            border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
-          }}>
-            <div style={{ fontSize:12, color:INK, fontWeight:600, marginBottom:10, textAlign:"center" }}>
-              Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(total/4).toFixed(2)}</span>
-            </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
-              {[
-                { name: "Shop Pay", logo: shopPayLogo, bg: "#5A31F4", scale: "86%" },
-                { name: "Klarna", logo: klarnaLogo, bg: "#FFA8CD", scale: "80%" },
-                { name: "Affirm", logo: affirmLogo, bg: "transparent", scale: "100%", maxHeight: 32, pad: 0 },
-                { name: "Afterpay", logo: afterpayLogo, bg: "#B2FCE4", scale: "84%" },
-              ].map((provider) => (
-                <div key={provider.name} title={provider.name} aria-label={provider.name} style={{
-                  height:23, minWidth:0, padding:provider.pad ?? "0 5px", borderRadius:4, background:provider.bg,
-                  display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden",
-                }}>
-                  <img src={provider.logo} alt={provider.name} style={{
-                    width:provider.scale, maxHeight:provider.maxHeight ?? 13, objectFit:"contain", display:"block",
-                  }}/>
-                </div>
-              ))}
-            </div>
-          </div>
 
           <div style={{ textAlign:"center", color:MUTED, fontSize:11.5 }}>
             Free Shipping · 100-Day Happiness Guarantee
