@@ -22,6 +22,7 @@ serve(async (req) => {
   try {
     const {
       product,
+      lineItems,
       email,
       sessionId,
       portraitUrl = "",
@@ -30,22 +31,49 @@ serve(async (req) => {
       printSku = "",
     } = await req.json();
 
-    const priceId = PRICE_IDS[product];
-    if (!priceId) throw new Error(`Unknown product: ${product}`);
-
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
     });
 
     const origin = req.headers.get("origin") || "https://id-preview--7e013cac-1946-4adb-80ef-76aea633d9d1.lovable.app";
 
-    const isPhysical = product === "print" || product === "canvas" || product === "bundle";
+    // Build line_items: prefer dynamic cart `lineItems`, fall back to single `product`
+    let stripeLineItems: any[] = [];
+    let isPhysical = false;
+    let primaryProduct = product || "digital";
+
+    if (Array.isArray(lineItems) && lineItems.length > 0) {
+      stripeLineItems = lineItems.map((li: any) => ({
+        price_data: {
+          currency: "usd",
+          unit_amount: Math.max(50, Math.round(li.unitAmount)),
+          product_data: {
+            name: String(li.name || "Item").slice(0, 250),
+            description: li.description ? String(li.description).slice(0, 500) : undefined,
+            images: li.image && typeof li.image === "string" && li.image.startsWith("http")
+              ? [li.image]
+              : undefined,
+          },
+        },
+        quantity: Math.max(1, Math.min(99, parseInt(li.quantity) || 1)),
+      }));
+      // Treat as physical if any item name suggests a print/canvas/frame
+      isPhysical = lineItems.some((li: any) =>
+        /print|canvas|frame/i.test(String(li.name || ""))
+      );
+      primaryProduct = isPhysical ? "bundle" : "digital";
+    } else {
+      const priceId = PRICE_IDS[product];
+      if (!priceId) throw new Error(`Unknown product: ${product}`);
+      stripeLineItems = [{ price: priceId, quantity: 1 }];
+      isPhysical = product === "print" || product === "canvas" || product === "bundle";
+    }
 
     const sessionParams: any = {
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: stripeLineItems,
       mode: "payment",
       success_url: `${origin}/delivery?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/checkout`,
+      cancel_url: `${origin}/customize`,
       metadata: {
         app_session_id: sessionId || "",
         portraitUrl,
@@ -80,7 +108,7 @@ serve(async (req) => {
         .from("sessions")
         .update({
           stripe_session_id: checkoutSession.id,
-          order_product: product,
+          order_product: primaryProduct,
           print_size: printSize || null,
           print_frame: printFrame || null,
           print_sku: printSku || null,

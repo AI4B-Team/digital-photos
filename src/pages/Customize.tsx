@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2 } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
@@ -573,6 +573,27 @@ export default function Customize() {
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
+  // Cart drawer + extra pack line items
+  const [cartOpen, setCartOpen]   = useState(false);
+  const [addedPacks, setAddedPacks] = useState<Array<{ id: string; packId: string; name: string; price: number; qty: number }>>([]);
+  const [checkingOut, setCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+
+  const addPackToCart = (pk: { id: string; name: string; price: number }) => {
+    setAddedPacks(prev => {
+      const existing = prev.find(p => p.packId === pk.id);
+      if (existing) return prev.map(p => p.packId === pk.id ? { ...p, qty: p.qty + 1 } : p);
+      return [...prev, { id: crypto.randomUUID(), packId: pk.id, name: pk.name, price: pk.price, qty: 1 }];
+    });
+    setSelectedPackId(pk.id);
+    setCartOpen(true);
+  };
+  const removePackFromCart = (id: string) => setAddedPacks(prev => prev.filter(p => p.id !== id));
+  const setPackQty = (id: string, qty: number) => {
+    const q = Math.max(1, Math.min(99, qty|0));
+    setAddedPacks(prev => prev.map(p => p.id === id ? { ...p, qty: q } : p));
+  };
+
   // Discount timer (welcome $20 → extended $10 → none)
   const [discountAmt, setDiscountAmt]   = useState(0);
   const [discountSec, setDiscountSec]   = useState(0);
@@ -666,10 +687,12 @@ export default function Customize() {
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
   const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
-  const subtotal     = items.reduce((sum, it) => sum + itemPrice(it), 0);
-  const listSubtotal = items.reduce((sum, it) => sum + itemListPrice(it), 0);
+  const printsSubtotal = items.reduce((sum, it) => sum + itemPrice(it), 0);
+  const packsSubtotal  = addedPacks.reduce((sum, p) => sum + p.price * p.qty, 0);
+  const subtotal     = printsSubtotal + packsSubtotal;
+  const listSubtotal = items.reduce((sum, it) => sum + itemListPrice(it), 0) + packsSubtotal;
   const bundlePct    = totalPhotoCount >= 3 ? 0.15 : totalPhotoCount >= 2 ? 0.10 : 0;
-  const bundleSave   = Math.round(subtotal * bundlePct);
+  const bundleSave   = Math.round(printsSubtotal * bundlePct);
   const promoPct     = promoApplied?.pct || 0;
   const promoSave    = Math.round((subtotal - bundleSave) * promoPct);
   const discountSave = discountAmt > 0 ? Math.min(discountAmt, subtotal - bundleSave - promoSave) : 0;
@@ -677,6 +700,7 @@ export default function Customize() {
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
+  const cartCount    = items.length + addedPacks.reduce((s, p) => s + p.qty, 0);
 
 
   /* ── Regenerate / Edit (acts on selected item) ── */
@@ -1191,7 +1215,81 @@ export default function Customize() {
     navigate("/checkout");
   };
 
-  if (!portraitUrl) return null;
+  // Build Stripe line items from current cart and redirect to Checkout
+  const checkoutCart = async () => {
+    if (cartCount === 0) return;
+    setCheckingOut(true);
+    setCheckoutError("");
+    try {
+      const lineItems: any[] = [];
+      // Prints
+      items.forEach((it) => {
+        const unit = itemUnitPrice(it);
+        const ptLabel =
+          it.productType === "digital"       ? "Digital Portrait" :
+          it.productType === "canvas"        ? "Canvas Print" :
+          it.productType === "box-frame"     ? "Box Frame" :
+                                                "Classic Frame";
+        const sizes = SIZES_BY_PRODUCT[it.productType] || SIZES_BY_PRODUCT["classic-frame"];
+        const sd = sizes.find((s) => s.id === it.size);
+        const desc = it.productType === "digital"
+          ? "High-resolution digital download"
+          : `${sd?.label || it.size}${it.frameColor ? " · " + it.frameColor : ""}`;
+        lineItems.push({
+          name: ptLabel,
+          description: desc,
+          unitAmount: Math.round(unit * 100),
+          quantity: it.qty || 1,
+          image: it.photoUrl?.startsWith("http") ? it.photoUrl : undefined,
+        });
+      });
+      // Packs
+      addedPacks.forEach((p) => {
+        lineItems.push({
+          name: p.name,
+          description: "Style & masterpiece pack",
+          unitAmount: Math.round(p.price * 100),
+          quantity: p.qty,
+        });
+      });
+      // Bundle / promo / discount as a single "Discount" negative? Stripe price_data
+      // doesn't allow negatives — instead apply pro-rata to unit amounts.
+      const rawSum = lineItems.reduce((s, li) => s + li.unitAmount * li.quantity, 0);
+      const targetSum = total * 100;
+      if (rawSum > 0 && targetSum < rawSum) {
+        const ratio = targetSum / rawSum;
+        lineItems.forEach((li) => {
+          li.unitAmount = Math.max(50, Math.round(li.unitAmount * ratio));
+        });
+      }
+
+      // Persist for downstream pages
+      setSession({
+        customizationItems: items,
+        cart: { items, packs: addedPacks, total },
+      } as any);
+
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("create-payment", {
+        body: {
+          lineItems,
+          sessionId: (session as any).sessionDbId || null,
+          portraitUrl: items[0]?.photoUrl || "",
+        },
+      });
+      if (error) throw new Error(error.message || "Checkout failed");
+      if (data?.error) throw new Error(data.error);
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setCheckoutError(err?.message || "Couldn't start checkout. Please try again.");
+      setCheckingOut(false);
+    }
+  };
 
   const STEPS = [
     { id:"upload",    label:"Upload",    to:"/" },
@@ -1248,12 +1346,35 @@ export default function Customize() {
           ))}
         </nav>
 
-        <div style={{
-          display:"flex", alignItems:"baseline", gap:6,
-          padding:"7px 14px", borderRadius:12, background:"#fff", border:`1px solid ${BORDER}`,
-        }}>
-          <span style={{ fontSize:10.5, letterSpacing:".14em", color:MUTED, fontWeight:600 }}>TOTAL</span>
-          <span className="cz-serif" style={{ fontSize:18, fontWeight:700, color:INK }}>${total}</span>
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          <div style={{
+            display:"flex", alignItems:"baseline", gap:6,
+            padding:"7px 14px", borderRadius:12, background:"#fff", border:`1px solid ${BORDER}`,
+          }}>
+            <span style={{ fontSize:10.5, letterSpacing:".14em", color:MUTED, fontWeight:600 }}>TOTAL</span>
+            <span className="cz-serif" style={{ fontSize:18, fontWeight:700, color:INK }}>${total}</span>
+          </div>
+          <button
+            onClick={() => setCartOpen(true)}
+            aria-label="Open cart"
+            style={{
+              position:"relative", display:"flex", alignItems:"center", gap:6,
+              padding:"9px 14px", borderRadius:12, background:INK, color:"#fff",
+              border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+              fontWeight:600, fontSize:13,
+            }}
+          >
+            <ShoppingCart size={15}/>
+            Cart
+            {cartCount > 0 && (
+              <span style={{
+                position:"absolute", top:-6, right:-6, minWidth:20, height:20, padding:"0 6px",
+                borderRadius:10, background:RED, color:"#fff", fontSize:11, fontWeight:800,
+                display:"inline-flex", alignItems:"center", justifyContent:"center",
+                boxShadow:"0 2px 6px rgba(0,0,0,.2)",
+              }}>{cartCount}</span>
+            )}
+          </button>
         </div>
       </header>
 
@@ -1934,17 +2055,16 @@ export default function Customize() {
                                     badge:"Best Value", featured:false, save:"Save 43%",
                                     feats:["60 masterpieces for total freedom","Download all your masterpieces","Advanced Precision Editor","Priority support"] },
                                 ].map(pk => {
-                                  const isSel = selectedPackId === pk.id;
+                                  const inCart = addedPacks.find(p => p.packId === pk.id);
+                                  const qtyInCart = inCart?.qty || 0;
                                   return (
                                   <div key={pk.id}
-                                    onClick={(e) => { e.stopPropagation(); setSelectedPackId(pk.id); }}
-                                    role="button"
                                     style={{
-                                      border:`2px solid ${isSel ? RED : (pk.featured ? RED : BORDER)}`,
+                                      border:`2px solid ${qtyInCart ? RED : (pk.featured ? RED : BORDER)}`,
                                       borderRadius:12, padding:"12px 14px",
-                                      background: isSel ? "#FFF8F8" : "#fff",
-                                      position:"relative", cursor:"pointer",
-                                      boxShadow: isSel ? `0 0 0 3px ${RED}22` : "none",
+                                      background: qtyInCart ? "#FFF8F8" : "#fff",
+                                      position:"relative",
+                                      boxShadow: qtyInCart ? `0 0 0 3px ${RED}22` : "none",
                                       transition:"all .15s ease",
                                   }}>
                                     {pk.badge && (
@@ -1957,16 +2077,11 @@ export default function Customize() {
                                       }}>{pk.badge}</span>
                                     )}
                                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:6 }}>
-                                      <div style={{ fontSize:14, fontWeight:800, color:INK, fontFamily:"'Poppins',sans-serif", display:"flex", alignItems:"center", gap:6 }}>
-                                        <span style={{
-                                          width:16, height:16, borderRadius:"50%",
-                                          border:`2px solid ${isSel ? RED : "#cbd5e1"}`,
-                                          display:"inline-flex", alignItems:"center", justifyContent:"center",
-                                          background: isSel ? RED : "#fff", flexShrink:0,
-                                        }}>
-                                          {isSel && <Check size={10} color="#fff" strokeWidth={3}/>}
-                                        </span>
+                                      <div style={{ fontSize:14, fontWeight:800, color:INK, fontFamily:"'Poppins',sans-serif" }}>
                                         {pk.name}
+                                        {qtyInCart > 1 && (
+                                          <span style={{ marginLeft:6, fontSize:11, fontWeight:700, color:RED }}>×{qtyInCart}</span>
+                                        )}
                                       </div>
                                       <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
                                         <span style={{ fontSize:18, fontWeight:900, color:INK, fontFamily:"'Poppins',sans-serif" }}>
@@ -1987,16 +2102,20 @@ export default function Customize() {
                                         </li>
                                       ))}
                                     </ul>
-                                    <div style={{
-                                      fontSize:11, fontWeight:700, textAlign:"center",
-                                      padding:"6px 10px", borderRadius:8,
-                                      background: isSel ? RED : "#F3F4F6",
-                                      color: isSel ? "#fff" : INK,
-                                      fontFamily:"'Poppins',sans-serif",
-                                      letterSpacing:".04em", textTransform:"uppercase",
-                                    }}>
-                                      {isSel ? "✓ Selected" : "Select This Pack"}
-                                    </div>
+                                    <button
+                                      onClick={(e) => { e.stopPropagation(); addPackToCart({ id: pk.id, name: pk.name, price: pk.price }); }}
+                                      style={{
+                                        width:"100%", border:"none", cursor:"pointer",
+                                        fontSize:11.5, fontWeight:700, textAlign:"center",
+                                        padding:"8px 10px", borderRadius:8,
+                                        background: qtyInCart ? "#16a34a" : RED,
+                                        color: "#fff",
+                                        fontFamily:"'Poppins',sans-serif",
+                                        letterSpacing:".04em", textTransform:"uppercase",
+                                        display:"inline-flex", alignItems:"center", justifyContent:"center", gap:6,
+                                      }}>
+                                      {qtyInCart ? <><Check size={13}/> Added — Add Another</> : <><Plus size={13}/> Add To Cart</>}
+                                    </button>
                                   </div>
                                   );
                                 })}
@@ -2014,16 +2133,16 @@ export default function Customize() {
                           frameColor: card.frameColors ? cardFrame : undefined,
                           canvasEdge: canvasFrame ? "mirror" : undefined,
                         });
-                        handleContinue();
+                        setCartOpen(true);
                       }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
                         borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
                         justifyContent:"center", gap:8 }}>
-                        Order My {card.label} —{" "}
+                        <ShoppingCart size={15}/> Add {card.label} To Cart —{" "}
                         <span style={{ fontWeight:900 }}>${total}</span>
                       </button>
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
-                        Delivery: {card.delivery} · 100% Money-Back Guarantee
+                        Delivery: {card.delivery} · 100% Money-Back Guarantee · Cart has {cartCount} item{cartCount === 1 ? "" : "s"}
                       </div>
 
                       {/* Buy Now, Pay Later */}
@@ -2203,6 +2322,206 @@ export default function Customize() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── Cart Drawer ── */}
+      {cartOpen && (
+        <div
+          onClick={() => setCartOpen(false)}
+          style={{
+            position:"fixed", inset:0, background:"rgba(0,0,0,.45)", zIndex:80,
+            animation:"czFade .2s ease both",
+          }}
+        >
+          <aside
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position:"absolute", top:0, right:0, height:"100%",
+              width:"min(420px, 100vw)",
+              background:"#fff", boxShadow:"-12px 0 40px rgba(0,0,0,.18)",
+              display:"flex", flexDirection:"column",
+              fontFamily:"'Poppins',sans-serif",
+              animation:"czFade .25s cubic-bezier(.23,1,.32,1) both",
+            }}
+          >
+            {/* Header */}
+            <div style={{
+              padding:"18px 20px", borderBottom:`1px solid ${BORDER}`,
+              display:"flex", alignItems:"center", justifyContent:"space-between",
+            }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                <ShoppingCart size={18} color={INK}/>
+                <span style={{ fontSize:16, fontWeight:800, color:INK }}>
+                  Your Cart {cartCount > 0 && <span style={{ color:MUTED, fontWeight:600 }}>({cartCount})</span>}
+                </span>
+              </div>
+              <button
+                onClick={() => setCartOpen(false)}
+                aria-label="Close cart"
+                style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:6, display:"flex" }}
+              >
+                <X size={20}/>
+              </button>
+            </div>
+
+            {/* Items */}
+            <div style={{ flex:1, overflowY:"auto", padding:"14px 18px" }}>
+              {cartCount === 0 && (
+                <div style={{ textAlign:"center", color:MUTED, fontSize:13, padding:"40px 10px" }}>
+                  Your cart is empty.<br/>Add prints or packs to get started.
+                </div>
+              )}
+
+              {/* Print line items */}
+              {items.map((it) => {
+                const ptLabel =
+                  it.productType === "digital"   ? "Digital Portrait" :
+                  it.productType === "canvas"    ? "Canvas Print" :
+                  it.productType === "box-frame" ? "Box Frame" :
+                                                   "Classic Frame";
+                const sizes = SIZES_BY_PRODUCT[it.productType] || SIZES_BY_PRODUCT["classic-frame"];
+                const sd = sizes.find((s) => s.id === it.size);
+                const unit = itemUnitPrice(it);
+                return (
+                  <div key={it.id} style={{
+                    display:"flex", gap:12, padding:"12px 0",
+                    borderBottom:`1px solid ${BORDER}`,
+                  }}>
+                    <div style={{
+                      width:62, height:62, borderRadius:8, overflow:"hidden",
+                      background:"#F4F1EC", flexShrink:0,
+                      border:`1px solid ${BORDER}`,
+                    }}>
+                      {it.photoUrl && <img src={it.photoUrl} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>}
+                    </div>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontSize:13.5, fontWeight:700, color:INK, lineHeight:1.3 }}>{ptLabel}</div>
+                      <div style={{ fontSize:11.5, color:MUTED, marginTop:2 }}>
+                        {it.productType !== "digital" && (sd?.label || it.size)}
+                        {it.frameColor && it.productType !== "digital" ? ` · ${it.frameColor}` : ""}
+                      </div>
+                      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:4, border:`1px solid ${BORDER}`, borderRadius:8 }}>
+                          <button
+                            onClick={() => setItemQty(it.id, (it.qty || 1) - 1)}
+                            disabled={(it.qty || 1) <= 1}
+                            style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
+                            aria-label="Decrease quantity"
+                          ><Minus size={12}/></button>
+                          <span style={{ fontSize:12, fontWeight:700, minWidth:18, textAlign:"center" }}>{it.qty || 1}</span>
+                          <button
+                            onClick={() => setItemQty(it.id, (it.qty || 1) + 1)}
+                            style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
+                            aria-label="Increase quantity"
+                          ><Plus size={12}/></button>
+                        </div>
+                        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                          <span style={{ fontSize:13, fontWeight:800, color:INK }}>${unit * (it.qty || 1)}</span>
+                          <button
+                            onClick={() => removeItem(it.id)}
+                            disabled={items.length <= 1 && addedPacks.length === 0}
+                            style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:2, display:"flex" }}
+                            aria-label="Remove"
+                          ><Trash2 size={14}/></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Pack line items */}
+              {addedPacks.map((p) => (
+                <div key={p.id} style={{
+                  display:"flex", gap:12, padding:"12px 0",
+                  borderBottom:`1px solid ${BORDER}`,
+                }}>
+                  <div style={{
+                    width:62, height:62, borderRadius:8, flexShrink:0,
+                    background:"linear-gradient(135deg,#FDECEC,#FFF8F8)",
+                    display:"flex", alignItems:"center", justifyContent:"center",
+                    border:`1px solid ${BORDER}`,
+                  }}>
+                    <Layers size={22} color={RED}/>
+                  </div>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontSize:13.5, fontWeight:700, color:INK, lineHeight:1.3 }}>{p.name}</div>
+                    <div style={{ fontSize:11.5, color:MUTED, marginTop:2 }}>Style & masterpiece pack</div>
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:4, border:`1px solid ${BORDER}`, borderRadius:8 }}>
+                        <button
+                          onClick={() => setPackQty(p.id, p.qty - 1)}
+                          disabled={p.qty <= 1}
+                          style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
+                          aria-label="Decrease quantity"
+                        ><Minus size={12}/></button>
+                        <span style={{ fontSize:12, fontWeight:700, minWidth:18, textAlign:"center" }}>{p.qty}</span>
+                        <button
+                          onClick={() => setPackQty(p.id, p.qty + 1)}
+                          style={{ background:"none", border:"none", padding:"4px 8px", cursor:"pointer", color:INK }}
+                          aria-label="Increase quantity"
+                        ><Plus size={12}/></button>
+                      </div>
+                      <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                        <span style={{ fontSize:13, fontWeight:800, color:INK }}>${p.price * p.qty}</span>
+                        <button
+                          onClick={() => removePackFromCart(p.id)}
+                          style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, padding:2, display:"flex" }}
+                          aria-label="Remove"
+                        ><Trash2 size={14}/></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <div style={{ padding:"14px 18px 18px", borderTop:`1px solid ${BORDER}`, background:"#FAFAF7" }}>
+              <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:MUTED, marginBottom:4 }}>
+                <span>Subtotal</span><span>${subtotal}</span>
+              </div>
+              {(bundleSave + promoSave + discountSave) > 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:"#16a34a", marginBottom:4, fontWeight:600 }}>
+                  <span>Discounts</span><span>−${bundleSave + promoSave + discountSave}</span>
+                </div>
+              )}
+              <div style={{ display:"flex", justifyContent:"space-between", fontSize:15, color:INK, fontWeight:800, marginBottom:12 }}>
+                <span>Total</span><span>${total}</span>
+              </div>
+              {checkoutError && (
+                <div style={{ fontSize:11.5, color:RED, marginBottom:8, textAlign:"center" }}>{checkoutError}</div>
+              )}
+              <button
+                onClick={checkoutCart}
+                disabled={cartCount === 0 || checkingOut}
+                className="cz-btn-red"
+                style={{
+                  width:"100%", padding:"14px 0", borderRadius:10, fontSize:14,
+                  display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                  opacity: (cartCount === 0 || checkingOut) ? .55 : 1,
+                  cursor: (cartCount === 0 || checkingOut) ? "not-allowed" : "pointer",
+                }}
+              >
+                {checkingOut ? "Starting Checkout…" : <>Checkout — <span style={{ fontWeight:900 }}>${total}</span></>}
+              </button>
+              <button
+                onClick={() => setCartOpen(false)}
+                style={{
+                  width:"100%", marginTop:8, padding:"10px 0", borderRadius:10,
+                  background:"transparent", border:`1px solid ${BORDER}`,
+                  fontSize:12.5, fontWeight:600, color:INK, cursor:"pointer",
+                  fontFamily:"'Poppins',sans-serif",
+                }}
+              >
+                Continue Shopping
+              </button>
+              <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
+                100% Money-Back Guarantee · Secure Stripe Checkout
+              </div>
+            </div>
+          </aside>
         </div>
       )}
 
