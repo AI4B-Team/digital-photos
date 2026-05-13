@@ -2180,6 +2180,22 @@ export default function Customize() {
                         </div>
                       )}
 
+                      {discountAmt > 0 && (
+                        <div style={{
+                          display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                          padding:"8px 12px", marginBottom:8,
+                          background:"#FFF1F1", border:`1px solid ${RED}33`, borderRadius:10,
+                        }}>
+                          <span style={{ fontSize:11, fontWeight:700, color:RED, letterSpacing:".04em", textTransform:"uppercase", fontFamily:"'Poppins',sans-serif" }}>
+                            ${discountAmt} Off Expires In
+                          </span>
+                          <span style={{
+                            fontSize:12, fontWeight:800, color:"#fff", background:RED,
+                            padding:"3px 8px", borderRadius:6, fontFamily:"'Courier New',monospace",
+                          }}>{fmtCountdown(discountSec)}</span>
+                        </div>
+                      )}
+
                       {(() => {
                         const snapshot = {
                           ...selected,
