@@ -1324,6 +1324,7 @@ export default function Customize() {
           printSku:   primaryCartItem?.sku || "",
           productType: primaryCartItem?.productType || "",
           printFrame: primaryCartItem?.frameColor || primaryCartItem?.canvasEdge || "",
+          printMount: mountColor || "snow-white",
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
