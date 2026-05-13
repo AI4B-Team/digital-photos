@@ -575,6 +575,7 @@ export default function Customize() {
 
   // Cart drawer + extra pack line items
   const [cartOpen, setCartOpen]   = useState(false);
+  const [previewsOpen, setPreviewsOpen] = useState(false);
   const [addedPacks, setAddedPacks] = useState<Array<{ id: string; packId: string; name: string; price: number; qty: number }>>([]);
 
   // Cart items: snapshots of configured prints the user has explicitly added.
