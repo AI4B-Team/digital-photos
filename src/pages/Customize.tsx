@@ -1502,6 +1502,93 @@ export default function Customize() {
 
                   {isActive && (
                     <div style={{ padding:"4px 16px 16px" }}>
+                      {/* ── Your Order mini list ── */}
+                      <div style={{ fontSize:11, color:MUTED, fontWeight:600,
+                        letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
+                        Your Order ({totalPhotoCount} {totalPhotoCount === 1 ? "Photo" : "Photos"})
+                      </div>
+                      <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:10 }}>
+                        {items.map((it, idx) => {
+                          const sd = getSizeDef(it);
+                          const fd = FRAMES.find(f => f.id === it.frame) || FRAMES[1];
+                          const ed = EFFECTS.find(e => e.id === it.effect) || EFFECTS[0];
+                          const bd = BORDERS.find(b => b.id === it.border) || BORDERS[1];
+                          const bcd = BORDER_COLORS.find(c => c.id === it.borderColor) || BORDER_COLORS[0];
+                          const isFrameless = fd.id === "frameless" || fd.id === "digital";
+                          const isCanvasItem = fd.id === "canvas";
+                          const woodPad = (fd.w || 0) * 0.3;
+                          const thumb = 44;
+                          const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
+                          const imgH = sd.h >= sd.w ? thumb : thumb * (sd.h / sd.w);
+                          const unitPrice = itemUnitPrice(it);
+                          const qty = it.qty || 1;
+                          const lineP = unitPrice * qty;
+                          const listP = Math.round(unitPrice * 1.4) * qty;
+                          const isSel = it.id === selectedId;
+                          return (
+                            <div key={it.id} onClick={() => setSelectedId(it.id)} style={{
+                              display:"flex", gap:10, padding:8, borderRadius:9,
+                              border: isSel ? `1.5px solid ${RED}` : `1px solid ${BORDER}`,
+                              background:"#fff", cursor:"pointer", position:"relative",
+                            }}>
+                              <div style={{
+                                width:62, minWidth:62, display:"flex", alignItems:"center", justifyContent:"center",
+                                background:BG, borderRadius:5, padding:5,
+                              }}>
+                                <div style={{
+                                  background: isCanvasItem ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+                                  padding: isFrameless ? 0 : woodPad, display:"inline-block",
+                                }}>
+                                  <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
+                                    <img src={it.photoUrl} alt="" style={{
+                                      width: imgW, height: imgH, objectFit:"cover", display:"block", filter: ed.filter,
+                                    }}/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
+                                <div style={{ fontSize:12, fontWeight:600, color:INK }}>Portrait #{idx + 1}</div>
+                                <div style={{ fontSize:10.5, color:MUTED, lineHeight:1.4 }}>
+                                  {sd.label}″ · {fd.label}
+                                </div>
+                                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:3 }}>
+                                  <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
+                                    <span style={{ fontSize:10, color:MUTED, textDecoration:"line-through" }}>${listP}</span>
+                                    <span style={{ fontSize:12, fontWeight:700, color:RED }}>${lineP}</span>
+                                  </div>
+                                  <div onClick={(e) => e.stopPropagation()} style={{
+                                    display:"inline-flex", alignItems:"center",
+                                    border:`1px solid ${BORDER}`, borderRadius:6, background:"#fff",
+                                  }}>
+                                    <button onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty - 1); }}
+                                      disabled={qty <= 1} aria-label="Decrease"
+                                      style={{ width:20, height:20, border:"none", background:"transparent",
+                                        cursor: qty <= 1 ? "not-allowed" : "pointer",
+                                        opacity: qty <= 1 ? .35 : 1, color:INK, fontSize:12, fontWeight:600,
+                                        display:"flex", alignItems:"center", justifyContent:"center" }}>−</button>
+                                    <span style={{ minWidth:16, textAlign:"center", fontSize:11, fontWeight:600, color:INK }}>{qty}</span>
+                                    <button onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty + 1); }}
+                                      aria-label="Increase"
+                                      style={{ width:20, height:20, border:"none", background:"transparent",
+                                        cursor:"pointer", color:INK, fontSize:12, fontWeight:600,
+                                        display:"flex", alignItems:"center", justifyContent:"center" }}>+</button>
+                                  </div>
+                                </div>
+                              </div>
+                              {items.length > 1 && (
+                                <button onClick={(e) => { e.stopPropagation(); removeItem(it.id); }}
+                                  aria-label="Remove"
+                                  style={{ position:"absolute", top:4, right:4, width:18, height:18,
+                                    borderRadius:"50%", background:"transparent", border:"none", color:MUTED,
+                                    cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                                  <X size={12}/>
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+
                       {card.id !== "digital" && (
                         <>
                           <div style={{ fontSize:11, color:MUTED, fontWeight:600,
