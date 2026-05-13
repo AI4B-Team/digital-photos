@@ -1847,6 +1847,7 @@ export default function Customize() {
                               }}/>
                             </div>
                           ))}
+                        </div>
                       </div>
 
                       {card.id === "digital" && (
