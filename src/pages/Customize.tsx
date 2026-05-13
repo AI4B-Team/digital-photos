@@ -847,6 +847,7 @@ export default function Customize() {
         <div style={{ display:"flex", alignItems:"center", gap: aiOpen && isSelected ? 10 : 16, maxWidth:"100%", minWidth:0 }}>
           {/* Invisible spacer matching toolbar width to keep image centered */}
           <div aria-hidden="true" style={{ width: aiOpen && isSelected ? 0 : 48, flexShrink:0, visibility:"hidden" }}/>
+          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, minWidth:0, flex:"0 1 auto" }}>
           <div style={{
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : actualWood),
             padding: (isFrameless ? 6 : woodPad + 6),
@@ -891,7 +892,7 @@ export default function Customize() {
                     className="cz-img-wrap"
                     onMouseDown={(e) => onDragStart(item, e)}
                     style={{
-                      width: aiOpen && isSelected ? `clamp(120px, ${sd.w * 26}vh, ${sd.w * 170}px)` : `${sd.w * 42}vh`,
+                      width: `${sd.w * 42}vh`,
                       aspectRatio: `${sd.w} / ${sd.h}`,
                       maxWidth: "100%",
                       cursor: isDraggingThis ? "grabbing" : "grab",
@@ -942,6 +943,14 @@ export default function Customize() {
                 );
               })()}
             </div>
+          </div>
+          <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
+            <span>{sd.label}″</span>
+            <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
+            <span>{fd.label}</span>
+            <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
+            <span>{ed.label}</span>
+          </div>
           </div>
           {isSelected ? (
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
@@ -1138,13 +1147,6 @@ export default function Customize() {
                       </div>
             </div>
           )}
-        </div>
-        <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
-          <span>{sd.label}″</span>
-          <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-          <span>{fd.label}</span>
-          <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-          <span>{ed.label}</span>
         </div>
       </div>
     );
