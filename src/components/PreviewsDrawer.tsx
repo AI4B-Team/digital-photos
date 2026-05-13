@@ -166,13 +166,13 @@ export default function PreviewsDrawer({
 
           {submittedEmail && rows.length === 0 && !loading && (
             <div style={{ textAlign: "center", color: MUTED, fontSize: 13, padding: "40px 10px" }}>
-              No active previews found for<br />
+              No Active Previews Found For<br />
               <strong style={{ color: INK }}>{submittedEmail}</strong>
               <div style={{ marginTop: 14 }}>
                 <button onClick={() => { setSubmittedEmail(""); setRows([]); }}
                   style={{ background: "none", border: `1px solid ${BORDER}`, color: INK,
                     padding: "8px 14px", borderRadius: 8, fontSize: 12, cursor: "pointer" }}>
-                  Try a different email
+                  Try A Different Email
                 </button>
               </div>
             </div>
