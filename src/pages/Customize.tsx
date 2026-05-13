@@ -1019,11 +1019,21 @@ export default function Customize() {
             <div aria-hidden="true" style={{ width:48, flexShrink:0, visibility:"hidden" }}/>
           )}
           {isSelected && aiOpen && (
-            <div onClick={(e) => e.stopPropagation()} style={{
-              width:300, flex:"0 0 300px", maxHeight:"min(560px, calc(100vh - 190px))", overflowY:"auto",
-              background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
-              boxShadow:"none", padding:14,
-            }}>
+            <div onClick={(e) => e.stopPropagation()}
+              ref={(el) => {
+                if (el) {
+                  // Bring panel into view so the textarea & button aren't cut off
+                  requestAnimationFrame(() => {
+                    el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                  });
+                }
+              }}
+              style={{
+                width:300, flex:"0 0 300px",
+                maxHeight:"min(560px, calc(100vh - 110px))", overflowY:"auto",
+                background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
+                boxShadow:"none", padding:14,
+              }}>
                       {/* AI quick fix */}
                       <div style={{
                         border:`1px solid ${mpSection==="ai" ? RED : BORDER}`, borderRadius:12,
