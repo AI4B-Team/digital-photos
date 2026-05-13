@@ -115,6 +115,7 @@ serve(async (req) => {
                 productType: sessionRecord?.order_product || orderProduct,
                 frameColor: sessionRecord?.print_frame || checkoutSession.metadata?.printFrame || "",
                 canvasEdge: sessionRecord?.print_canvas_edge || "mirror",
+                mountColor: checkoutSession.metadata?.printMount || "snow-white",
                 shippingName,
                 shippingEmail,
                 shippingLine1: shipping.line1,
