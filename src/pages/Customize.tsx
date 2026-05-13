@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2 } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2 } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
@@ -1266,36 +1266,70 @@ export default function Customize() {
           <>
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
-            <div className="cz-size-scroll">
-              {EFFECTS.map(e => {
-                const on = effect === e.id;
-                return (
-                  <button key={e.id} onClick={() => setEffect(e.id)} title={e.label}
-                    style={{
-                      flex:"0 0 76px",
-                      display:"flex", flexDirection:"column", alignItems:"center", gap:6,
-                      padding:6, borderRadius:10,
-                      border:`1.5px solid ${on ? INK : BORDER}`,
-                      background: on ? "#fff" : "transparent",
-                      cursor:"pointer", transition:"all .15s ease",
-                      scrollSnapAlign:"start",
-                    }}>
-                    <div style={{
-                      width:"100%", aspectRatio:"1", borderRadius:6, overflow:"hidden",
-                      background:"#eee",
-                    }}>
-                      <img src={portraitUrl} alt="" style={{
-                        width:"100%", height:"100%", objectFit:"cover",
-                        filter: e.filter,
-                      }}/>
-                    </div>
-                    <span style={{
-                      fontSize:10.5, fontWeight: on ? 600 : 500,
-                      color: on ? INK : MUTED, whiteSpace:"nowrap",
-                    }}>{e.label}</span>
-                  </button>
-                );
-              })}
+            <div style={{ position:"relative" }}>
+              <button
+                type="button"
+                aria-label="Scroll effects left"
+                onClick={(e) => {
+                  const scroller = (e.currentTarget.parentElement?.querySelector(".cz-size-scroll") as HTMLElement | null);
+                  scroller?.scrollBy({ left: -160, behavior: "smooth" });
+                }}
+                style={{
+                  position:"absolute", left:-4, top:"42%", transform:"translateY(-50%)",
+                  zIndex:2, width:26, height:26, borderRadius:"50%",
+                  background:"#fff", border:`1px solid ${BORDER}`,
+                  boxShadow:"0 2px 8px rgba(0,0,0,.08)", cursor:"pointer",
+                  display:"flex", alignItems:"center", justifyContent:"center", padding:0,
+                }}>
+                <ChevronLeft size={14} color={INK}/>
+              </button>
+              <div className="cz-size-scroll">
+                {EFFECTS.map(e => {
+                  const on = effect === e.id;
+                  return (
+                    <button key={e.id} onClick={() => setEffect(e.id)} title={e.label}
+                      style={{
+                        flex:"0 0 76px",
+                        display:"flex", flexDirection:"column", alignItems:"center", gap:6,
+                        padding:6, borderRadius:10,
+                        border:`1.5px solid ${on ? INK : BORDER}`,
+                        background: on ? "#fff" : "transparent",
+                        cursor:"pointer", transition:"all .15s ease",
+                        scrollSnapAlign:"start",
+                      }}>
+                      <div style={{
+                        width:"100%", aspectRatio:"1", borderRadius:6, overflow:"hidden",
+                        background:"#eee",
+                      }}>
+                        <img src={portraitUrl} alt="" style={{
+                          width:"100%", height:"100%", objectFit:"cover",
+                          filter: e.filter,
+                        }}/>
+                      </div>
+                      <span style={{
+                        fontSize:10.5, fontWeight: on ? 600 : 500,
+                        color: on ? INK : MUTED, whiteSpace:"nowrap",
+                      }}>{e.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <button
+                type="button"
+                aria-label="Scroll effects right"
+                onClick={(e) => {
+                  const scroller = (e.currentTarget.parentElement?.querySelector(".cz-size-scroll") as HTMLElement | null);
+                  scroller?.scrollBy({ left: 160, behavior: "smooth" });
+                }}
+                style={{
+                  position:"absolute", right:-4, top:"42%", transform:"translateY(-50%)",
+                  zIndex:2, width:26, height:26, borderRadius:"50%",
+                  background:"#fff", border:`1px solid ${BORDER}`,
+                  boxShadow:"0 2px 8px rgba(0,0,0,.08)", cursor:"pointer",
+                  display:"flex", alignItems:"center", justifyContent:"center", padding:0,
+                }}>
+                <ChevronRight size={14} color={INK}/>
+              </button>
             </div>
           </div>
 
