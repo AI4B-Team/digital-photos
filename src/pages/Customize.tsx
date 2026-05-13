@@ -1920,6 +1920,34 @@ export default function Customize() {
                         </>
                       )}
 
+                      {card.frameColors && (
+                        <>
+                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
+                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
+                            Mount Colour
+                          </div>
+                          <div style={{ display:"flex", gap:10, marginBottom:14 }}>
+                            {MOUNT_COLORS.map(mc => (
+                              <button key={mc.id} title={mc.label}
+                                onClick={() => setMountColor(mc.id)}
+                                style={{ display:"flex", flexDirection:"column",
+                                  alignItems:"center", gap:4, background:"none",
+                                  border:"none", cursor:"pointer", padding:0 }}>
+                                <div style={{ width:30, height:30, borderRadius:7,
+                                  background:mc.color,
+                                  border: mountColor===mc.id
+                                    ? `2px solid ${RED}`
+                                    : `1px solid rgba(0,0,0,.15)`,
+                                  boxShadow:"0 1px 3px rgba(0,0,0,.1)" }}/>
+                                <span style={{ fontSize:9.5, color:mountColor===mc.id?INK:MUTED }}>
+                                  {mc.label}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+
                       {card.id !== "digital" && (
                         <div style={{ display:"flex", alignItems:"center", gap:6,
                           fontSize:12, color:"#16a34a", fontWeight:600, marginBottom:10 }}>
