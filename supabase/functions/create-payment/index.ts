@@ -29,7 +29,7 @@ serve(async (req) => {
       printSize = "",
       printFrame = "",
       printSku = "",
-    } = await req.json();
+      printMount = "snow-white",
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
