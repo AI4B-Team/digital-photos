@@ -2597,6 +2597,12 @@ export default function Customize() {
           {errorMsg}
         </div>
       )}
+
+      <PreviewsDrawer
+        open={previewsOpen}
+        onClose={() => setPreviewsOpen(false)}
+        defaultEmail={(session as any)?.email || ""}
+      />
     </div>
   );
 }
