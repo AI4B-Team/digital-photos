@@ -1645,7 +1645,7 @@ export default function Customize() {
 
                       {cardDiscount > 0 && (
                         <div style={{ fontSize:12, color:"#16a34a", fontWeight:700, marginBottom:10 }}>
-                          ■ ${discountAmt} discount applied!
+                          ■ ${discountAmt} Discount Applied!
                         </div>
                       )}
 
