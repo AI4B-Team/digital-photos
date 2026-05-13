@@ -1932,7 +1932,6 @@ export default function Customize() {
                         </div>
                       )}
                     </div>
-                    </div>
                   )}
                 </div>
               );
