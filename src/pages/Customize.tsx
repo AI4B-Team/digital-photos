@@ -1627,7 +1627,7 @@ export default function Customize() {
                       {card.id !== "digital" && (
                         <div style={{ display:"flex", alignItems:"center", gap:6,
                           fontSize:12, color:"#16a34a", fontWeight:600, marginBottom:10 }}>
-                          <Truck size={14}/> Free shipping included
+                          <Truck size={14}/> Free Shipping Included
                         </div>
                       )}
 
