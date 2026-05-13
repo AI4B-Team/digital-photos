@@ -36,6 +36,7 @@ serve(async (req) => {
       productType,
       frameColor,
       canvasEdge,
+      mountColor = "snow-white",
       shippingName,
       shippingEmail,
       shippingLine1,
