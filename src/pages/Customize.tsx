@@ -1649,6 +1649,37 @@ export default function Customize() {
                         marginBottom:12, display:"flex", flexDirection:"column", gap:8,
                         background:"#FAFAF7",
                       }}>
+                        {card.canvasAddon && (
+                          <div onClick={() => setCanvasFrame(p => !p)}
+                            style={{ border:`1px solid ${BORDER}`, borderRadius:8,
+                              padding:"9px 10px", cursor:"pointer", background:"#fff",
+                              display:"flex", alignItems:"center", gap:10 }}>
+                            <div style={{ width:18, height:18, borderRadius:"50%",
+                              border:`2px solid ${canvasFrame?RED:BORDER}`,
+                              background:canvasFrame?RED:"transparent",
+                              display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                              {canvasFrame && <Check size={10} color="#fff" strokeWidth={3}/>}
+                            </div>
+                            <div style={{ flex:1, minWidth:0 }}>
+                              <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>Add A Floating Wood Frame</div>
+                              <div style={{ fontSize:11, color:MUTED }}>Elegant border around your canvas</div>
+                            </div>
+                            <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>+$49</span>
+                            {canvasFrame && (
+                              <div style={{ display:"flex", gap:6, marginLeft:6 }} onClick={e => e.stopPropagation()}>
+                                {[{id:"black",color:"#1a1a1a"},{id:"white",color:"#f4f4f4"},{id:"walnut",color:"#5a3a24"}].map(fc => (
+                                  <button key={fc.id}
+                                    onClick={() => setCanvasFrameColor(fc.id)}
+                                    style={{ width:18, height:18, borderRadius:5,
+                                      background:fc.color, cursor:"pointer",
+                                      border:`2px solid ${canvasFrameColor===fc.id?RED:"rgba(0,0,0,.15)"}`,
+                                      padding:0 }}/>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+
                         {/* Add another photo upsell */}
                         <button
                           onClick={(e) => { e.stopPropagation(); handleAddImage(); }}
