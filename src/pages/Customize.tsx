@@ -949,9 +949,9 @@ export default function Customize() {
                 {aiOpen && (() => {
                   const btn = (window as any).__aiBtn as HTMLElement | undefined;
                   const r = btn?.getBoundingClientRect();
-                  const top = r ? Math.max(12, Math.min(window.innerHeight - 520, r.top)) : 100;
-                   // Open popup to the LEFT of the toolbar so it doesn't overlap the pricing panel
-                   const left = r ? Math.max(12, r.left - 372) : 100;
+                   const top = r ? Math.max(12, Math.min(window.innerHeight - 520, r.top)) : 100;
+                   // Popup sits to the RIGHT of the toolbar (image · toolbar · popup)
+                   const left = r ? Math.max(12, Math.min(window.innerWidth - 372, r.right + 12)) : 100;
                   return createPortal(
                   <>
                     <div onClick={() => { setAiOpen(false); setMpSection(""); }} style={{ position:"fixed", inset:0, zIndex:9998 }}/>
@@ -1345,7 +1345,8 @@ export default function Customize() {
             justifyContent: aiOpen ? "flex-start" : "center",
             gap:16, width:"100%", maxWidth:"100%", flex:"1 1 auto", minHeight:0,
             paddingLeft: aiOpen ? 24 : 0,
-            transition:"all .3s cubic-bezier(.22,1,.32,1)",
+            transform: aiOpen ? "translateX(-220px)" : "translateX(0)",
+            transition:"transform .3s cubic-bezier(.22,1,.32,1), padding .3s cubic-bezier(.22,1,.32,1), justify-content .3s",
           }}>
             <div className="cz-canvas-scroll" style={{
               flex:"0 1 auto", minWidth:0, maxHeight:"100%", height:"100%",
