@@ -567,7 +567,7 @@ export default function Customize() {
   // Right-panel accordion state
   const [activeCard, setActiveCard]             = useState("classic-frame");
   const [packsOpen, setPacksOpen]               = useState(false);
-  const [selectedPackId, setSelectedPackId]     = useState<string>("digital-pack");
+  const [selectedPackId, setSelectedPackId]     = useState<string | null>(null);
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
   const [canvasFrame, setCanvasFrame]           = useState(false);
