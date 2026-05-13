@@ -1228,32 +1228,7 @@ export default function Customize() {
     );
   };
 
-  const handleContinue = () => {
-    const primaryItem = items[0];
-    setSession({
-      customization: {
-        portraitUrl,
-        style:       styleId,
-        productType: primaryItem.productType,
-        size:        primaryItem.size,
-        sizeLabel:   sizeDef?.label,
-        sku:         primaryItem.sku,
-        frameColor:  primaryItem.frameColor,
-        canvasEdge:  primaryItem.canvasEdge,
-        effect:      primaryItem.effect,
-        border:      primaryItem.border,
-        borderColor: primaryItem.borderColor,
-        frame:       toFrameId(primaryItem.productType, primaryItem.frameColor),
-      },
-      customizationItems: items,
-      selectedPlan:
-        primaryItem.productType === "digital" ? "digital" :
-        primaryItem.productType === "canvas"  ? "canvas"  : "bundle",
-      printSize: sizeDef?.label,
-      printSku:  primaryItem.sku,
-    } as any);
-    navigate("/checkout");
-  };
+
 
   // Build Stripe line items from current cart and redirect to Checkout
   const checkoutCart = async () => {
