@@ -1694,23 +1694,28 @@ export default function Customize() {
                           onClick={(e) => { e.stopPropagation(); handleAddImage(); }}
                           disabled={busy}
                           style={{
-                            width:"100%", padding:"9px",
+                            width:"100%", padding:"9px 10px",
                             border:`1.5px dashed ${BORDER}`, borderRadius:8,
                             background:"#fff", cursor:"pointer",
-                            fontFamily:"'Poppins',sans-serif", fontSize:12.5, fontWeight:600, color:INK,
-                            display:"flex", alignItems:"center", justifyContent:"center", gap:6,
+                            fontFamily:"'Poppins',sans-serif",
+                            display:"flex", alignItems:"center", gap:10,
                             opacity: busy ? .5 : 1,
+                            textAlign:"left",
                           }}>
-                          <Plus size={14}/> Add Another Photo
+                          <div style={{ width:18, height:18, borderRadius:"50%",
+                            border:`2px solid ${BORDER}`,
+                            display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                            <Plus size={11} color={INK} strokeWidth={3}/>
+                          </div>
+                          <div style={{ flex:1, minWidth:0 }}>
+                            <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>Add Another Photo</div>
+                            <div style={{ fontSize:11, color: bundlePct > 0 ? "#16a34a" : MUTED, fontWeight: bundlePct > 0 ? 700 : 400 }}>
+                              {bundlePct > 0
+                                ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
+                                : "Add 2 — Save 10% · Add 3+ — Save 15%"}
+                            </div>
+                          </div>
                         </button>
-                        <div style={{
-                          fontSize:11, color: bundlePct > 0 ? "#16a34a" : MUTED,
-                          textAlign:"center", fontWeight: bundlePct > 0 ? 700 : 500,
-                        }}>
-                          {bundlePct > 0
-                            ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
-                            : "Add 2 — Save 10% · Add 3+ — Save 15%"}
-                        </div>
 
                         {/* Promo code */}
                         <div>
