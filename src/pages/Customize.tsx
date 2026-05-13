@@ -923,7 +923,7 @@ export default function Customize() {
                       <div className="cz-watermark" aria-hidden="true">
                         <div className="cz-watermark-inner">
                           {Array.from({ length: 9 }).map((_, i) => (
-                            <div key={i}>DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS · DIGITALPHOTOS</div>
+                            <div key={i}>REAL ART · REAL ART · REAL ART · REAL ART</div>
                           ))}
                         </div>
                       </div>
