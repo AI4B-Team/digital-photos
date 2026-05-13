@@ -1517,6 +1517,7 @@ export default function Customize() {
           <div style={{
             textAlign:"center", flexShrink:0, padding:"32px 0 8px",
             position:"sticky", top:0, zIndex:5, width:"100%",
+            transform:"translateX(40px)",
           }}>
             <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
             <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
