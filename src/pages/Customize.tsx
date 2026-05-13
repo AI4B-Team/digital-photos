@@ -1657,7 +1657,7 @@ export default function Customize() {
                       }}>
                         {card.canvasAddon && (
                           <div onClick={() => setCanvasFrame(p => !p)}
-                            style={{ border:`1px solid ${BORDER}`, borderRadius:8,
+                            style={{ border:`1.5px dashed ${canvasFrame?RED:BORDER}`, borderRadius:8,
                               padding:"9px 10px", cursor:"pointer", background:"#fff",
                               display:"flex", alignItems:"center", gap:10 }}>
                             <div style={{ width:18, height:18, borderRadius:"50%",
