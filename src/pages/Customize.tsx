@@ -1132,67 +1132,7 @@ export default function Customize() {
                           </div>
                         )}
                       </div>
-                    </div>
-                  </>, document.body
-                  );
-                })()}
-              </span>
-              <div className="cz-tool-divider"/>
-              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
-                <RotateCcw size={17}/>
-              </button>
-              <div className="cz-tool-divider"/>
-              <button
-                className="cz-tool"
-                onClick={() => setItems(prev => prev.map(i => i.id === item.id ? { ...i, zoom: Math.min(2.5, +(((i.zoom || 1) + 0.15)).toFixed(2)) } : i))}
-                disabled={(item.zoom || 1) >= 2.5}
-                data-tip="Zoom In" aria-label="Zoom in">
-                <ZoomIn size={17}/>
-              </button>
-              <button
-                className="cz-tool"
-                onClick={() => setItems(prev => prev.map(i => {
-                  if (i.id !== item.id) return i;
-                  const z = Math.max(1, +(((i.zoom || 1) - 0.15)).toFixed(2));
-                  return z <= 1 ? { ...i, zoom: 1, offsetX: 0, offsetY: 0 } : { ...i, zoom: z };
-                }))}
-                disabled={(item.zoom || 1) <= 1}
-                data-tip="Zoom Out" aria-label="Zoom out">
-                <ZoomOut size={17}/>
-              </button>
-              <div className="cz-tool-divider"/>
-              <button
-                className="cz-tool"
-                onClick={() => {
-                  const dup = { ...item, id: crypto.randomUUID(), qty: 1 };
-                  setItems(prev => {
-                    const idx = prev.findIndex(i => i.id === item.id);
-                    const next = [...prev];
-                    next.splice(idx + 1, 0, dup);
-                    return next;
-                  });
-                  setSelectedId(dup.id);
-                }}
-                data-tip="Duplicate Image"
-                aria-label="Duplicate image"
-              >
-                <Copy size={17}/>
-              </button>
-              <button className="cz-tool" onClick={handleAddImage} disabled={busy} data-tip="Add Another Image" aria-label="Add another image">
-                <Plus size={18}/>
-              </button>
-              <button
-                className="cz-tool"
-                onClick={() => removeItem(item.id)}
-                disabled={items.length <= 1}
-                data-tip="Delete Image"
-                aria-label="Delete image"
-              >
-                <Trash2 size={17}/>
-              </button>
             </div>
-          ) : (
-            <div aria-hidden="true" style={{ width:48, flexShrink:0, visibility:"hidden" }}/>
           )}
         </div>
         <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
