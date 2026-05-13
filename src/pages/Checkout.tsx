@@ -766,6 +766,15 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const { session, setSession } = useSession();
 
+  // Checkout page is now bypassed — Stripe handles checkout directly from /customize.
+  // If someone lands here directly, redirect back to customize.
+  useEffect(() => {
+    if (!session?.customization?.sku && !session?.cart) {
+      navigate("/customize", { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [screen, setScreen] = useState(1);
   const [product, setProduct] = useState(session.selectedPlan === "canvas" ? "canvas"
                                         : session.selectedPlan === "digital" ? "digital"
