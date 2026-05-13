@@ -1117,7 +1117,7 @@ function HomePage({ onGenerate }) {
               { n:"1", Icon:Upload,             title:"Choose & Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
               { n:"2", Icon:Sparkles,           title:"AI Brings It To Life",       body:"In seconds, our AI transforms your photo into a stunning portrait across six timeless art styles — Royal, Renaissance, Storybook, Fantasy, Cinematic, and Minimal." },
               { n:"3", Icon:SlidersHorizontal,  title:"Make It Truly Yours",        body:"Preview every style side by side. Choose your favourite, then customise every detail — size, frame colour, and finish." },
-              { n:"4", Icon:Heart,              title:"Cherished & Delivered",      body:"Your portrait is printed on museum-quality archival fine art paper, carefully packaged, and delivered free to your door worldwide." },
+              { n:"4", Icon:Heart,              title:"Delivered & Cherished",      body:"Your portrait is printed on museum-quality archival fine art paper, carefully packaged, and delivered free to your door worldwide." },
             ].map((step) => (
               <div key={step.n} style={{ position:"relative", border:`1px solid ${T.border}`, borderRadius:18, padding:"28px 22px", background:T.bg }}>
                 <div style={{ position:"absolute", top:-12, left:22, background:T.gold, color:"#FFFFFF", borderRadius:999, width:26, height:26, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:700, fontFamily:"'Poppins',sans-serif" }}>{step.n}</div>
