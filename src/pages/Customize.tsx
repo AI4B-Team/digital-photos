@@ -844,7 +844,7 @@ export default function Customize() {
           scrollSnapAlign:"start",
         }}>
         {/* Image + inline toolbar + AI panel stay in one linked row */}
-        <div style={{ display:"flex", alignItems:"center", gap: aiOpen && isSelected ? 10 : 16, maxWidth:"100%", minWidth:0 }}>
+        <div style={{ display:"flex", alignItems: aiOpen && isSelected ? "flex-start" : "center", gap: aiOpen && isSelected ? 10 : 16, maxWidth:"100%", minWidth:0 }}>
           {/* Invisible spacer matching toolbar width to keep image centered */}
           <div aria-hidden="true" style={{ width: aiOpen && isSelected ? 0 : 48, flexShrink:0, visibility:"hidden" }}/>
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, minWidth:0, flex:"0 1 auto" }}>
@@ -1019,11 +1019,21 @@ export default function Customize() {
             <div aria-hidden="true" style={{ width:48, flexShrink:0, visibility:"hidden" }}/>
           )}
           {isSelected && aiOpen && (
-            <div onClick={(e) => e.stopPropagation()} style={{
-              width:300, flex:"0 0 300px", maxHeight:"min(560px, calc(100vh - 190px))", overflowY:"auto",
-              background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
-              boxShadow:"none", padding:14,
-            }}>
+            <div onClick={(e) => e.stopPropagation()}
+              ref={(el) => {
+                if (el) {
+                  // Bring panel into view so the textarea & button aren't cut off
+                  requestAnimationFrame(() => {
+                    el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                  });
+                }
+              }}
+              style={{
+                width:300, flex:"0 0 300px",
+                maxHeight:"min(560px, calc(100vh - 110px))", overflowY:"auto",
+                background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
+                boxShadow:"none", padding:14,
+              }}>
                       {/* AI quick fix */}
                       <div style={{
                         border:`1px solid ${mpSection==="ai" ? RED : BORDER}`, borderRadius:12,
