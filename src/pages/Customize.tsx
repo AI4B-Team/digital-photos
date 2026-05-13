@@ -942,14 +942,19 @@ export default function Customize() {
               onClick={(e) => e.stopPropagation()}
               style={{ flexShrink:0 }}>
               <span style={{ position:"relative", display:"inline-flex" }}>
-                <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => { setAiOpen(v => !v); setMpSection("ai"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
+                <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("ai"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
                   <Sparkles size={18}/>
                 </button>
-                {aiOpen && (
+                {aiOpen && (() => {
+                  const btn = (window as any).__aiBtn as HTMLElement | undefined;
+                  const r = btn?.getBoundingClientRect();
+                  const top = r ? Math.max(12, Math.min(window.innerHeight - 600, r.top)) : 100;
+                  const left = r ? r.right + 12 : 100;
+                  return (
                   <>
                     <div onClick={() => { setAiOpen(false); setMpSection(""); }} style={{ position:"fixed", inset:0, zIndex:199 }}/>
                     <div onClick={(e) => e.stopPropagation()} style={{
-                      position:"absolute", left:"calc(100% + 12px)", top:0,
+                      position:"fixed", left, top,
                       width:360, maxHeight:"80vh", overflowY:"auto",
                       background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
                       boxShadow:"0 20px 60px rgba(0,0,0,.18)", padding:14, zIndex:200,
@@ -1077,7 +1082,8 @@ export default function Customize() {
                       </div>
                     </div>
                   </>
-                )}
+                  );
+                })()}
               </span>
               <div className="cz-tool-divider"/>
               <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
