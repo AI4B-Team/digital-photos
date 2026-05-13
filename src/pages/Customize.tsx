@@ -1251,15 +1251,17 @@ export default function Customize() {
 
       {/* Three-column layout */}
       <div className="cz-grid" style={{
-        display:"grid", gridTemplateColumns:"320px 1fr 400px", gap:0,
-        maxWidth:1500, margin:"0 auto",
+        display:"grid",
+        gridTemplateColumns: aiOpen ? "0px 1fr 400px" : "320px 1fr 400px",
+        gap:0, maxWidth:1500, margin:"0 auto",
+        transition:"grid-template-columns .25s cubic-bezier(.22,1,.32,1)",
       }}>
         {/* Customize controls (left) */}
         <aside className="cz-side" style={{
           padding:"24px 10px 24px 18px",
           position:"sticky", top:70, alignSelf:"start",
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
-          display:"flex", flexDirection:"column", gap:14,
+          display: aiOpen ? "none" : "flex", flexDirection:"column", gap:14,
         }}>
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
