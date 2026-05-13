@@ -1599,6 +1599,7 @@ export default function Customize() {
                             overflowX:"auto", paddingTop:14, paddingBottom:6,
                             scrollSnapType:"x mandatory",
                             WebkitOverflowScrolling:"touch",
+                            justifyContent: sizes.length <= 3 ? "center" : "flex-start",
                           }}>
                             {sizes.map(sz => {
                               const shapeH = 30;
