@@ -2164,25 +2164,29 @@ export default function Customize() {
                         </div>
                       )}
 
-                      <button onClick={() => {
-                        const newLine = makeItem({
+                      {(() => {
+                        const snapshot = {
                           ...selected,
-                          id: crypto.randomUUID(),
-                          qty: 1,
                           productType: card.id,
                           size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
                           sku: cardSizeDef?.sku || "",
                           frameColor: card.frameColors ? cardFrame : undefined,
                           canvasEdge: canvasFrame ? "mirror" : undefined,
-                        });
-                        setItems(prev => [...prev, newLine]);
-                        setCartOpen(true);
-                      }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
-                        borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
-                        justifyContent:"center", gap:8 }}>
-                        <ShoppingCart size={15}/> Add {card.label} To Cart —{" "}
-                        <span style={{ fontWeight:900 }}>${total}</span>
-                      </button>
+                          qty: selected.qty || 1,
+                        };
+                        const lineQty = selected.qty || 1;
+                        const linePrice = itemUnitPrice(snapshot) * lineQty;
+                        return (
+                          <button onClick={() => {
+                            addToCart(snapshot, lineQty);
+                          }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
+                            borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
+                            justifyContent:"center", gap:8 }}>
+                            <ShoppingCart size={15}/> Add {card.label} To Cart —{" "}
+                            <span style={{ fontWeight:900 }}>${linePrice}</span>
+                          </button>
+                        );
+                      })()}
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
                         Delivery: {card.delivery} · 100% Money-Back Guarantee · Cart has {cartCount} item{cartCount === 1 ? "" : "s"}
