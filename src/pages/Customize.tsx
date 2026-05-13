@@ -1108,8 +1108,8 @@ export default function Customize() {
 
       {/* Three-column layout */}
       <div className="cz-grid" style={{
-        display:"grid", gridTemplateColumns:"240px 1fr 400px", gap:0,
-        maxWidth:1500, margin:"0 auto",
+        display:"grid", gridTemplateColumns:"420px 1fr 400px", gap:0,
+        maxWidth:1600, margin:"0 auto",
       }}>
         {/* Customize controls (left) */}
         <aside className="cz-side" style={{
@@ -1157,10 +1157,10 @@ export default function Customize() {
           {!isDigital && (
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
-            <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:14 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(82px, 1fr))", gap:8, marginBottom:14 }}>
               {BORDERS.map(b => (
                 <button key={b.id} className={`cz-chip ${border===b.id?"on":""}`}
-                  style={{ flex:"1 1 calc(25% - 6px)", minWidth:0, justifyContent:"center", padding:"9px 6px" }}
+                  style={{ width:"100%", minWidth:82, justifyContent:"center", padding:"9px 10px" }}
                   onClick={() => setBorder(b.id)}>
                   {b.label}
                 </button>
