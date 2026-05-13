@@ -1455,7 +1455,7 @@ export default function Customize() {
                       {!isActive && (
                         <>
                           <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                            ${card.id==="digital"?Math.round(27*1.4):origPrice}
+                            ${card.id==="digital"?digitalOrig:origPrice}
                           </span>
                           <span style={{ fontSize:15, fontWeight:800, color:RED,
                             fontFamily:"'Poppins',sans-serif" }}>
