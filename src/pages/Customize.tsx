@@ -1371,7 +1371,7 @@ export default function Customize() {
 
         {/* Cart + pricing (right) */}
         <aside className="cz-side" style={{
-          padding:"24px 24px 24px 12px",
+          padding: aiOpen ? "24px 16px 24px 8px" : "24px 24px 24px 12px",
           position:"sticky", top:70, alignSelf:"start",
           maxHeight:"calc(100vh - 70px)", overflowY:"auto",
           display:"flex", flexDirection:"column", gap:14,
