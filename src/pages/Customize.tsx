@@ -2055,17 +2055,16 @@ export default function Customize() {
                                     badge:"Best Value", featured:false, save:"Save 43%",
                                     feats:["60 masterpieces for total freedom","Download all your masterpieces","Advanced Precision Editor","Priority support"] },
                                 ].map(pk => {
-                                  const isSel = selectedPackId === pk.id;
+                                  const inCart = addedPacks.find(p => p.packId === pk.id);
+                                  const qtyInCart = inCart?.qty || 0;
                                   return (
                                   <div key={pk.id}
-                                    onClick={(e) => { e.stopPropagation(); setSelectedPackId(pk.id); }}
-                                    role="button"
                                     style={{
-                                      border:`2px solid ${isSel ? RED : (pk.featured ? RED : BORDER)}`,
+                                      border:`2px solid ${qtyInCart ? RED : (pk.featured ? RED : BORDER)}`,
                                       borderRadius:12, padding:"12px 14px",
-                                      background: isSel ? "#FFF8F8" : "#fff",
-                                      position:"relative", cursor:"pointer",
-                                      boxShadow: isSel ? `0 0 0 3px ${RED}22` : "none",
+                                      background: qtyInCart ? "#FFF8F8" : "#fff",
+                                      position:"relative",
+                                      boxShadow: qtyInCart ? `0 0 0 3px ${RED}22` : "none",
                                       transition:"all .15s ease",
                                   }}>
                                     {pk.badge && (
@@ -2078,16 +2077,11 @@ export default function Customize() {
                                       }}>{pk.badge}</span>
                                     )}
                                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:6 }}>
-                                      <div style={{ fontSize:14, fontWeight:800, color:INK, fontFamily:"'Poppins',sans-serif", display:"flex", alignItems:"center", gap:6 }}>
-                                        <span style={{
-                                          width:16, height:16, borderRadius:"50%",
-                                          border:`2px solid ${isSel ? RED : "#cbd5e1"}`,
-                                          display:"inline-flex", alignItems:"center", justifyContent:"center",
-                                          background: isSel ? RED : "#fff", flexShrink:0,
-                                        }}>
-                                          {isSel && <Check size={10} color="#fff" strokeWidth={3}/>}
-                                        </span>
+                                      <div style={{ fontSize:14, fontWeight:800, color:INK, fontFamily:"'Poppins',sans-serif" }}>
                                         {pk.name}
+                                        {qtyInCart > 1 && (
+                                          <span style={{ marginLeft:6, fontSize:11, fontWeight:700, color:RED }}>×{qtyInCart}</span>
+                                        )}
                                       </div>
                                       <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
                                         <span style={{ fontSize:18, fontWeight:900, color:INK, fontFamily:"'Poppins',sans-serif" }}>
@@ -2108,16 +2102,20 @@ export default function Customize() {
                                         </li>
                                       ))}
                                     </ul>
-                                    <div style={{
-                                      fontSize:11, fontWeight:700, textAlign:"center",
-                                      padding:"6px 10px", borderRadius:8,
-                                      background: isSel ? RED : "#F3F4F6",
-                                      color: isSel ? "#fff" : INK,
-                                      fontFamily:"'Poppins',sans-serif",
-                                      letterSpacing:".04em", textTransform:"uppercase",
-                                    }}>
-                                      {isSel ? "✓ Selected" : "Select This Pack"}
-                                    </div>
+                                    <button
+                                      onClick={(e) => { e.stopPropagation(); addPackToCart({ id: pk.id, name: pk.name, price: pk.price }); }}
+                                      style={{
+                                        width:"100%", border:"none", cursor:"pointer",
+                                        fontSize:11.5, fontWeight:700, textAlign:"center",
+                                        padding:"8px 10px", borderRadius:8,
+                                        background: qtyInCart ? "#16a34a" : RED,
+                                        color: "#fff",
+                                        fontFamily:"'Poppins',sans-serif",
+                                        letterSpacing:".04em", textTransform:"uppercase",
+                                        display:"inline-flex", alignItems:"center", justifyContent:"center", gap:6,
+                                      }}>
+                                      {qtyInCart ? <><Check size={13}/> Added — Add Another</> : <><Plus size={13}/> Add To Cart</>}
+                                    </button>
                                   </div>
                                   );
                                 })}
