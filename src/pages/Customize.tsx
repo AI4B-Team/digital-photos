@@ -565,7 +565,7 @@ export default function Customize() {
   const [giftOpen, setGiftOpen]       = useState(false);
 
   // Right-panel accordion state
-  const [activeCard, setActiveCard]             = useState("canvas");
+  const [activeCard, setActiveCard]             = useState("classic-frame");
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
   const [canvasFrame, setCanvasFrame]           = useState(false);
