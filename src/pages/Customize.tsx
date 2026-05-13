@@ -582,6 +582,9 @@ export default function Customize() {
   // Cart items: snapshots of configured prints the user has explicitly added.
   // Separate from workspace `items` so duplicating a photo does not auto-add it.
   const [cartItems, setCartItems] = useState<any[]>([]);
+  const [upsellOpen, setUpsellOpen] = useState(false);
+  const [vipAdded, setVipAdded] = useState(false);
+  const [pendingCart, setPendingCart] = useState<{ snapshot: any; qty: number } | null>(null);
 
   // Build a stable key from the configuration fields that distinguish a SKU,
   // so adding the same product twice merges into a qty bump.
