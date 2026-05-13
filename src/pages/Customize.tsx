@@ -950,7 +950,8 @@ export default function Customize() {
                   const btn = (window as any).__aiBtn as HTMLElement | undefined;
                   const r = btn?.getBoundingClientRect();
                   const top = r ? Math.max(12, Math.min(window.innerHeight - 520, r.top)) : 100;
-                  const left = r ? Math.max(12, Math.min(window.innerWidth - 372, r.right + 12)) : 100;
+                   // Open popup to the LEFT of the toolbar so it doesn't overlap the pricing panel
+                   const left = r ? Math.max(12, r.left - 372) : 100;
                   return createPortal(
                   <>
                     <div onClick={() => { setAiOpen(false); setMpSection(""); }} style={{ position:"fixed", inset:0, zIndex:9998 }}/>
