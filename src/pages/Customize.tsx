@@ -1471,7 +1471,7 @@ export default function Customize() {
                     onClick={() => setActiveCard(isActive ? "" : card.id)}
                     style={{ width:"100%", display:"flex", alignItems:"center",
                       justifyContent:"space-between", padding:"14px 16px",
-                      background: isActive ? "rgba(230,25,25,.03)" : "#fff",
+                      background: "#fff",
                       border:"none", cursor:"pointer", gap:8, borderRadius:14 }}>
                     <div style={{ display:"flex", alignItems:"center", gap:8,
                       flex:1, minWidth:0, textAlign:"left" }}>
@@ -1525,7 +1525,7 @@ export default function Customize() {
                                 }}
                                 style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
                                   borderRadius:10, padding:"10px 10px 10px",
-                                  background: selSize===sz.id ? "rgba(230,25,25,.05)" : "#fff",
+                                  background: "#fff",
                                   cursor:"pointer", textAlign:"center", position:"relative",
                                   flex:"0 0 auto", minWidth:90, scrollSnapAlign:"start" }}>
                                 {sz.best && (
@@ -1539,7 +1539,7 @@ export default function Customize() {
                                   height: shapeH + 4, marginBottom:6 }}>
                                   <div style={{ width: shapeW, height: shapeH,
                                     border:`1.5px solid ${selSize===sz.id?RED:"#bdb6ad"}`,
-                                    borderRadius:2, background: selSize===sz.id ? "rgba(230,25,25,.08)" : "#f4f1ec" }}/>
+                                    borderRadius:2, background: "#f4f1ec" }}/>
                                 </div>
                                 <div style={{ fontSize:11.5, fontWeight:700, color:INK, whiteSpace:"nowrap" }}>{sz.dim}</div>
                                 <div style={{ fontSize:10, color:MUTED, marginTop:1, whiteSpace:"nowrap" }}>{sz.label}</div>
