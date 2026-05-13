@@ -935,7 +935,7 @@ export default function Customize() {
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
               onClick={(e) => e.stopPropagation()}
               style={{ flexShrink:0 }}>
-              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="AI Assistant" aria-label="AI Assistant" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
+              <button className={`cz-tool ${aiOpen?"on":""}`} onClick={() => setAiOpen(v => !v)} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
                 <Sparkles size={18}/>
               </button>
               <div className="cz-tool-divider"/>
