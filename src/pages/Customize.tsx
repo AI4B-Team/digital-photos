@@ -1665,13 +1665,14 @@ export default function Customize() {
               const defaultSize = bestPid || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
               const selSize  = cardSize[card.id] || defaultSize;
               const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[0];
-              const basePrice = card.id === "digital" ? 27 : (cardSizeDef?.price || 0);
+              const basePrice = card.id === "digital" ? 37 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
               const cardDiscount = Math.min(discountAmt, basePrice + frameAdd);
               const price    = basePrice + frameAdd - cardDiscount;
-              const origPrice = discountAmt > 0 ? basePrice + discountAmt : Math.round(basePrice * 1.4);
-              const digitalOrig = discountAmt > 0 ? 27 + discountAmt : Math.round(27 * 1.4);
-              const digitalPrice = Math.max(0, 27 - discountAmt);
+              // origPrice = retail (the crossed-out price when discount is active)
+              const origPrice = basePrice;   // basePrice IS the retail in SIMPLE_SIZES
+              const digitalOrig = 37;        // digital retail
+              const digitalPrice = Math.max(0, 37 - discountAmt);
 
               return (
                 <div key={card.id} style={{
