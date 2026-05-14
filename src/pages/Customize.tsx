@@ -751,6 +751,7 @@ export default function Customize() {
     position: "top" | "bottom",
     fontId: string,
     colorId: string,
+    sizeId: string = "md",
   ): Promise<string> => {
     try {
       const fontDef  = NAME_FONTS.find(f => f.id === fontId)   || NAME_FONTS[0];
