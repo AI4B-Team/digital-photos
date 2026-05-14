@@ -987,14 +987,19 @@ function HomePage({ onGenerate }) {
                       {portraits.map((p, i) => (
                         <div key={i} style={{
                           position:"relative", borderRadius:6, overflow:"hidden",
-                          aspectRatio:"0.75", border:`1px solid ${T.border}`,
+                          aspectRatio:".75", border:`1px solid ${T.border}`,
+                          cursor:"default",
                         }}>
-                          <img src={p.url} alt={p.style}
-                            style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                          <img
+                            src={p.url}
+                            alt={p.style}
+                            style={{ width:"100%", height:"100%",
+                              objectFit:"cover", display:"block" }}
+                          />
                           <div style={{
                             position:"absolute", bottom:0, left:0, right:0,
-                            padding:"3px 2px",
-                            background:"linear-gradient(transparent,rgba(0,0,0,0.7))",
+                            padding:"14px 4px 4px",
+                            background:"linear-gradient(transparent,rgba(10,10,10,.82))",
                           }}>
                             <span style={{
                               fontSize:7.5, fontWeight:700, letterSpacing:".1em",
@@ -1005,7 +1010,8 @@ function HomePage({ onGenerate }) {
                         </div>
                       ))}
                     </div>
-                    <p style={{ fontSize:9.5, color:T.muted, marginTop:6, letterSpacing:".04em", textAlign:"center" }}>
+                    <p style={{ fontSize:9, color:T.dim, marginTop:5, letterSpacing:".04em",
+                      textAlign:"center" }}>
                       You'll receive all 6 styles · Choose your favourite after generation
                     </p>
                   </div>
