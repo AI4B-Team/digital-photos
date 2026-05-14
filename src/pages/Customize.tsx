@@ -1099,6 +1099,32 @@ export default function Customize() {
                           ))}
                         </div>
                       </div>
+                      {/* Live name overlay */}
+                      {namePosition !== "none" && portraitName && (
+                        <div style={{
+                          position:"absolute", left:0, right:0, zIndex:3,
+                          top:    namePosition === "top"    ? "5%" : "auto",
+                          bottom: namePosition === "bottom" ? "5%" : "auto",
+                          textAlign:"center", pointerEvents:"none",
+                        }}>
+                          <span style={{
+                            display:"inline-block",
+                            color: NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff",
+                            fontSize:"clamp(14px, 6.5%, 48px)",
+                            fontFamily: nameFontId==="serif"
+                              ? "Georgia,'Times New Roman',serif"
+                              : "'Poppins',sans-serif",
+                            fontWeight: nameFontId==="italic" ? 600 : 700,
+                            fontStyle:  nameFontId==="italic" ? "italic" : "normal",
+                            letterSpacing:".18em",
+                            textShadow: nameColorId==="white"||nameColorId==="cream"
+                              ? "0 2px 8px rgba(0,0,0,0.55)"
+                              : "0 2px 8px rgba(255,255,255,0.35)",
+                          }}>
+                            {portraitName.toUpperCase()}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     {itemBusy && (
                       <div className="cz-busy" style={{ zIndex: 2 }}>
