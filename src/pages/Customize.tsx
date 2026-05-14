@@ -306,6 +306,12 @@ const MOUNT_COLORS = [
   { id:"black",      label:"Black",      color:"#1a1a1a" },
 ];
 
+// Prodigi glaze options — confirmed for GLOBAL-CFP/CFPM and GLOBAL-BOX/BOXM
+const GLAZE_OPTIONS = [
+  { id:"perspex",  label:"Standard",     desc:"Durable Perspex — clear & protective",          add:0  },
+  { id:"moth-eye", label:"Moth-Eye ✦",   desc:"Anti-reflective, no-glare museum-grade glass",   add:17 },
+] as const;
+
 const CANVAS_EDGES = [
   { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
   { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",  color:"#1a1a1a" },
