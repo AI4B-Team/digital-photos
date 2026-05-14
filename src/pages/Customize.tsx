@@ -1679,7 +1679,7 @@ export default function Customize() {
                     <button key={c.id} title={c.label}
                       onClick={() => setNameColorId(c.id)}
                       style={{
-                        width:30, height:30, borderRadius:"50%",
+                        width:30, height:30, borderRadius:8,
                         background:c.hex, cursor:"pointer", border:"none",
                         outline: nameColorId===c.id ? `3px solid ${RED}` : `2px solid rgba(0,0,0,0.12)`,
                         outlineOffset: nameColorId===c.id ? 2 : 0,
