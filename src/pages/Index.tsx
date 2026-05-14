@@ -20,6 +20,10 @@ import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import sceneCouples from "@/assets/scene-couples.jpg";
+import stepUpload from "@/assets/step-upload.jpg";
+import stepAi from "@/assets/step-ai.jpg";
+import stepCustomize from "@/assets/step-customize.jpg";
+import stepDelivered from "@/assets/step-delivered.jpg";
 import portraitPets from "@/assets/portrait-pets.jpg";
 import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
 import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
@@ -1376,16 +1380,21 @@ function HomePage({ onGenerate }) {
           <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Upload once. Receive a portrait worth treasuring forever.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:20 }} className="sg3">
             {[
-              { n:"1", Icon:Upload,             title:"Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
-              { n:"2", Icon:Sparkles,           title:"AI Brings It To Life",       body:"In seconds, our AI transforms your photo into a stunning portrait across six timeless art styles — Royal, Renaissance, Storybook, Fantasy, Cinematic, and Minimal." },
-              { n:"3", Icon:SlidersHorizontal,  title:"Make It Truly Yours",        body:"Preview every style side by side. Choose your favourite, then customise every detail — size, frame color, and finish." },
-              { n:"4", Icon:Heart,              title:"Delivered & Cherished",      body:"Your portrait is printed on museum-quality archival fine art paper, carefully packaged, and delivered free to your door worldwide." },
+              { n:"1", Icon:Upload,             img:stepUpload,    title:"Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
+              { n:"2", Icon:Sparkles,           img:stepAi,        title:"AI Brings It To Life",       body:"In seconds, our AI transforms your photo into a stunning portrait across six timeless art styles — Royal, Renaissance, Storybook, Fantasy, Cinematic, and Minimal." },
+              { n:"3", Icon:SlidersHorizontal,  img:stepCustomize, title:"Make It Truly Yours",        body:"Preview every style side by side. Choose your favourite, then customise every detail — size, frame color, and finish." },
+              { n:"4", Icon:Heart,              img:stepDelivered, title:"Delivered & Cherished",      body:"Your portrait is printed on museum-quality archival fine art paper, carefully packaged, and delivered free to your door worldwide." },
             ].map((step) => (
-              <div key={step.n} style={{ position:"relative", border:`1px solid ${T.border}`, borderRadius:18, padding:"28px 22px", background:T.bg }}>
-                <div style={{ position:"absolute", top:-12, left:22, background:T.gold, color:"#FFFFFF", borderRadius:999, width:26, height:26, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:700, fontFamily:"'Poppins',sans-serif" }}>{step.n}</div>
-                <step.Icon size={26} color={T.gold} style={{ marginBottom:14 }}/>
-                <h3 style={{ fontSize:16, fontWeight:700, color:T.cream, marginBottom:10, lineHeight:1.25, fontFamily:"'Poppins',sans-serif" }}>{step.title}</h3>
-                <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>{step.body}</p>
+              <div key={step.n} style={{ position:"relative", border:`1px solid ${T.border}`, borderRadius:18, background:T.bg, overflow:"hidden", display:"flex", flexDirection:"column" }}>
+                <div style={{ position:"relative", aspectRatio:"1/1", background:"linear-gradient(160deg,#dbeafe 0%,#eff6ff 55%,#ffffff 100%)", overflow:"hidden" }}>
+                  <img src={step.img} alt={step.title} loading="lazy" width={768} height={768} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                  <div style={{ position:"absolute", top:12, left:12, background:T.gold, color:"#FFFFFF", borderRadius:999, width:28, height:28, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:700, fontFamily:"'Poppins',sans-serif", boxShadow:"0 4px 12px rgba(0,0,0,.25)" }}>{step.n}</div>
+                </div>
+                <div style={{ padding:"22px 22px 24px" }}>
+                  <step.Icon size={22} color={T.gold} style={{ marginBottom:10 }}/>
+                  <h3 style={{ fontSize:16, fontWeight:700, color:T.cream, marginBottom:10, lineHeight:1.25, fontFamily:"'Poppins',sans-serif" }}>{step.title}</h3>
+                  <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>{step.body}</p>
+                </div>
               </div>
             ))}
           </div>
