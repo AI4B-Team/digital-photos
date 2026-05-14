@@ -1818,7 +1818,7 @@ export default function App() {
       {screen==="home"         && <HomePage        onGenerate={handleGenerate}/>}
       {screen==="select-style" && <StyleSelectPage session={localSession}
                                     onConfirm={handleStyleSelected}
-                                    onBack={() => setScreen("home")}/>}
+                                    onBack={() => { setScreen("home"); navigate("/"); }}/>}
       {screen==="gen"          && <GenScreen      selectedStyles={localSession.styles}
                                     sessionId={localSession.sessionId}
                                     photoUrl={localSession.photoUrl || localSession.photo}
