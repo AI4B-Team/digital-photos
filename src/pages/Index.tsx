@@ -1511,7 +1511,22 @@ function HomePage({ onGenerate }) {
 
       </section>
 
-
+      {/* ■■ Trust Strip ■■ */}
+      <section style={{ padding:"22px 32px", background:"#F5F3EE", borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}` }}>
+        <div style={{ maxWidth:1200, margin:"0 auto", display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:20, alignItems:"center" }} className="trust4">
+          {[
+            { Icon:Sparkles, label:"Free Instant Preview" },
+            { Icon:FrameIcon, label:"Museum-Quality Print" },
+            { Icon:Truck, label:"Fast & Free Shipping" },
+            { Icon:Award, label:"Proudly Made in the USA" },
+          ].map(({ Icon, label }) => (
+            <div key={label} style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:12 }}>
+              <Icon size={28} color={T.gold} strokeWidth={1.5}/>
+              <span style={{ fontSize:14, fontWeight:500, color:"#1a1a1a", fontFamily:"'Poppins',sans-serif" }}>{label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* ■■ How It Works ■■ */}
       <section style={{ padding:"80px 32px", background:T.bg }}>
