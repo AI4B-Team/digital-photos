@@ -339,6 +339,13 @@ const NAME_FONTS = [
   { id:"italic", label:"Italic",        css:(fs:number)=>`600 italic ${fs}px 'Poppins',sans-serif` },
 ] as const;
 
+const NAME_SIZES = [
+  { id:"sm", label:"S", mult:0.045, css:"4.5%" },
+  { id:"md", label:"M", mult:0.065, css:"6.5%" },
+  { id:"lg", label:"L", mult:0.085, css:"8.5%" },
+  { id:"xl", label:"XL", mult:0.105, css:"10.5%" },
+] as const;
+
 const NAME_COLORS = [
   { id:"white", label:"White", hex:"#FFFFFF" },
   { id:"cream", label:"Cream", hex:"#EDE6D9" },
