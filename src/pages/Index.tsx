@@ -45,6 +45,7 @@ import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
 import portraitBabiesFan from "@/assets/portrait-babies-fantasy.jpg";
 import portraitBabiesCine from "@/assets/portrait-babies-cinematic.jpg";
 import portraitBabiesMin from "@/assets/portrait-babies-minimal.jpg";
+import babyMomCreative from "@/assets/baby-mom-creative.jpg";
 import portraitCouplesRoyal from "@/assets/portrait-couples-royal.jpg";
 import portraitCouplesRen from "@/assets/portrait-couples-renaissance.jpg";
 import portraitCouplesStory from "@/assets/portrait-couples-storybook.jpg";
@@ -292,6 +293,9 @@ export const TEMPLATES: Record<string, { id:string; label:string; desc:string; i
       prompt:"dressed as an American football star wearing helmet and team jersey, running with a football across a stadium field under bright stadium lights, blurred crowd in the background, dynamic hyper-realistic sports photograph" },
   ],
   babies: [
+    { id:"baby-mom-creative", label:"Mom & Baby Scenes", desc:"Creative Wall Photos",
+      img: babyMomCreative,
+      prompt:"as a creative mom-and-baby scene photographed against a plain white wall with a wood-plank floor at the bottom, shot from directly overhead so both subjects appear to be 'standing' on the wall. The reference image shows FOUR scenes in a 2x2 layout — pick one of the four scenes and recreate it exactly with the user's baby (and mom if present in the user's photo). TOP-LEFT: baby in grey beanie and printed onesie lying on a skateboard with green and purple wheels, mom in white tank top and ripped blue jeans leaning casually with arms crossed, looking down at baby smiling. TOP-RIGHT: baby in green shorts reaching up to dunk an orange basketball into a wall-mounted mini hoop, mom in black Chicago Bulls jersey and white denim shorts with white sneakers, arms crossed. BOTTOM-LEFT: baby in blue Superman onesie with red cape flying horizontally, mom in white shirt and light denim shorts with silver duct tape over her mouth (Lois Lane saved). BOTTOM-RIGHT: baby in grey striped onesie wearing oversized red boxing gloves kicking a red and black hanging punching bag, mom in white tank and grey shorts in fighting stance. Bright clean natural daylight, minimalist white wall background, wood floor strip at the bottom, playful creative family photography, hyper-realistic photograph. Output ONLY the photo content (no frame, no border, no mockup chrome)." },
     { id:"baby-royal",    label:"Royal Baby",       desc:"Prince Or Princess",
       img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=240&h=300&fit=crop&q=80",
       prompt:"as a royal baby prince or princess in a silk christening gown with pearl accessories, opulent palace background" },
