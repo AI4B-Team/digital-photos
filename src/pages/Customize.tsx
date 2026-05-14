@@ -768,7 +768,8 @@ export default function Customize() {
       canvas.height = img.naturalHeight;
       const ctx = canvas.getContext("2d")!;
       ctx.drawImage(img, 0, 0);
-      const fontSize = Math.round(img.naturalHeight * 0.065);
+      const sizeMult = (NAME_SIZES.find(s => s.id === sizeId)?.mult) ?? 0.065;
+      const fontSize = Math.round(img.naturalHeight * sizeMult);
       ctx.font      = fontDef.css(fontSize);
       ctx.fillStyle = colorDef.hex;
       ctx.textAlign = "center";
