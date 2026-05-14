@@ -1745,7 +1745,7 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
           background:`
-            radial-gradient(ellipse 70% 50% at 50% 25%, #FFFFFF 0%, #FAFAF8 50%, #F0EDE8 100%)
+            radial-gradient(ellipse 90% 70% at 30% 15%, #FFFFFF 0%, #F5F2EC 55%, #E8E2D6 100%)
           `,
           overflow:"hidden",
           position:"relative",
