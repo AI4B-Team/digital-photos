@@ -1892,7 +1892,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           {baseCards.map(card => {
             const isSelected = selected?.type === "style" && selected?.id === card.id;
             return (
-              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected}
+              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
                 onSelect={() => setSelected(isSelected ? null : { type:"style", id:card.id })}
                 onConfirm={handleConfirm}/>
             );
