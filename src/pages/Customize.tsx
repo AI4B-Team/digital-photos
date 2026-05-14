@@ -306,6 +306,12 @@ const MOUNT_COLORS = [
   { id:"black",      label:"Black",      color:"#1a1a1a" },
 ];
 
+// Prodigi glaze options — confirmed for GLOBAL-CFP/CFPM and GLOBAL-BOX/BOXM
+const GLAZE_OPTIONS = [
+  { id:"perspex",  label:"Standard",     desc:"Durable Perspex — clear & protective",          add:0  },
+  { id:"moth-eye", label:"Moth-Eye ✦",   desc:"Anti-reflective, no-glare museum-grade glass",   add:17 },
+] as const;
+
 const CANVAS_EDGES = [
   { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
   { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",  color:"#1a1a1a" },
@@ -589,6 +595,7 @@ export default function Customize() {
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
   const [mountColor, setMountColor]             = useState("snow-white");
+  const [glazeType,  setGlazeType]              = useState<"perspex"|"moth-eye">("perspex");
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
@@ -736,7 +743,10 @@ export default function Customize() {
     const pt = it.productType || "classic-frame";
     const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
     const sd = sizes.find(s => s.id === it.size) || sizes[1];
-    return sd?.price || 97;
+    const glazeAdd = (pt === "classic-frame" || pt === "box-frame")
+      ? (GLAZE_OPTIONS.find(g => g.id === (it.glazeType || "perspex"))?.add || 0)
+      : 0;
+    return (sd?.price || 97) + glazeAdd;
   };
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   // Strikethrough = retail price (only shown when discount is active)
@@ -1327,6 +1337,7 @@ export default function Customize() {
           productType: primaryCartItem?.productType || "",
           printFrame: primaryCartItem?.frameColor || primaryCartItem?.canvasEdge || "",
           printMount: mountColor || "snow-white",
+          printGlaze: primaryCartItem?.glazeType || "perspex",
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
@@ -1543,8 +1554,8 @@ export default function Customize() {
             </div>
           </div>
 
-          {/* Mat / Border — not for digital */}
-          {!isDigital && (
+          {/* Mat / Border — only for unframed products */}
+          {(productType === "print" || productType === "canvas") && (
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(2, minmax(0, 1fr))", gap:6, marginBottom:14 }}>
@@ -1647,7 +1658,7 @@ export default function Customize() {
                 features:["Premium 230gsm archival paper, fade-resistant","Vivid colors, sunlight resistant","Ships rolled in a protective tube","Hi-res digital download included"],
                 delivery:"5–7 Business Days" },
               { id:"classic-frame", label:"Framed Print", sub:"Ready to hang, 8 frame colors.", badge:"Most Popular",
-                features:["Museum-grade cotton art paper with white mount","Hand-finished solid frame, conservation-grade mount","Ready to hang — arrives fully assembled","Hi-res digital download included"],
+                features:[`Museum-grade cotton art paper · ${MOUNT_COLORS.find(m => m.id === mountColor)?.label ?? "Snow White"} mount`,"Hand-finished solid frame, conservation-grade mount","Ready to hang — arrives fully assembled","Hi-res digital download included"],
                 delivery:"5–9 Business Days", frameColors:true },
               { id:"canvas", label:"Canvas Print", sub:"Ready to hang.", badge:null,
                 features:["Fine-textured canvas, vivid detail & color","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included","Hi-res digital download included"],
@@ -1957,6 +1968,35 @@ export default function Customize() {
                         </>
                       )}
 
+                      {card.frameColors && (
+                        <>
+                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
+                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
+                            Glaze
+                          </div>
+                          <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:14 }}>
+                            {GLAZE_OPTIONS.map(g => (
+                              <button key={g.id}
+                                onClick={() => setGlazeType(g.id as "perspex" | "moth-eye")}
+                                style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                                  padding:"10px 12px", borderRadius:10, cursor:"pointer",
+                                  border:`1.5px solid ${glazeType===g.id?RED:BORDER}`,
+                                  background:glazeType===g.id?"rgba(230,25,25,.04)":"#fff",
+                                  transition:"all .15s", textAlign:"left" }}>
+                                <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+                                  <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>{g.label}</span>
+                                  <span style={{ fontSize:11, color:MUTED }}>{g.desc}</span>
+                                </div>
+                                <span style={{ fontSize:12, fontWeight:800,
+                                  color:g.add>0?RED:MUTED, flexShrink:0, marginLeft:12 }}>
+                                  {g.add > 0 ? `+$${g.add}` : "Included"}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+
                       {card.id !== "digital" && (
                         <div style={{ display:"flex", alignItems:"center", gap:6,
                           fontSize:12, color:"#16a34a", fontWeight:600, marginBottom:10 }}>
@@ -2250,6 +2290,7 @@ export default function Customize() {
                           size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
                           sku: cardSizeDef?.sku || "",
                           frameColor: card.frameColors ? cardFrame : undefined,
+                          glazeType: card.frameColors ? glazeType : undefined,
                           canvasEdge: canvasFrame ? "mirror" : undefined,
                           qty: selected.qty || 1,
                         };

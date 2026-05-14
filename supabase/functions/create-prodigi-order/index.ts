@@ -37,6 +37,7 @@ serve(async (req) => {
       frameColor,
       canvasEdge,
       mountColor = "snow-white",
+      glazeType = "perspex",
       shippingName,
       shippingEmail,
       shippingLine1,
@@ -68,6 +69,8 @@ serve(async (req) => {
         "snow-white": "snowWhite", "hayseed": "hayseed", "black": "black",
       };
       attributes.mount = mountAttr[mountColor] || "snowWhite";
+      // Glaze: perspex (standard) or moth-eye (premium anti-reflective)
+      attributes.glaze = glazeType === "moth-eye" ? "mothEye" : "perspex";
     }
     if (productType === "canvas" && canvasEdge) {
       attributes.wrap = CANVAS_EDGE_ATTR[canvasEdge] || canvasEdge;

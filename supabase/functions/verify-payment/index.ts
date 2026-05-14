@@ -116,6 +116,7 @@ serve(async (req) => {
                 frameColor: sessionRecord?.print_frame || checkoutSession.metadata?.printFrame || "",
                 canvasEdge: sessionRecord?.print_canvas_edge || "mirror",
                 mountColor: checkoutSession.metadata?.printMount || "snow-white",
+                glazeType: checkoutSession.metadata?.printGlaze || "perspex",
                 shippingName,
                 shippingEmail,
                 shippingLine1: shipping.line1,
