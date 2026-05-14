@@ -732,14 +732,15 @@ export default function Customize() {
   // Per-item price + bundle discount based on number of images
   const itemUnitPrice = (it) => {
     if (it.productType === "vip") return 17;
-    if (it.productType === "digital") return 27;
+    if (it.productType === "digital") return 37;
     const pt = it.productType || "classic-frame";
     const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
     const sd = sizes.find(s => s.id === it.size) || sizes[1];
     return sd?.price || 97;
   };
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
-  const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
+  // Strikethrough = retail price (only shown when discount is active)
+  const itemListPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
   // Cart-derived totals (only what the user actually added to the cart)
   const cartPrintsSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
