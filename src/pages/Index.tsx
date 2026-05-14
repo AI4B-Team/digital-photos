@@ -1830,6 +1830,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
 function StyleSelectPage({ session, onConfirm, onBack }) {
   const { cat, heroName, photo } = session;
   const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
+  const [confirming, setConfirming] = useState(false);
 
   const teaser = TEASERS.find(t => t.catId === cat);
   const portraits = teaser?.portraits || [];
@@ -1861,15 +1862,46 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     try { return new URL(u, window.location.origin).href; } catch { return u; }
   };
 
-  const handleConfirm = () => {
+  const imageUrlToDataUrl = async (u?: string) => {
+    const abs = toAbsUrl(u);
+    if (!abs || abs.startsWith("data:image/")) return abs;
+
+    const response = await fetch(abs);
+    if (!response.ok) throw new Error(`Could not load reference image (${response.status})`);
+
+    const blob = await response.blob();
+    if (!blob.type.startsWith("image/")) throw new Error(`Reference image was ${blob.type || "not an image"}`);
+
+    return await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  const getStyleRef = async (u?: string) => {
+    try { return await imageUrlToDataUrl(u); }
+    catch (err) {
+      console.warn("Could not convert style reference to data URL, using URL fallback:", err);
+      return toAbsUrl(u);
+    }
+  };
+
+  const handleConfirm = async () => {
     if (!selected) return;
-    if (selected.type === "style") {
-      const card = baseCards.find(c => c.id === selected.id);
-      onConfirm({ styles: [selected.id], templatePrompt: "", styleRefUrl: toAbsUrl(card?.img) });
-    } else {
-      const tmpl = templates.find(t => t.id === selected.id);
-      const card = tmplCards.find(c => c.id === selected.id);
-      onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "", styleRefUrl: toAbsUrl(card?.img) });
+    setConfirming(true);
+    try {
+      if (selected.type === "style") {
+        const card = baseCards.find(c => c.id === selected.id);
+        onConfirm({ styles: [selected.id], templatePrompt: "", styleRefUrl: await getStyleRef(card?.img) });
+      } else {
+        const tmpl = templates.find(t => t.id === selected.id);
+        const card = tmplCards.find(c => c.id === selected.id);
+        onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "", styleRefUrl: await getStyleRef(card?.img) });
+      }
+    } finally {
+      setConfirming(false);
     }
   };
 
