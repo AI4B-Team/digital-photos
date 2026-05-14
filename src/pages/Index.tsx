@@ -1993,7 +1993,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                       onConfirm={async () => {
                         setConfirming(true);
                         try {
-                          onConfirm({ styles:["royal"], templatePrompt: t.prompt, styleRefUrl: await getStyleRef(t.img) });
+                          onConfirm({ styles:["royal","renaissance","cinematic","fantasy"], templatePrompt: t.prompt, styleRefUrl: await getStyleRef(t.img) });
                         } finally {
                           setConfirming(false);
                         }
