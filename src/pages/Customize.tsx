@@ -2289,6 +2289,7 @@ export default function Customize() {
                           size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
                           sku: cardSizeDef?.sku || "",
                           frameColor: card.frameColors ? cardFrame : undefined,
+                          glazeType: card.frameColors ? glazeType : undefined,
                           canvasEdge: canvasFrame ? "mirror" : undefined,
                           qty: selected.qty || 1,
                         };
