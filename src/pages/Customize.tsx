@@ -339,6 +339,13 @@ const NAME_FONTS = [
   { id:"italic", label:"Italic",        css:(fs:number)=>`600 italic ${fs}px 'Poppins',sans-serif` },
 ] as const;
 
+const NAME_SIZES = [
+  { id:"sm", label:"S", mult:0.045, css:"4.5%" },
+  { id:"md", label:"M", mult:0.065, css:"6.5%" },
+  { id:"lg", label:"L", mult:0.085, css:"8.5%" },
+  { id:"xl", label:"XL", mult:0.105, css:"10.5%" },
+] as const;
+
 const NAME_COLORS = [
   { id:"white", label:"White", hex:"#FFFFFF" },
   { id:"cream", label:"Cream", hex:"#EDE6D9" },
@@ -637,6 +644,7 @@ export default function Customize() {
     setNamePosition(prev => (hn && prev === "none" ? "top" : prev));
   }, [(session as any)?.heroName]);
   const [nameFontId,      setNameFontId]      = useState("bold");
+  const [nameSizeId,      setNameSizeId]      = useState("md");
   const [nameColorId,     setNameColorId]     = useState("white");
   const [nameCompositing, setNameCompositing] = useState(false);
   const [canvasFrame, setCanvasFrame]           = useState(false);
@@ -743,6 +751,7 @@ export default function Customize() {
     position: "top" | "bottom",
     fontId: string,
     colorId: string,
+    sizeId: string = "md",
   ): Promise<string> => {
     try {
       const fontDef  = NAME_FONTS.find(f => f.id === fontId)   || NAME_FONTS[0];
@@ -759,7 +768,8 @@ export default function Customize() {
       canvas.height = img.naturalHeight;
       const ctx = canvas.getContext("2d")!;
       ctx.drawImage(img, 0, 0);
-      const fontSize = Math.round(img.naturalHeight * 0.065);
+      const sizeMult = (NAME_SIZES.find(s => s.id === sizeId)?.mult) ?? 0.065;
+      const fontSize = Math.round(img.naturalHeight * sizeMult);
       ctx.font      = fontDef.css(fontSize);
       ctx.fillStyle = colorDef.hex;
       ctx.textAlign = "center";
@@ -1169,7 +1179,7 @@ export default function Customize() {
                           <span style={{
                             display:"inline-block",
                             color: NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff",
-                            fontSize:"clamp(14px, 6.5%, 48px)",
+                            fontSize: `clamp(12px, ${NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "6.5%"}, 72px)`,
                             fontFamily: nameFontId==="serif"
                               ? "Georgia,'Times New Roman',serif"
                               : "'Poppins',sans-serif",
@@ -1710,7 +1720,23 @@ export default function Customize() {
                     </button>
                   ))}
                 </div>
-                <div style={{ display:"flex", gap:8 }}>
+                <div style={{ display:"flex", gap:6, marginBottom:14 }}>
+                  {NAME_SIZES.map(s => (
+                    <button key={s.id}
+                      onClick={() => setNameSizeId(s.id)}
+                      style={{
+                        flex:1, padding:"7px 4px", borderRadius:8, cursor:"pointer",
+                        border:`1.5px solid ${nameSizeId===s.id?RED:BORDER}`,
+                        background:nameSizeId===s.id?"rgba(230,25,25,.05)":"#fff",
+                        fontSize:11, fontWeight:700,
+                        color:nameSizeId===s.id?RED:MUTED,
+                        fontFamily:"'Poppins',sans-serif",
+                      }}>
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display:"flex", gap:8, paddingTop:6 }}>
                   {NAME_COLORS.map(c => (
                     <button key={c.id} title={c.label}
                       onClick={() => setNameColorId(c.id)}
@@ -2556,6 +2582,7 @@ export default function Customize() {
                                 namePosition as "top" | "bottom",
                                 nameFontId,
                                 nameColorId,
+                                nameSizeId,
                               );
                               setNameCompositing(false);
                             }
@@ -2565,6 +2592,7 @@ export default function Customize() {
                               portraitName: portraitName || null,
                               namePosition: portraitName ? namePosition : null,
                               nameFontId:   portraitName ? nameFontId   : null,
+                              nameSizeId:   portraitName ? nameSizeId   : null,
                               nameColorId:  portraitName ? nameColorId  : null,
                             };
                             addToCart(namedSnapshot, lineQty);
