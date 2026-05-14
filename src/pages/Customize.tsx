@@ -66,7 +66,7 @@ const G = `
 .cz-overlay-btn.alt{background:#fff;color:#0A0A0A;border-color:#fff}
 .cz-overlay-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.25)}
 .cz-overlay-btn:disabled{opacity:.6;cursor:not-allowed}
-.cz-busy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(10,10,10,.62);backdrop-filter:blur(4px);color:#fff;z-index:5}
+.cz-busy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(10,10,10,.92);backdrop-filter:blur(6px);color:#fff;z-index:10;isolation:isolate}
 .cz-spinner{width:46px;height:46px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;animation:czSpin .9s linear infinite}
 @keyframes czSpin{to{transform:rotate(360deg)}}
 .cz-busy-label{font-size:13px;font-weight:600;letter-spacing:.02em;text-align:center;max-width:80%}
@@ -1153,7 +1153,7 @@ export default function Customize() {
                       }}/>
                     )}
                     {itemBusy && (
-                      <div className="cz-busy" style={{ zIndex: 2 }}>
+                      <div className="cz-busy" style={{ zIndex: 10 }}>
                         <div className="cz-spinner" />
                         <div className="cz-busy-label">{busyLabel}</div>
                         <div className="cz-busy-sub">
