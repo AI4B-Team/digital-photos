@@ -2582,6 +2582,7 @@ export default function Customize() {
                                 namePosition as "top" | "bottom",
                                 nameFontId,
                                 nameColorId,
+                                nameSizeId,
                               );
                               setNameCompositing(false);
                             }
@@ -2591,6 +2592,7 @@ export default function Customize() {
                               portraitName: portraitName || null,
                               namePosition: portraitName ? namePosition : null,
                               nameFontId:   portraitName ? nameFontId   : null,
+                              nameSizeId:   portraitName ? nameSizeId   : null,
                               nameColorId:  portraitName ? nameColorId  : null,
                             };
                             addToCart(namedSnapshot, lineQty);
