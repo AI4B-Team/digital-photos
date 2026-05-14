@@ -966,52 +966,6 @@ function HomePage({ onGenerate }) {
                 </div>
               </div>
 
-              {/* ── STYLE PORTRAIT PREVIEW ── */}
-              {cat && (() => {
-                const teaser = TEASERS.find(t => t.catId === cat);
-                const portraits = teaser?.portraits;
-                if (!portraits?.length) return null;
-                return (
-                  <div style={{ marginBottom:14 }}>
-                    <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
-                      textTransform:"uppercase", fontWeight:500, marginBottom:8 }}>
-                      Sample Portraits · All 6 Styles Included
-                    </div>
-                    <div style={{ display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:4 }}>
-                      {portraits.map((p, i) => (
-                        <div key={i} style={{
-                          position:"relative", borderRadius:6, overflow:"hidden",
-                          aspectRatio:".75", border:`1px solid ${T.border}`,
-                          cursor:"default",
-                        }}>
-                          <img
-                            src={p.url}
-                            alt={p.style}
-                            style={{ width:"100%", height:"100%",
-                              objectFit:"cover", display:"block" }}
-                          />
-                          <div style={{
-                            position:"absolute", bottom:0, left:0, right:0,
-                            padding:"14px 4px 4px",
-                            background:"linear-gradient(transparent,rgba(10,10,10,.82))",
-                          }}>
-                            <span style={{
-                              fontSize:7.5, fontWeight:700, letterSpacing:".1em",
-                              textTransform:"uppercase", color:"#FFFFFF",
-                              display:"block", textAlign:"center",
-                            }}>{p.style}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <p style={{ fontSize:9, color:T.dim, marginTop:5, letterSpacing:".04em",
-                      textAlign:"center" }}>
-                      You'll receive all 6 styles · Choose your favourite after generation
-                    </p>
-                  </div>
-                );
-              })()}
-
               {/* ── UPLOAD PHOTO ── */}
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:cat?T.gold:T.dim,
