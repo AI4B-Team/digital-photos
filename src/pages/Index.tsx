@@ -1972,7 +1972,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       )}
 
       {/* Card grid */}
-      <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 6vw" }}>
+      <div style={{ margin:"0 auto", padding:"0 24px" }}>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
           {baseCards.map(card => {
             const isSelected = selected?.type === "style" && selected?.id === card.id;
@@ -1989,11 +1989,11 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       {/* Templates section */}
       {tmplCards.length > 0 && (
         <>
-          <div style={{ maxWidth:1200, margin:"0 auto", padding:"36px 6vw 8px" }}>
+          <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
             <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
               color:T.muted, fontWeight:600 }}>Scenes & Costumes</p>
           </div>
-          <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 6vw" }}>
+          <div style={{ margin:"0 auto", padding:"0 24px" }}>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
               {tmplCards.map(card => {
                 const isSelected = selected?.type === "template" && selected?.id === card.id;
@@ -2015,11 +2015,11 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         if (!items || !items.length) return null;
         return (
           <div key={group}>
-            <div style={{ maxWidth:1200, margin:"0 auto", padding:"36px 6vw 8px" }}>
+            <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
               <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
                 color:T.muted, fontWeight:600 }}>{group}</p>
             </div>
-            <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 6vw" }}>
+            <div style={{ margin:"0 auto", padding:"0 24px" }}>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
                 {items.map(t => {
                   const isSelected = selected?.type === "template" && selected?.id === t.id;
