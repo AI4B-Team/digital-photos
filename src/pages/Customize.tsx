@@ -1151,7 +1151,7 @@ export default function Customize() {
                       />
                     )}
                     {/* Frame-clipped sharp image */}
-                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, outline: isDraggingThis ? "2px dashed rgba(255,255,255,.9)" : "none", outlineOffset: "-1px" }}>
+                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, outline: isDraggingThis ? "2px dashed rgba(255,255,255,.9)" : "none", outlineOffset: "-1px", containerType: "inline-size" } as React.CSSProperties}>
                       <img src={item.photoUrl} alt="Your portrait"
                         draggable={false}
                         onLoad={(e) => {
