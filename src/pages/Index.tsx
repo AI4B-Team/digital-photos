@@ -1956,7 +1956,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   );
 }
 
-function StyleCard({ card, isSelected, onSelect, onConfirm }) {
+function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto }) {
   return (
     <div onClick={onSelect}
       style={{
@@ -1972,6 +1972,21 @@ function StyleCard({ card, isSelected, onSelect, onConfirm }) {
       <div style={{ position:"relative", aspectRatio:"4/5", overflow:"hidden", background:"#111" }}>
         <img src={card.img} alt={card.label}
           style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+
+        {/* Small original photo thumbnail (Mixtiles-style) */}
+        {originalPhoto && (
+          <div style={{
+            position:"absolute", left:10, bottom:10,
+            width:64, height:64, borderRadius:10, overflow:"hidden",
+            border:"3px solid #fff",
+            boxShadow:"0 4px 12px rgba(0,0,0,0.35)",
+            background:"#222",
+          }}>
+            <img src={originalPhoto} alt="Your photo"
+              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          </div>
+        )}
+
         {isSelected && (
           <div style={{ position:"absolute", top:10, right:10, width:26, height:26,
             borderRadius:"50%", background:T.gold, display:"flex",
