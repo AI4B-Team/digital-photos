@@ -788,9 +788,9 @@ function HomePage({ onGenerate }) {
   };
 
   const genLabel = () => {
-    if (!cat)   return "CREATE MY PORTRAITS";
-    if (!photo) return "See Your Portrait — Free Preview →";
-    return "Choose A Style →";
+    if (!cat)   return "Choose A Category To Start";
+    if (!photo) return "Upload A Photo To Continue →";
+    return "See Your Portrait — Free Preview →";
   };
 
   return (
