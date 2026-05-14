@@ -1760,7 +1760,7 @@ export default function Customize() {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept="image/png,image/jpeg,image/webp,image/gif"
               style={{ display:"none" }}
               onChange={handleFilePicked}
             />
