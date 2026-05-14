@@ -19,6 +19,7 @@ import sceneBabies from "@/assets/scene-babies.jpg";
 import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
+import sceneCouples from "@/assets/scene-couples.jpg";
 import portraitPets from "@/assets/portrait-pets.jpg";
 import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
 import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
@@ -1398,22 +1399,43 @@ function HomePage({ onGenerate }) {
           <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>A Portrait For Every Occasion</p>
           <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>The Most Personal Gift You Can Give</h2>
           <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every purchase is a memory made permanent. Every occasion deserves a masterpiece.</p>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16 }} className="pg3">
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
-              { cat:"pets",     Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
-              { cat:"babies",   Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
-              { cat:"couples",  Icon:Heart,    title:"Couples",  body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
-              { cat:"people",   Icon:Users,    title:"People",   body:"Individuals, families, friends, parents. A birthday gift so personal.", cta:"Create A People Portrait" },
-              { cat:"memorial", Icon:Flower2,  title:"Memorial", body:"A tender tribute to the ones who shaped you.", cta:"Create A Memorial Portrait" },
-              { cat:"gifts",    Icon:Gift,     title:"Gifts",    body:"Birthdays, holidays, graduations, new arrivals. The portrait they'll never take down.", cta:"Browse Gift Ideas" },
+              { cat:"pets",     img:scenePets,     Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
+              { cat:"babies",   img:sceneBabies,   Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
+              { cat:"couples",  img:sceneCouples,  Icon:Heart,    title:"Couples",  body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
+              { cat:"people",   img:scenePeople,   Icon:Users,    title:"People",   body:"Individuals, families, friends, parents. A birthday gift so personal.", cta:"Create A People Portrait" },
+              { cat:"memorial", img:sceneMemorial, Icon:Flower2,  title:"Memorial", body:"A tender tribute to the ones who shaped you.", cta:"Create A Memorial Portrait" },
+              { cat:"gifts",    img:sceneGifts,    Icon:Gift,     title:"Gifts",    body:"Birthdays, holidays, graduations, new arrivals. The portrait they'll never take down.", cta:"Browse Gift Ideas" },
             ].map(item => (
-              <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }} style={{ border:`1px solid ${T.border}`, borderRadius:18, padding:"28px 24px", cursor:"pointer", background:T.bg, transition:"all .2s" }} onMouseEnter={e=>{ e.currentTarget.style.borderColor=T.gold; e.currentTarget.style.background=`rgba(230,25,25,.04)`; }} onMouseLeave={e=>{ e.currentTarget.style.borderColor=T.border; e.currentTarget.style.background=T.bg; }}>
-                <div style={{ width:42, height:42, borderRadius:12, background:"rgba(230,25,25,.08)", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}>
-                  <item.Icon size={22} color={T.gold}/>
+              <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }}
+                style={{ border:`1px solid ${T.border}`, borderRadius:18, overflow:"hidden",
+                  cursor:"pointer", background:T.bg, transition:"all .25s",
+                  display:"flex", flexDirection:"column" }}
+                onMouseEnter={e=>{ e.currentTarget.style.borderColor=T.gold; e.currentTarget.style.transform="translateY(-3px)"; e.currentTarget.style.boxShadow="0 16px 36px rgba(0,0,0,.18)"; }}
+                onMouseLeave={e=>{ e.currentTarget.style.borderColor=T.border; e.currentTarget.style.transform="translateY(0)"; e.currentTarget.style.boxShadow="none"; }}>
+                {/* Hero image */}
+                <div style={{ position:"relative", aspectRatio:"4/3", overflow:"hidden", background:"#000" }}>
+                  <img src={item.img} alt={item.title} loading="lazy"
+                    style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                  <div style={{ position:"absolute", inset:0,
+                    background:"linear-gradient(to top, rgba(10,10,10,.55) 0%, rgba(10,10,10,0) 55%)" }}/>
+                  <div style={{ position:"absolute", top:14, left:14, width:38, height:38, borderRadius:12,
+                    background:"rgba(255,255,255,.92)", display:"flex", alignItems:"center", justifyContent:"center",
+                    boxShadow:"0 4px 12px rgba(0,0,0,.18)" }}>
+                    <item.Icon size={18} color={T.gold}/>
+                  </div>
+                  <h3 style={{ position:"absolute", bottom:12, left:16, right:16, margin:0,
+                    fontSize:18, fontWeight:800, color:"#fff", letterSpacing:".01em",
+                    fontFamily:"'Poppins',sans-serif", textShadow:"0 2px 8px rgba(0,0,0,.5)" }}>
+                    {item.title}
+                  </h3>
                 </div>
-                <h3 style={{ fontSize:15, fontWeight:700, color:T.cream, marginBottom:8, fontFamily:"'Poppins',sans-serif" }}>{item.title}</h3>
-                <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>{item.body}</p>
-                <span style={{ fontSize:11, letterSpacing:".14em", textTransform:"uppercase", color:T.gold, fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>{item.cta} →</span>
+                {/* Body */}
+                <div style={{ padding:"20px 22px 22px" }}>
+                  <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>{item.body}</p>
+                  <span style={{ fontSize:11, letterSpacing:".14em", textTransform:"uppercase", color:T.gold, fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>{item.cta} →</span>
+                </div>
               </div>
             ))}
           </div>
