@@ -1830,6 +1830,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
 function StyleSelectPage({ session, onConfirm, onBack }) {
   const { cat, heroName, photo } = session;
   const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
+  const [confirming, setConfirming] = useState(false);
 
   const teaser = TEASERS.find(t => t.catId === cat);
   const portraits = teaser?.portraits || [];
@@ -1861,15 +1862,46 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     try { return new URL(u, window.location.origin).href; } catch { return u; }
   };
 
-  const handleConfirm = () => {
+  const imageUrlToDataUrl = async (u?: string) => {
+    const abs = toAbsUrl(u);
+    if (!abs || abs.startsWith("data:image/")) return abs;
+
+    const response = await fetch(abs);
+    if (!response.ok) throw new Error(`Could not load reference image (${response.status})`);
+
+    const blob = await response.blob();
+    if (!blob.type.startsWith("image/")) throw new Error(`Reference image was ${blob.type || "not an image"}`);
+
+    return await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  const getStyleRef = async (u?: string) => {
+    try { return await imageUrlToDataUrl(u); }
+    catch (err) {
+      console.warn("Could not convert style reference to data URL, using URL fallback:", err);
+      return toAbsUrl(u);
+    }
+  };
+
+  const handleConfirm = async () => {
     if (!selected) return;
-    if (selected.type === "style") {
-      const card = baseCards.find(c => c.id === selected.id);
-      onConfirm({ styles: [selected.id], templatePrompt: "", styleRefUrl: toAbsUrl(card?.img) });
-    } else {
-      const tmpl = templates.find(t => t.id === selected.id);
-      const card = tmplCards.find(c => c.id === selected.id);
-      onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "", styleRefUrl: toAbsUrl(card?.img) });
+    setConfirming(true);
+    try {
+      if (selected.type === "style") {
+        const card = baseCards.find(c => c.id === selected.id);
+        onConfirm({ styles: [selected.id], templatePrompt: "", styleRefUrl: await getStyleRef(card?.img) });
+      } else {
+        const tmpl = templates.find(t => t.id === selected.id);
+        const card = tmplCards.find(c => c.id === selected.id);
+        onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "", styleRefUrl: await getStyleRef(card?.img) });
+      }
+    } finally {
+      setConfirming(false);
     }
   };
 
@@ -1906,6 +1938,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
             const isSelected = selected?.type === "style" && selected?.id === card.id;
             return (
               <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
+                confirming={confirming}
                 onSelect={() => setSelected(isSelected ? null : { type:"style", id:card.id })}
                 onConfirm={handleConfirm}/>
             );
@@ -1926,6 +1959,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                 const isSelected = selected?.type === "template" && selected?.id === card.id;
                 return (
                   <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
+                    confirming={confirming}
                     onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
                     onConfirm={handleConfirm}/>
                 );
@@ -1954,8 +1988,16 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                       card={{ id:t.id, label:t.label, desc:t.desc, img:t.img }}
                       isSelected={isSelected}
                       originalPhoto={photo}
+                      confirming={confirming}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
-                      onConfirm={() => onConfirm({ styles:["royal"], templatePrompt: t.prompt, styleRefUrl: toAbsUrl(t.img) })}/>
+                      onConfirm={async () => {
+                        setConfirming(true);
+                        try {
+                          onConfirm({ styles:["royal"], templatePrompt: t.prompt, styleRefUrl: await getStyleRef(t.img) });
+                        } finally {
+                          setConfirming(false);
+                        }
+                      }}/>
                   );
                 })}
               </div>
@@ -1969,7 +2011,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   );
 }
 
-function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto }) {
+function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confirming }) {
   return (
     <div onClick={onSelect}
       style={{
@@ -2015,14 +2057,16 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto }) {
           fontFamily:"'Poppins',sans-serif" }}>{card.desc}</p>
         {isSelected && (
           <button
-            onClick={e => { e.stopPropagation(); onConfirm(); }}
+            disabled={confirming}
+            onClick={e => { e.stopPropagation(); if (!confirming) onConfirm(); }}
             style={{ width:"100%", padding:"11px 0",
               background:T.gold, color:"#fff", border:"none",
-              borderRadius:10, cursor:"pointer", fontSize:13,
+              borderRadius:10, cursor:confirming ? "wait" : "pointer", fontSize:13,
+              opacity: confirming ? .72 : 1,
               fontWeight:700, fontFamily:"'Poppins',sans-serif",
               display:"flex", alignItems:"center",
               justifyContent:"center", gap:8 }}>
-            <Sparkles size={15}/> Generate Free Preview
+            <Sparkles size={15}/>{confirming ? "Preparing Reference..." : "Generate Free Preview"}
           </button>
         )}
       </div>
