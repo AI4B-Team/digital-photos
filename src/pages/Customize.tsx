@@ -1069,8 +1069,10 @@ export default function Customize() {
             flex:"0 1 auto",
             minWidth:0,
             maxWidth: "100%",
-            border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
-            transition: "border-color .2s ease, box-shadow .3s ease",
+            border: "none",
+            outline: isSelected ? `2px solid ${RED}` : "none",
+            outlineOffset: 4,
+            transition: "outline-color .2s ease, box-shadow .3s ease",
           }}>
             <div style={{
               background: bd.px === 0 ? "transparent" : bcd.bg,
@@ -1759,7 +1761,7 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
           background:`
-            radial-gradient(ellipse 90% 70% at 30% 15%, #FFFFFF 0%, #F5F2EC 55%, #E8E2D6 100%)
+            linear-gradient(135deg, #F2EBDD 0%, #EADFC8 60%, #DCCEB1 100%)
           `,
           overflow:"hidden",
           position:"relative",
@@ -1783,7 +1785,8 @@ export default function Customize() {
             <div className="cz-canvas-scroll" style={{
               flex:"0 1 auto", minWidth:0, maxHeight:"100%", height:"100%",
               overflowY:"auto", display:"flex", flexDirection:"column",
-              alignItems:"center", justifyContent:"flex-start", gap:8, padding:"4px 6px",
+              alignItems:"center", justifyContent:"flex-start", gap:8,
+              padding:"20px 60px 60px 20px",
               scrollBehavior:"smooth", scrollSnapType:"y proximity",
               WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
             }}>
