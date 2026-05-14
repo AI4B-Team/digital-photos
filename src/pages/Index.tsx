@@ -1016,21 +1016,29 @@ function LiveTeaser({ activeCat, onCatClick }) {
       <div style={{ position:"relative", display:"grid", gridTemplateColumns:"1fr 1fr", gap:48,
         alignItems:"stretch", flex:1, minHeight:0 }}>
 
-        {/* LEFT: Your Photo */}
+        {/* LEFT: Your Photo (crossfade stack) */}
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, background:"#fff",
           boxShadow:"0 8px 24px rgba(0,0,0,.08)", minHeight:340 }}>
-          <img src={cur.before} alt="Your original photo"
-            style={{ width:"100%", height:"100%", objectFit:"cover",
-              opacity:fading?0:1, transition:"opacity .3s" }}/>
+          {TEASERS.map((t, i) => (
+            <img key={`b-${i}`} src={t.before} alt=""
+              style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+                opacity: i===idx ? 1 : 0, transition:"opacity .7s ease-in-out" }}/>
+          ))}
         </div>
 
-        {/* RIGHT: Generated portraits slideshow (one at a time) */}
+        {/* RIGHT: Generated portraits slideshow (crossfade stack) */}
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)",
           background:"#F5EFE3", minHeight:340 }}>
-          <img src={portraitCur.url} alt="Generated portrait"
-            style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
+          {TEASERS.map((t, i) => {
+            const v = (t.portraits || [{ url: t.portrait }])[0];
+            return (
+              <img key={`p-${i}`} src={v.url} alt=""
+                style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+                  opacity: i===idx ? 1 : 0, transition:"opacity .7s ease-in-out" }}/>
+            );
+          })}
           {/* watermark */}
           <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
             justifyContent:"center", pointerEvents:"none" }}>
@@ -1048,7 +1056,8 @@ function LiveTeaser({ activeCat, onCatClick }) {
           {/* style badge */}
           <div style={{ position:"absolute", bottom:12, right:12,
             fontSize:10, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
-            background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700 }}>
+            background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700,
+            transition:"opacity .4s" }}>
             {portraitCur.style}
           </div>
         </div>
