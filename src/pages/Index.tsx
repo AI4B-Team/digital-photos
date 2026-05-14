@@ -1704,15 +1704,15 @@ export default function App() {
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
-  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, templatePrompt = "" }) => {
+  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, templatePrompt = "", heroName = "" }) => {
     let sessionId = null;
     setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles, templatePrompt }));
-    setSession({ cat, photo, styles });
+    setSession({ cat, photo, styles, heroName } as any);
 
     // Create a Supabase session record to track generation
     try {
       sessionId = await createSession({ category: cat, styles, photoUrl: uploadedUrl || photo || "" });
-      setSession({ cat, photo, styles, orderId: sessionId });
+      setSession({ cat, photo, styles, orderId: sessionId, heroName } as any);
       setLocal(prev => ({ ...prev, sessionId }));
     } catch (err) {
       console.warn("Could not create session record:", err);
