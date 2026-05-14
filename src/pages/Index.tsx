@@ -1955,7 +1955,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                       isSelected={isSelected}
                       originalPhoto={photo}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
-                      onConfirm={() => onConfirm({ styles:["royal"], templatePrompt: t.prompt })}/>
+                      onConfirm={() => onConfirm({ styles:["royal"], templatePrompt: t.prompt, styleRefUrl: toAbsUrl(t.img) })}/>
                   );
                 })}
               </div>
