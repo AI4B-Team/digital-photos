@@ -1172,14 +1172,14 @@ export default function Customize() {
                       {namePosition !== "none" && portraitName && (
                         <div style={{
                           position:"absolute", left:0, right:0, zIndex:3,
-                          top:    namePosition === "top"    ? "5%" : "auto",
-                          bottom: namePosition === "bottom" ? "5%" : "auto",
+                          top:    namePosition === "top"    ? "10%" : "auto",
+                          bottom: namePosition === "bottom" ? "10%" : "auto",
                           textAlign:"center", pointerEvents:"none",
                         }}>
                           <span style={{
                             display:"inline-block",
                             color: NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff",
-                            fontSize: `clamp(12px, ${NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "6.5%"}, 72px)`,
+                            fontSize: `clamp(11px, ${NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "5cqw"}, 96px)`,
                             fontFamily: nameFontId==="serif"
                               ? "Georgia,'Times New Roman',serif"
                               : "'Poppins',sans-serif",
