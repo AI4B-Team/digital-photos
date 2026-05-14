@@ -10,7 +10,7 @@ import {
   Printer, FrameIcon, Heart, Truck, RefreshCw,
   Lock, Wand2, Sparkles, AlertCircle, Copy, Gift,
   ArrowRight, Shield, Star, Instagram, Facebook,
-  PawPrint, Baby, Users, Flower2, Search, Image as ImageIcon,
+  PawPrint, Baby, Users, Flower2, Search, Image as ImageIcon, CalendarDays,
   SlidersHorizontal, Package, Globe, Droplets, FileText, Award
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
@@ -246,12 +246,9 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
    DATA
 ═══════════════════════════════════════════════════════════ */
 const CATS = [
-  { id:"pets",     label:"Pets",     icon:"🐾", Icon: PawPrint },
-  { id:"babies",   label:"Babies",   icon:"🍼", Icon: Baby     },
-  { id:"couples",  label:"Couples",  icon:"💞", Icon: Heart    },
-  { id:"people",   label:"People",   icon:"👤", Icon: Users    },
-  { id:"memorial", label:"Memorial", icon:"✦",  Icon: Flower2  },
-  { id:"gifts",    label:"Gifts",    icon:"🎁", Icon: Gift     },
+  { id:"pets",     label:"Pets",     icon:"🐾", Icon: PawPrint     },
+  { id:"family",   label:"Family",   icon:"👨‍👩‍👧", Icon: Users        },
+  { id:"events",   label:"Events",   icon:"✦",  Icon: CalendarDays },
 ];
 
 // Per-category upload requirements — drives the smart upload UI
@@ -267,33 +264,18 @@ const CAT_REQS: Record<string, {
               uploadHint:"One Clear Photo Of Your Pet — Add More If You Have Multiple",
               namePlaceholders:["e.g., Barley, Milo, Sophie"],
               namesLabel:"Pet Name" },
-  babies:   { minPhotos:1,
-              uploadHeading:"Upload Your Baby's Photo",
-              uploadHint:"One Clear, Well-Lit Photo — Face Visible",
-              namePlaceholders:["e.g., Olivia, Noah, Emma"],
-              namesLabel:"Baby's Name" },
-  couples:  { minPhotos:2,
-              uploadHeading:"Upload 2 Photos — One Of Each Partner",
-              uploadHint:"Separate Photos Give The Best Couple Portrait",
-              namePlaceholders:["Partner 1 Name","Partner 2 Name"],
-              namesLabel:"Partner Names" },
-  people:   { minPhotos:1,
+  family:   { minPhotos:1,
               uploadHeading:"Upload Your Photo",
-              uploadHint:"Add One Photo Per Person For Best Results",
-              namePlaceholders:["e.g., Sarah, James, The Smiths"],
+              uploadHint:"For Couple Portraits, Add A Second Photo Of Your Partner",
+              namePlaceholders:["e.g., Olivia, The Smiths, Sarah & James"],
+              namesLabel:"Name(s)" },
+  events:   { minPhotos:1,
+              uploadHeading:"Upload Your Photo",
+              uploadHint:"A Clear Photo For The Occasion — Wedding, Memorial, Birthday Or Holiday",
+              namePlaceholders:["e.g., The Bride & Groom, In Loving Memory…"],
               namesLabel:"Name" },
-  memorial: { minPhotos:1,
-              uploadHeading:"Upload A Photo Of Your Loved One",
-              uploadHint:"Any Cherished Photo — We'll Restore Clarity & Light",
-              namePlaceholders:["In Loving Memory Of…"],
-              namesLabel:"Name" },
-  gifts:    { minPhotos:1,
-              uploadHeading:"Upload Their Photo",
-              uploadHint:"A Clear Photo Of The Person Or Pet You're Gifting",
-              namePlaceholders:["e.g., Mom, Dad, Best Friend"],
-              namesLabel:"Recipient Name" },
 };
-const reqFor = (c?: string) => (c && CAT_REQS[c]) || CAT_REQS.people;
+const reqFor = (c?: string) => (c && CAT_REQS[c]) || CAT_REQS.family;
 
 const STYLES = [
   { id:"royal",       label:"Royal",       desc:"Regal · Golden Era",       preview:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=520&h=650&fit=crop&q=80" },
@@ -336,7 +318,8 @@ export const TEMPLATES: Record<string, { id:string; label:string; desc:string; i
       img: petSports,
       prompt:"dressed as an American football star wearing helmet and team jersey, running with a football across a stadium field under bright stadium lights, blurred crowd in the background, dynamic hyper-realistic sports photograph" },
   ],
-  babies: [
+  family: [
+    // ── Babies & Children ────────────────────────────────────────────
     { id:"baby-skateboard", label:"Little Skater", desc:"Mom & Baby Skate",
       img: babySkateboard,
       prompt:"creative overhead mom-and-baby photo against a plain white wall with a wood-plank floor strip at the bottom, shot top-down so both appear to stand on the wall. Baby wears a grey beanie and a printed white onesie with grey joggers, lying on a skateboard with green and purple wheels as if cruising. Mom stands next to baby in a white tank top and ripped blue jeans, arms crossed, looking down at baby with a soft smile, hair in a messy bun. Bright natural daylight, minimalist clean composition, hyper-realistic photograph. Output only the photo content." },
@@ -394,8 +377,7 @@ export const TEMPLATES: Record<string, { id:string; label:string; desc:string; i
     { id:"baby-butterfly",label:"Butterfly Garden", desc:"Colorful Bloom World",
       img:"https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=240&h=300&fit=crop&q=80",
       prompt:"surrounded by giant colorful butterflies in a magical blooming garden with oversized flowers, glowing petals, and soft rainbow light" },
-  ],
-  couples: [
+    // ── Couples ──────────────────────────────────────────────────────
     { id:"cpl-royal",      label:"Royal Court",       desc:"King & Queen",
       img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
       prompt:"as a regal king and queen in matching royal attire with crowns and velvet robes, throne room palace setting" },
@@ -432,8 +414,7 @@ export const TEMPLATES: Record<string, { id:string; label:string; desc:string; i
     { id:"cpl-samurai",    label:"Samurai & Geisha",  desc:"Feudal Japan Elegance",
       img:"https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=240&h=300&fit=crop&q=80",
       prompt:"as a noble samurai and elegant geisha in traditional Japanese attire, cherry blossom garden at dusk with paper lanterns and Mount Fuji background" },
-  ],
-  people: [
+    // ── Individuals & People ─────────────────────────────────────────
     { id:"ppl-hollywood",label:"Hollywood Glam",    desc:"Golden Age Star",
       img:"https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=240&h=300&fit=crop&q=80",
       prompt:"in golden age Hollywood glamour style with dramatic studio lighting, fur stole, and cinematic background" },
@@ -471,45 +452,27 @@ export const TEMPLATES: Record<string, { id:string; label:string; desc:string; i
       img:"https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=240&h=300&fit=crop&q=80",
       prompt:"as a Wild West legend in full frontier attire with a wide-brimmed hat and leather vest, Monument Valley red rock landscape at sunset" },
   ],
-  memorial: [
-    { id:"mem-angel",    label:"Guardian Angel",   desc:"Heavenly Protector",
-      img:"https://images.unsplash.com/photo-1517450084074-abe5e5950bf0?w=240&h=300&fit=crop&q=80",
-      prompt:"as a peaceful guardian angel with luminous white wings and celestial golden light, soft clouds and heavenly background" },
-    { id:"mem-garden",   label:"Heaven's Garden",  desc:"Serene Meadow",
-      img:"https://images.unsplash.com/photo-1490750967868-88df5691cc9d?w=240&h=300&fit=crop&q=80",
-      prompt:"in a serene heavenly flower garden with golden light filtering through ancient trees, butterflies, and soft mist" },
-    { id:"mem-timeless", label:"Timeless Portrait",desc:"Dignified & Enduring",
-      img:"https://images.unsplash.com/photo-1541804048018-5975f15fc6b4?w=240&h=300&fit=crop&q=80",
-      prompt:"in a dignified timeless oil painting portrait with warm neutral background and soft classical Rembrandt-style lighting" },
-    { id:"mem-light",    label:"Eternal Light",    desc:"Glow Of Remembrance",
-      img:"https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=240&h=300&fit=crop&q=80",
-      prompt:"surrounded by warm rays of eternal light, soft golden glow, peaceful and reverent composition" },
-    { id:"mem-sky",      label:"Among The Stars",  desc:"Watching From Above",
-      img:"https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=240&h=300&fit=crop&q=80",
-      prompt:"set against a serene starry night sky with gentle moonlight and constellations as a peaceful tribute" },
-    { id:"mem-classic",  label:"Classic Memorial", desc:"Black-tie Tribute",
-      img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&h=300&fit=crop&q=80",
-      prompt:"in elegant formal attire posed for a classic memorial portrait with deep neutral background and reverent lighting" },
-    { id:"mem-rainbow",  label:"Rainbow Bridge",   desc:"Forever Remembered",
-      img:"https://images.unsplash.com/photo-1501854140801-50d01698950b?w=240&h=300&fit=crop&q=80",
-      prompt:"crossing a luminous rainbow bridge into radiant light, surrounded by beloved animals and flowers, hopeful and peaceful eternal crossing scene" },
-    { id:"mem-cathedral",label:"Cathedral Light",  desc:"Sacred & Spiritual",
-      img:"https://images.unsplash.com/photo-1520353269732-46b41a8c6887?w=240&h=300&fit=crop&q=80",
-      prompt:"bathed in magnificent stained glass cathedral light with beams of red, gold, and blue streaming down, sacred and deeply spiritual atmosphere" },
-    { id:"mem-mountain", label:"Mountain Summit",  desc:"Eternal Peak Serenity",
-      img:"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=240&h=300&fit=crop&q=80",
-      prompt:"standing peacefully at a majestic mountain summit above the clouds, vast panoramic view of snow-capped peaks and endless blue sky" },
-    { id:"mem-ocean",    label:"Ocean Horizon",    desc:"Peaceful Endless Sea",
-      img:"https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=240&h=300&fit=crop&q=80",
-      prompt:"standing before a breathtaking ocean horizon at golden hour, warm amber light on the water, gentle waves, and an endless peaceful seascape" },
-    { id:"mem-forest",   label:"Ancient Forest",   desc:"Nature's Eternal Embrace",
-      img:"https://images.unsplash.com/photo-1448375240586-882707db888b?w=240&h=300&fit=crop&q=80",
-      prompt:"standing beneath a cathedral of ancient towering trees with dappled golden light filtering through the canopy, peaceful and eternal forest atmosphere" },
-    { id:"mem-field",    label:"Golden Field",     desc:"Radiant Harvest Peace",
-      img:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=240&h=300&fit=crop&q=80",
-      prompt:"in a vast golden wheat field at dusk with warm amber light, wildflowers at the edges, and a breathtaking painted sky of orange and violet" },
-  ],
-  gifts: [
+  events: [
+    // ── Life Events ────────────────────────────────────────────────
+    { id:"evt-wedding",     label:"Wedding Day",      desc:"Your Special Day",
+      img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
+      prompt:"at a romantic garden wedding ceremony with an elegant floral arch, white roses, candles, and soft golden sunlight, formal wedding portrait style" },
+    { id:"evt-engagement",  label:"Engagement",       desc:"Celebrating Yes",
+      img:"https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=240&h=300&fit=crop&q=80",
+      prompt:"in a romantic engagement portrait with a beautiful bouquet of white and blush roses, cinematic lighting, soft bokeh background" },
+    { id:"evt-graduation",  label:"Graduation",       desc:"Cap & Gown Glory",
+      img:"https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=240&h=300&fit=crop&q=80",
+      prompt:"in academic regalia with cap and gown proudly holding a diploma, confetti in the air, warm celebratory lighting and university background" },
+    { id:"evt-mothers",     label:"Mother's Day",     desc:"A Tribute To Mum",
+      img:"https://images.unsplash.com/photo-1512484776495-a09d92e87c3b?w=240&h=300&fit=crop&q=80",
+      prompt:"in a beautiful spring garden portrait with blooming peonies and soft morning light, warm and tender composition celebrating motherhood" },
+    { id:"evt-fathers",     label:"Father's Day",     desc:"A Tribute To Dad",
+      img:"https://images.unsplash.com/photo-1472173148041-00294f0814a2?w=240&h=300&fit=crop&q=80",
+      prompt:"in a dignified outdoor portrait with warm afternoon light, classic and timeless composition celebrating fatherhood with quiet strength" },
+    { id:"evt-valentine",   label:"Valentine's Day",  desc:"Love In Bloom",
+      img:"https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=240&h=300&fit=crop&q=80",
+      prompt:"in a romantic Valentine's portrait surrounded by red roses and candlelight, warm crimson and gold tones, intimate atmosphere" },
+    // ── Celebrations (gifting moments) ───────────────────────────────
     { id:"gift-holiday", label:"Christmas Magic",  desc:"Festive Twinkle",
       img:"https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=240&h=300&fit=crop&q=80",
       prompt:"in a festive Christmas scene with twinkling lights, evergreen garlands, red and gold accents, cozy fireside warmth" },
@@ -546,6 +509,43 @@ export const TEMPLATES: Record<string, { id:string; label:string; desc:string; i
     { id:"gift-petmem",  label:"Pet Memorial",     desc:"Forever In Our Hearts",
       img:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=240&h=300&fit=crop&q=80",
       prompt:"in a tender pet memorial portrait with soft golden light, flowers, and a peaceful celestial background celebrating a beloved companion" },
+    // ── Memorial ─────────────────────────────────────────────────────
+    { id:"mem-angel",    label:"Guardian Angel",   desc:"Heavenly Protector",
+      img:"https://images.unsplash.com/photo-1517450084074-abe5e5950bf0?w=240&h=300&fit=crop&q=80",
+      prompt:"as a peaceful guardian angel with luminous white wings and celestial golden light, soft clouds and heavenly background" },
+    { id:"mem-garden",   label:"Heaven's Garden",  desc:"Serene Meadow",
+      img:"https://images.unsplash.com/photo-1490750967868-88df5691cc9d?w=240&h=300&fit=crop&q=80",
+      prompt:"in a serene heavenly flower garden with golden light filtering through ancient trees, butterflies, and soft mist" },
+    { id:"mem-timeless", label:"Timeless Portrait",desc:"Dignified & Enduring",
+      img:"https://images.unsplash.com/photo-1541804048018-5975f15fc6b4?w=240&h=300&fit=crop&q=80",
+      prompt:"in a dignified timeless oil painting portrait with warm neutral background and soft classical Rembrandt-style lighting" },
+    { id:"mem-light",    label:"Eternal Light",    desc:"Glow Of Remembrance",
+      img:"https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=240&h=300&fit=crop&q=80",
+      prompt:"surrounded by warm rays of eternal light, soft golden glow, peaceful and reverent composition" },
+    { id:"mem-sky",      label:"Among The Stars",  desc:"Watching From Above",
+      img:"https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=240&h=300&fit=crop&q=80",
+      prompt:"set against a serene starry night sky with gentle moonlight and constellations as a peaceful tribute" },
+    { id:"mem-classic",  label:"Classic Memorial", desc:"Black-tie Tribute",
+      img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&h=300&fit=crop&q=80",
+      prompt:"in elegant formal attire posed for a classic memorial portrait with deep neutral background and reverent lighting" },
+    { id:"mem-rainbow",  label:"Rainbow Bridge",   desc:"Forever Remembered",
+      img:"https://images.unsplash.com/photo-1501854140801-50d01698950b?w=240&h=300&fit=crop&q=80",
+      prompt:"crossing a luminous rainbow bridge into radiant light, surrounded by beloved animals and flowers, hopeful and peaceful eternal crossing scene" },
+    { id:"mem-cathedral",label:"Cathedral Light",  desc:"Sacred & Spiritual",
+      img:"https://images.unsplash.com/photo-1520353269732-46b41a8c6887?w=240&h=300&fit=crop&q=80",
+      prompt:"bathed in magnificent stained glass cathedral light with beams of red, gold, and blue streaming down, sacred and deeply spiritual atmosphere" },
+    { id:"mem-mountain", label:"Mountain Summit",  desc:"Eternal Peak Serenity",
+      img:"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=240&h=300&fit=crop&q=80",
+      prompt:"standing peacefully at a majestic mountain summit above the clouds, vast panoramic view of snow-capped peaks and endless blue sky" },
+    { id:"mem-ocean",    label:"Ocean Horizon",    desc:"Peaceful Endless Sea",
+      img:"https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=240&h=300&fit=crop&q=80",
+      prompt:"standing before a breathtaking ocean horizon at golden hour, warm amber light on the water, gentle waves, and an endless peaceful seascape" },
+    { id:"mem-forest",   label:"Ancient Forest",   desc:"Nature's Eternal Embrace",
+      img:"https://images.unsplash.com/photo-1448375240586-882707db888b?w=240&h=300&fit=crop&q=80",
+      prompt:"standing beneath a cathedral of ancient towering trees with dappled golden light filtering through the canopy, peaceful and eternal forest atmosphere" },
+    { id:"mem-field",    label:"Golden Field",     desc:"Radiant Harvest Peace",
+      img:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=240&h=300&fit=crop&q=80",
+      prompt:"in a vast golden wheat field at dusk with warm amber light, wildflowers at the edges, and a breathtaking painted sky of orange and violet" },
   ],
 };
 
@@ -584,9 +584,9 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"as a wedding ring bearer in a tiny floral collar with wedding florals, soft white draping and romantic golden light" },
     ],
   },
-  babies: {
+  family: {
     Seasons: [
-      { id:"bb-winter", label:"Winter Baby", desc:"Snowy Knit Cuddle", img:"https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=240&h=300&fit=crop&q=80",
+{ id:"bb-winter", label:"Winter Baby", desc:"Snowy Knit Cuddle", img:"https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=240&h=300&fit=crop&q=80",
         prompt:"bundled in soft white knitwear in a magical snowy winter scene with twinkling lights and frosted pines" },
       { id:"bb-autumn", label:"Autumn Baby", desc:"Pumpkin Patch Cutie", img:"https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=240&h=300&fit=crop&q=80",
         prompt:"nestled among autumn pumpkins, golden leaves and warm orange light in a cozy fall portrait" },
@@ -594,29 +594,7 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"in a soft pastel spring meadow with tulips, daisies and gentle morning light" },
       { id:"bb-summer", label:"Summer Baby", desc:"Sunny Sandcastle", img:"https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=240&h=300&fit=crop&q=80",
         prompt:"on a sunny beach with sandcastles, seashells, soft waves and a tiny sunhat" },
-    ],
-    Holidays: [
-      { id:"bb-xmas", label:"First Christmas", desc:"Santa's Little Helper", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
-        prompt:"as Santa's little helper in tiny red and white outfit beside a sparkling Christmas tree with stockings and cocoa" },
-      { id:"bb-halloween", label:"Tiny Pumpkin", desc:"Cute Costume", img:"https://images.unsplash.com/photo-1572783973900-d1b67659e7d8?w=240&h=300&fit=crop&q=80",
-        prompt:"dressed as an adorable tiny pumpkin in a cozy Halloween nursery scene with soft candle glow and gourds" },
-      { id:"bb-easter", label:"Easter Bunny", desc:"Pastel Eggs", img:"https://images.unsplash.com/photo-1521967906867-14ec9d64bee8?w=240&h=300&fit=crop&q=80",
-        prompt:"in a soft pastel Easter scene with bunny ears, decorated eggs, baby chicks and spring tulips" },
-      { id:"bb-valentine", label:"Little Valentine", desc:"Heart & Roses", img:"https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=240&h=300&fit=crop&q=80",
-        prompt:"in a tender Valentine's portrait with tiny heart accessories, soft red roses and warm pink light" },
-    ],
-    Occasions: [
-      { id:"bb-newborn", label:"Newborn Welcome", desc:"First Days Home", img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=240&h=300&fit=crop&q=80",
-        prompt:"in a tender newborn welcome portrait with soft swaddling, name banner, fresh florals and gentle natural light" },
-      { id:"bb-1stbday", label:"First Birthday", desc:"Cake Smash Magic", img:"https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=240&h=300&fit=crop&q=80",
-        prompt:"in a joyful first birthday cake-smash scene with a number 1 balloon, confetti and pastel party decor" },
-      { id:"bb-baptism", label:"Baptism Day", desc:"Sacred Christening", img:"https://images.unsplash.com/photo-1491013516836-7db643ee125a?w=240&h=300&fit=crop&q=80",
-        prompt:"in a sacred christening portrait with a flowing white gown, soft cathedral light, fresh white florals and reverent atmosphere" },
-    ],
-  },
-  couples: {
-    Seasons: [
-      { id:"cp-winter", label:"Winter Romance", desc:"Snowfall Embrace", img:"https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=240&h=300&fit=crop&q=80",
+{ id:"cp-winter", label:"Winter Romance", desc:"Snowfall Embrace", img:"https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=240&h=300&fit=crop&q=80",
         prompt:"as a couple embracing in a romantic winter snowfall, cozy coats and scarves, twinkling lights and pine forest backdrop" },
       { id:"cp-autumn", label:"Autumn Stroll", desc:"Golden Leaves Walk", img:"https://images.unsplash.com/photo-1508804052814-cd3ba865a116?w=240&h=300&fit=crop&q=80",
         prompt:"as a couple strolling through a golden autumn forest with warm sweaters, falling leaves and amber sunlight" },
@@ -624,31 +602,7 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"as a couple under a cherry blossom canopy with drifting petals, soft pastel light and romantic spring atmosphere" },
       { id:"cp-summer", label:"Summer Sunset", desc:"Beach Romance", img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
         prompt:"as a couple on a golden hour beach with warm sunset light, gentle ocean waves and breezy summer atmosphere" },
-    ],
-    Holidays: [
-      { id:"cp-xmas", label:"Christmas Couple", desc:"By The Tree", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
-        prompt:"as a couple beside a glowing Christmas tree in matching cozy sweaters with mugs of cocoa and warm fireside light" },
-      { id:"cp-valentine", label:"Valentine's Vow", desc:"Roses & Candlelight", img:"https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=240&h=300&fit=crop&q=80",
-        prompt:"as a couple in a romantic Valentine's portrait with red roses, candlelight, heart motifs and warm crimson tones" },
-      { id:"cp-newyear", label:"New Year's Kiss", desc:"Midnight Sparkle", img:"https://images.unsplash.com/photo-1546565111-1d6e0e258854?w=240&h=300&fit=crop&q=80",
-        prompt:"as a couple sharing a midnight kiss under sparkling fireworks and confetti in elegant New Year's eve attire" },
-      { id:"cp-halloween", label:"Halloween Pair", desc:"Costume Couple", img:"https://images.unsplash.com/photo-1509557965875-b88c97052f0e?w=240&h=300&fit=crop&q=80",
-        prompt:"as a couple in matching elegant Halloween costumes — vampire and gothic bride — with candlelit pumpkins and moody atmosphere" },
-    ],
-    Occasions: [
-      { id:"cp-wedding", label:"Wedding Day", desc:"Bride & Groom", img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
-        prompt:"as a bride and groom in elegant wedding attire with white florals, soft veils, romantic golden light and timeless wedding portrait composition" },
-      { id:"cp-engagement", label:"Engagement", desc:"The Proposal", img:"https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=240&h=300&fit=crop&q=80",
-        prompt:"in a romantic engagement portrait with a sparkling ring, soft florals, dreamy bokeh background and warm golden light" },
-      { id:"cp-anniv", label:"Anniversary", desc:"Years Of Love", img:"https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=240&h=300&fit=crop&q=80",
-        prompt:"in an anniversary portrait celebrating years of love with candles, soft florals and warm timeless lighting" },
-      { id:"cp-babymoon", label:"Babymoon", desc:"Expecting Glow", img:"https://images.unsplash.com/photo-1492725764893-90b379c2b6e7?w=240&h=300&fit=crop&q=80",
-        prompt:"in a tender expecting-couple maternity portrait with soft flowing fabrics, gentle florals and warm golden light" },
-    ],
-  },
-  people: {
-    Seasons: [
-      { id:"pp-winter", label:"Winter Portrait", desc:"Snowfall Glow", img:"https://images.unsplash.com/photo-1485178575877-1a13bf489dfe?w=240&h=300&fit=crop&q=80",
+{ id:"pp-winter", label:"Winter Portrait", desc:"Snowfall Glow", img:"https://images.unsplash.com/photo-1485178575877-1a13bf489dfe?w=240&h=300&fit=crop&q=80",
         prompt:"in a winter portrait with cozy knitwear, soft snowfall, pine forest backdrop and warm magical lighting" },
       { id:"pp-autumn", label:"Autumn Mood", desc:"Golden Hour Fall", img:"https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=240&h=300&fit=crop&q=80",
         prompt:"in a golden autumn portrait with warm sweaters, falling leaves and amber sunset light" },
@@ -658,7 +612,23 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"in a sunny summer portrait at golden hour by the ocean with warm light and breezy atmosphere" },
     ],
     Holidays: [
-      { id:"pp-xmas", label:"Holiday Portrait", desc:"Christmas Glow", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
+{ id:"bb-xmas", label:"First Christmas", desc:"Santa's Little Helper", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
+        prompt:"as Santa's little helper in tiny red and white outfit beside a sparkling Christmas tree with stockings and cocoa" },
+      { id:"bb-halloween", label:"Tiny Pumpkin", desc:"Cute Costume", img:"https://images.unsplash.com/photo-1572783973900-d1b67659e7d8?w=240&h=300&fit=crop&q=80",
+        prompt:"dressed as an adorable tiny pumpkin in a cozy Halloween nursery scene with soft candle glow and gourds" },
+      { id:"bb-easter", label:"Easter Bunny", desc:"Pastel Eggs", img:"https://images.unsplash.com/photo-1521967906867-14ec9d64bee8?w=240&h=300&fit=crop&q=80",
+        prompt:"in a soft pastel Easter scene with bunny ears, decorated eggs, baby chicks and spring tulips" },
+      { id:"bb-valentine", label:"Little Valentine", desc:"Heart & Roses", img:"https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=240&h=300&fit=crop&q=80",
+        prompt:"in a tender Valentine's portrait with tiny heart accessories, soft red roses and warm pink light" },
+{ id:"cp-xmas", label:"Christmas Couple", desc:"By The Tree", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
+        prompt:"as a couple beside a glowing Christmas tree in matching cozy sweaters with mugs of cocoa and warm fireside light" },
+      { id:"cp-valentine", label:"Valentine's Vow", desc:"Roses & Candlelight", img:"https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=240&h=300&fit=crop&q=80",
+        prompt:"as a couple in a romantic Valentine's portrait with red roses, candlelight, heart motifs and warm crimson tones" },
+      { id:"cp-newyear", label:"New Year's Kiss", desc:"Midnight Sparkle", img:"https://images.unsplash.com/photo-1546565111-1d6e0e258854?w=240&h=300&fit=crop&q=80",
+        prompt:"as a couple sharing a midnight kiss under sparkling fireworks and confetti in elegant New Year's eve attire" },
+      { id:"cp-halloween", label:"Halloween Pair", desc:"Costume Couple", img:"https://images.unsplash.com/photo-1509557965875-b88c97052f0e?w=240&h=300&fit=crop&q=80",
+        prompt:"as a couple in matching elegant Halloween costumes — vampire and gothic bride — with candlelit pumpkins and moody atmosphere" },
+{ id:"pp-xmas", label:"Holiday Portrait", desc:"Christmas Glow", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
         prompt:"in a festive Christmas portrait beside a sparkling tree with cozy sweater, fireplace warmth and twinkling lights" },
       { id:"pp-halloween", label:"Halloween Style", desc:"Elegant Costume", img:"https://images.unsplash.com/photo-1509557965875-b88c97052f0e?w=240&h=300&fit=crop&q=80",
         prompt:"in an elegant Halloween portrait — vampire, witch or masquerade — with moody candlelight and gothic atmosphere" },
@@ -668,7 +638,21 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"in a Valentine's portrait with red roses, soft heart motifs and warm romantic lighting" },
     ],
     Occasions: [
-      { id:"pp-wedding", label:"Wedding Guest", desc:"Black Tie Elegance", img:"https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=240&h=300&fit=crop&q=80",
+{ id:"bb-newborn", label:"Newborn Welcome", desc:"First Days Home", img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=240&h=300&fit=crop&q=80",
+        prompt:"in a tender newborn welcome portrait with soft swaddling, name banner, fresh florals and gentle natural light" },
+      { id:"bb-1stbday", label:"First Birthday", desc:"Cake Smash Magic", img:"https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=240&h=300&fit=crop&q=80",
+        prompt:"in a joyful first birthday cake-smash scene with a number 1 balloon, confetti and pastel party decor" },
+      { id:"bb-baptism", label:"Baptism Day", desc:"Sacred Christening", img:"https://images.unsplash.com/photo-1491013516836-7db643ee125a?w=240&h=300&fit=crop&q=80",
+        prompt:"in a sacred christening portrait with a flowing white gown, soft cathedral light, fresh white florals and reverent atmosphere" },
+{ id:"cp-wedding", label:"Wedding Day", desc:"Bride & Groom", img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
+        prompt:"as a bride and groom in elegant wedding attire with white florals, soft veils, romantic golden light and timeless wedding portrait composition" },
+      { id:"cp-engagement", label:"Engagement", desc:"The Proposal", img:"https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=240&h=300&fit=crop&q=80",
+        prompt:"in a romantic engagement portrait with a sparkling ring, soft florals, dreamy bokeh background and warm golden light" },
+      { id:"cp-anniv", label:"Anniversary", desc:"Years Of Love", img:"https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=240&h=300&fit=crop&q=80",
+        prompt:"in an anniversary portrait celebrating years of love with candles, soft florals and warm timeless lighting" },
+      { id:"cp-babymoon", label:"Babymoon", desc:"Expecting Glow", img:"https://images.unsplash.com/photo-1492725764893-90b379c2b6e7?w=240&h=300&fit=crop&q=80",
+        prompt:"in a tender expecting-couple maternity portrait with soft flowing fabrics, gentle florals and warm golden light" },
+{ id:"pp-wedding", label:"Wedding Guest", desc:"Black Tie Elegance", img:"https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=240&h=300&fit=crop&q=80",
         prompt:"in formal wedding attire with elegant tuxedo or gown, soft chandelier light and refined ballroom backdrop" },
       { id:"pp-grad", label:"Graduation", desc:"Cap & Gown", img:"https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=240&h=300&fit=crop&q=80",
         prompt:"in a triumphant graduation portrait with cap, gown, diploma, university backdrop and proud golden light" },
@@ -678,9 +662,17 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"in a distinguished retirement portrait with symbols of a lifetime of achievement, warm dignified lighting" },
     ],
   },
-  memorial: {
+  events: {
     Seasons: [
-      { id:"mm-winter", label:"Winter Peace", desc:"Snowfall Tribute", img:"https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=240&h=300&fit=crop&q=80",
+{ id:"gf-winter", label:"Winter Gift", desc:"Snowy Keepsake", img:"https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=240&h=300&fit=crop&q=80",
+        prompt:"in a winter gift portrait with snowfall, cozy knitwear, twinkling lights and warm seasonal magic" },
+      { id:"gf-autumn", label:"Autumn Gift", desc:"Harvest Tones", img:"https://images.unsplash.com/photo-1507666405895-422eee7d517f?w=240&h=300&fit=crop&q=80",
+        prompt:"in a warm autumn gift portrait with golden leaves, pumpkins and amber harvest light" },
+      { id:"gf-spring", label:"Spring Gift", desc:"Floral Surprise", img:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=240&h=300&fit=crop&q=80",
+        prompt:"in a fresh spring gift portrait with blooming florals, pastel light and joyful uplifting atmosphere" },
+      { id:"gf-summer", label:"Summer Gift", desc:"Sunny Memory", img:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=240&h=300&fit=crop&q=80",
+        prompt:"in a sunny summer gift portrait with golden beach light, warm tones and joyful summer atmosphere" },
+{ id:"mm-winter", label:"Winter Peace", desc:"Snowfall Tribute", img:"https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=240&h=300&fit=crop&q=80",
         prompt:"in a peaceful winter memorial scene with gentle snowfall, soft moonlight and a serene snow-covered landscape" },
       { id:"mm-autumn", label:"Autumn Memory", desc:"Falling Leaves", img:"https://images.unsplash.com/photo-1507666405895-422eee7d517f?w=240&h=300&fit=crop&q=80",
         prompt:"in a tender autumn memorial scene with golden falling leaves, warm amber light and reflective atmosphere" },
@@ -690,35 +682,7 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"in a peaceful summer memorial scene with warm golden hour light over an endless ocean horizon" },
     ],
     Holidays: [
-      { id:"mm-xmas", label:"Christmas Memory", desc:"Empty Chair At Table", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
-        prompt:"in a tender Christmas memorial portrait with a glowing tree, candlelight and a warm 'always with us' atmosphere" },
-      { id:"mm-bday", label:"Birthday In Heaven", desc:"Forever Loved", img:"https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=240&h=300&fit=crop&q=80",
-        prompt:"in a heavenly birthday memorial portrait with soft balloons, golden light and angelic atmosphere" },
-      { id:"mm-mothersday", label:"Mother's Day", desc:"Tribute To Mom", img:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=240&h=300&fit=crop&q=80",
-        prompt:"in a loving Mother's Day memorial portrait with soft florals, warm light and reverent peaceful tone" },
-    ],
-    Occasions: [
-      { id:"mm-anniv", label:"Anniversary", desc:"Forever In Heart", img:"https://images.unsplash.com/photo-1517450084074-abe5e5950bf0?w=240&h=300&fit=crop&q=80",
-        prompt:"in a tender anniversary memorial portrait with soft golden light, candles and reverent flowers" },
-      { id:"mm-celeb", label:"Celebration Of Life", desc:"Joyful Tribute", img:"https://images.unsplash.com/photo-1490750967868-88df5691cc9d?w=240&h=300&fit=crop&q=80",
-        prompt:"in a joyful celebration-of-life portrait with bright florals, warm sunshine and a hopeful uplifting atmosphere" },
-      { id:"mm-petloss", label:"Pet Tribute", desc:"Beloved Companion", img:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=240&h=300&fit=crop&q=80",
-        prompt:"in a tender pet memorial portrait with celestial light, soft flowers and a peaceful 'forever loved' atmosphere" },
-    ],
-  },
-  gifts: {
-    Seasons: [
-      { id:"gf-winter", label:"Winter Gift", desc:"Snowy Keepsake", img:"https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=240&h=300&fit=crop&q=80",
-        prompt:"in a winter gift portrait with snowfall, cozy knitwear, twinkling lights and warm seasonal magic" },
-      { id:"gf-autumn", label:"Autumn Gift", desc:"Harvest Tones", img:"https://images.unsplash.com/photo-1507666405895-422eee7d517f?w=240&h=300&fit=crop&q=80",
-        prompt:"in a warm autumn gift portrait with golden leaves, pumpkins and amber harvest light" },
-      { id:"gf-spring", label:"Spring Gift", desc:"Floral Surprise", img:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=240&h=300&fit=crop&q=80",
-        prompt:"in a fresh spring gift portrait with blooming florals, pastel light and joyful uplifting atmosphere" },
-      { id:"gf-summer", label:"Summer Gift", desc:"Sunny Memory", img:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=240&h=300&fit=crop&q=80",
-        prompt:"in a sunny summer gift portrait with golden beach light, warm tones and joyful summer atmosphere" },
-    ],
-    Holidays: [
-      { id:"gf-xmas", label:"Christmas Gift", desc:"Under The Tree", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
+{ id:"gf-xmas", label:"Christmas Gift", desc:"Under The Tree", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
         prompt:"in a festive Christmas gift portrait with sparkling tree, gold ribbon, presents and warm fireside glow" },
       { id:"gf-mothersday", label:"Mother's Day", desc:"For Mom", img:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=240&h=300&fit=crop&q=80",
         prompt:"in a loving Mother's Day gift portrait with soft pastel florals, warm light and tender heartfelt mood" },
@@ -726,9 +690,15 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"in a distinguished Father's Day gift portrait with warm wood tones, classic styling and proud heartfelt mood" },
       { id:"gf-valentine", label:"Valentine's Gift", desc:"Heartfelt Love", img:"https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=240&h=300&fit=crop&q=80",
         prompt:"in a romantic Valentine's gift portrait with red roses, candlelight, heart motifs and warm crimson tones" },
+{ id:"mm-xmas", label:"Christmas Memory", desc:"Empty Chair At Table", img:"https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=240&h=300&fit=crop&q=80",
+        prompt:"in a tender Christmas memorial portrait with a glowing tree, candlelight and a warm 'always with us' atmosphere" },
+      { id:"mm-bday", label:"Birthday In Heaven", desc:"Forever Loved", img:"https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=240&h=300&fit=crop&q=80",
+        prompt:"in a heavenly birthday memorial portrait with soft balloons, golden light and angelic atmosphere" },
+      { id:"mm-mothersday", label:"Mother's Day", desc:"Tribute To Mom", img:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=240&h=300&fit=crop&q=80",
+        prompt:"in a loving Mother's Day memorial portrait with soft florals, warm light and reverent peaceful tone" },
     ],
     Occasions: [
-      { id:"gf-wedding", label:"Wedding Gift", desc:"Bridal Keepsake", img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
+{ id:"gf-wedding", label:"Wedding Gift", desc:"Bridal Keepsake", img:"https://images.unsplash.com/photo-1519741497674-611481863552?w=240&h=300&fit=crop&q=80",
         prompt:"in a refined wedding gift portrait with white florals, soft veils, warm chandelier light and timeless bridal mood" },
       { id:"gf-anniv", label:"Anniversary Gift", desc:"Years Together", img:"https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=240&h=300&fit=crop&q=80",
         prompt:"in an elegant anniversary gift portrait with candles, soft florals and warm timeless romance" },
@@ -736,6 +706,12 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"in a proud graduation gift portrait with cap, gown, diploma and university backdrop in warm celebratory light" },
       { id:"gf-housewarm", label:"Housewarming", desc:"New Home Gift", img:"https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=240&h=300&fit=crop&q=80",
         prompt:"in a warm housewarming gift portrait with charming home exterior, welcome wreath and joyful new-beginnings mood" },
+{ id:"mm-anniv", label:"Anniversary", desc:"Forever In Heart", img:"https://images.unsplash.com/photo-1517450084074-abe5e5950bf0?w=240&h=300&fit=crop&q=80",
+        prompt:"in a tender anniversary memorial portrait with soft golden light, candles and reverent flowers" },
+      { id:"mm-celeb", label:"Celebration Of Life", desc:"Joyful Tribute", img:"https://images.unsplash.com/photo-1490750967868-88df5691cc9d?w=240&h=300&fit=crop&q=80",
+        prompt:"in a joyful celebration-of-life portrait with bright florals, warm sunshine and a hopeful uplifting atmosphere" },
+      { id:"mm-petloss", label:"Pet Tribute", desc:"Beloved Companion", img:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=240&h=300&fit=crop&q=80",
+        prompt:"in a tender pet memorial portrait with celestial light, soft flowers and a peaceful 'forever loved' atmosphere" },
     ],
   },
 };
@@ -751,7 +727,7 @@ const TEASERS = [
       { url:portraitPetsCine,   style:"Cinematic" },
       { url:portraitPetsMin,    style:"Minimal" },
     ] },
-  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:beforeBabies, after:sceneBabies,  portrait:portraitBabies,
+  { cat:"Family",   catId:"family",   style:"Storybook",   before:beforeBabies, after:sceneBabies,  portrait:portraitBabies,
     portraits:[
       { url:portraitBabiesRoyal, style:"Royal" },
       { url:portraitBabiesRen,   style:"Renaissance" },
@@ -760,7 +736,7 @@ const TEASERS = [
       { url:portraitBabiesCine,  style:"Cinematic" },
       { url:portraitBabiesMin,   style:"Minimal" },
     ] },
-  { cat:"Couples",  catId:"couples",  style:"Royal",       before:beforeCouples, after:portraitCouplesRoyal, portrait:portraitCouplesRoyal,
+  { cat:"Events",   catId:"events",  style:"Royal",       before:beforeCouples, after:portraitCouplesRoyal, portrait:portraitCouplesRoyal,
     portraits:[
       { url:portraitCouplesRoyal, style:"Royal" },
       { url:portraitCouplesRen,   style:"Renaissance" },
@@ -768,33 +744,6 @@ const TEASERS = [
       { url:portraitCouplesFan,   style:"Fantasy" },
       { url:portraitCouplesCine,  style:"Cinematic" },
       { url:portraitCouplesMin,   style:"Minimal" },
-    ] },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:portraitPeople,
-    portraits:[
-      { url:portraitPeopleRoyal, style:"Royal" },
-      { url:portraitPeopleRen,   style:"Renaissance" },
-      { url:portraitPeopleStory, style:"Storybook" },
-      { url:portraitPeople,      style:"Fantasy" },
-      { url:portraitPeopleCine,  style:"Cinematic" },
-      { url:portraitPeopleMin,   style:"Minimal" },
-    ] },
-  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:beforeMemorial, after:sceneMemorial,portrait:portraitMemorial,
-    portraits:[
-      { url:portraitMemorialRoyal, style:"Royal" },
-      { url:portraitMemorialRen,   style:"Renaissance" },
-      { url:portraitMemorialStory, style:"Storybook" },
-      { url:portraitMemorialFan,   style:"Fantasy" },
-      { url:portraitMemorialCine,  style:"Cinematic" },
-      { url:portraitMemorial,      style:"Minimal" },
-    ] },
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:beforeGifts, after:sceneGifts,   portrait:portraitGifts,
-    portraits:[
-      { url:portraitGiftsRoyal, style:"Royal" },
-      { url:portraitGifts,      style:"Renaissance" },
-      { url:portraitGiftsStory, style:"Storybook" },
-      { url:portraitGiftsFan,   style:"Fantasy" },
-      { url:portraitGiftsCine,  style:"Cinematic" },
-      { url:portraitGiftsMin,   style:"Minimal" },
     ] },
 ];
 
@@ -850,36 +799,30 @@ const SOCIAL_PROOF_BY_CAT: Record<string, { img: string; style: string; review: 
     { img: proofPetsCine, style:"Cinematic", review:'"Hands down the best gift I\'ve ever bought." — Amy K.' },
     { img: proofPetsMin, style:"Minimal", review:'"Beautiful, modern, and exactly what I wanted." — Tom W.' },
   ],
-  babies: [
+  family: [
     { img: proofBabiesRoyal, style:"Royal", review:'"A keepsake we\'ll treasure forever." — Jessica T.' },
     { img: proofBabiesRen, style:"Renaissance", review:'"Looks like an heirloom painting." — Sarah M.' },
     { img: proofBabiesFan, style:"Fantasy", review:'"Magical — my baby looks like a little dream." — David L.' },
     { img: proofBabiesCine, style:"Cinematic", review:'"My mom hasn\'t stopped talking about it." — Amy K.' },
     { img: proofBabiesMin, style:"Minimal", review:'"Clean, modern, and absolutely beautiful." — Tom W.' },
-  ],
-  couples: [
     { img: proofCouplesRoyal, style:"Royal", review:'"The perfect anniversary gift." — Jessica T.' },
     { img: proofCouplesRen, style:"Renaissance", review:'"Looks like a museum piece of us." — Sarah M.' },
     { img: proofCouplesStory, style:"Storybook", review:'"So sweet — it tells our love story." — Mark R.' },
     { img: proofCouplesFan, style:"Fantasy", review:'"Otherworldly and romantic." — David L.' },
     { img: proofCouplesCine, style:"Cinematic", review:'"Looks like a movie poster of us." — Amy K.' },
     { img: proofCouplesMin, style:"Minimal", review:'"Elegant and timeless." — Tom W.' },
-  ],
-  people: [
     { img: proofPeopleRoyal, style:"Royal", review:'"I cried when I saw it — it\'s perfect." — Jessica T.' },
     { img: proofPeopleRen, style:"Renaissance", review:'"Everyone at the office asks where I got it." — Sarah M.' },
     { img: proofPeopleStory, style:"Storybook", review:'"Whimsical and so charming." — Mark R.' },
     { img: proofPeopleCine, style:"Cinematic", review:'"It looks like a movie poster of me." — Amy K.' },
     { img: proofPeopleMin, style:"Minimal", review:'"Clean and gallery-quality." — Tom W.' },
   ],
-  memorial: [
+  events: [
     { img: proofMemorialRoyal, style:"Royal", review:'"A beautiful tribute — thank you." — Jessica T.' },
     { img: proofMemorialRen, style:"Renaissance", review:'"It honors them perfectly." — Sarah M.' },
     { img: proofMemorialStory, style:"Storybook", review:'"Gentle and heartwarming." — Mark R.' },
     { img: proofMemorialFan, style:"Fantasy", review:'"It brought tears to my eyes." — David L.' },
     { img: proofMemorialCine, style:"Cinematic", review:'"A keepsake we\'ll cherish forever." — Amy K.' },
-  ],
-  gifts: [
     { img: proofGiftsRoyal, style:"Royal", review:'"Best birthday gift I\'ve ever given." — Tom W.' },
     { img: proofGiftsStory, style:"Storybook", review:'"They were speechless." — Mark R.' },
     { img: proofGiftsFan, style:"Fantasy", review:'"Otherworldly — they loved it." — David L.' },
@@ -889,10 +832,10 @@ const SOCIAL_PROOF_BY_CAT: Record<string, { img: string; style: string; review: 
 };
 
 const getSocialProof = (cat?: string) =>
-  (cat && SOCIAL_PROOF_BY_CAT[cat]) || SOCIAL_PROOF_BY_CAT.people;
+  (cat && SOCIAL_PROOF_BY_CAT[cat]) || SOCIAL_PROOF_BY_CAT.family;
 
 // Default deck used outside generation contexts
-const SOCIAL_PROOF = SOCIAL_PROOF_BY_CAT.people;
+const SOCIAL_PROOF = SOCIAL_PROOF_BY_CAT.family;
 
 
 
@@ -1134,7 +1077,7 @@ function HomePage({ onGenerate }) {
 
   const genLabel = () => {
     if (!cat)   return "Choose A Category To Start";
-    if (!photo) return cat === "couples" ? "Upload 2 Photos To Continue →" : "Upload A Photo To Continue →";
+    if (!photo) return (selectedTemplate && selectedTemplate.startsWith("cpl-")) ? "Upload 2 Photos To Continue →" : "Upload A Photo To Continue →";
     if (totalPhotos < req.minPhotos) {
       const remaining = req.minPhotos - totalPhotos;
       return `Add ${remaining} More Photo${remaining > 1 ? "s" : ""} To Continue →`;
@@ -1318,7 +1261,7 @@ function HomePage({ onGenerate }) {
                         fontSize:12, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
                     </div>
                     <p style={{ fontSize:12, color:T.cream, marginBottom:3 }}>
-                      {cat === "couples" ? "Drop The First Partner's Photo Or Click To Upload" : "Drop Your Photo Here Or Click To Upload"}
+                      {(selectedTemplate && selectedTemplate.startsWith("cpl-")) ? "Drop The First Partner's Photo Or Click To Upload" : "Drop Your Photo Here Or Click To Upload"}
                     </p>
                     <p style={{ fontSize:10, color:T.muted, lineHeight:1.55 }}>
                       {req.uploadHint}
@@ -1362,7 +1305,7 @@ function HomePage({ onGenerate }) {
                         fontSize:14, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
                       <span style={{ fontSize:9, color:T.muted, letterSpacing:".06em" }}>
                         {totalPhotos < req.minPhotos
-                          ? (cat === "couples" ? "Add Partner 2" : "Add Required Photo")
+                          ? ((selectedTemplate && selectedTemplate.startsWith("cpl-")) ? "Add Partner 2" : "Add Required Photo")
                           : "Add Another"}
                       </span>
                     </button>
@@ -1498,12 +1441,9 @@ function HomePage({ onGenerate }) {
           <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every purchase is a memory made permanent. Every occasion deserves a masterpiece.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
-              { cat:"pets",     img:scenePets,     Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
-              { cat:"babies",   img:sceneBabies,   Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
-              { cat:"couples",  img:sceneCouples,  Icon:Heart,    title:"Couples",  body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
-              { cat:"people",   img:scenePeople,   Icon:Users,    title:"People",   body:"Individuals, families, friends, parents. A birthday gift so personal.", cta:"Create A People Portrait" },
-              { cat:"memorial", img:sceneMemorial, Icon:Flower2,  title:"Memorial", body:"A tender tribute to the ones who shaped you.", cta:"Create A Memorial Portrait" },
-              { cat:"gifts",    img:sceneGifts,    Icon:Gift,     title:"Gifts",    body:"Birthdays, holidays, graduations, new arrivals. The portrait they'll never take down.", cta:"Browse Gift Ideas" },
+              { cat:"pets",   img:scenePets,    Icon:PawPrint,     title:"Pets",   body:"Honor the companion who fills your days with unconditional joy — dog, cat, horse, bird.", cta:"Create A Pet Portrait" },
+              { cat:"family", img:sceneBabies,  Icon:Users,        title:"Family", body:"Babies, children, couples, grandparents, individuals. A gift so personal, words can't compare.", cta:"Create A Family Portrait" },
+              { cat:"events", img:sceneCouples, Icon:CalendarDays, title:"Events", body:"Weddings, birthdays, graduations, holidays, anniversaries, and memorial tributes that last forever.", cta:"Browse Event Styles" },
             ].map(item => (
               <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }}
                 style={{ border:`1px solid ${T.border}`, borderRadius:18, overflow:"hidden",
