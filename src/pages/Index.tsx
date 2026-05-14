@@ -1783,7 +1783,8 @@ export default function App() {
     setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, heroName }));
     setSession({ cat, photo, heroName } as any);
     setScreen("select-style");
-  }, [setSession]);
+    navigate(`/styles-${cat.toLowerCase()}`);
+  }, [setSession, navigate]);
 
   // Step 2: user picks style → create session, then generate
   const handleStyleSelected = useCallback(async ({ styles, templatePrompt }) => {
@@ -1817,7 +1818,7 @@ export default function App() {
       {screen==="home"         && <HomePage        onGenerate={handleGenerate}/>}
       {screen==="select-style" && <StyleSelectPage session={localSession}
                                     onConfirm={handleStyleSelected}
-                                    onBack={() => setScreen("home")}/>}
+                                    onBack={() => { setScreen("home"); navigate("/"); }}/>}
       {screen==="gen"          && <GenScreen      selectedStyles={localSession.styles}
                                     sessionId={localSession.sessionId}
                                     photoUrl={localSession.photoUrl || localSession.photo}
