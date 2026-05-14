@@ -1052,7 +1052,12 @@ export default function Customize() {
                 ? "transparent"
                 // Solid frame face with subtle edge vignette (frame moulding, not gradient bg)
                 : `
-                    radial-gradient(ellipse at center, ${actualWood} 60%, color-mix(in srgb, ${actualWood} 85%, black) 100%),
+                    linear-gradient(135deg,
+                      color-mix(in srgb, ${actualWood} 75%, white) 0%,
+                      ${actualWood} 35%,
+                      ${actualWood} 65%,
+                      color-mix(in srgb, ${actualWood} 70%, black) 100%
+                    ),
                     ${actualWood}
                   `,
             padding: (isFrameless ? 6 : woodPad + 6),
@@ -1060,12 +1065,17 @@ export default function Customize() {
             boxShadow: isFrameless
               ? "30px 40px 70px -10px rgba(0,0,0,.35), 10px 16px 30px -4px rgba(0,0,0,.22)"
               : `
+                /* Bevel: bright top-left highlight + dark bottom-right shadow on the moulding */
+                inset 2px 2px 0 rgba(255,255,255,.35),
+                inset 3px 3px 6px rgba(255,255,255,.18),
+                inset -2px -2px 0 rgba(0,0,0,.55),
+                inset -4px -4px 8px rgba(0,0,0,.45),
                 /* Outer hairline */
-                0 0 0 1px rgba(0,0,0,.30),
+                0 0 0 1px rgba(0,0,0,.55),
                 /* Cast shadow on the wall — bottom-right */
-                30px 40px 70px -12px rgba(0,0,0,.40),
-                15px 22px 40px -8px rgba(0,0,0,.28),
-                6px 10px 18px -4px rgba(0,0,0,.18)
+                30px 40px 70px -12px rgba(0,0,0,.45),
+                15px 22px 40px -8px rgba(0,0,0,.30),
+                6px 10px 18px -4px rgba(0,0,0,.20)
               `,
             filter: "drop-shadow(15px 25px 20px rgba(0,0,0,.15))",
             display: "inline-block",
