@@ -1940,6 +1940,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                     <StyleCard key={`th-${t.id}`}
                       card={{ id:t.id, label:t.label, desc:t.desc, img:t.img }}
                       isSelected={isSelected}
+                      originalPhoto={photo}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
                       onConfirm={() => onConfirm({ styles:["royal"], templatePrompt: t.prompt })}/>
                   );
