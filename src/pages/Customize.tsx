@@ -1061,7 +1061,7 @@ export default function Customize() {
                   minHeight: "100%",
                   maxWidth: "none",
                   filter: ed.filter,
-                  transform: `translate(calc(-50% + ${item.offsetX || 0}px), calc(-50% + ${item.offsetY || 0}px)) scale(${item.zoom || 1})`,
+                  transform: `translate(calc(-50% + ${item.offsetX || 0}px), calc(-50% + ${item.offsetY || 0}px)) rotate(${item.rotation || 0}deg) scale(${item.zoom || 1})`,
                   transformOrigin: "center center",
                   transition: isDraggingThis
                     ? "width .25s ease, height .25s ease"
@@ -1179,6 +1179,14 @@ export default function Customize() {
               </span>
               <div className="cz-tool-divider"/>
               <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
+                <RefreshCw size={17}/>
+              </button>
+              <button
+                className="cz-tool"
+                onClick={() => setItems(prev => prev.map(i => i.id === item.id
+                  ? { ...i, rotation: (((i.rotation || 0) + 90) % 360) }
+                  : i))}
+                data-tip="Rotate" aria-label="Rotate image">
                 <RotateCcw size={17}/>
               </button>
               <div className="cz-tool-divider"/>
