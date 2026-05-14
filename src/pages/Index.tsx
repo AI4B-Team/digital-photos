@@ -195,6 +195,47 @@ const CATS = [
   { id:"gifts",    label:"Gifts",    icon:"🎁", Icon: Gift     },
 ];
 
+// Per-category upload requirements — drives the smart upload UI
+const CAT_REQS: Record<string, {
+  minPhotos: number;
+  uploadHeading: string;
+  uploadHint: string;
+  namePlaceholders: string[];
+  namesLabel: string;
+}> = {
+  pets:     { minPhotos:1,
+              uploadHeading:"Upload Your Pet's Photo",
+              uploadHint:"One Clear Photo Of Your Pet — Add More If You Have Multiple",
+              namePlaceholders:["e.g., Barley, Milo, Sophie"],
+              namesLabel:"Pet Name" },
+  babies:   { minPhotos:1,
+              uploadHeading:"Upload Your Baby's Photo",
+              uploadHint:"One Clear, Well-Lit Photo — Face Visible",
+              namePlaceholders:["e.g., Olivia, Noah, Emma"],
+              namesLabel:"Baby's Name" },
+  couples:  { minPhotos:2,
+              uploadHeading:"Upload 2 Photos — One Of Each Partner",
+              uploadHint:"Separate Photos Give The Best Couple Portrait",
+              namePlaceholders:["Partner 1 Name","Partner 2 Name"],
+              namesLabel:"Partner Names" },
+  people:   { minPhotos:1,
+              uploadHeading:"Upload Your Photo",
+              uploadHint:"Add One Photo Per Person For Best Results",
+              namePlaceholders:["e.g., Sarah, James, The Smiths"],
+              namesLabel:"Name" },
+  memorial: { minPhotos:1,
+              uploadHeading:"Upload A Photo Of Your Loved One",
+              uploadHint:"Any Cherished Photo — We'll Restore Clarity & Light",
+              namePlaceholders:["In Loving Memory Of…"],
+              namesLabel:"Name" },
+  gifts:    { minPhotos:1,
+              uploadHeading:"Upload Their Photo",
+              uploadHint:"A Clear Photo Of The Person Or Pet You're Gifting",
+              namePlaceholders:["e.g., Mom, Dad, Best Friend"],
+              namesLabel:"Recipient Name" },
+};
+const reqFor = (c?: string) => (c && CAT_REQS[c]) || CAT_REQS.people;
+
 const STYLES = [
   { id:"royal",       label:"Royal",       desc:"Regal · Golden Era",       preview:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=520&h=650&fit=crop&q=80" },
   { id:"renaissance", label:"Renaissance", desc:"Old Masters · Rich Tones",  preview:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=520&h=650&fit=crop&q=80" },
@@ -935,12 +976,12 @@ function HomePage({ onGenerate }) {
   const totalPhotos = (photo ? 1 : 0) + extraPhotos.length;
   useEffect(() => {
     setHeroNames(prev => {
-      const n = Math.max(1, totalPhotos);
+      const n = Math.max(1, totalPhotos, reqFor(cat).minPhotos);
       if (prev.length === n) return prev;
       if (prev.length < n) return [...prev, ...Array(n - prev.length).fill("")];
       return prev.slice(0, n);
     });
-  }, [totalPhotos]);
+  }, [totalPhotos, cat]);
   const heroName = heroNames.filter(Boolean).join(" & ");
   const [quoteIdx, setQuoteIdx] = useState(0);
   useEffect(() => {
@@ -964,7 +1005,8 @@ function HomePage({ onGenerate }) {
 
   const toggleStyle = id => setStyles(p => p.includes(id) ? p.filter(s=>s!==id) : [...p, id]);
   const allOn = styles.length === STYLES.length;
-  const canGo = !!(cat && photo);
+  const req = reqFor(cat);
+  const canGo = !!(cat && photo && totalPhotos >= req.minPhotos);
 
   const pickStyleScroll = id => {
     if (!styles.includes(id)) setStyles(p => [...p, id]);
@@ -981,7 +1023,11 @@ function HomePage({ onGenerate }) {
 
   const genLabel = () => {
     if (!cat)   return "Choose A Category To Start";
-    if (!photo) return "Upload A Photo To Continue →";
+    if (!photo) return cat === "couples" ? "Upload 2 Photos To Continue →" : "Upload A Photo To Continue →";
+    if (totalPhotos < req.minPhotos) {
+      const remaining = req.minPhotos - totalPhotos;
+      return `Add ${remaining} More Photo${remaining > 1 ? "s" : ""} To Continue →`;
+    }
     return "See Your Portrait — Free Preview →";
   };
 
@@ -1157,7 +1203,12 @@ function HomePage({ onGenerate }) {
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:cat?T.gold:T.dim,
                   textTransform:"uppercase", fontWeight:500, marginBottom:8, transition:"color .28s" }}>
-                  Upload Your Photo
+                  {req.uploadHeading}{req.minPhotos > 1 && (
+                    <span style={{ marginLeft:8, color:T.cream, letterSpacing:".04em",
+                      textTransform:"none", fontSize:10, fontWeight:500 }}>
+                      ({totalPhotos}/{req.minPhotos})
+                    </span>
+                  )}
                 </div>
                 {!photo ? (
                   <div className={`dz ${drag?"drag":""}`} style={{ borderRadius:6, padding:"20px 16px" }}
@@ -1173,9 +1224,11 @@ function HomePage({ onGenerate }) {
                         borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center",
                         fontSize:12, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
                     </div>
-                    <p style={{ fontSize:12, color:T.cream, marginBottom:3 }}>Drop Your Photo Here Or Click To Upload</p>
+                    <p style={{ fontSize:12, color:T.cream, marginBottom:3 }}>
+                      {cat === "couples" ? "Drop The First Partner's Photo Or Click To Upload" : "Drop Your Photo Here Or Click To Upload"}
+                    </p>
                     <p style={{ fontSize:10, color:T.muted, lineHeight:1.55 }}>
-                      Upload A Clear Photo · Good Lighting · Visible Faces For Best Results
+                      {req.uploadHint}
                     </p>
                     {err && (
                       <div style={{ marginTop:8, display:"flex", gap:5, alignItems:"center",
@@ -1214,7 +1267,11 @@ function HomePage({ onGenerate }) {
                       <div style={{ width:22, height:22, borderRadius:"50%", background:T.gold,
                         display:"flex", alignItems:"center", justifyContent:"center",
                         fontSize:14, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
-                      <span style={{ fontSize:9, color:T.muted, letterSpacing:".06em" }}>Add Another</span>
+                      <span style={{ fontSize:9, color:T.muted, letterSpacing:".06em" }}>
+                        {totalPhotos < req.minPhotos
+                          ? (cat === "couples" ? "Add Partner 2" : "Add Required Photo")
+                          : "Add Another"}
+                      </span>
                     </button>
                   </div>
                 )}
@@ -1239,7 +1296,7 @@ function HomePage({ onGenerate }) {
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
                   textTransform:"uppercase", fontWeight:500, marginBottom:8 }}>
-                  Name <span style={{ color:T.dim, fontSize:8,
+                  {req.namesLabel} <span style={{ color:T.dim, fontSize:8,
                     textTransform:"none", letterSpacing:".04em", fontWeight:400,
                     marginLeft:6 }}>(Optional)</span>
                 </div>
@@ -1253,7 +1310,7 @@ function HomePage({ onGenerate }) {
                         const v = e.target.value.slice(0, 20);
                         setHeroNames(prev => prev.map((x, j) => j === i ? v : x));
                       }}
-                      placeholder={heroNames.length > 1 ? `Name For Photo ${i + 1}` : "e.g., Barley, Sofia, Max..."}
+                      placeholder={req.namePlaceholders[i] || req.namePlaceholders[0] || `Name ${i+1}`}
                       maxLength={20}
                       style={{
                         width:"100%", padding:"9px 12px", borderRadius:6,
