@@ -1940,9 +1940,11 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           `${base} — Recreate the scene shown in the TOP-RIGHT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
           `${base} — Recreate the scene shown in the BOTTOM-LEFT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
           `${base} — Recreate the scene shown in the BOTTOM-RIGHT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
+          `${base} — Recreate the TOP-LEFT framed scene but as a tighter close-up crop with the pet's face centered, same costume/props/lighting as the reference frame.`,
+          `${base} — Recreate the BOTTOM-RIGHT framed scene but from a slightly wider angle showing more of the setting, same costume/props/lighting as the reference frame.`,
         ];
         onConfirm({
-          styles: ["v1","v2","v3","v4"],
+          styles: ["v1","v2","v3","v4","v5","v6"],
           templatePrompt: base,
           templatePrompts: variants,
           styleRefUrl: await getStyleRef(card?.img),
