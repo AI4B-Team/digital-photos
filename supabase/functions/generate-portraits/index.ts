@@ -89,13 +89,10 @@ serve(async (req) => {
       }
     }
 
-    // Generate portraits for each style
-    const results: { style: string; url: string; url_hd: string }[] = [];
-
+    // Generate portraits for each style — IN PARALLEL to avoid 150s edge function timeout
     const GENERIC_PHOTO_PROMPT = "Create a high-quality hyper-realistic photograph portrait of the subject in the scene described. Preserve the subject's likeness, fur/skin/eye features. Natural lighting, sharp detail, professional photography quality.";
 
-    for (let idx = 0; idx < styles.length; idx++) {
-      const style = styles[idx];
+    const generateOne = async (style: string, idx: number): Promise<{ style: string; url: string; url_hd: string } | null> => {
       const prompt = STYLE_PROMPTS[style] || GENERIC_PHOTO_PROMPT;
       const perVariantPrompt = (Array.isArray(templatePrompts) && templatePrompts[idx]) || templatePrompt;
 
@@ -138,50 +135,41 @@ serve(async (req) => {
           console.error(`AI generation failed for style ${style}:`, response.status, errText);
           
           if (response.status === 429) {
-            // Rate limited - wait and retry once
             await new Promise((r) => setTimeout(r, 5000));
-            continue;
+            return null;
           }
           if (response.status === 402) {
             throw new Error("AI credits exhausted. Please add funds to continue.");
           }
-          continue;
+          return null;
         }
 
         const data = await response.json();
-        const imageUrl =
-          data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        if (!imageUrl) return null;
 
-        if (imageUrl) {
-          // Upload the base64 image to Supabase Storage
-          const base64Data = imageUrl.replace(/^data:image\/\w+;base64,/, "");
-          const imageBytes = Uint8Array.from(atob(base64Data), (c) =>
-            c.charCodeAt(0)
-          );
-          const filePath = `generated/${sessionId || "anon"}/${style}-${Date.now()}.png`;
+        const base64Data = imageUrl.replace(/^data:image\/\w+;base64,/, "");
+        const imageBytes = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
+        const filePath = `generated/${sessionId || "anon"}/${style}-${Date.now()}.png`;
 
-          const { error: uploadError } = await supabase.storage
-            .from("portraits")
-            .upload(filePath, imageBytes, {
-              contentType: "image/png",
-              upsert: true,
-            });
+        const { error: uploadError } = await supabase.storage
+          .from("portraits")
+          .upload(filePath, imageBytes, { contentType: "image/png", upsert: true });
 
-          if (uploadError) {
-            console.error("Storage upload error:", uploadError);
-            // Fall back to base64 URL
-            results.push({ style, url: imageUrl, url_hd: imageUrl });
-          } else {
-            const {
-              data: { publicUrl },
-            } = supabase.storage.from("portraits").getPublicUrl(filePath);
-            results.push({ style, url: publicUrl, url_hd: publicUrl });
-          }
+        if (uploadError) {
+          console.error("Storage upload error:", uploadError);
+          return { style, url: imageUrl, url_hd: imageUrl };
         }
+        const { data: { publicUrl } } = supabase.storage.from("portraits").getPublicUrl(filePath);
+        return { style, url: publicUrl, url_hd: publicUrl };
       } catch (styleErr) {
         console.error(`Error generating ${style}:`, styleErr);
+        return null;
       }
-    }
+    };
+
+    const settled = await Promise.all((styles as string[]).map((s, i) => generateOne(s, i)));
+    const results = settled.filter((r): r is { style: string; url: string; url_hd: string } => !!r);
 
     // Save portraits to DB
     if (sessionId && results.length > 0) {
