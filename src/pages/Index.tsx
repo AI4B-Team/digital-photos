@@ -1698,7 +1698,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
               opacity: (!email.includes("@") || emailBusy) ? .55 : 1 }}>
             {emailBusy ? "Saving..." : <>Send Me My Portrait <ArrowRight size={17}/></>}
           </button>
-          <p style={{ color:T.dim, fontSize:11.5, textAlign:"center", marginTop:6 }}>
+          <p style={{ color:T.dim, fontSize:11.5, textAlign:"center", marginTop:6, whiteSpace:"nowrap" }}>
             Your portrait will be saved to your gallery — no spam, unsubscribe anytime.
           </p>
           <button onClick={() => onDone(donePortraits)}
