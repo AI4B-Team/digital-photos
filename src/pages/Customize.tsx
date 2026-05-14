@@ -624,9 +624,18 @@ export default function Customize() {
   const [cardFrame, setCardFrame]               = useState("black");
   const [mountColor, setMountColor]             = useState("snow-white");
   const [glazeType,  setGlazeType]              = useState<"perspex"|"moth-eye">("perspex");
-  // Name overlay
+  // Name overlay — pre-fill from homepage `heroName`, default to "top" when present
   const [portraitName,    setPortraitName]    = useState((session as any)?.heroName || "");
-  const [namePosition,    setNamePosition]    = useState<"none"|"top"|"bottom">("none");
+  const [namePosition,    setNamePosition]    = useState<"none"|"top"|"bottom">(
+    ((session as any)?.heroName ? "top" : "none")
+  );
+
+  // Keep panel in sync if homepage `heroName` arrives/changes after mount
+  useEffect(() => {
+    const hn = ((session as any)?.heroName || "").trim();
+    setPortraitName(prev => (prev ? prev : hn));
+    setNamePosition(prev => (hn && prev === "none" ? "top" : prev));
+  }, [(session as any)?.heroName]);
   const [nameFontId,      setNameFontId]      = useState("bold");
   const [nameColorId,     setNameColorId]     = useState("white");
   const [nameCompositing, setNameCompositing] = useState(false);
