@@ -1095,7 +1095,8 @@ function HomePage({ onGenerate }) {
                   }}/>
               </div>
 
-              {/* ── NAME (Optional) ── */}
+              {/* ── NAME (Optional) — only after photo uploaded ── */}
+              {photo && (
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
                   textTransform:"uppercase", fontWeight:500, marginBottom:8 }}>
