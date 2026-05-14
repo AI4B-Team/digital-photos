@@ -1912,7 +1912,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
               {tmplCards.map(card => {
                 const isSelected = selected?.type === "template" && selected?.id === card.id;
                 return (
-                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected}
+                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
                     onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
                     onConfirm={handleConfirm}/>
                 );
