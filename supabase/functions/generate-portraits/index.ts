@@ -118,9 +118,7 @@ serve(async (req) => {
       const perVariantPrompt = (Array.isArray(templatePrompts) && templatePrompts[idx]) || templatePrompt;
 
       // Use pro image model for couples (better two-face identity preservation)
-      const modelName = category === "couples"
-        ? "google/gemini-3-pro-image-preview"
-        : "google/gemini-3.1-flash-image-preview";
+      const modelName = "google/gemini-3.1-flash-image-preview";
 
       try {
         const response = await fetch(
