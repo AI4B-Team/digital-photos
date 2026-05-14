@@ -140,28 +140,29 @@ const FRAMES = [
 ];
 
 // Legacy size fallback — Prodigi-accurate sizes only, all prices end in 7
+// Legacy fallback — all Prodigi-accurate sizes, all prices end in 7 (RETAIL prices)
 const SIZES = [
-  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",    price: 27,  w: 1,    h: 1    },
-  { id: '8" x 10"',  label: '8 × 10',  sub: "Classic",   price: 37,  w: 0.80, h: 1    },
-  { id: '10" x 8"',  label: '10 × 8',  sub: "Classic",   price: 37,  w: 1,    h: 0.80 },
-  { id: '8" x 11"',  label: '8 × 11',  sub: "Portrait",  price: 37,  w: 0.73, h: 1    },
-  { id: '11" x 8"',  label: '11 × 8',  sub: "Landscape", price: 37,  w: 1,    h: 0.73 },
-  { id: '10" x 10"', label: '10 × 10', sub: "Square",    price: 37,  w: 1,    h: 1    },
-  { id: '11" x 14"', label: '11 × 14', sub: "Standard",  price: 47,  w: 0.79, h: 1    },
-  { id: '14" x 11"', label: '14 × 11', sub: "Standard",  price: 47,  w: 1,    h: 0.79 },
-  { id: '12" x 12"', label: '12 × 12', sub: "Square",    price: 47,  w: 1,    h: 1    },
-  { id: '12" x 16"', label: '12 × 16', sub: "Portrait",  price: 57,  w: 0.75, h: 1    },
-  { id: '16" x 12"', label: '16 × 12', sub: "Landscape", price: 57,  w: 1,    h: 0.75 },
-  { id: '16" x 20"', label: '16 × 20', sub: "Large",     price: 77,  w: 0.80, h: 1    },
-  { id: '20" x 16"', label: '20 × 16', sub: "Large",     price: 77,  w: 1,    h: 0.80 },
-  { id: '16" x 16"', label: '16 × 16', sub: "Square",    price: 77,  w: 1,    h: 1    },
-  { id: '20" x 20"', label: '20 × 20', sub: "Statement", price: 97,  w: 1,    h: 1    },
-  { id: '18" x 24"', label: '18 × 24', sub: "XL",        price: 107, w: 0.75, h: 1    },
-  { id: '24" x 18"', label: '24 × 18', sub: "XL",        price: 107, w: 1,    h: 0.75 },
-  { id: '20" x 24"', label: '20 × 24', sub: "Statement", price: 117, w: 0.83, h: 1    },
-  { id: '24" x 20"', label: '24 × 20', sub: "Statement", price: 117, w: 1,    h: 0.83 },
-  { id: '24" x 36"', label: '24 × 36', sub: "Grand",     price: 147, w: 0.67, h: 1    },
-  { id: '36" x 24"', label: '36 × 24', sub: "Grand",     price: 147, w: 1,    h: 0.67 },
+  { id: '8" x 8"',   label: '8 × 8',   sub: "Square",    price: 57,  w: 1,    h: 1    },
+  { id: '8" x 10"',  label: '8 × 10',  sub: "Classic",   price: 77,  w: 0.80, h: 1    },
+  { id: '10" x 8"',  label: '10 × 8',  sub: "Classic",   price: 77,  w: 1,    h: 0.80 },
+  { id: '8" x 11"',  label: '8 × 11',  sub: "Portrait",  price: 77,  w: 0.73, h: 1    },
+  { id: '11" x 8"',  label: '11 × 8',  sub: "Landscape", price: 77,  w: 1,    h: 0.73 },
+  { id: '10" x 10"', label: '10 × 10', sub: "Square",    price: 77,  w: 1,    h: 1    },
+  { id: '11" x 14"', label: '11 × 14', sub: "Standard",  price: 87,  w: 0.79, h: 1    },
+  { id: '14" x 11"', label: '14 × 11', sub: "Standard",  price: 87,  w: 1,    h: 0.79 },
+  { id: '12" x 12"', label: '12 × 12', sub: "Square",    price: 87,  w: 1,    h: 1    },
+  { id: '12" x 16"', label: '12 × 16', sub: "Portrait",  price: 97,  w: 0.75, h: 1    },
+  { id: '16" x 12"', label: '16 × 12', sub: "Landscape", price: 97,  w: 1,    h: 0.75 },
+  { id: '16" x 20"', label: '16 × 20', sub: "Large",     price: 117, w: 0.80, h: 1    },
+  { id: '20" x 16"', label: '20 × 16', sub: "Large",     price: 117, w: 1,    h: 0.80 },
+  { id: '16" x 16"', label: '16 × 16', sub: "Square",    price: 117, w: 1,    h: 1    },
+  { id: '20" x 20"', label: '20 × 20', sub: "Statement", price: 137, w: 1,    h: 1    },
+  { id: '18" x 24"', label: '18 × 24', sub: "XL",        price: 137, w: 0.75, h: 1    },
+  { id: '24" x 18"', label: '24 × 18', sub: "XL",        price: 137, w: 1,    h: 0.75 },
+  { id: '20" x 24"', label: '20 × 24', sub: "Statement", price: 157, w: 0.83, h: 1    },
+  { id: '24" x 20"', label: '24 × 20', sub: "Statement", price: 157, w: 1,    h: 0.83 },
+  { id: '24" x 36"', label: '24 × 36', sub: "Grand",     price: 187, w: 0.67, h: 1    },
+  { id: '36" x 24"', label: '36 × 24', sub: "Grand",     price: 187, w: 1,    h: 0.67 },
 ];
 
 
@@ -204,7 +205,7 @@ const BORDER_COLORS = [
 
 /* ── Prodigi product catalogue ── */
 const PRODUCT_TYPES = [
-  { id:"digital",       label:"Digital Only",     desc:"Hi-res download",              icon:ArrowDownToLine, price:27   },
+  { id:"digital",       label:"Digital Only",     desc:"Hi-res download",              icon:ArrowDownToLine, price:37   },
   { id:"print",         label:"Fine Art Print",   desc:"Ships rolled, frame yourself", icon:ImageIcon,       price:null },
   { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",    icon:Frame,           price:null },
   { id:"box-frame",     label:"Box Frame",        desc:"Shadow box · premium look",    icon:LayoutPanelTop,  price:null },
@@ -214,67 +215,67 @@ const PRODUCT_TYPES = [
 // Simplified S/M/L sizes per product (drives right-panel product cards)
 const SIMPLE_SIZES: Record<string, { id:string; pid:string; label:string; dim:string; sku:string; price:number; w:number; h:number; best?:boolean }[]> = {
   "print": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-FAP-8x10",  price:37,  w:0.80, h:1 },
-    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-FAP-12x16", price:57,  w:0.75, h:1, best:true },
-    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-FAP-24x36", price:147, w:0.67, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-FAP-8x10",  price:77,  w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-FAP-12x16", price:97,  w:0.75, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-FAP-24x36", price:187, w:0.67, h:1 },
   ],
   "canvas": [
-    { id:"sm", pid:"12x16", label:"Small",  dim:'12 × 16"', sku:"GLOBAL-CAN-12x16", price:97,  w:0.75, h:1 },
-    { id:"md", pid:"16x20", label:"Medium", dim:'16 × 20"', sku:"GLOBAL-CAN-16x20", price:117, w:0.80, h:1, best:true },
-    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-CAN-24x36", price:207, w:0.67, h:1 },
+    { id:"sm", pid:"12x16", label:"Small",  dim:'12 × 16"', sku:"GLOBAL-CAN-12x16", price:117, w:0.75, h:1 },
+    { id:"md", pid:"16x20", label:"Medium", dim:'16 × 20"', sku:"GLOBAL-CAN-16x20", price:137, w:0.80, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-CAN-24x36", price:227, w:0.67, h:1 },
   ],
   "classic-frame": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-CFPM-8x10",  price:77,  w:0.80, h:1 },
-    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-CFPM-12x16", price:117, w:0.75, h:1, best:true },
-    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-CFPM-18x24", price:177, w:0.75, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-CFPM-8x10",  price:97,  w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-CFPM-12x16", price:137, w:0.75, h:1, best:true },
+    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
   ],
   "box-frame": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-BOXM-8x10",  price:87,  w:0.80, h:1 },
-    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-BOXM-12x16", price:127, w:0.75, h:1, best:true },
-    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-BOXM-18x24", price:187, w:0.75, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-BOXM-8x10",  price:107, w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-BOXM-12x16", price:147, w:0.75, h:1, best:true },
+    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
   ],
 };
 
 const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sku:string; price:number; w:number; h:number }[]> = {
   print: [
-    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-FAP-8x8",   price:27,  w:1,    h:1 },
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-FAP-8x10",  price:37,  w:0.80, h:1 },
-    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-FAP-8x11",  price:37,  w:0.73, h:1 },
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-FAP-10x10", price:37,  w:1,    h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-FAP-11x14", price:47,  w:0.79, h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-FAP-12x12", price:47,  w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-FAP-12x16", price:57,  w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-FAP-16x20", price:77,  w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-FAP-18x24", price:97,  w:0.75, h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-FAP-20x24", price:117, w:0.83, h:1 },
-    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-FAP-24x36", price:147, w:0.67, h:1 },
+    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-FAP-8x8",   price:57,  w:1,    h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-FAP-8x10",  price:77,  w:0.80, h:1 },
+    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-FAP-8x11",  price:77,  w:0.73, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-FAP-10x10", price:77,  w:1,    h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-FAP-11x14", price:87,  w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-FAP-12x12", price:87,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-FAP-12x16", price:97,  w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-FAP-16x20", price:117, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-FAP-18x24", price:137, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-FAP-20x24", price:157, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-FAP-24x36", price:187, w:0.67, h:1 },
   ],
   "classic-frame": [
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CFPM-8x10",  price:77,  w:0.80, h:1 },
-    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-CFPM-8x11",  price:77,  w:0.73, h:1 },
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CFPM-10x10", price:77,  w:1,    h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-CFPM-11x14", price:97,  w:0.79, h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CFPM-12x12", price:97,  w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CFPM-12x16", price:117, w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CFPM-16x20", price:147, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CFPM-18x24", price:177, w:0.75, h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CFPM-20x24", price:197, w:0.83, h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CFPM-8x10",  price:97,  w:0.80, h:1 },
+    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-CFPM-8x11",  price:97,  w:0.73, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CFPM-10x10", price:97,  w:1,    h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-CFPM-11x14", price:117, w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CFPM-12x12", price:117, w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CFPM-12x16", price:137, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CFPM-16x20", price:167, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CFPM-20x24", price:217, w:0.83, h:1 },
   ],
   "box-frame": [
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-BOXM-8x10",  price:87,  w:0.80, h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-BOXM-11x14", price:107, w:0.79, h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-BOXM-12x16", price:127, w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-BOXM-16x20", price:157, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18x24", price:187, w:0.75, h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-BOXM-8x10",  price:107, w:0.80, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-BOXM-11x14", price:127, w:0.79, h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-BOXM-12x16", price:147, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-BOXM-16x20", price:177, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
   ],
   canvas: [
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10x10", price:67,  w:1,    h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12x12", price:77,  w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12x16", price:97,  w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16x20", price:117, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18x24", price:137, w:0.75, h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:157, w:0.83, h:1 },
-    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:207, w:0.67, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10x10", price:97,  w:1,    h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12x12", price:97,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12x16", price:117, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16x20", price:137, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18x24", price:157, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:177, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:227, w:0.67, h:1 },
   ],
 };
 
@@ -731,14 +732,15 @@ export default function Customize() {
   // Per-item price + bundle discount based on number of images
   const itemUnitPrice = (it) => {
     if (it.productType === "vip") return 17;
-    if (it.productType === "digital") return 27;
+    if (it.productType === "digital") return 37;
     const pt = it.productType || "classic-frame";
     const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
     const sd = sizes.find(s => s.id === it.size) || sizes[1];
     return sd?.price || 97;
   };
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
-  const itemListPrice = (it) => Math.round(itemUnitPrice(it) * 1.4) * (it.qty || 1); // MSRP for strikethrough
+  // Strikethrough = retail price (only shown when discount is active)
+  const itemListPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
   // Cart-derived totals (only what the user actually added to the cart)
   const cartPrintsSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
@@ -1663,13 +1665,14 @@ export default function Customize() {
               const defaultSize = bestPid || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
               const selSize  = cardSize[card.id] || defaultSize;
               const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[0];
-              const basePrice = card.id === "digital" ? 27 : (cardSizeDef?.price || 0);
+              const basePrice = card.id === "digital" ? 37 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
               const cardDiscount = Math.min(discountAmt, basePrice + frameAdd);
               const price    = basePrice + frameAdd - cardDiscount;
-              const origPrice = discountAmt > 0 ? basePrice + discountAmt : Math.round(basePrice * 1.4);
-              const digitalOrig = discountAmt > 0 ? 27 + discountAmt : Math.round(27 * 1.4);
-              const digitalPrice = Math.max(0, 27 - discountAmt);
+              // origPrice = retail (the crossed-out price when discount is active)
+              const origPrice = basePrice;   // basePrice IS the retail in SIMPLE_SIZES
+              const digitalOrig = 37;        // digital retail
+              const digitalPrice = Math.max(0, 37 - discountAmt);
 
               return (
                 <div key={card.id} style={{
@@ -1706,9 +1709,11 @@ export default function Customize() {
                       {!isActive && (
                         <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:1 }}>
                           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-                            <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                              ${card.id==="digital"?digitalOrig:origPrice}
-                            </span>
+                            {discountAmt > 0 && (
+                              <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
+                                ${card.id==="digital"?digitalOrig:origPrice}
+                              </span>
+                            )}
                             <span style={{ fontSize:15, fontWeight:800, color:RED,
                               fontFamily:"'Poppins',sans-serif" }}>
                               ${card.id==="digital"?digitalPrice:price}
@@ -1745,7 +1750,7 @@ export default function Customize() {
                           const unitPrice = itemUnitPrice(it);
                           const qty = it.qty || 1;
                           const lineP = unitPrice * qty;
-                          const listP = Math.round(unitPrice * 1.4) * qty;
+                          const listP = unitPrice * qty; // retail, used as strikethrough in cart
                           const isSel = it.id === selectedId;
                           return (
                             <div key={it.id} onClick={() => setSelectedId(it.id)} style={{
@@ -1872,10 +1877,12 @@ export default function Customize() {
                                 </div>
                                 <div style={{ fontSize:11.5, fontWeight:700, color:INK, whiteSpace:"nowrap" }}>{sz.dim}</div>
                                 <div style={{ fontSize:10, color:MUTED, marginTop:1, whiteSpace:"nowrap" }}>{sz.label}</div>
-                                <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
-                                  ${Math.round(sz.price*1.4)}
-                                </div>
-                                <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>${sz.price}</div>
+                                {discountAmt > 0 && (
+                                  <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
+                                    ${sz.price}
+                                  </div>
+                                )}
+                                <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>${Math.max(0, sz.price - discountAmt)}</div>
                               </button>
                             );})}
                           </div>
