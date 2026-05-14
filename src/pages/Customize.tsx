@@ -1597,6 +1597,60 @@ export default function Customize() {
             </button>
           ) : (
           <>
+          {/* ── Variants ── */}
+          {(session.generatedPortraits?.length || 0) > 1 && (
+            <div className="cz-section">
+              <div className="cz-label"><span>Variants</span><span className="cz-value">{session.generatedPortraits.length} styles</span></div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:10 }}>
+                {session.generatedPortraits.map((p, idx) => {
+                  const active = selected.photoUrl === p.url;
+                  const inCart = cartItems.some(ci => ci.photoUrl === p.url);
+                  return (
+                    <div key={p.url + idx} style={{ display:"flex", flexDirection:"column", gap:4, alignItems:"center" }}>
+                      <button
+                        onClick={() => updateSelected({ photoUrl: p.url, style: p.style, photoAspect: undefined, offsetX: 0, offsetY: 0 })}
+                        title={p.style}
+                        style={{
+                          width:"100%", aspectRatio:"1 / 1", padding:0, borderRadius:8, overflow:"hidden",
+                          border: active ? `2px solid ${RED}` : `1px solid ${BORDER}`,
+                          background:"#fff", cursor:"pointer",
+                        }}
+                      >
+                        <img src={p.url} alt={p.style}
+                          style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const snapshot = {
+                            ...selected,
+                            photoUrl: p.url,
+                            style: p.style,
+                            photoAspect: undefined,
+                            offsetX: 0,
+                            offsetY: 0,
+                            qty: 1,
+                          };
+                          addToCart(snapshot, 1);
+                        }}
+                        title={inCart ? "Already in cart — add another" : "Add this variant to cart"}
+                        style={{
+                          width:"100%", padding:"5px 0", borderRadius:6,
+                          border:"none", cursor:"pointer",
+                          background: inCart ? "#16a34a" : RED, color:"#fff",
+                          fontSize:10.5, fontWeight:700, fontFamily:"'Poppins',sans-serif",
+                          display:"flex", alignItems:"center", justifyContent:"center", gap:3,
+                        }}
+                      >
+                        {inCart ? <><Check size={10}/> Added</> : <><Plus size={10}/> Cart</>}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* ── Name / Text Overlay ── */}
           <div className="cz-section">
             <div className="cz-label">
