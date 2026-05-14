@@ -337,6 +337,8 @@ const NAME_COLORS = [
   { id:"black", label:"Black", hex:"#0A0A0A" },
   { id:"gold",  label:"Gold",  hex:"#C4963A" },
 ] as const;
+
+const toFrameId = (productType:string, frameColor:string): string => {
   if (productType === "digital" || productType === "print") return "frameless";
   if (productType === "canvas") return "canvas";
   if (productType === "box-frame") return frameColor === "white" ? "wide-white" : "wide-black";
