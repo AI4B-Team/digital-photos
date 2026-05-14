@@ -914,20 +914,6 @@ function HomePage({ onGenerate }) {
               display:"flex", flexDirection:"column", flex:1, position:"relative" }}>
               <LiveTeaser activeCat={cat} onCatClick={setCat}/>
 
-              {/* Floating star badge */}
-              <div style={{
-                position:"absolute", top:14, left:14, zIndex:10,
-                background:"rgba(255,255,255,0.94)", backdropFilter:"blur(8px)",
-                borderRadius:999, padding:"7px 13px",
-                display:"flex", alignItems:"center", gap:7,
-                boxShadow:"0 2px 14px rgba(0,0,0,0.14)", pointerEvents:"none",
-              }}>
-                <span style={{ fontSize:13, lineHeight:1, color:"#F5A623" }}>★★★★★</span>
-                <span style={{ fontSize:12.5, fontWeight:700, color:"#0A0A0A",
-                  fontFamily:"'Poppins',sans-serif" }}>4.9 / 5</span>
-                <span style={{ fontSize:11, color:"#8C8C8C",
-                  borderLeft:"1px solid #E0E0E0", paddingLeft:8 }}>3,200+ Portraits</span>
-              </div>
 
               {/* Floating cycling review quote */}
               <div style={{
