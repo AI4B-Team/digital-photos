@@ -1737,7 +1737,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
     (async () => {
       try {
         const { data, error: fnError } = await supabase.functions.invoke("generate-portraits", {
-          body: { sessionId, photoUrl, styles: selectedStyles, category, templatePrompt: templatePrompt || "", templatePrompts: templatePrompts || [], styleRefUrl: styleRefUrl || "" },
+          body: { sessionId, photoUrl, extraPhotoUrls, styles: selectedStyles, category, templatePrompt: templatePrompt || "", templatePrompts: templatePrompts || [], styleRefUrl: styleRefUrl || "" },
         });
 
         clearInterval(iv);
