@@ -106,7 +106,7 @@ serve(async (req) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              model: "google/gemini-3.1-flash-image-preview",
+              model: "google/gemini-3-pro-image-preview",
               messages: [
                 {
                   role: "user",
@@ -114,7 +114,7 @@ serve(async (req) => {
                     {
                       type: "text",
                       text: styleRefDataUrl
-                        ? `You are given TWO images in this exact order:\n1) STYLE REFERENCE / PHOTO TEMPLATE — first image. Copy its visual style as faithfully as possible: medium, brushwork, texture, color palette, contrast, lighting direction, mood, background treatment, composition, framing, costume/scene language, and overall finish.\n2) SUBJECT PHOTO — second image. Use ONLY this image for the subject identity and likeness (face, features, fur/skin tones, markings, expression).\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nCreate one polished portrait of the SUBJECT from image 2, transformed to look like it belongs in image 1. Treat image 1 as the style target, not just inspiration. Preserve the template's same art technique, same color grading, same lighting, same crop/framing feel, same background style, and same level of detail. Do not copy the reference subject's identity; replace only the subject with the uploaded subject.`
+                        ? `TASK: Style transfer. Recreate IMAGE 2 (subject) in the EXACT visual style of IMAGE 1 (style template).\n\nIMAGE 1 = STYLE TEMPLATE. This is the visual target. Replicate it 1:1 in every visual aspect:\n- Exact same artistic medium (oil painting / watercolor / digital / photo / etc.)\n- Exact same brushwork, texture, and rendering technique\n- Exact same color palette, color grading, and tonal range\n- Exact same lighting direction, intensity, shadows, and highlights\n- Exact same composition, framing, crop, pose orientation, and camera angle\n- Exact same background, setting, props, costume, accessories, and decorative elements\n- Exact same mood, atmosphere, and overall finish quality\nThink of IMAGE 1 as a costume + scene + art-style preset. The output must look like it was made by the same artist in the same series.\n\nIMAGE 2 = SUBJECT SOURCE. Use ONLY for identity: face/head shape, features, fur pattern, markings, eye color, expression, species/breed. Do NOT copy IMAGE 2's background, lighting, color, framing, or art style.\n\n${categoryContext}${templatePrompt ? `\n\nTemplate intent: ${templatePrompt}` : ""}\n\nOutput: ONE finished portrait. Subject identity from IMAGE 2, everything else from IMAGE 1. Do not blend the two styles — fully adopt IMAGE 1's style. Do not include the original IMAGE 2 photo aesthetic (no snapshot look, no original background). Replace the subject in IMAGE 1 with the subject from IMAGE 2 while preserving IMAGE 1's exact pose, costume, scene, and rendering.`
                         : `${prompt}\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
                     },
                     ...(styleRefDataUrl ? [{ type: "image_url", image_url: { url: styleRefDataUrl } }] : []),
