@@ -1362,15 +1362,7 @@ function HomePage({ onGenerate }) {
         </div>
       </div>
 
-      {/* ■■ Press ■■ */}
-      <section style={{ padding:"36px 32px", background:T.bg, borderBottom:`1px solid ${T.border}` }}>
-        <div style={{ maxWidth:1000, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"center", flexWrap:"wrap", gap:"8px 36px" }}>
-          <span style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.dim, fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>As Featured In</span>
-          {["CNN","BuzzFeed","People","Good Housekeeping","Apartment Therapy","Today Show"].map(name => (
-            <span key={name} style={{ fontSize:16, fontWeight:800, letterSpacing:"-.02em", color:T.dim, fontStyle:"italic", fontFamily:"'Poppins',sans-serif" }}>{name}</span>
-          ))}
-        </div>
-      </section>
+
 
       {/* ■■ How It Works ■■ */}
       <section style={{ padding:"80px 32px", background:T.bg }}>
