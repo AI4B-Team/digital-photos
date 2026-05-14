@@ -2130,6 +2130,7 @@ export default function App() {
                                     photoUrl={localSession.photoUrl || localSession.photo}
                                     category={localSession.cat}
                                     templatePrompt={localSession.templatePrompt}
+                                    templatePrompts={localSession.templatePrompts}
                                     styleRefUrl={localSession.styleRefUrl}
                                     onDone={handleGenDone}/>}
     </>
