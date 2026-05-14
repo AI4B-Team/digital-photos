@@ -1042,13 +1042,24 @@ export default function Customize() {
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : actualWood),
             padding: (isFrameless ? 6 : woodPad + 6),
             borderRadius: isFrameless ? 12 : 6,
-            boxShadow: "none",
+            // 3D wall-hung effect: ambient + cast shadow + subtle inner bevel
+            boxShadow: isFrameless
+              ? "0 12px 28px -8px rgba(0,0,0,.18), 0 4px 10px -2px rgba(0,0,0,.10)"
+              : `
+                inset 0 1px 0 rgba(255,255,255,.35),
+                inset 0 -2px 4px rgba(0,0,0,.25),
+                0 1px 2px rgba(0,0,0,.18),
+                0 18px 32px -10px rgba(0,0,0,.45),
+                0 36px 60px -20px rgba(0,0,0,.35)
+              `,
+            transform: "perspective(1400px) rotateX(2deg)",
+            transformOrigin: "center top",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
             maxWidth: "100%",
             border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
-            transition: "border-color .2s ease",
+            transition: "border-color .2s ease, transform .3s ease, box-shadow .3s ease",
           }}>
             <div style={{
               background: bd.px === 0 ? "transparent" : bcd.bg,
