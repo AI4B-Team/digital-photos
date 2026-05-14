@@ -66,6 +66,9 @@ serve(async (req) => {
     let styleRefDataUrl = "";
     if (styleRefUrl) {
       try {
+        if (typeof styleRefUrl === "string" && styleRefUrl.startsWith("data:image/")) {
+          styleRefDataUrl = styleRefUrl;
+        } else {
         const refRes = await fetch(styleRefUrl);
         if (refRes.ok) {
           const ct = refRes.headers.get("content-type") || "image/jpeg";
@@ -79,6 +82,7 @@ serve(async (req) => {
           }
         } else {
           console.warn("Failed to fetch style ref:", refRes.status);
+        }
         }
       } catch (e) {
         console.warn("Style ref fetch error:", e);
@@ -102,7 +106,7 @@ serve(async (req) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              model: "google/gemini-2.5-flash-image",
+              model: "google/gemini-3.1-flash-image-preview",
               messages: [
                 {
                   role: "user",
@@ -110,7 +114,7 @@ serve(async (req) => {
                     {
                       type: "text",
                       text: styleRefDataUrl
-                        ? `You are given TWO images:\n1) STYLE REFERENCE — the first image. Replicate its EXACT artistic style: medium, brushwork, color palette, lighting, mood, composition, framing, background treatment, and overall aesthetic.\n2) SUBJECT PHOTO — the second image. Use ONLY this image for the subject's identity and likeness (face, features, fur/skin tones, distinguishing marks).\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nProduce a single high-quality portrait of the SUBJECT rendered in the EXACT style of the STYLE REFERENCE. Do not blend the subject from the reference image — keep the subject strictly from the second photo. Match the reference style as closely as possible: same artistic technique, same color grading, same lighting, same background style, same composition feel. Output one polished portrait artwork.`
+                        ? `You are given TWO images in this exact order:\n1) STYLE REFERENCE / PHOTO TEMPLATE — first image. Copy its visual style as faithfully as possible: medium, brushwork, texture, color palette, contrast, lighting direction, mood, background treatment, composition, framing, costume/scene language, and overall finish.\n2) SUBJECT PHOTO — second image. Use ONLY this image for the subject identity and likeness (face, features, fur/skin tones, markings, expression).\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nCreate one polished portrait of the SUBJECT from image 2, transformed to look like it belongs in image 1. Treat image 1 as the style target, not just inspiration. Preserve the template's same art technique, same color grading, same lighting, same crop/framing feel, same background style, and same level of detail. Do not copy the reference subject's identity; replace only the subject with the uploaded subject.`
                         : `${prompt}\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
                     },
                     ...(styleRefDataUrl ? [{ type: "image_url", image_url: { url: styleRefDataUrl } }] : []),
