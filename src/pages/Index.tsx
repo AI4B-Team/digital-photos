@@ -975,22 +975,29 @@ function CheckRow({ label, gold }) {
 ═══════════════════════════════════════════════════════════ */
 function LiveTeaser({ activeCat, onCatClick }) {
   const [idx, setIdx] = useState(0);
-  const [fading, setFading] = useState(false);
+
+  // Preload all teaser images once so transitions don't flash while loading
+  useEffect(() => {
+    TEASERS.forEach(t => {
+      const a = new Image(); a.src = t.before;
+      const variants = t.portraits || [{ url: t.portrait }];
+      variants.forEach(v => { const b = new Image(); b.src = v.url; });
+    });
+  }, []);
 
   // When user picks a category, jump to matching teaser
   useEffect(() => {
     if (!activeCat) return;
     const match = TEASERS.findIndex(t => t.catId === activeCat);
-    if (match >= 0 && match !== idx) { setFading(true); setTimeout(() => { setIdx(match); setFading(false); }, 260); }
-  }, [activeCat]);
+    if (match >= 0 && match !== idx) setIdx(match);
+  }, [activeCat]); // eslint-disable-line
 
   // Auto-rotate when no category selected
   useEffect(() => {
     if (activeCat) return;
     const iv = setInterval(() => {
-      setFading(true);
-      setTimeout(() => { setIdx(p => (p+1) % TEASERS.length); setFading(false); }, 260);
-    }, 3200);
+      setIdx(p => (p + 1) % TEASERS.length);
+    }, 3600);
     return () => clearInterval(iv);
   }, [activeCat]);
 
