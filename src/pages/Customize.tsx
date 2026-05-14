@@ -1050,23 +1050,19 @@ export default function Customize() {
               ? "#fff"
               : isFrameless
                 ? "transparent"
-                // Subtle gradient on the frame moulding so its edges/profile read as 3D
-                : `linear-gradient(135deg,
-                    color-mix(in srgb, ${actualWood} 80%, white) 0%,
-                    ${actualWood} 35%,
-                    ${actualWood} 65%,
-                    color-mix(in srgb, ${actualWood} 70%, black) 100%)`,
+                // Solid frame face with subtle edge vignette (frame moulding, not gradient bg)
+                : `
+                    radial-gradient(ellipse at center, ${actualWood} 60%, color-mix(in srgb, ${actualWood} 85%, black) 100%),
+                    ${actualWood}
+                  `,
             padding: (isFrameless ? 6 : woodPad + 6),
             borderRadius: isFrameless ? 12 : 2,
             boxShadow: isFrameless
               ? "30px 40px 70px -10px rgba(0,0,0,.35), 10px 16px 30px -4px rgba(0,0,0,.22)"
               : `
-                /* Inner shadow on top + left = picture sits recessed inside frame */
-                inset 6px 6px 10px -2px rgba(0,0,0,.55),
-                inset -2px -2px 4px -1px rgba(255,255,255,.18),
-                /* Hairline edge */
-                0 0 0 1px rgba(0,0,0,.25),
-                /* Cast shadow on the wall — bottom-right, very soft */
+                /* Outer hairline */
+                0 0 0 1px rgba(0,0,0,.30),
+                /* Cast shadow on the wall — bottom-right */
                 30px 40px 70px -12px rgba(0,0,0,.40),
                 15px 22px 40px -8px rgba(0,0,0,.28),
                 6px 10px 18px -4px rgba(0,0,0,.18)
@@ -1084,7 +1080,13 @@ export default function Customize() {
               background: bd.px === 0 ? "transparent" : bcd.bg,
               padding: bd.px,
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "none",
+              // Sharp inner rabbet — the picture sits recessed INSIDE the frame
+              boxShadow: isFrameless ? "none" : `
+                0 0 0 1px rgba(0,0,0,.55),
+                inset 0 2px 6px rgba(0,0,0,.45),
+                inset 2px 0 4px rgba(0,0,0,.30),
+                inset 0 -1px 2px rgba(255,255,255,.08)
+              `,
             }}>
               {(() => {
                 const isDraggingThis = draggingId === item.id;
