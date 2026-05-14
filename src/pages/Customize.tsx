@@ -1044,13 +1044,14 @@ export default function Customize() {
             borderRadius: isFrameless ? 12 : 2,
             // Clean wall-hung effect — soft directional shadow, light from top-left
             boxShadow: isFrameless
-              ? "20px 28px 50px -10px rgba(0,0,0,.28), 6px 10px 20px -4px rgba(0,0,0,.18)"
+              ? "30px 40px 70px -10px rgba(0,0,0,.35), 10px 16px 30px -4px rgba(0,0,0,.22)"
               : `
-                0 0 0 1px rgba(0,0,0,.06),
-                24px 32px 60px -12px rgba(0,0,0,.35),
-                10px 14px 28px -6px rgba(0,0,0,.22),
-                4px 6px 12px -2px rgba(0,0,0,.15)
+                0 0 0 1px rgba(0,0,0,.08),
+                40px 50px 90px -15px rgba(0,0,0,.45),
+                20px 28px 50px -10px rgba(0,0,0,.30),
+                8px 12px 20px -4px rgba(0,0,0,.20)
               `,
+            filter: "drop-shadow(20px 30px 25px rgba(0,0,0,.18))",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
