@@ -1594,7 +1594,7 @@ function HomePage({ onGenerate }) {
 /* ═══════════════════════════════════════════════════════════
    GENERATING SCREEN — Real AI generation
 ═══════════════════════════════════════════════════════════ */
-function GenScreen({ selectedStyles, sessionId, photoUrl, category, templatePrompt, onDone }) {
+function GenScreen({ selectedStyles, sessionId, photoUrl, category, templatePrompt, styleRefUrl, onDone }) {
   const [pct,  setPct]  = useState(0);
   const [msg,  setMsg]  = useState(0);
   const [done, setDone] = useState([]);
@@ -1630,7 +1630,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
     (async () => {
       try {
         const { data, error: fnError } = await supabase.functions.invoke("generate-portraits", {
-          body: { sessionId, photoUrl, styles: selectedStyles, category, templatePrompt: templatePrompt || "" },
+          body: { sessionId, photoUrl, styles: selectedStyles, category, templatePrompt: templatePrompt || "", styleRefUrl: styleRefUrl || "" },
         });
 
         clearInterval(iv);
@@ -1856,13 +1856,20 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     img: t.img,
   }));
 
+  const toAbsUrl = (u?: string) => {
+    if (!u) return "";
+    try { return new URL(u, window.location.origin).href; } catch { return u; }
+  };
+
   const handleConfirm = () => {
     if (!selected) return;
     if (selected.type === "style") {
-      onConfirm({ styles: [selected.id], templatePrompt: "" });
+      const card = baseCards.find(c => c.id === selected.id);
+      onConfirm({ styles: [selected.id], templatePrompt: "", styleRefUrl: toAbsUrl(card?.img) });
     } else {
       const tmpl = templates.find(t => t.id === selected.id);
-      onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "" });
+      const card = tmplCards.find(c => c.id === selected.id);
+      onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "", styleRefUrl: toAbsUrl(card?.img) });
     }
   };
 
@@ -1948,7 +1955,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                       isSelected={isSelected}
                       originalPhoto={photo}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
-                      onConfirm={() => onConfirm({ styles:["royal"], templatePrompt: t.prompt })}/>
+                      onConfirm={() => onConfirm({ styles:["royal"], templatePrompt: t.prompt, styleRefUrl: toAbsUrl(t.img) })}/>
                   );
                 })}
               </div>
@@ -2029,7 +2036,7 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto }) {
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", styleRefUrl:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
@@ -2042,8 +2049,8 @@ export default function App() {
   }, [setSession]);
 
   // Step 2: user picks style → create session, then generate
-  const handleStyleSelected = useCallback(async ({ styles, templatePrompt }) => {
-    setLocal(prev => ({ ...prev, styles, templatePrompt }));
+  const handleStyleSelected = useCallback(async ({ styles, templatePrompt, styleRefUrl }) => {
+    setLocal(prev => ({ ...prev, styles, templatePrompt, styleRefUrl: styleRefUrl || "" }));
     setSession({ styles, heroName: localSession.heroName } as any);
     let sessionId = null;
     try {
@@ -2079,6 +2086,7 @@ export default function App() {
                                     photoUrl={localSession.photoUrl || localSession.photo}
                                     category={localSession.cat}
                                     templatePrompt={localSession.templatePrompt}
+                                    styleRefUrl={localSession.styleRefUrl}
                                     onDone={handleGenDone}/>}
     </>
   );
