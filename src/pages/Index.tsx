@@ -2041,9 +2041,9 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
 
       {/* Art Styles header */}
       {baseCards.length > 0 && (
-        <div style={{ maxWidth:1200, margin:"0 auto", padding:"20px 6vw 8px" }}>
+        <div style={{ padding:"20px 24px 8px" }}>
           <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-            color:T.muted, fontWeight:600 }}>Art Styles</p>
+            color:T.muted, fontWeight:600, textAlign:"left", margin:0 }}>Art Styles</p>
         </div>
       )}
 
