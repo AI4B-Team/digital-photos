@@ -1661,10 +1661,10 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         <h1 style={{ fontSize:"clamp(24px,3.5vw,42px)", fontWeight:800,
             color:T.cream, marginBottom:10, lineHeight:1.15,
             fontFamily:"'Poppins',sans-serif" }}>
-          {heroName ? <>Choose An Art Style For <span style={{ color:T.gold }}>{heroName}</span></> : "Choose An Art Style"}
+          Choose An Art Style
         </h1>
         <p style={{ fontSize:13, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
-          Select one style to generate your free preview — takes about 30 seconds.
+          Select One Style To Generate Your Free Preview — Takes About 30 Seconds.
         </p>
       </div>
 
