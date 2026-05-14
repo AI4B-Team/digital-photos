@@ -1676,7 +1676,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
           Your Portrait Is Ready!
         </h2>
         <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center" }}>
-          Where should we send it?
+          Where Should We Send It?
         </p>
         <div style={{ width:"100%", maxWidth:380, display:"flex", flexDirection:"column", gap:10 }}>
           <input
