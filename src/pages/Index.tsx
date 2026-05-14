@@ -1715,8 +1715,19 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
   return (
     <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
       alignItems:"center", justifyContent:"center", padding:"40px 20px" }}>
-      <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, color:T.cream, marginBottom:32, fontWeight:600 }}>
-        Real<span style={{ color:T.gold }}> Art</span><sup style={{ fontSize:8, color:T.dim }}>™</sup>
+      <div aria-label="Real Art" style={{
+        background:"#E61919", padding:7, width:140, marginBottom:32,
+      }}>
+        <div style={{ border:"2.5px solid #fff", padding:"6px 18px",
+          display:"flex", flexDirection:"column", alignItems:"center" }}>
+          <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:"2.1rem",
+            fontWeight:900, color:"#fff", letterSpacing:".05em",
+            lineHeight:1, textAlign:"center", display:"block" }}>REAL</span>
+          <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:".52rem",
+            fontWeight:700, letterSpacing:".3em", color:"#fff",
+            textTransform:"uppercase", textAlign:"center",
+            display:"block", marginTop:3 }}>ART</span>
+        </div>
       </div>
 
       {error ? (
