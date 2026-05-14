@@ -1700,7 +1700,7 @@ function HomePage({ onGenerate }) {
 /* ═══════════════════════════════════════════════════════════
    GENERATING SCREEN — Real AI generation
 ═══════════════════════════════════════════════════════════ */
-function GenScreen({ selectedStyles, sessionId, photoUrl, category, templatePrompt, templatePrompts, styleRefUrl, onDone }) {
+function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], category, templatePrompt, templatePrompts, styleRefUrl, onDone }) {
   const [pct,  setPct]  = useState(0);
   const [msg,  setMsg]  = useState(0);
   const [done, setDone] = useState([]);
@@ -1737,7 +1737,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
     (async () => {
       try {
         const { data, error: fnError } = await supabase.functions.invoke("generate-portraits", {
-          body: { sessionId, photoUrl, styles: selectedStyles, category, templatePrompt: templatePrompt || "", templatePrompts: templatePrompts || [], styleRefUrl: styleRefUrl || "" },
+          body: { sessionId, photoUrl, extraPhotoUrls, styles: selectedStyles, category, templatePrompt: templatePrompt || "", templatePrompts: templatePrompts || [], styleRefUrl: styleRefUrl || "" },
         });
 
         clearInterval(iv);
@@ -2280,6 +2280,7 @@ export default function App() {
       {screen==="gen"          && <GenScreen      selectedStyles={localSession.styles}
                                     sessionId={localSession.sessionId}
                                     photoUrl={localSession.photoUrl || localSession.photo}
+                                    extraPhotoUrls={localSession.extraPhotos || []}
                                     category={localSession.cat}
                                     templatePrompt={localSession.templatePrompt}
                                     templatePrompts={localSession.templatePrompts}
