@@ -108,6 +108,12 @@ import portraitGiftsStory from "@/assets/portrait-gifts-storybook.jpg";
 import portraitGiftsFan from "@/assets/portrait-gifts-fantasy.jpg";
 import portraitGiftsCine from "@/assets/portrait-gifts-cinematic.jpg";
 import portraitGiftsMin from "@/assets/portrait-gifts-minimal.jpg";
+import beforePets from "@/assets/before-pets.jpg";
+import beforeBabies from "@/assets/before-babies.jpg";
+import beforeCouples from "@/assets/before-couples.jpg";
+import beforePeople from "@/assets/before-people.jpg";
+import beforeMemorial from "@/assets/before-memorial.jpg";
+import beforeGifts from "@/assets/before-gifts.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
