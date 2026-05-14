@@ -763,7 +763,7 @@ const TEASERS = [
       { url:portraitCouplesCine,  style:"Cinematic" },
       { url:portraitCouplesMin,   style:"Minimal" },
     ] },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
+  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
     portraits:[
       { url:portraitPeopleRoyal, style:"Royal" },
       { url:portraitPeopleRen,   style:"Renaissance" },
