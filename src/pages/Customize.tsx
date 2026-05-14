@@ -1738,6 +1738,7 @@ export default function Customize() {
           gap:16,
           background:`radial-gradient(ellipse at 50% 30%, #FFFFFF 0%, ${BG} 70%)`,
           overflow:"hidden",
+          position:"relative",
         }}>
           <div style={{
             textAlign:"center", flexShrink:0, padding:"32px 0 8px",
@@ -1772,6 +1773,42 @@ export default function Customize() {
               onChange={handleFilePicked}
             />
           </div>
+
+          {/* Variant thumbnails — switch between generated portraits */}
+          {(session.generatedPortraits?.length || 0) > 1 && (
+            <div style={{
+              position:"absolute", left:16, bottom:16, zIndex:6,
+              display:"flex", flexDirection:"column", gap:8,
+              padding:10, borderRadius:12,
+              background:"rgba(255,255,255,.92)",
+              boxShadow:"0 6px 20px rgba(0,0,0,.12)",
+              border:"1px solid rgba(0,0,0,.08)",
+              maxHeight:"60vh", overflowY:"auto",
+            }}>
+              <div style={{ fontSize:10, letterSpacing:".18em", color:MUTED, fontWeight:600, textAlign:"center" }}>
+                VARIANTS
+              </div>
+              {session.generatedPortraits.map((p, idx) => {
+                const active = selected.photoUrl === p.url;
+                return (
+                  <button
+                    key={p.url + idx}
+                    onClick={() => updateSelected({ photoUrl: p.url, style: p.style, photoAspect: undefined, offsetX: 0, offsetY: 0 })}
+                    title={p.style}
+                    style={{
+                      width:64, height:64, padding:0, borderRadius:8, overflow:"hidden",
+                      border: active ? `2px solid ${RED}` : "2px solid transparent",
+                      background:"#fff", cursor:"pointer",
+                      boxShadow: active ? "0 0 0 2px rgba(0,0,0,.06)" : "none",
+                    }}
+                  >
+                    <img src={p.url} alt={p.style}
+                      style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Cart + pricing (right) */}
