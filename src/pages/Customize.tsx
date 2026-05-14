@@ -1610,7 +1610,7 @@ export default function Customize() {
           {/* ── Variants ── */}
           {(session.generatedPortraits?.length || 0) > 1 && (
             <div className="cz-section">
-              <div className="cz-label"><span>Variants</span><span className="cz-value">{session.generatedPortraits.length} styles</span></div>
+              <div className="cz-label"><span>Styles</span><span className="cz-value">{session.generatedPortraits.length} Styles</span></div>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:10 }}>
                 {session.generatedPortraits.map((p, idx) => {
                   const active = selected.photoUrl === p.url;
