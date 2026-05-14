@@ -1153,7 +1153,7 @@ export default function Customize() {
                       }}/>
                     )}
                     {itemBusy && (
-                      <div className="cz-busy" style={{ zIndex: 2 }}>
+                      <div className="cz-busy" style={{ zIndex: 10 }}>
                         <div className="cz-spinner" />
                         <div className="cz-busy-label">{busyLabel}</div>
                         <div className="cz-busy-sub">
