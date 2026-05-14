@@ -1346,22 +1346,6 @@ function HomePage({ onGenerate }) {
 
       </section>
 
-      {/* ■■ Trust Ticker ■■ */}
-      <div style={{ background:"#F9F7F4", borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}`, padding:"12px 0", overflow:"hidden", whiteSpace:"nowrap" }}>
-        <style>{`@keyframes ra-tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
-        <div style={{ display:"inline-flex", animation:"ra-tick 26s linear infinite" }}>
-          {[
-            "Free Worldwide Shipping","4.9 Stars · Thousands Of Portraits Created","100-Day Happiness Guarantee","Ships In 5–7 Business Days","Archival Pigment Inks","Museum-Grade Fine Art Paper",
-            "Free Worldwide Shipping","4.9 Stars · Thousands Of Portraits Created","100-Day Happiness Guarantee","Ships In 5–7 Business Days","Archival Pigment Inks","Museum-Grade Fine Art Paper",
-          ].map((t, i) => (
-            <span key={i} style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"0 28px", fontSize:11.5, letterSpacing:".1em", color:T.cream, textTransform:"uppercase", fontWeight:500, fontFamily:"'Poppins',sans-serif" }}>
-              <span style={{ width:5, height:5, borderRadius:"50%", background:T.gold, flexShrink:0, display:"inline-block" }}/>
-              {t}
-            </span>
-          ))}
-        </div>
-      </div>
-
 
 
       {/* ■■ How It Works ■■ */}
