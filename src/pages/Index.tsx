@@ -1191,14 +1191,21 @@ function HomePage({ onGenerate }) {
                   const tmplObj = selectedTemplate
                     ? (TEMPLATES[cat] || []).find(t => t.id === selectedTemplate)
                     : null;
-                  onGenerate({ cat, photo, styles, uploadedUrl, templatePrompt: tmplObj?.prompt || "" });
+                  onGenerate({ cat, photo, styles, uploadedUrl, templatePrompt: tmplObj?.prompt || "", heroName });
                 }}>
                 <Wand2 size={15}/>{genLabel()}
               </button>
 
-              <p style={{ textAlign:"center", fontSize:12, color:T.muted, marginTop:9, letterSpacing:".03em" }}>
-                No Subscription · Free Watermarked Preview Before Purchase
-              </p>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"center",
+                flexWrap:"wrap", gap:"4px 14px", marginTop:9 }}>
+                {["No Credit Card", "Preview In 30 Seconds", "Free Worldwide Shipping"].map((t, i) => (
+                  <span key={i} style={{ display:"flex", alignItems:"center",
+                    gap:4, fontSize:11.5, color:T.muted }}>
+                    <Check size={11} color="#16a34a" strokeWidth={3}/>
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
           </div>
