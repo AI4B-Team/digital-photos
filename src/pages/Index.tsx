@@ -826,15 +826,6 @@ const TEASERS = [
       { url:portraitMemorialCine,  style:"Cinematic" },
       { url:portraitMemorial,      style:"Minimal" },
     ] },
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:beforeGifts, after:sceneGifts,   portrait:portraitGifts,
-    portraits:[
-      { url:portraitGiftsRoyal, style:"Royal" },
-      { url:portraitGifts,      style:"Renaissance" },
-      { url:portraitGiftsStory, style:"Storybook" },
-      { url:portraitGiftsFan,   style:"Fantasy" },
-      { url:portraitGiftsCine,  style:"Cinematic" },
-      { url:portraitGiftsMin,   style:"Minimal" },
-    ] },
 ];
 
 const PLANS = [
