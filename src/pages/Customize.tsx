@@ -770,6 +770,8 @@ export default function Customize() {
       return photoUrl;
     }
   };
+
+  const applyPromo = () => {
     const code = promoCode.trim().toUpperCase();
     const p = PROMOS[code];
     if (!p) { setPromoError("That code isn't valid."); return; }
