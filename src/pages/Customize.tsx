@@ -1630,7 +1630,14 @@ export default function Customize() {
                 setPortraitName(e.target.value.slice(0, 20));
                 if (e.target.value && namePosition === "none") setNamePosition("bottom");
               }}
-              placeholder="e.g. BARLEY, MILO, SOPHIE"
+              placeholder={`e.g. ${({
+                pets:     "BARLEY, MILO, SOPHIE",
+                babies:   "OLIVIA, NOAH, EMMA",
+                couples:  "SARAH & JAMES, EMMA & LIAM",
+                people:   "THE SMITHS, JOHN, MARIA",
+                memorial: "IN LOVING MEMORY, GRANDMA ROSE",
+                gifts:    "MOM, DAD, BEST FRIEND",
+              } as Record<string,string>)[session.cat] || "BARLEY, MILO, SOPHIE"}`}
               maxLength={20}
               style={{
                 width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:10,
