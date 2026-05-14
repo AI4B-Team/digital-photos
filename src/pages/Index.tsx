@@ -642,12 +642,6 @@ function LiveTeaser({ activeCat, onCatClick }) {
           <img src={cur.before} alt="Your original photo"
             style={{ width:"100%", height:"100%", objectFit:"cover",
               opacity:fading?0:1, transition:"opacity .3s" }}/>
-          {/* "Your Photo" overlay label */}
-          <div style={{ position:"absolute", top:12, left:12,
-            fontSize:10, letterSpacing:".22em", textTransform:"uppercase", color:"#fff",
-            background:"rgba(7,6,10,.78)", padding:"6px 12px", borderRadius:6, fontWeight:600 }}>
-            Your Photo
-          </div>
         </div>
 
         {/* RIGHT: Generated portraits slideshow (one at a time) */}
