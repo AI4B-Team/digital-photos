@@ -745,6 +745,12 @@ function HomePage({ onGenerate }) {
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
+  const [heroName, setHeroName] = useState("");
+  const [quoteIdx, setQuoteIdx] = useState(0);
+  useEffect(() => {
+    const iv = setInterval(() => setQuoteIdx(p => (p + 1) % SOCIAL_PROOF.length), 4200);
+    return () => clearInterval(iv);
+  }, []);
   const err = uploadErr;
   const [scrolled,setScrolled]= useState(false);
   const [baX,     setBaX]     = useState(50);
