@@ -340,10 +340,10 @@ const NAME_FONTS = [
 ] as const;
 
 const NAME_SIZES = [
-  { id:"sm", label:"S", mult:0.045, css:"4.5%" },
-  { id:"md", label:"M", mult:0.065, css:"6.5%" },
-  { id:"lg", label:"L", mult:0.085, css:"8.5%" },
-  { id:"xl", label:"XL", mult:0.105, css:"10.5%" },
+  { id:"sm", label:"S", mult:0.045, css:"3.5cqw" },
+  { id:"md", label:"M", mult:0.065, css:"5cqw" },
+  { id:"lg", label:"L", mult:0.085, css:"6.8cqw" },
+  { id:"xl", label:"XL", mult:0.105, css:"8.5cqw" },
 ] as const;
 
 const NAME_COLORS = [
@@ -1151,7 +1151,7 @@ export default function Customize() {
                       />
                     )}
                     {/* Frame-clipped sharp image */}
-                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, outline: isDraggingThis ? "2px dashed rgba(255,255,255,.9)" : "none", outlineOffset: "-1px" }}>
+                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, outline: isDraggingThis ? "2px dashed rgba(255,255,255,.9)" : "none", outlineOffset: "-1px", containerType: "inline-size" } as React.CSSProperties}>
                       <img src={item.photoUrl} alt="Your portrait"
                         draggable={false}
                         onLoad={(e) => {
@@ -1172,14 +1172,14 @@ export default function Customize() {
                       {namePosition !== "none" && portraitName && (
                         <div style={{
                           position:"absolute", left:0, right:0, zIndex:3,
-                          top:    namePosition === "top"    ? "5%" : "auto",
-                          bottom: namePosition === "bottom" ? "5%" : "auto",
+                          top:    namePosition === "top"    ? "10%" : "auto",
+                          bottom: namePosition === "bottom" ? "10%" : "auto",
                           textAlign:"center", pointerEvents:"none",
                         }}>
                           <span style={{
                             display:"inline-block",
                             color: NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff",
-                            fontSize: `clamp(12px, ${NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "6.5%"}, 72px)`,
+                            fontSize: `clamp(11px, ${NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "5cqw"}, 96px)`,
                             fontFamily: nameFontId==="serif"
                               ? "Georgia,'Times New Roman',serif"
                               : "'Poppins',sans-serif",
