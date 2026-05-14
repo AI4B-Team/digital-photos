@@ -2011,7 +2011,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   );
 }
 
-function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto }) {
+function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confirming }) {
   return (
     <div onClick={onSelect}
       style={{
@@ -2057,14 +2057,16 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto }) {
           fontFamily:"'Poppins',sans-serif" }}>{card.desc}</p>
         {isSelected && (
           <button
-            onClick={e => { e.stopPropagation(); onConfirm(); }}
+            disabled={confirming}
+            onClick={e => { e.stopPropagation(); if (!confirming) onConfirm(); }}
             style={{ width:"100%", padding:"11px 0",
               background:T.gold, color:"#fff", border:"none",
-              borderRadius:10, cursor:"pointer", fontSize:13,
+              borderRadius:10, cursor:confirming ? "wait" : "pointer", fontSize:13,
+              opacity: confirming ? .72 : 1,
               fontWeight:700, fontFamily:"'Poppins',sans-serif",
               display:"flex", alignItems:"center",
               justifyContent:"center", gap:8 }}>
-            <Sparkles size={15}/> Generate Free Preview
+            <Sparkles size={15}/>{confirming ? "Preparing Reference..." : "Generate Free Preview"}
           </button>
         )}
       </div>
