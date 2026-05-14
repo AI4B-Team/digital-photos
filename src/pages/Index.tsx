@@ -1614,7 +1614,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
 
     let fakePct = 0;
     const iv = setInterval(() => {
-      fakePct = Math.min(fakePct + 0.3, 92);
+      fakePct = Math.min(fakePct + 1.4, 92);
       setPct(fakePct);
       setMsg(Math.min(Math.floor((fakePct/100) * GEN_MSGS.length), GEN_MSGS.length-1));
     }, 200);
