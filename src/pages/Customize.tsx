@@ -1571,7 +1571,7 @@ export default function Customize() {
       {/* Header */}
       <SiteHeader
         current="customize"
-        onBack={() => navigate(-1)}
+        onBack={() => navigate("/")}
         total={total}
         showPreviews
         onPreviews={() => setPreviewsOpen(true)}
