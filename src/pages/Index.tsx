@@ -754,7 +754,7 @@ const TEASERS = [
       { url:portraitBabiesCine,  style:"Cinematic" },
       { url:portraitBabiesMin,   style:"Minimal" },
     ] },
-  { cat:"Couples",  catId:"couples",  style:"Royal",       before:"https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=600&fit=crop&q=80", after:portraitCouplesRoyal, portrait:portraitCouplesRoyal,
+  { cat:"Couples",  catId:"couples",  style:"Royal",       before:"https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&h=600&fit=crop&q=80", after:portraitCouplesRoyal, portrait:portraitCouplesRoyal,
     portraits:[
       { url:portraitCouplesRoyal, style:"Royal" },
       { url:portraitCouplesRen,   style:"Renaissance" },
@@ -763,7 +763,7 @@ const TEASERS = [
       { url:portraitCouplesCine,  style:"Cinematic" },
       { url:portraitCouplesMin,   style:"Minimal" },
     ] },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
+  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
     portraits:[
       { url:portraitPeopleRoyal, style:"Royal" },
       { url:portraitPeopleRen,   style:"Renaissance" },
@@ -781,7 +781,7 @@ const TEASERS = [
       { url:portraitMemorialCine,  style:"Cinematic" },
       { url:portraitMemorial,      style:"Minimal" },
     ] },
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts,
+  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts,
     portraits:[
       { url:portraitGiftsRoyal, style:"Royal" },
       { url:portraitGifts,      style:"Renaissance" },
