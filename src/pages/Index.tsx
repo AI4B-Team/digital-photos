@@ -1125,6 +1125,7 @@ function HomePage({ onGenerate }) {
                   Add a personal touch — your subject's name printed on the portrait.
                 </p>
               </div>
+              )}
 
               {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
               {cat && photo && (
