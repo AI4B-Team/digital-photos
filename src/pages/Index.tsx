@@ -1663,7 +1663,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
             fontFamily:"'Poppins',sans-serif" }}>
           Choose An Art Style
         </h1>
-        <p style={{ fontSize:13, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
+        <p style={{ fontSize:17, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
           Select One Style To Generate Your Free Preview — Takes About 30 Seconds.
         </p>
       </div>
