@@ -1706,6 +1706,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
   const [email, setEmail] = useState("");
   const [emailBusy, setEmailBusy] = useState(false);
   const active = STYLES.filter(s => selectedStyles.includes(s.id));
+  const proofDeck = getSocialProof(category);
   const startedRef = useRef(false);
 
   useEffect(() => {
