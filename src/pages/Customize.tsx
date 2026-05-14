@@ -1070,9 +1070,8 @@ export default function Customize() {
             minWidth:0,
             maxWidth: "100%",
             border: "none",
-            outline: isSelected ? `2px solid ${RED}` : "none",
-            outlineOffset: 4,
-            transition: "outline-color .2s ease, box-shadow .3s ease",
+            outline: "none",
+            transition: "box-shadow .3s ease",
           }}>
             <div style={{
               background: bd.px === 0 ? "transparent" : bcd.bg,
