@@ -1224,9 +1224,11 @@ function HomePage({ onGenerate }) {
                         borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center",
                         fontSize:12, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
                     </div>
-                    <p style={{ fontSize:12, color:T.cream, marginBottom:3 }}>Drop Your Photo Here Or Click To Upload</p>
+                    <p style={{ fontSize:12, color:T.cream, marginBottom:3 }}>
+                      {cat === "couples" ? "Drop The First Partner's Photo Or Click To Upload" : "Drop Your Photo Here Or Click To Upload"}
+                    </p>
                     <p style={{ fontSize:10, color:T.muted, lineHeight:1.55 }}>
-                      Upload A Clear Photo · Good Lighting · Visible Faces For Best Results
+                      {req.uploadHint}
                     </p>
                     {err && (
                       <div style={{ marginTop:8, display:"flex", gap:5, alignItems:"center",
