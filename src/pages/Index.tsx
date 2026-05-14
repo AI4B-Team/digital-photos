@@ -1822,7 +1822,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
    STYLE SELECT PAGE — between homepage and generation
 ═══════════════════════════════════════════════════════════ */
 function StyleSelectPage({ session, onConfirm, onBack }) {
-  const { cat, heroName } = session;
+  const { cat, heroName, photo } = session;
   const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
 
   const teaser = TEASERS.find(t => t.catId === cat);
@@ -1892,7 +1892,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           {baseCards.map(card => {
             const isSelected = selected?.type === "style" && selected?.id === card.id;
             return (
-              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected}
+              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
                 onSelect={() => setSelected(isSelected ? null : { type:"style", id:card.id })}
                 onConfirm={handleConfirm}/>
             );
@@ -1912,7 +1912,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
               {tmplCards.map(card => {
                 const isSelected = selected?.type === "template" && selected?.id === card.id;
                 return (
-                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected}
+                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
                     onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
                     onConfirm={handleConfirm}/>
                 );
@@ -1940,6 +1940,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                     <StyleCard key={`th-${t.id}`}
                       card={{ id:t.id, label:t.label, desc:t.desc, img:t.img }}
                       isSelected={isSelected}
+                      originalPhoto={photo}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
                       onConfirm={() => onConfirm({ styles:["royal"], templatePrompt: t.prompt })}/>
                   );
@@ -1955,7 +1956,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   );
 }
 
-function StyleCard({ card, isSelected, onSelect, onConfirm }) {
+function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto }) {
   return (
     <div onClick={onSelect}
       style={{
@@ -1971,6 +1972,21 @@ function StyleCard({ card, isSelected, onSelect, onConfirm }) {
       <div style={{ position:"relative", aspectRatio:"4/5", overflow:"hidden", background:"#111" }}>
         <img src={card.img} alt={card.label}
           style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+
+        {/* Small original photo thumbnail (Mixtiles-style) */}
+        {originalPhoto && (
+          <div style={{
+            position:"absolute", left:10, bottom:10,
+            width:64, height:64, borderRadius:10, overflow:"hidden",
+            border:"3px solid #fff",
+            boxShadow:"0 4px 12px rgba(0,0,0,0.35)",
+            background:"#222",
+          }}>
+            <img src={originalPhoto} alt="Your photo"
+              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          </div>
+        )}
+
         {isSelected && (
           <div style={{ position:"absolute", top:10, right:10, width:26, height:26,
             borderRadius:"50%", background:T.gold, display:"flex",
