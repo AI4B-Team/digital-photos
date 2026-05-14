@@ -1759,7 +1759,7 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
           background:`
-            radial-gradient(ellipse 90% 70% at 30% 15%, #FFFFFF 0%, #F5F2EC 55%, #E8E2D6 100%)
+            linear-gradient(135deg, #F2EBDD 0%, #EADFC8 60%, #DCCEB1 100%)
           `,
           overflow:"hidden",
           position:"relative",
