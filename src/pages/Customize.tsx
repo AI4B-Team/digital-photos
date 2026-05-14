@@ -318,7 +318,25 @@ const CANVAS_EDGES = [
   { id:"museum-white", label:"Museum (White edge)", desc:"Clean solid white edges",  color:"#f4f4f4" },
 ];
 
-const toFrameId = (productType:string, frameColor:string): string => {
+// ── Name overlay options ──────────────────────────────
+const NAME_POSITIONS = [
+  { id:"none",   label:"None"   },
+  { id:"top",    label:"Top"    },
+  { id:"bottom", label:"Bottom" },
+] as const;
+
+const NAME_FONTS = [
+  { id:"bold",   label:"Bold Sans",     css:(fs:number)=>`700 ${fs}px 'Poppins',sans-serif` },
+  { id:"serif",  label:"Classic Serif", css:(fs:number)=>`700 ${fs}px Georgia,'Times New Roman',serif` },
+  { id:"italic", label:"Italic",        css:(fs:number)=>`600 italic ${fs}px 'Poppins',sans-serif` },
+] as const;
+
+const NAME_COLORS = [
+  { id:"white", label:"White", hex:"#FFFFFF" },
+  { id:"cream", label:"Cream", hex:"#EDE6D9" },
+  { id:"black", label:"Black", hex:"#0A0A0A" },
+  { id:"gold",  label:"Gold",  hex:"#C4963A" },
+] as const;
   if (productType === "digital" || productType === "print") return "frameless";
   if (productType === "canvas") return "canvas";
   if (productType === "box-frame") return frameColor === "white" ? "wide-white" : "wide-black";
