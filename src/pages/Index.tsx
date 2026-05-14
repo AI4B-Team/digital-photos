@@ -2076,7 +2076,8 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   );
 }
 
-function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confirming }) {
+function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [], confirming }) {
+  const photos = (originalPhotos || []).filter(Boolean).slice(0, 2);
   return (
     <div onClick={onSelect}
       style={{
@@ -2093,17 +2094,23 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confi
         <img src={card.img} alt={card.label}
           style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
 
-        {/* Small original photo thumbnail (Mixtiles-style) */}
-        {originalPhoto && (
+        {/* Small original photo thumbnails (Mixtiles-style) */}
+        {photos.length > 0 && (
           <div style={{
             position:"absolute", left:10, bottom:10,
-            width:64, height:64, borderRadius:10, overflow:"hidden",
-            border:"3px solid #fff",
-            boxShadow:"0 4px 12px rgba(0,0,0,0.35)",
-            background:"#222",
+            display:"flex", gap:6,
           }}>
-            <img src={originalPhoto} alt="Your photo"
-              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+            {photos.map((src, i) => (
+              <div key={i} style={{
+                width:64, height:64, borderRadius:10, overflow:"hidden",
+                border:"3px solid #fff",
+                boxShadow:"0 4px 12px rgba(0,0,0,0.35)",
+                background:"#222",
+              }}>
+                <img src={src} alt={`Your photo ${i+1}`}
+                  style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+              </div>
+            ))}
           </div>
         )}
 
