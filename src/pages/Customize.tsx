@@ -595,6 +595,7 @@ export default function Customize() {
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
   const [mountColor, setMountColor]             = useState("snow-white");
+  const [glazeType,  setGlazeType]              = useState<"perspex"|"moth-eye">("perspex");
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
