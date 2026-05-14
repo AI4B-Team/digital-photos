@@ -992,8 +992,18 @@ export default function Customize() {
     const sd = getSizeDef(item);
     const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
     const isDigitalItem = item.productType === "digital";
-    const bd = isDigitalItem ? (BORDERS.find(b => b.id === "none") || { id:"none", label:"None", px:0 }) : (BORDERS.find(b => b.id === item.border) || BORDERS[1]);
-    const bcd = isDigitalItem ? { id:"transparent", label:"None", bg:"transparent" } : (BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0]);
+    const isFramedItem = item.productType === "classic-frame" || item.productType === "box-frame";
+    const mountDef = MOUNT_COLORS.find(m => m.id === mountColor) || MOUNT_COLORS[0];
+    const bd = isDigitalItem
+      ? (BORDERS.find(b => b.id === "none") || { id:"none", label:"None", px:0 })
+      : isFramedItem
+        ? { id:"mount", label:"Mount", px: 22 }
+        : (BORDERS.find(b => b.id === item.border) || BORDERS[1]);
+    const bcd = isDigitalItem
+      ? { id:"transparent", label:"None", bg:"transparent" }
+      : isFramedItem
+        ? { id:"mount", label: mountDef.label, bg: mountDef.color }
+        : (BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0]);
     const isFrameless = fd.id === "frameless" || fd.id === "digital";
     const isCanvas    = fd.id === "canvas";
     const woodPad     = fd.w || 0;
