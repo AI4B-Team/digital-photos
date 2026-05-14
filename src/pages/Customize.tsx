@@ -743,7 +743,10 @@ export default function Customize() {
     const pt = it.productType || "classic-frame";
     const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
     const sd = sizes.find(s => s.id === it.size) || sizes[1];
-    return sd?.price || 97;
+    const glazeAdd = (pt === "classic-frame" || pt === "box-frame")
+      ? (GLAZE_OPTIONS.find(g => g.id === (it.glazeType || "perspex"))?.add || 0)
+      : 0;
+    return (sd?.price || 97) + glazeAdd;
   };
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   // Strikethrough = retail price (only shown when discount is active)
