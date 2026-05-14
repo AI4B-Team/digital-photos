@@ -1101,30 +1101,29 @@ function HomePage({ onGenerate }) {
           {/* LEFT PANEL — teaser */}
           <div style={{ display:"flex", flexDirection:"column", gap:24, height:"100%", minWidth:0 }}>
 
-            {/* LIVE TEASER + floating overlays */}
+            {/* LIVE TEASER */}
             <div className="fu" style={{ animationDelay:".3s", width:"100%",
               display:"flex", flexDirection:"column", flex:1, position:"relative" }}>
               <LiveTeaser activeCat={cat} onCatClick={setCat}/>
+            </div>
 
-
-              {/* Floating cycling review quote */}
-              <div style={{
-                position:"absolute", bottom:14, left:14, right:14, zIndex:10,
-                background:"rgba(255,255,255,0.93)", backdropFilter:"blur(10px)",
-                borderRadius:12, padding:"11px 14px",
-                boxShadow:"0 4px 18px rgba(0,0,0,0.13)", pointerEvents:"none",
-                transition:"opacity .35s",
-              }}>
-                <div style={{ display:"flex", gap:2, marginBottom:5 }}>
-                  {Array(5).fill(0).map((_, i) => (
-                    <span key={i} style={{ color:"#F5A623", fontSize:11 }}>★</span>
-                  ))}
-                </div>
-                <p style={{ fontSize:12.5, color:"#0A0A0A", lineHeight:1.5,
-                  margin:0, fontStyle:"italic", fontFamily:"'Poppins',sans-serif" }}>
-                  {SOCIAL_PROOF[quoteIdx].review}
-                </p>
+            {/* Cycling review quote — sits cleanly beneath the teaser */}
+            <div style={{
+              background:"rgba(255,255,255,0.96)",
+              borderRadius:12, padding:"12px 16px",
+              boxShadow:"0 4px 18px rgba(0,0,0,0.10)",
+              border:`1px solid ${T.border}`,
+              transition:"opacity .35s",
+            }}>
+              <div style={{ display:"flex", gap:2, marginBottom:5 }}>
+                {Array(5).fill(0).map((_, i) => (
+                  <span key={i} style={{ color:"#F5A623", fontSize:12 }}>★</span>
+                ))}
               </div>
+              <p style={{ fontSize:13, color:"#0A0A0A", lineHeight:1.5,
+                margin:0, fontStyle:"italic", fontFamily:"'Poppins',sans-serif" }}>
+                {SOCIAL_PROOF[quoteIdx].review}
+              </p>
             </div>
           </div>
 
