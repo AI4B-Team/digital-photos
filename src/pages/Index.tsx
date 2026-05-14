@@ -976,12 +976,12 @@ function HomePage({ onGenerate }) {
   const totalPhotos = (photo ? 1 : 0) + extraPhotos.length;
   useEffect(() => {
     setHeroNames(prev => {
-      const n = Math.max(1, totalPhotos);
+      const n = Math.max(1, totalPhotos, reqFor(cat).minPhotos);
       if (prev.length === n) return prev;
       if (prev.length < n) return [...prev, ...Array(n - prev.length).fill("")];
       return prev.slice(0, n);
     });
-  }, [totalPhotos]);
+  }, [totalPhotos, cat]);
   const heroName = heroNames.filter(Boolean).join(" & ");
   const [quoteIdx, setQuoteIdx] = useState(0);
   useEffect(() => {
