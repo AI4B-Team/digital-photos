@@ -855,7 +855,7 @@ export default function Customize() {
   const runRegenerate = async (extraPrompt) => {
     setErrorMsg("");
     setBusy(true);
-    setBusyLabel(extraPrompt ? "Generating 6 Edited Variations…" : "Generating 6 New Variations…");
+    setBusyLabel(extraPrompt ? "Generating Edited Variations…" : "Generating New Variations…");
     setChoices([]);
     setChoicesLoaded(0);
     try {
