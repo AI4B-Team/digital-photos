@@ -1378,13 +1378,20 @@ function HomePage({ onGenerate }) {
                       <div style={{ width:22, height:22, borderRadius:"50%", background:T.gold,
                         display:"flex", alignItems:"center", justifyContent:"center",
                         fontSize:14, fontWeight:700, color:T.bg, lineHeight:1 }}>+</div>
-                      <span style={{ fontSize:9, color:T.muted, letterSpacing:".06em" }}>
+                      <span style={{ fontSize:9, color:T.muted, letterSpacing:".06em", textAlign:"center", padding:"0 4px" }}>
                         {totalPhotos < req.minPhotos
                           ? (cat === "couples" ? "Add Partner 2" : "Add Required Photo")
-                          : "Add Another"}
+                          : cat === "babies"
+                            ? "Add Mom (Optional)"
+                            : "Add Another"}
                       </span>
                     </button>
                   </div>
+                )}
+                {cat === "babies" && photo && (
+                  <p style={{ fontSize:10, color:T.muted, marginTop:8, lineHeight:1.5, letterSpacing:".02em" }}>
+                    Tip: Most baby templates feature mom & baby together. Add an optional photo of mom for the best face likeness.
+                  </p>
                 )}
                 <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp,image/gif" style={{ display:"none" }}
                   onChange={e => {
