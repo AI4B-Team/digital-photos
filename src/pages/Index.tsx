@@ -2005,7 +2005,19 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                       onConfirm={async () => {
                         setConfirming(true);
                         try {
-                          onConfirm({ styles:["royal","renaissance","cinematic","fantasy"], templatePrompt: t.prompt, styleRefUrl: await getStyleRef(t.img) });
+                          const base = t.prompt || "";
+                          const variants = [
+                            `${base} — variation 1: front-facing pose, head tilted slightly, centered composition`,
+                            `${base} — variation 2: side profile angle, looking off camera, soft cinematic light`,
+                            `${base} — variation 3: tight close-up portrait crop, eyes engaged with viewer, shallow depth of field`,
+                            `${base} — variation 4: wider shot showing more of the scene and props, dynamic composition`,
+                          ];
+                          onConfirm({
+                            styles:["v1","v2","v3","v4"],
+                            templatePrompt: base,
+                            templatePrompts: variants,
+                            styleRefUrl: await getStyleRef(t.img),
+                          });
                         } finally {
                           setConfirming(false);
                         }
