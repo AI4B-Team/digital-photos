@@ -1893,13 +1893,13 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
           <div style={{ width:"100%", maxWidth:460, borderRadius:16, overflow:"hidden",
             border:"1px solid rgba(255,255,255,.08)", background:"#fff", position:"relative",
             opacity: proofFade ? 1 : 0, transition:"opacity .28s" }}>
-            <img src={SOCIAL_PROOF[proofIdx].img}
+            <img src={proofDeck[proofIdx % proofDeck.length].img}
               alt="Customer portrait example"
               style={{ width:"100%", height:340, objectFit:"cover", display:"block" }}/>
             <div style={{ position:"absolute", bottom:12, left:12, fontSize:10,
               letterSpacing:".16em", textTransform:"uppercase", color:"#fff",
               background:"rgba(0,0,0,.55)", padding:"5px 10px", borderRadius:6, fontWeight:600 }}>
-              {SOCIAL_PROOF[proofIdx].style}
+              {proofDeck[proofIdx % proofDeck.length].style}
             </div>
           </div>
 
@@ -1907,9 +1907,9 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
           <div style={{ marginTop:20, display:"flex", flexDirection:"column", gap:8,
             width:"100%", maxWidth:460 }}>
             {[
-              SOCIAL_PROOF[proofIdx],
-              SOCIAL_PROOF[(proofIdx+1) % SOCIAL_PROOF.length],
-              SOCIAL_PROOF[(proofIdx+2) % SOCIAL_PROOF.length],
+              proofDeck[proofIdx % proofDeck.length],
+              proofDeck[(proofIdx+1) % proofDeck.length],
+              proofDeck[(proofIdx+2) % proofDeck.length],
             ].slice(0, pct > 20 ? (pct > 50 ? 3 : 2) : 1).map((p, i) => (
               <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:8,
                 opacity: proofFade ? 1 : 0, transition:"opacity .28s" }}>
