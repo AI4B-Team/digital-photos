@@ -1061,7 +1061,7 @@ export default function Customize() {
                   minHeight: "100%",
                   maxWidth: "none",
                   filter: ed.filter,
-                  transform: `translate(calc(-50% + ${item.offsetX || 0}px), calc(-50% + ${item.offsetY || 0}px)) scale(${item.zoom || 1})`,
+                  transform: `translate(calc(-50% + ${item.offsetX || 0}px), calc(-50% + ${item.offsetY || 0}px)) rotate(${item.rotation || 0}deg) scale(${item.zoom || 1})`,
                   transformOrigin: "center center",
                   transition: isDraggingThis
                     ? "width .25s ease, height .25s ease"
