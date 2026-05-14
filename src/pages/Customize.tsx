@@ -1337,6 +1337,7 @@ export default function Customize() {
           productType: primaryCartItem?.productType || "",
           printFrame: primaryCartItem?.frameColor || primaryCartItem?.canvasEdge || "",
           printMount: mountColor || "snow-white",
+          printGlaze: primaryCartItem?.glazeType || "perspex",
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
