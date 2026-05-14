@@ -1069,8 +1069,10 @@ export default function Customize() {
             flex:"0 1 auto",
             minWidth:0,
             maxWidth: "100%",
-            border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
-            transition: "border-color .2s ease, box-shadow .3s ease",
+            border: "none",
+            outline: isSelected ? `2px solid ${RED}` : "none",
+            outlineOffset: 4,
+            transition: "outline-color .2s ease, box-shadow .3s ease",
           }}>
             <div style={{
               background: bd.px === 0 ? "transparent" : bcd.bg,
