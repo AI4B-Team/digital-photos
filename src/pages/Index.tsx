@@ -1203,7 +1203,12 @@ function HomePage({ onGenerate }) {
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:cat?T.gold:T.dim,
                   textTransform:"uppercase", fontWeight:500, marginBottom:8, transition:"color .28s" }}>
-                  Upload Your Photo
+                  {req.uploadHeading}{req.minPhotos > 1 && (
+                    <span style={{ marginLeft:8, color:T.cream, letterSpacing:".04em",
+                      textTransform:"none", fontSize:10, fontWeight:500 }}>
+                      ({totalPhotos}/{req.minPhotos})
+                    </span>
+                  )}
                 </div>
                 {!photo ? (
                   <div className={`dz ${drag?"drag":""}`} style={{ borderRadius:6, padding:"20px 16px" }}
