@@ -1818,69 +1818,7 @@ export default function Customize() {
             />
           </div>
 
-          {/* Variant thumbnails — switch between generated portraits */}
-          {(session.generatedPortraits?.length || 0) > 1 && (
-            <div style={{
-              position:"absolute", left:16, bottom:16, zIndex:6,
-              display:"flex", flexDirection:"column", gap:8,
-              padding:10, borderRadius:12,
-              background:"rgba(255,255,255,.92)",
-              boxShadow:"0 6px 20px rgba(0,0,0,.12)",
-              border:"1px solid rgba(0,0,0,.08)",
-              maxHeight:"60vh", overflowY:"auto",
-            }}>
-              <div style={{ fontSize:10, letterSpacing:".18em", color:MUTED, fontWeight:600, textAlign:"center" }}>
-                VARIANTS
-              </div>
-              {session.generatedPortraits.map((p, idx) => {
-                const active = selected.photoUrl === p.url;
-                const inCart = cartItems.some(ci => ci.photoUrl === p.url);
-                return (
-                  <div key={p.url + idx} style={{ display:"flex", flexDirection:"column", gap:4, alignItems:"center" }}>
-                    <button
-                      onClick={() => updateSelected({ photoUrl: p.url, style: p.style, photoAspect: undefined, offsetX: 0, offsetY: 0 })}
-                      title={p.style}
-                      style={{
-                        width:64, height:64, padding:0, borderRadius:8, overflow:"hidden",
-                        border: active ? `2px solid ${RED}` : "2px solid transparent",
-                        background:"#fff", cursor:"pointer",
-                        boxShadow: active ? "0 0 0 2px rgba(0,0,0,.06)" : "none",
-                      }}
-                    >
-                      <img src={p.url} alt={p.style}
-                        style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const cardSizeDef = (typeof getSizeDef === "function") ? null : null;
-                        const snapshot = {
-                          ...selected,
-                          photoUrl: p.url,
-                          style: p.style,
-                          photoAspect: undefined,
-                          offsetX: 0,
-                          offsetY: 0,
-                          qty: 1,
-                        };
-                        addToCart(snapshot, 1);
-                      }}
-                      title={inCart ? "Already in cart — add another" : "Add this variant to cart"}
-                      style={{
-                        width:64, padding:"4px 0", borderRadius:6,
-                        border:"none", cursor:"pointer",
-                        background: inCart ? "#16a34a" : RED, color:"#fff",
-                        fontSize:10, fontWeight:700, fontFamily:"'Poppins',sans-serif",
-                        display:"flex", alignItems:"center", justifyContent:"center", gap:3,
-                      }}
-                    >
-                      {inCart ? <><Check size={10}/> Added</> : <><Plus size={10}/> Cart</>}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          {/* Variants moved to left panel */}
         </div>
 
         {/* Cart + pricing (right) */}
