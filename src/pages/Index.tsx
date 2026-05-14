@@ -975,22 +975,29 @@ function CheckRow({ label, gold }) {
 ═══════════════════════════════════════════════════════════ */
 function LiveTeaser({ activeCat, onCatClick }) {
   const [idx, setIdx] = useState(0);
-  const [fading, setFading] = useState(false);
+
+  // Preload all teaser images once so transitions don't flash while loading
+  useEffect(() => {
+    TEASERS.forEach(t => {
+      const a = new Image(); a.src = t.before;
+      const variants = t.portraits || [{ url: t.portrait }];
+      variants.forEach(v => { const b = new Image(); b.src = v.url; });
+    });
+  }, []);
 
   // When user picks a category, jump to matching teaser
   useEffect(() => {
     if (!activeCat) return;
     const match = TEASERS.findIndex(t => t.catId === activeCat);
-    if (match >= 0 && match !== idx) { setFading(true); setTimeout(() => { setIdx(match); setFading(false); }, 260); }
-  }, [activeCat]);
+    if (match >= 0 && match !== idx) setIdx(match);
+  }, [activeCat]); // eslint-disable-line
 
   // Auto-rotate when no category selected
   useEffect(() => {
     if (activeCat) return;
     const iv = setInterval(() => {
-      setFading(true);
-      setTimeout(() => { setIdx(p => (p+1) % TEASERS.length); setFading(false); }, 260);
-    }, 3200);
+      setIdx(p => (p + 1) % TEASERS.length);
+    }, 3600);
     return () => clearInterval(iv);
   }, [activeCat]);
 
@@ -1009,21 +1016,29 @@ function LiveTeaser({ activeCat, onCatClick }) {
       <div style={{ position:"relative", display:"grid", gridTemplateColumns:"1fr 1fr", gap:48,
         alignItems:"stretch", flex:1, minHeight:0 }}>
 
-        {/* LEFT: Your Photo */}
+        {/* LEFT: Your Photo (crossfade stack) */}
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, background:"#fff",
           boxShadow:"0 8px 24px rgba(0,0,0,.08)", minHeight:340 }}>
-          <img src={cur.before} alt="Your original photo"
-            style={{ width:"100%", height:"100%", objectFit:"cover",
-              opacity:fading?0:1, transition:"opacity .3s" }}/>
+          {TEASERS.map((t, i) => (
+            <img key={`b-${i}`} src={t.before} alt=""
+              style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+                opacity: i===idx ? 1 : 0, transition:"opacity .7s ease-in-out" }}/>
+          ))}
         </div>
 
-        {/* RIGHT: Generated portraits slideshow (one at a time) */}
+        {/* RIGHT: Generated portraits slideshow (crossfade stack) */}
         <div style={{ position:"relative", borderRadius:12, overflow:"hidden",
           border:`1px solid ${T.bGold}`, boxShadow:"0 12px 40px rgba(0,0,0,.08)",
           background:"#F5EFE3", minHeight:340 }}>
-          <img src={portraitCur.url} alt="Generated portrait"
-            style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
+          {TEASERS.map((t, i) => {
+            const v = (t.portraits || [{ url: t.portrait }])[0];
+            return (
+              <img key={`p-${i}`} src={v.url} alt=""
+                style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+                  opacity: i===idx ? 1 : 0, transition:"opacity .7s ease-in-out" }}/>
+            );
+          })}
           {/* watermark */}
           <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
             justifyContent:"center", pointerEvents:"none" }}>
@@ -1041,7 +1056,8 @@ function LiveTeaser({ activeCat, onCatClick }) {
           {/* style badge */}
           <div style={{ position:"absolute", bottom:12, right:12,
             fontSize:10, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
-            background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700 }}>
+            background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700,
+            transition:"opacity .4s" }}>
             {portraitCur.style}
           </div>
         </div>
@@ -1069,7 +1085,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
       {/* Category dots */}
       <div style={{ display:"flex", gap:8, marginTop:14, alignItems:"center", justifyContent:"center" }}>
         {TEASERS.map((t, i) => (
-          <button key={i} onClick={() => { onCatClick(t.catId); setFading(true); setTimeout(()=>{setIdx(i);setFading(false);},260); }}
+          <button key={i} onClick={() => { onCatClick(t.catId); setIdx(i); }}
             style={{ padding:0, border:"none", background:"none", cursor:"pointer",
               display:"flex", alignItems:"center", gap:7 }}>
             <div style={{ width:i===idx?22:7, height:7, borderRadius:4,
