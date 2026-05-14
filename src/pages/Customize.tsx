@@ -1738,6 +1738,7 @@ export default function Customize() {
           gap:16,
           background:`radial-gradient(ellipse at 50% 30%, #FFFFFF 0%, ${BG} 70%)`,
           overflow:"hidden",
+          position:"relative",
         }}>
           <div style={{
             textAlign:"center", flexShrink:0, padding:"32px 0 8px",
