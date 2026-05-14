@@ -340,10 +340,10 @@ const NAME_FONTS = [
 ] as const;
 
 const NAME_SIZES = [
-  { id:"sm", label:"S", mult:0.045, css:"4.5%" },
-  { id:"md", label:"M", mult:0.065, css:"6.5%" },
-  { id:"lg", label:"L", mult:0.085, css:"8.5%" },
-  { id:"xl", label:"XL", mult:0.105, css:"10.5%" },
+  { id:"sm", label:"S", mult:0.045, css:"3.5cqw" },
+  { id:"md", label:"M", mult:0.065, css:"5cqw" },
+  { id:"lg", label:"L", mult:0.085, css:"6.8cqw" },
+  { id:"xl", label:"XL", mult:0.105, css:"8.5cqw" },
 ] as const;
 
 const NAME_COLORS = [
