@@ -644,6 +644,7 @@ export default function Customize() {
     setNamePosition(prev => (hn && prev === "none" ? "top" : prev));
   }, [(session as any)?.heroName]);
   const [nameFontId,      setNameFontId]      = useState("bold");
+  const [nameSizeId,      setNameSizeId]      = useState("md");
   const [nameColorId,     setNameColorId]     = useState("white");
   const [nameCompositing, setNameCompositing] = useState(false);
   const [canvasFrame, setCanvasFrame]           = useState(false);
