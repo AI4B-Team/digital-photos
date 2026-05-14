@@ -83,6 +83,7 @@ serve(async (req) => {
         printFrame,
         printSku,
         printMount,
+        printGlaze,
       },
     };
 
