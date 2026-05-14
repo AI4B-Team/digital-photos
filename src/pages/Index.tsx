@@ -28,12 +28,38 @@ import portraitPets from "@/assets/portrait-pets.jpg";
 import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
 import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
 import portraitPetsFan from "@/assets/portrait-pets-fantasy.jpg";
-import proofRoyal from "@/assets/portrait-people-royal.jpg";
-import proofWatercolor from "@/assets/portrait-pets-storybook.jpg";
-import proofRenaissance from "@/assets/portrait-people-renaissance.jpg";
-import proofStorybook from "@/assets/portrait-babies-fantasy.jpg";
-import proofCinematic from "@/assets/portrait-people-cinematic.jpg";
-import proofFantasy from "@/assets/portrait-pets-fantasy.jpg";
+import proofPetsRoyal from "@/assets/portrait-pets-renaissance.jpg";
+import proofPetsRen from "@/assets/portrait-pets-renaissance.jpg";
+import proofPetsStory from "@/assets/portrait-pets-storybook.jpg";
+import proofPetsFan from "@/assets/portrait-pets-fantasy.jpg";
+import proofPetsCine from "@/assets/portrait-pets-cinematic.jpg";
+import proofPetsMin from "@/assets/portrait-pets-minimal.jpg";
+import proofBabiesRoyal from "@/assets/portrait-babies-royal.jpg";
+import proofBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
+import proofBabiesFan from "@/assets/portrait-babies-fantasy.jpg";
+import proofBabiesCine from "@/assets/portrait-babies-cinematic.jpg";
+import proofBabiesMin from "@/assets/portrait-babies-minimal.jpg";
+import proofCouplesRoyal from "@/assets/portrait-couples-royal.jpg";
+import proofCouplesRen from "@/assets/portrait-couples-renaissance.jpg";
+import proofCouplesStory from "@/assets/portrait-couples-storybook.jpg";
+import proofCouplesFan from "@/assets/portrait-couples-fantasy.jpg";
+import proofCouplesCine from "@/assets/portrait-couples-cinematic.jpg";
+import proofCouplesMin from "@/assets/portrait-couples-minimal.jpg";
+import proofPeopleRoyal from "@/assets/portrait-people-royal.jpg";
+import proofPeopleRen from "@/assets/portrait-people-renaissance.jpg";
+import proofPeopleStory from "@/assets/portrait-people-storybook.jpg";
+import proofPeopleCine from "@/assets/portrait-people-cinematic.jpg";
+import proofPeopleMin from "@/assets/portrait-people-minimal.jpg";
+import proofMemorialRoyal from "@/assets/portrait-memorial-royal.jpg";
+import proofMemorialRen from "@/assets/portrait-memorial-renaissance.jpg";
+import proofMemorialStory from "@/assets/portrait-memorial-storybook.jpg";
+import proofMemorialFan from "@/assets/portrait-memorial-fantasy.jpg";
+import proofMemorialCine from "@/assets/portrait-memorial-cinematic.jpg";
+import proofGiftsRoyal from "@/assets/portrait-gifts-royal.jpg";
+import proofGiftsStory from "@/assets/portrait-gifts-storybook.jpg";
+import proofGiftsFan from "@/assets/portrait-gifts-fantasy.jpg";
+import proofGiftsCine from "@/assets/portrait-gifts-cinematic.jpg";
+import proofGiftsMin from "@/assets/portrait-gifts-minimal.jpg";
 import portraitPetsCine from "@/assets/portrait-pets-cinematic.jpg";
 import portraitPetsMin from "@/assets/portrait-pets-minimal.jpg";
 import petBathTime from "@/assets/pet-bath-time.jpg";
@@ -809,20 +835,58 @@ const GEN_MSGS = [
 ];
 
 // Social proof shown during generation — rotate through customer portraits
-const SOCIAL_PROOF = [
-  { img: proofRoyal,
-    style:"Royal", review:'"I cried when I saw it — it\'s perfect." — Jessica T.' },
-  { img: proofWatercolor,
-    style:"Watercolor", review:'"My dog passed away last year. This is priceless." — Mark R.' },
-  { img: proofRenaissance,
-    style:"Renaissance", review:'"Everyone at the office asks where I got it." — Sarah M.' },
-  { img: proofStorybook,
-    style:"Storybook", review:'"The canvas quality blew me away." — David L.' },
-  { img: proofCinematic,
-    style:"Cinematic", review:'"My mom hasn\'t stopped talking about her portrait." — Amy K.' },
-  { img: proofFantasy,
-    style:"Fantasy", review:'"Best birthday gift I\'ve ever given." — Tom W.' },
-];
+const SOCIAL_PROOF_BY_CAT: Record<string, { img: string; style: string; review: string }[]> = {
+  pets: [
+    { img: proofPetsRoyal, style:"Royal", review:'"My golden looks like royalty — I cried." — Jessica T.' },
+    { img: proofPetsStory, style:"Storybook", review:'"My dog passed away last year. This is priceless." — Mark R.' },
+    { img: proofPetsRen, style:"Renaissance", review:'"Everyone at the office asks where I got it." — Sarah M.' },
+    { img: proofPetsFan, style:"Fantasy", review:'"It captured my pup\'s personality perfectly." — David L.' },
+    { img: proofPetsCine, style:"Cinematic", review:'"Hands down the best gift I\'ve ever bought." — Amy K.' },
+    { img: proofPetsMin, style:"Minimal", review:'"Beautiful, modern, and exactly what I wanted." — Tom W.' },
+  ],
+  babies: [
+    { img: proofBabiesRoyal, style:"Royal", review:'"A keepsake we\'ll treasure forever." — Jessica T.' },
+    { img: proofBabiesRen, style:"Renaissance", review:'"Looks like an heirloom painting." — Sarah M.' },
+    { img: proofBabiesFan, style:"Fantasy", review:'"Magical — my baby looks like a little dream." — David L.' },
+    { img: proofBabiesCine, style:"Cinematic", review:'"My mom hasn\'t stopped talking about it." — Amy K.' },
+    { img: proofBabiesMin, style:"Minimal", review:'"Clean, modern, and absolutely beautiful." — Tom W.' },
+  ],
+  couples: [
+    { img: proofCouplesRoyal, style:"Royal", review:'"The perfect anniversary gift." — Jessica T.' },
+    { img: proofCouplesRen, style:"Renaissance", review:'"Looks like a museum piece of us." — Sarah M.' },
+    { img: proofCouplesStory, style:"Storybook", review:'"So sweet — it tells our love story." — Mark R.' },
+    { img: proofCouplesFan, style:"Fantasy", review:'"Otherworldly and romantic." — David L.' },
+    { img: proofCouplesCine, style:"Cinematic", review:'"Looks like a movie poster of us." — Amy K.' },
+    { img: proofCouplesMin, style:"Minimal", review:'"Elegant and timeless." — Tom W.' },
+  ],
+  people: [
+    { img: proofPeopleRoyal, style:"Royal", review:'"I cried when I saw it — it\'s perfect." — Jessica T.' },
+    { img: proofPeopleRen, style:"Renaissance", review:'"Everyone at the office asks where I got it." — Sarah M.' },
+    { img: proofPeopleStory, style:"Storybook", review:'"Whimsical and so charming." — Mark R.' },
+    { img: proofPeopleCine, style:"Cinematic", review:'"It looks like a movie poster of me." — Amy K.' },
+    { img: proofPeopleMin, style:"Minimal", review:'"Clean and gallery-quality." — Tom W.' },
+  ],
+  memorial: [
+    { img: proofMemorialRoyal, style:"Royal", review:'"A beautiful tribute — thank you." — Jessica T.' },
+    { img: proofMemorialRen, style:"Renaissance", review:'"It honors them perfectly." — Sarah M.' },
+    { img: proofMemorialStory, style:"Storybook", review:'"Gentle and heartwarming." — Mark R.' },
+    { img: proofMemorialFan, style:"Fantasy", review:'"It brought tears to my eyes." — David L.' },
+    { img: proofMemorialCine, style:"Cinematic", review:'"A keepsake we\'ll cherish forever." — Amy K.' },
+  ],
+  gifts: [
+    { img: proofGiftsRoyal, style:"Royal", review:'"Best birthday gift I\'ve ever given." — Tom W.' },
+    { img: proofGiftsStory, style:"Storybook", review:'"They were speechless." — Mark R.' },
+    { img: proofGiftsFan, style:"Fantasy", review:'"Otherworldly — they loved it." — David L.' },
+    { img: proofGiftsCine, style:"Cinematic", review:'"Movie-quality artwork." — Amy K.' },
+    { img: proofGiftsMin, style:"Minimal", review:'"Tasteful and elegant." — Sarah M.' },
+  ],
+};
+
+const getSocialProof = (cat?: string) =>
+  (cat && SOCIAL_PROOF_BY_CAT[cat]) || SOCIAL_PROOF_BY_CAT.people;
+
+// Default deck used outside generation contexts
+const SOCIAL_PROOF = SOCIAL_PROOF_BY_CAT.people;
 
 
 
@@ -1642,6 +1706,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
   const [email, setEmail] = useState("");
   const [emailBusy, setEmailBusy] = useState(false);
   const active = STYLES.filter(s => selectedStyles.includes(s.id));
+  const proofDeck = getSocialProof(category);
   const startedRef = useRef(false);
 
   useEffect(() => {
@@ -1658,7 +1723,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
     const spiv = setInterval(() => {
       setProofFade(false);
       setTimeout(() => {
-        setProofIdx(p => (p + 1) % SOCIAL_PROOF.length);
+        setProofIdx(p => (p + 1) % proofDeck.length);
         setProofFade(true);
       }, 280);
     }, 3500);
@@ -1828,13 +1893,13 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
           <div style={{ width:"100%", maxWidth:460, borderRadius:16, overflow:"hidden",
             border:"1px solid rgba(255,255,255,.08)", background:"#fff", position:"relative",
             opacity: proofFade ? 1 : 0, transition:"opacity .28s" }}>
-            <img src={SOCIAL_PROOF[proofIdx].img}
+            <img src={proofDeck[proofIdx % proofDeck.length].img}
               alt="Customer portrait example"
               style={{ width:"100%", height:340, objectFit:"cover", display:"block" }}/>
             <div style={{ position:"absolute", bottom:12, left:12, fontSize:10,
               letterSpacing:".16em", textTransform:"uppercase", color:"#fff",
               background:"rgba(0,0,0,.55)", padding:"5px 10px", borderRadius:6, fontWeight:600 }}>
-              {SOCIAL_PROOF[proofIdx].style}
+              {proofDeck[proofIdx % proofDeck.length].style}
             </div>
           </div>
 
@@ -1842,9 +1907,9 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
           <div style={{ marginTop:20, display:"flex", flexDirection:"column", gap:8,
             width:"100%", maxWidth:460 }}>
             {[
-              SOCIAL_PROOF[proofIdx],
-              SOCIAL_PROOF[(proofIdx+1) % SOCIAL_PROOF.length],
-              SOCIAL_PROOF[(proofIdx+2) % SOCIAL_PROOF.length],
+              proofDeck[proofIdx % proofDeck.length],
+              proofDeck[(proofIdx+1) % proofDeck.length],
+              proofDeck[(proofIdx+2) % proofDeck.length],
             ].slice(0, pct > 20 ? (pct > 50 ? 3 : 2) : 1).map((p, i) => (
               <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:8,
                 opacity: proofFade ? 1 : 0, transition:"opacity .28s" }}>
