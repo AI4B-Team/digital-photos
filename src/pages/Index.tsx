@@ -195,6 +195,47 @@ const CATS = [
   { id:"gifts",    label:"Gifts",    icon:"🎁", Icon: Gift     },
 ];
 
+// Per-category upload requirements — drives the smart upload UI
+const CAT_REQS: Record<string, {
+  minPhotos: number;
+  uploadHeading: string;
+  uploadHint: string;
+  namePlaceholders: string[];
+  namesLabel: string;
+}> = {
+  pets:     { minPhotos:1,
+              uploadHeading:"Upload Your Pet's Photo",
+              uploadHint:"One Clear Photo Of Your Pet — Add More If You Have Multiple",
+              namePlaceholders:["e.g., Barley, Milo, Sophie"],
+              namesLabel:"Pet Name" },
+  babies:   { minPhotos:1,
+              uploadHeading:"Upload Your Baby's Photo",
+              uploadHint:"One Clear, Well-Lit Photo — Face Visible",
+              namePlaceholders:["e.g., Olivia, Noah, Emma"],
+              namesLabel:"Baby's Name" },
+  couples:  { minPhotos:2,
+              uploadHeading:"Upload 2 Photos — One Of Each Partner",
+              uploadHint:"Separate Photos Give The Best Couple Portrait",
+              namePlaceholders:["Partner 1 Name","Partner 2 Name"],
+              namesLabel:"Partner Names" },
+  people:   { minPhotos:1,
+              uploadHeading:"Upload Your Photo",
+              uploadHint:"Add One Photo Per Person For Best Results",
+              namePlaceholders:["e.g., Sarah, James, The Smiths"],
+              namesLabel:"Name" },
+  memorial: { minPhotos:1,
+              uploadHeading:"Upload A Photo Of Your Loved One",
+              uploadHint:"Any Cherished Photo — We'll Restore Clarity & Light",
+              namePlaceholders:["In Loving Memory Of…"],
+              namesLabel:"Name" },
+  gifts:    { minPhotos:1,
+              uploadHeading:"Upload Their Photo",
+              uploadHint:"A Clear Photo Of The Person Or Pet You're Gifting",
+              namePlaceholders:["e.g., Mom, Dad, Best Friend"],
+              namesLabel:"Recipient Name" },
+};
+const reqFor = (c?: string) => (c && CAT_REQS[c]) || CAT_REQS.people;
+
 const STYLES = [
   { id:"royal",       label:"Royal",       desc:"Regal · Golden Era",       preview:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=520&h=650&fit=crop&q=80" },
   { id:"renaissance", label:"Renaissance", desc:"Old Masters · Rich Tones",  preview:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=520&h=650&fit=crop&q=80" },
