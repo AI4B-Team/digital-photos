@@ -1039,19 +1039,32 @@ export default function Customize() {
           <div aria-hidden="true" style={{ width: aiOpen && isSelected ? 0 : 48, flexShrink:0, visibility:"hidden" }}/>
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, minWidth:0, flex:"0 1 auto" }}>
           <div style={{
-            background: isCanvas ? "#fff" : (isFrameless ? "transparent" : actualWood),
+            background: isCanvas
+              ? "#fff"
+              : isFrameless
+                ? "transparent"
+                // Subtle gradient on the frame moulding so its edges/profile read as 3D
+                : `linear-gradient(135deg,
+                    color-mix(in srgb, ${actualWood} 80%, white) 0%,
+                    ${actualWood} 35%,
+                    ${actualWood} 65%,
+                    color-mix(in srgb, ${actualWood} 70%, black) 100%)`,
             padding: (isFrameless ? 6 : woodPad + 6),
             borderRadius: isFrameless ? 12 : 2,
-            // Clean wall-hung effect — soft directional shadow, light from top-left
             boxShadow: isFrameless
               ? "30px 40px 70px -10px rgba(0,0,0,.35), 10px 16px 30px -4px rgba(0,0,0,.22)"
               : `
-                0 0 0 1px rgba(0,0,0,.08),
-                40px 50px 90px -15px rgba(0,0,0,.45),
-                20px 28px 50px -10px rgba(0,0,0,.30),
-                8px 12px 20px -4px rgba(0,0,0,.20)
+                /* Inner shadow on top + left = picture sits recessed inside frame */
+                inset 6px 6px 10px -2px rgba(0,0,0,.55),
+                inset -2px -2px 4px -1px rgba(255,255,255,.18),
+                /* Hairline edge */
+                0 0 0 1px rgba(0,0,0,.25),
+                /* Cast shadow on the wall — bottom-right, very soft */
+                30px 40px 70px -12px rgba(0,0,0,.40),
+                15px 22px 40px -8px rgba(0,0,0,.28),
+                6px 10px 18px -4px rgba(0,0,0,.18)
               `,
-            filter: "drop-shadow(20px 30px 25px rgba(0,0,0,.18))",
+            filter: "drop-shadow(15px 25px 20px rgba(0,0,0,.15))",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
