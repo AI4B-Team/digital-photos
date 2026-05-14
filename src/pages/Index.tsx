@@ -1604,13 +1604,18 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const portraits = teaser?.portraits || [];
   const templates = TEMPLATES[cat] || [];
 
-  const baseCards = STYLES.map(st => ({
-    type: "style" as const,
-    id: st.id,
-    label: st.label,
-    desc: st.desc,
-    img: portraits.find(p => p.style === st.label)?.url || st.preview,
-  }));
+  const baseCards = STYLES
+    .map(st => {
+      const match = portraits.find(p => p.style === st.label);
+      return match ? {
+        type: "style" as const,
+        id: st.id,
+        label: st.label,
+        desc: st.desc,
+        img: match.url,
+      } : null;
+    })
+    .filter(Boolean) as { type:"style"; id:string; label:string; desc:string; img:string }[];
 
   const tmplCards = templates.map(t => ({
     type: "template" as const,
