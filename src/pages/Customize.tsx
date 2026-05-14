@@ -1044,11 +1044,12 @@ export default function Customize() {
             borderRadius: isFrameless ? 12 : 2,
             // Clean wall-hung effect — soft directional shadow, light from top-left
             boxShadow: isFrameless
-              ? "0 8px 20px -6px rgba(0,0,0,.12), 0 2px 6px -2px rgba(0,0,0,.08)"
+              ? "20px 28px 50px -10px rgba(0,0,0,.28), 6px 10px 20px -4px rgba(0,0,0,.18)"
               : `
-                0 1px 2px rgba(0,0,0,.10),
-                12px 18px 32px -8px rgba(0,0,0,.22),
-                4px 8px 14px -4px rgba(0,0,0,.14)
+                0 0 0 1px rgba(0,0,0,.06),
+                24px 32px 60px -12px rgba(0,0,0,.35),
+                10px 14px 28px -6px rgba(0,0,0,.22),
+                4px 6px 12px -2px rgba(0,0,0,.15)
               `,
             display: "inline-block",
             flex:"0 1 auto",
@@ -1744,7 +1745,7 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
           background:`
-            radial-gradient(ellipse 70% 50% at 50% 25%, #FFFFFF 0%, #FAFAF8 50%, #F0EDE8 100%)
+            radial-gradient(ellipse 90% 70% at 30% 15%, #FFFFFF 0%, #F5F2EC 55%, #E8E2D6 100%)
           `,
           overflow:"hidden",
           position:"relative",
