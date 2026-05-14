@@ -1050,34 +1050,44 @@ export default function Customize() {
               ? "#fff"
               : isFrameless
                 ? "transparent"
-                // Solid frame face with subtle edge vignette (frame moulding, not gradient bg)
+                // Premium moulding: top-lit chamfer + brushed wood grain
                 : `
-                    linear-gradient(135deg,
-                      color-mix(in srgb, ${actualWood} 75%, white) 0%,
-                      ${actualWood} 35%,
-                      ${actualWood} 65%,
-                      color-mix(in srgb, ${actualWood} 70%, black) 100%
+                    linear-gradient(180deg,
+                      color-mix(in srgb, ${actualWood} 60%, white) 0%,
+                      color-mix(in srgb, ${actualWood} 88%, white) 8%,
+                      ${actualWood} 50%,
+                      color-mix(in srgb, ${actualWood} 80%, black) 92%,
+                      color-mix(in srgb, ${actualWood} 55%, black) 100%
+                    ),
+                    repeating-linear-gradient(90deg,
+                      rgba(255,255,255,.03) 0 1px,
+                      rgba(0,0,0,.04) 1px 2px
                     ),
                     ${actualWood}
                   `,
-            padding: (isFrameless ? 6 : woodPad + 6),
-            borderRadius: isFrameless ? 12 : 2,
+            padding: (isFrameless ? 6 : woodPad + 10),
+            borderRadius: isFrameless ? 12 : 3,
             boxShadow: isFrameless
               ? "30px 40px 70px -10px rgba(0,0,0,.35), 10px 16px 30px -4px rgba(0,0,0,.22)"
               : `
-                /* Bevel: bright top-left highlight + dark bottom-right shadow on the moulding */
-                inset 2px 2px 0 rgba(255,255,255,.35),
-                inset 3px 3px 6px rgba(255,255,255,.18),
-                inset -2px -2px 0 rgba(0,0,0,.55),
-                inset -4px -4px 8px rgba(0,0,0,.45),
-                /* Outer hairline */
-                0 0 0 1px rgba(0,0,0,.55),
-                /* Cast shadow on the wall — bottom-right */
-                30px 40px 70px -12px rgba(0,0,0,.45),
-                15px 22px 40px -8px rgba(0,0,0,.30),
-                6px 10px 18px -4px rgba(0,0,0,.20)
+                /* Outer chamfer highlight (top) + dark base (bottom) */
+                inset 0 1px 0 rgba(255,255,255,.55),
+                inset 1px 0 0 rgba(255,255,255,.22),
+                inset -1px 0 0 rgba(0,0,0,.55),
+                inset 0 -1px 0 rgba(0,0,0,.75),
+                /* Soft inner bevel */
+                inset 0 4px 8px rgba(255,255,255,.12),
+                inset 0 -4px 10px rgba(0,0,0,.55),
+                inset 4px 0 8px rgba(255,255,255,.05),
+                inset -4px 0 8px rgba(0,0,0,.35),
+                /* Crisp outer edge */
+                0 0 0 1px rgba(0,0,0,.85),
+                /* Wall cast shadow — top-lit, falls down-right */
+                2px 4px 6px rgba(0,0,0,.20),
+                12px 18px 24px -4px rgba(0,0,0,.30),
+                30px 50px 80px -10px rgba(0,0,0,.45),
+                60px 90px 120px -20px rgba(0,0,0,.30)
               `,
-            filter: "drop-shadow(15px 25px 20px rgba(0,0,0,.15))",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
@@ -1090,9 +1100,9 @@ export default function Customize() {
               background: bd.px === 0 ? "transparent" : bcd.bg,
               padding: bd.px,
               display: "flex", alignItems: "center", justifyContent: "center",
-              // Sharp inner rabbet — the picture sits recessed INSIDE the frame
+              // Deep inner rabbet — photo sits recessed with a clear ledge
               boxShadow: isFrameless ? "none" : `
-                0 0 0 1px rgba(0,0,0,.55),
+                0 0 0 1px rgba(0,0,0,.9),
                 inset 0 2px 6px rgba(0,0,0,.45),
                 inset 2px 0 4px rgba(0,0,0,.30),
                 inset 0 -1px 2px rgba(255,255,255,.08)
