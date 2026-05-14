@@ -124,6 +124,10 @@ serve(async (req) => {
                       type: "image_url",
                       image_url: { url: photoUrl },
                     },
+                    ...(Array.isArray(extraPhotoUrls) ? extraPhotoUrls.filter((u: string) => typeof u === "string" && u.length > 0).map((u: string) => ({
+                      type: "image_url" as const,
+                      image_url: { url: u },
+                    })) : []),
                   ],
                 },
               ],
