@@ -1720,7 +1720,23 @@ export default function Customize() {
                     </button>
                   ))}
                 </div>
-                <div style={{ display:"flex", gap:8 }}>
+                <div style={{ display:"flex", gap:6, marginBottom:14 }}>
+                  {NAME_SIZES.map(s => (
+                    <button key={s.id}
+                      onClick={() => setNameSizeId(s.id)}
+                      style={{
+                        flex:1, padding:"7px 4px", borderRadius:8, cursor:"pointer",
+                        border:`1.5px solid ${nameSizeId===s.id?RED:BORDER}`,
+                        background:nameSizeId===s.id?"rgba(230,25,25,.05)":"#fff",
+                        fontSize:11, fontWeight:700,
+                        color:nameSizeId===s.id?RED:MUTED,
+                        fontFamily:"'Poppins',sans-serif",
+                      }}>
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display:"flex", gap:8, paddingTop:6 }}>
                   {NAME_COLORS.map(c => (
                     <button key={c.id} title={c.label}
                       onClick={() => setNameColorId(c.id)}
