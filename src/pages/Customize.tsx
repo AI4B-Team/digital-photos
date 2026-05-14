@@ -2765,6 +2765,14 @@ export default function Customize() {
                         {it.productType !== "digital" && (sd?.label || it.size)}
                         {it.frameColor && it.productType !== "digital" ? ` · ${it.frameColor}` : ""}
                       </div>
+                      {it.portraitName && (
+                        <div style={{ display:"inline-flex", alignItems:"center", gap:4,
+                          marginTop:3, fontSize:10.5, fontWeight:600,
+                          color:RED, letterSpacing:".1em" }}>
+                          <span>✦</span>
+                          <span>NAME: {String(it.portraitName).toUpperCase()}</span>
+                        </div>
+                      )}
                       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
                         <div style={{ display:"flex", alignItems:"center", gap:4, border:`1px solid ${BORDER}`, borderRadius:8 }}>
                           <button
