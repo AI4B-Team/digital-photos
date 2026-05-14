@@ -1709,9 +1709,11 @@ export default function Customize() {
                       {!isActive && (
                         <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:1 }}>
                           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-                            <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                              ${card.id==="digital"?digitalOrig:origPrice}
-                            </span>
+                            {discountAmt > 0 && (
+                              <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
+                                ${card.id==="digital"?digitalOrig:origPrice}
+                              </span>
+                            )}
                             <span style={{ fontSize:15, fontWeight:800, color:RED,
                               fontFamily:"'Poppins',sans-serif" }}>
                               ${card.id==="digital"?digitalPrice:price}
