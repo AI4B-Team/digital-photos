@@ -1898,7 +1898,19 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       } else {
         const tmpl = templates.find(t => t.id === selected.id);
         const card = tmplCards.find(c => c.id === selected.id);
-        onConfirm({ styles: ["royal","renaissance","cinematic","fantasy"], templatePrompt: tmpl?.prompt || "", styleRefUrl: await getStyleRef(card?.img) });
+        const base = tmpl?.prompt || "";
+        const variants = [
+          `${base} — variation 1: front-facing pose, head tilted slightly, centered composition`,
+          `${base} — variation 2: side profile angle, looking off camera, soft cinematic light`,
+          `${base} — variation 3: tight close-up portrait crop, eyes engaged with viewer, shallow depth of field`,
+          `${base} — variation 4: wider shot showing more of the scene and props, dynamic composition`,
+        ];
+        onConfirm({
+          styles: ["v1","v2","v3","v4"],
+          templatePrompt: base,
+          templatePrompts: variants,
+          styleRefUrl: await getStyleRef(card?.img),
+        });
       }
     } finally {
       setConfirming(false);
