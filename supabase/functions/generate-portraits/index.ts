@@ -92,9 +92,12 @@ serve(async (req) => {
     // Generate portraits for each style
     const results: { style: string; url: string; url_hd: string }[] = [];
 
-    for (const style of styles) {
-      const prompt = STYLE_PROMPTS[style];
-      if (!prompt) continue;
+    const GENERIC_PHOTO_PROMPT = "Create a high-quality hyper-realistic photograph portrait of the subject in the scene described. Preserve the subject's likeness, fur/skin/eye features. Natural lighting, sharp detail, professional photography quality.";
+
+    for (let idx = 0; idx < styles.length; idx++) {
+      const style = styles[idx];
+      const prompt = STYLE_PROMPTS[style] || GENERIC_PHOTO_PROMPT;
+      const perVariantPrompt = (Array.isArray(templatePrompts) && templatePrompts[idx]) || templatePrompt;
 
       try {
         const response = await fetch(
