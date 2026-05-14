@@ -1102,10 +1102,12 @@ export default function Customize() {
               display: "flex", alignItems: "center", justifyContent: "center",
               // Deep inner rabbet — photo sits recessed with a clear ledge
               boxShadow: isFrameless ? "none" : `
-                0 0 0 1px rgba(0,0,0,.9),
-                inset 0 2px 6px rgba(0,0,0,.45),
-                inset 2px 0 4px rgba(0,0,0,.30),
-                inset 0 -1px 2px rgba(255,255,255,.08)
+                0 0 0 1px rgba(0,0,0,.95),
+                0 0 0 2px rgba(255,255,255,.06),
+                inset 0 3px 8px rgba(0,0,0,.65),
+                inset 3px 0 6px rgba(0,0,0,.45),
+                inset -2px 0 4px rgba(0,0,0,.30),
+                inset 0 -2px 4px rgba(255,255,255,.10)
               `,
             }}>
               {(() => {
