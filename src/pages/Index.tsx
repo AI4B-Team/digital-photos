@@ -1391,29 +1391,6 @@ function HomePage({ onGenerate }) {
         </div>
       </section>
 
-      {/* ■■ Style Gallery ■■ */}
-      <section style={{ background:"#F9F7F4", borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}`, padding:"80px 32px" }}>
-        <div style={{ maxWidth:1100, margin:"0 auto" }}>
-          <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Six Timeless Art Styles</p>
-          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>Every Photo Reimagined Six Ways</h2>
-          <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>You receive all six styles. Choose which ones to print and keep.</p>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12 }} className="sg3">
-            {STYLES.map(style => {
-              const teaser = TEASERS[0];
-              const portrait = teaser.portraits?.find(p => p.style === style.label) || teaser.portraits?.[0];
-              return (
-                <div key={style.id} onClick={() => pickStyleScroll(style.id)} style={{ position:"relative", borderRadius:16, overflow:"hidden", border:`1px solid ${T.border}`, aspectRatio:".78", cursor:"pointer", transition:"transform .2s" }} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-3px)"} onMouseLeave={e=>e.currentTarget.style.transform="translateY(0)"}>
-                  <img src={portrait?.url || teaser.before} alt={style.label} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-                  <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"32px 16px 16px", background:"linear-gradient(transparent,rgba(10,10,10,.82))" }}>
-                    <span style={{ fontSize:13, fontWeight:700, letterSpacing:".18em", textTransform:"uppercase", color:"#FFFFFF", display:"block", fontFamily:"'Poppins',sans-serif" }}>{style.label}</span>
-                    <span style={{ fontSize:11, color:"rgba(255,255,255,.7)", marginTop:3, display:"block", fontFamily:"'Poppins',sans-serif" }}>{style.desc || "Timeless art style"}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* ■■ Occasions ■■ */}
       <section style={{ padding:"80px 32px", background:T.bg }}>
