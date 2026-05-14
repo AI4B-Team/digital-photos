@@ -1908,6 +1908,34 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         </>
       )}
 
+      {/* Themed sections — Seasons / Holidays / Occasions */}
+      {THEMES[cat] && (Object.keys(THEMES[cat]) as Array<keyof typeof THEMES[typeof cat]>).map(group => {
+        const items = THEMES[cat][group];
+        if (!items || !items.length) return null;
+        return (
+          <div key={group}>
+            <div style={{ maxWidth:1200, margin:"0 auto", padding:"36px 6vw 8px" }}>
+              <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
+                color:T.muted, fontWeight:600 }}>{group}</p>
+            </div>
+            <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 6vw" }}>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
+                {items.map(t => {
+                  const isSelected = selected?.type === "template" && selected?.id === t.id;
+                  return (
+                    <StyleCard key={`th-${t.id}`}
+                      card={{ id:t.id, label:t.label, desc:t.desc, img:t.img }}
+                      isSelected={isSelected}
+                      onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
+                      onConfirm={() => onConfirm({ styles:["royal"], templatePrompt: t.prompt })}/>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
       <div style={{ height:60 }}/>
     </div>
   );
