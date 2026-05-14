@@ -1723,7 +1723,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
     const spiv = setInterval(() => {
       setProofFade(false);
       setTimeout(() => {
-        setProofIdx(p => (p + 1) % SOCIAL_PROOF.length);
+        setProofIdx(p => (p + 1) % proofDeck.length);
         setProofFade(true);
       }, 280);
     }, 3500);
