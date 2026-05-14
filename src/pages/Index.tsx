@@ -1310,7 +1310,7 @@ function HomePage({ onGenerate }) {
                         const v = e.target.value.slice(0, 20);
                         setHeroNames(prev => prev.map((x, j) => j === i ? v : x));
                       }}
-                      placeholder={heroNames.length > 1 ? `Name For Photo ${i + 1}` : "e.g., Barley, Sofia, Max..."}
+                      placeholder={req.namePlaceholders[i] || req.namePlaceholders[0] || `Name ${i+1}`}
                       maxLength={20}
                       style={{
                         width:"100%", padding:"9px 12px", borderRadius:6,
