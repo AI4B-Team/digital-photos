@@ -1750,7 +1750,7 @@ export default function Customize() {
                           const unitPrice = itemUnitPrice(it);
                           const qty = it.qty || 1;
                           const lineP = unitPrice * qty;
-                          const listP = Math.round(unitPrice * 1.4) * qty;
+                          const listP = unitPrice * qty; // retail, used as strikethrough in cart
                           const isSel = it.id === selectedId;
                           return (
                             <div key={it.id} onClick={() => setSelectedId(it.id)} style={{
