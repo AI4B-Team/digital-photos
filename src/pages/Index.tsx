@@ -45,7 +45,13 @@ import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
 import portraitBabiesFan from "@/assets/portrait-babies-fantasy.jpg";
 import portraitBabiesCine from "@/assets/portrait-babies-cinematic.jpg";
 import portraitBabiesMin from "@/assets/portrait-babies-minimal.jpg";
-import babyMomCreative from "@/assets/baby-mom-creative.jpg";
+import babySkateboard from "@/assets/baby-skateboard.jpg";
+import babyBasketball from "@/assets/baby-basketball.jpg";
+import babySuperman from "@/assets/baby-superman.jpg";
+import babyBalloonsFall from "@/assets/baby-balloons-fall.jpg";
+import babyBoxing from "@/assets/baby-boxing.jpg";
+import babySoccer from "@/assets/baby-soccer.jpg";
+import babyBalloonBasket from "@/assets/baby-balloon-basket.jpg";
 import portraitCouplesRoyal from "@/assets/portrait-couples-royal.jpg";
 import portraitCouplesRen from "@/assets/portrait-couples-renaissance.jpg";
 import portraitCouplesStory from "@/assets/portrait-couples-storybook.jpg";
@@ -293,9 +299,27 @@ export const TEMPLATES: Record<string, { id:string; label:string; desc:string; i
       prompt:"dressed as an American football star wearing helmet and team jersey, running with a football across a stadium field under bright stadium lights, blurred crowd in the background, dynamic hyper-realistic sports photograph" },
   ],
   babies: [
-    { id:"baby-mom-creative", label:"Mom & Baby Scenes", desc:"Creative Wall Photos",
-      img: babyMomCreative,
-      prompt:"as a creative mom-and-baby scene photographed against a plain white wall with a wood-plank floor at the bottom, shot from directly overhead so both subjects appear to be 'standing' on the wall. The reference image shows FOUR scenes in a 2x2 layout — pick one of the four scenes and recreate it exactly with the user's baby (and mom if present in the user's photo). TOP-LEFT: baby in grey beanie and printed onesie lying on a skateboard with green and purple wheels, mom in white tank top and ripped blue jeans leaning casually with arms crossed, looking down at baby smiling. TOP-RIGHT: baby in green shorts reaching up to dunk an orange basketball into a wall-mounted mini hoop, mom in black Chicago Bulls jersey and white denim shorts with white sneakers, arms crossed. BOTTOM-LEFT: baby in blue Superman onesie with red cape flying horizontally, mom in white shirt and light denim shorts with silver duct tape over her mouth (Lois Lane saved). BOTTOM-RIGHT: baby in grey striped onesie wearing oversized red boxing gloves kicking a red and black hanging punching bag, mom in white tank and grey shorts in fighting stance. Bright clean natural daylight, minimalist white wall background, wood floor strip at the bottom, playful creative family photography, hyper-realistic photograph. Output ONLY the photo content (no frame, no border, no mockup chrome)." },
+    { id:"baby-skateboard", label:"Little Skater", desc:"Mom & Baby Skate",
+      img: babySkateboard,
+      prompt:"creative overhead mom-and-baby photo against a plain white wall with a wood-plank floor strip at the bottom, shot top-down so both appear to stand on the wall. Baby wears a grey beanie and a printed white onesie with grey joggers, lying on a skateboard with green and purple wheels as if cruising. Mom stands next to baby in a white tank top and ripped blue jeans, arms crossed, looking down at baby with a soft smile, hair in a messy bun. Bright natural daylight, minimalist clean composition, hyper-realistic photograph. Output only the photo content." },
+    { id:"baby-basketball", label:"Slam Dunk", desc:"Mini Baller",
+      img: babyBasketball,
+      prompt:"creative overhead mom-and-baby photo against a white wall with a wood-plank floor strip, shot top-down so they appear to stand on the wall. Baby in green shorts reaches up to dunk an orange basketball into a small wall-mounted mini hoop with red trim. Mom wears a black Chicago Bulls jersey, white ripped denim shorts and white sneakers, arms crossed, looking at baby with an excited smile, hair in a messy bun. Bright clean daylight, playful sporty mood, hyper-realistic photograph. Output only the photo content." },
+    { id:"baby-superman", label:"Super Baby", desc:"Caped Hero", 
+      img: babySuperman,
+      prompt:"creative overhead mom-and-baby photo against a white wall with a wood-plank floor strip, shot top-down so they appear to stand on the wall. Baby in a blue Superman onesie with the red 'S' logo and a flowing red cape, posed flying horizontally with one fist forward. Mom wears a tied white button-up shirt and light denim shorts, with a strip of silver duct tape across her mouth (Lois Lane saved gag), looking sideways at baby. Bright natural light, comic-book playful mood, hyper-realistic photograph. Output only the photo content." },
+    { id:"baby-balloons-fall", label:"Balloon Drop", desc:"Floating Mischief",
+      img: babyBalloonsFall,
+      prompt:"creative overhead mom-and-baby photo against a white wall with a wood-plank floor strip, shot top-down. Baby in a grey hooded onesie hangs upside-down from two pearly mint-green balloons tied to its feet. Mom wears a dusty pink oversized sweater and black leggings, holding the string of a single pink balloon, looking at baby with a playful smile, hair in a messy bun. Bright natural daylight, whimsical pastel mood, hyper-realistic photograph. Output only the photo content." },
+    { id:"baby-boxing", label:"Tiny Champ", desc:"Knockout Round",
+      img: babyBoxing,
+      prompt:"creative overhead mom-and-baby photo against a white wall with a wood-plank floor strip, shot top-down. Baby in a grey striped onesie wears oversized red and black boxing gloves and kicks a red and black hanging punching bag. Mom wears a white tank top and grey athletic shorts, fists up in a boxing stance, looking at baby with a determined smile, hair in a high bun. Bright natural daylight, athletic playful mood, hyper-realistic photograph. Output only the photo content." },
+    { id:"baby-soccer", label:"Soccer Star", desc:"Goal Celebration",
+      img: babySoccer,
+      prompt:"creative overhead mom-and-baby photo against a white wall with a wood-plank floor strip, shot top-down. Baby in a navy Adidas Sweden football tracksuit kicks a white and blue soccer ball with both feet. Mom wears the matching yellow Sweden Adidas jersey, white denim shorts and white sneakers, throwing both hands up in double peace signs with a wide cheering open-mouth smile, hair in a messy bun. Bright natural daylight, sporty celebratory mood, hyper-realistic photograph. Output only the photo content." },
+    { id:"baby-balloon-basket", label:"Hot Air Baby", desc:"Balloon Basket Ride",
+      img: babyBalloonBasket,
+      prompt:"creative overhead mom-and-baby photo against a white wall with a wood-plank floor strip, shot top-down. Baby sits inside a woven straw belly basket holding a small green stuffed frog, with three balloons (green, red, yellow) tied above the basket like a hot-air balloon. Mom wears a white blouse and black knit lace skirt, one hand on her hip, looking at baby with a warm smile, hair in a messy bun. Bright natural daylight, whimsical adventure mood, hyper-realistic photograph. Output only the photo content." },
     { id:"baby-royal",    label:"Royal Baby",       desc:"Prince Or Princess",
       img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=240&h=300&fit=crop&q=80",
       prompt:"as a royal baby prince or princess in a silk christening gown with pearl accessories, opulent palace background" },
