@@ -1179,7 +1179,7 @@ export default function Customize() {
                           <span style={{
                             display:"inline-block",
                             color: NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff",
-                            fontSize:"clamp(14px, 6.5%, 48px)",
+                            fontSize: `clamp(12px, ${NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "6.5%"}, 72px)`,
                             fontFamily: nameFontId==="serif"
                               ? "Georgia,'Times New Roman',serif"
                               : "'Poppins',sans-serif",
