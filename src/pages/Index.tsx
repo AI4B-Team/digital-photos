@@ -2093,8 +2093,8 @@ export default function App() {
   }, [setSession]);
 
   // Step 2: user picks style → create session, then generate
-  const handleStyleSelected = useCallback(async ({ styles, templatePrompt, styleRefUrl }) => {
-    setLocal(prev => ({ ...prev, styles, templatePrompt, styleRefUrl: styleRefUrl || "" }));
+  const handleStyleSelected = useCallback(async ({ styles, templatePrompt, templatePrompts, styleRefUrl }) => {
+    setLocal(prev => ({ ...prev, styles, templatePrompt, templatePrompts: templatePrompts || [], styleRefUrl: styleRefUrl || "" }));
     setSession({ styles, heroName: localSession.heroName } as any);
     let sessionId = null;
     try {
