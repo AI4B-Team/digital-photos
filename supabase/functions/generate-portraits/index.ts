@@ -92,9 +92,35 @@ serve(async (req) => {
     // Generate portraits for each style — IN PARALLEL to avoid 150s edge function timeout
     const GENERIC_PHOTO_PROMPT = "Create a high-quality hyper-realistic photograph portrait of the subject in the scene described. Preserve the subject's likeness, fur/skin/eye features. Natural lighting, sharp detail, professional photography quality.";
 
+    // Helper: fetch any image URL and convert to base64 data URL (Gemini fetches data URLs reliably)
+    const toDataUrl = async (url: string): Promise<string> => {
+      try {
+        if (!url) return "";
+        if (url.startsWith("data:image/")) return url;
+        const r = await fetch(url);
+        if (!r.ok) { console.warn("img fetch failed", r.status, url); return ""; }
+        const ct = r.headers.get("content-type") || "image/jpeg";
+        if (!ct.startsWith("image/")) { console.warn("non-image content-type", ct, url); return ""; }
+        const buf = new Uint8Array(await r.arrayBuffer());
+        let bin = "";
+        for (let i = 0; i < buf.length; i++) bin += String.fromCharCode(buf[i]);
+        return `data:${ct};base64,${btoa(bin)}`;
+      } catch (e) { console.warn("toDataUrl err", e); return ""; }
+    };
+
+    const subjectMainData = await toDataUrl(photoUrl);
+    const subjectExtraData = Array.isArray(extraPhotoUrls)
+      ? (await Promise.all(extraPhotoUrls.filter((u: string) => typeof u === "string" && u.length > 0).map(toDataUrl))).filter((u) => u.length > 0)
+      : [];
+
     const generateOne = async (style: string, idx: number): Promise<{ style: string; url: string; url_hd: string } | null> => {
       const prompt = STYLE_PROMPTS[style] || GENERIC_PHOTO_PROMPT;
       const perVariantPrompt = (Array.isArray(templatePrompts) && templatePrompts[idx]) || templatePrompt;
+
+      // Use pro image model for couples (better two-face identity preservation)
+      const modelName = category === "couples"
+        ? "google/gemini-3-pro-image-preview"
+        : "google/gemini-3.1-flash-image-preview";
 
       try {
         const response = await fetch(
@@ -106,7 +132,7 @@ serve(async (req) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              model: "google/gemini-3.1-flash-image-preview",
+              model: modelName,
               messages: [
                 {
                   role: "user",
@@ -115,19 +141,13 @@ serve(async (req) => {
                       type: "text",
                       text: styleRefDataUrl
                         ? (category === "babies" || category === "people" || category === "memorial" || category === "gifts" || category === "couples"
-                          ? `TASK: Recreate the reference scene from IMAGE 1 exactly, but use the PEOPLE from the SUBJECT IMAGES (IMAGE 2 and any further images) as the subjects.\n\nIMAGE 1 = REFERENCE SCENE TEMPLATE. Copy from it:\n- Exact same composition, camera angle, framing, crop\n- Exact same poses, body positions, gestures, expressions\n- Exact same costumes, wardrobe, accessories, props\n- Exact same background, setting, floor, wall\n- Exact same lighting, color grading, photographic style\n\nSUBJECT IMAGES (IMAGE 2 onward) = SUBJECT SOURCES. Each subject image may contain one or more people. CRITICAL identity rules:\n- Preserve the IDENTITY (face, skin tone, hair color, hair style, distinctive features) of EVERY person across all subject images.\n- For couples: there will typically be TWO subject images, one per partner. Map partner A (from IMAGE 2) onto one person in the reference scene and partner B (from IMAGE 3) onto the other person. Both partners' faces must be clearly recognizable.\n- For solo subjects: preserve that single person's identity.\n- Do NOT invent or replace any person. Do NOT drop any subject.\n- Do NOT copy the subject images' clothing, background, or lighting — only their facial identities.\n\n${categoryContext}${perVariantPrompt ? `\n\n>>> SCENE / VARIATION INSTRUCTION: ${perVariantPrompt} <<<` : ""}\n\nCRITICAL OUTPUT RULES:\n1. Output ONLY the photo content at full-bleed. NO frame, NO mat/border, NO mockup chrome.\n2. Hyper-realistic photograph matching the reference scene 1:1.\n3. Every person from the subject images must appear with their real face preserved.\n4. Wardrobe/scene/props/lighting come from IMAGE 1 ONLY.`
+                          ? `TASK: Recreate the reference scene from IMAGE 1 exactly, but replace the people with the SUBJECTS from IMAGE 2${subjectExtraData.length ? " and IMAGE 3" : ""}.\n\nIMAGE 1 = REFERENCE SCENE TEMPLATE. Copy from it: composition, camera angle, framing, poses, body positions, gestures, expressions, costumes/wardrobe, accessories, props, background, lighting, color grading.\n\n${category === "couples" && subjectExtraData.length ? `IMAGE 2 = PARTNER A (place on the LEFT person in the reference scene).\nIMAGE 3 = PARTNER B (place on the RIGHT person in the reference scene).\nUse ONLY the FACES from IMAGE 2 and IMAGE 3 — preserve face shape, skin tone, hair color, hair style, eye color, distinctive features of EACH partner. Both partners' faces MUST be clearly recognizable as the people in IMAGE 2 and IMAGE 3 respectively. Do NOT swap them. Do NOT blend them. Do NOT invent new faces. Do NOT copy any clothing/background/lighting from IMAGE 2 or IMAGE 3.` : `IMAGE 2 = SUBJECT. Use ONLY the face/identity from IMAGE 2 — preserve face shape, skin tone, hair, eye color, distinctive features. Do NOT copy IMAGE 2's clothing, background, or lighting.`}\n\n${categoryContext}${perVariantPrompt ? `\n\n>>> SCENE / VARIATION INSTRUCTION: ${perVariantPrompt} <<<` : ""}\n\nCRITICAL OUTPUT RULES:\n1. Output ONLY the photo content at full-bleed. NO frame, NO mat/border, NO mockup chrome.\n2. Hyper-realistic photograph matching the reference scene 1:1.\n3. Faces MUST match the subject images exactly.\n4. Wardrobe/scene/props/lighting come from IMAGE 1 ONLY.`
                           : `TASK: Pick the SPECIFIC framed picture indicated in the variation instruction below from IMAGE 1 (a wall mockup containing multiple framed pet pictures). Recreate that ONE framed scene exactly, but replace the pet inside it with the pet from IMAGE 2.\n\nIMAGE 1 = REFERENCE TEMPLATE — a room/wall mockup containing 4 framed pet portraits in a 2x2 layout. You must look INSIDE the specific frame named in the variation instruction and copy the scene that is inside that frame:\n- Exact same pose, body position, head angle, and expression\n- Exact same costume, accessories, props (shower cap, newspaper, hairdryer, bathtub, soap, etc.)\n- Exact same background setting (tiled wall, toilet, plain backdrop, tub interior, etc.)\n- Exact same lighting, color grading, and photographic style\n- Exact same camera angle, framing, and crop\nThe output must look IDENTICAL to that one framed photo, just with a different pet breed/identity.\n\nIMAGE 2 = SUBJECT SOURCE. Use ONLY for identity: face/head shape, fur color/pattern, markings, eye color, breed/species. Do NOT copy IMAGE 2's background, lighting, or photo style.\n\n${categoryContext}${perVariantPrompt ? `\n\n>>> VARIATION INSTRUCTION (which frame to copy): ${perVariantPrompt} <<<` : ""}\n\nCRITICAL OUTPUT RULES:\n1. Output ONLY the artwork content INSIDE the chosen frame at full-bleed. NO frame, NO mat/border, NO wall, NO room, NO other frames, NO mockup chrome.\n2. The result must be a standalone hyper-realistic photograph that matches the chosen scene's style 1:1.\n3. Pet identity = IMAGE 2. Everything else (pose, props, scene, lighting, costume) = the chosen frame in IMAGE 1.\n4. Do not invent a new scene. Do not blend frames. Copy the chosen frame's scene exactly.`)
                         : `${prompt}\n\n${categoryContext}${perVariantPrompt ? `\n\nScene Direction: ${perVariantPrompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
                     },
                     ...(styleRefDataUrl ? [{ type: "image_url", image_url: { url: styleRefDataUrl } }] : []),
-                    {
-                      type: "image_url",
-                      image_url: { url: photoUrl },
-                    },
-                    ...(Array.isArray(extraPhotoUrls) ? extraPhotoUrls.filter((u: string) => typeof u === "string" && u.length > 0).map((u: string) => ({
-                      type: "image_url" as const,
-                      image_url: { url: u },
-                    })) : []),
+                    ...(subjectMainData ? [{ type: "image_url" as const, image_url: { url: subjectMainData } }] : [{ type: "image_url" as const, image_url: { url: photoUrl } }]),
+                    ...subjectExtraData.map((u) => ({ type: "image_url" as const, image_url: { url: u } })),
                   ],
                 },
               ],
