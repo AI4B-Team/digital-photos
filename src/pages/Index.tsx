@@ -1898,7 +1898,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       } else {
         const tmpl = templates.find(t => t.id === selected.id);
         const card = tmplCards.find(c => c.id === selected.id);
-        onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "", styleRefUrl: await getStyleRef(card?.img) });
+        onConfirm({ styles: ["royal","renaissance","cinematic","fantasy"], templatePrompt: tmpl?.prompt || "", styleRefUrl: await getStyleRef(card?.img) });
       }
     } finally {
       setConfirming(false);
