@@ -1856,13 +1856,20 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     img: t.img,
   }));
 
+  const toAbsUrl = (u?: string) => {
+    if (!u) return "";
+    try { return new URL(u, window.location.origin).href; } catch { return u; }
+  };
+
   const handleConfirm = () => {
     if (!selected) return;
     if (selected.type === "style") {
-      onConfirm({ styles: [selected.id], templatePrompt: "" });
+      const card = baseCards.find(c => c.id === selected.id);
+      onConfirm({ styles: [selected.id], templatePrompt: "", styleRefUrl: toAbsUrl(card?.img) });
     } else {
       const tmpl = templates.find(t => t.id === selected.id);
-      onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "" });
+      const card = tmplCards.find(c => c.id === selected.id);
+      onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "", styleRefUrl: toAbsUrl(card?.img) });
     }
   };
 
