@@ -1841,27 +1841,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     <div style={{ background:T.bg, minHeight:"100vh", color:T.cream }}>
       <style>{G}</style>
 
-      {/* Top bar */}
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
-        padding:"22px 6vw", borderBottom:`1px solid ${T.border}` }}>
-        <button onClick={onBack}
-          style={{ display:"flex", alignItems:"center", gap:7, background:"none",
-            border:"none", cursor:"pointer", color:T.muted, fontSize:13,
-            fontFamily:"'Poppins',sans-serif" }}>
-          <ChevronLeft size={16}/> Back
-        </button>
-        <div style={{ display:"flex", alignItems:"center", gap:10, fontSize:11,
-          color:T.muted, letterSpacing:".08em", fontFamily:"'Poppins',sans-serif" }}>
-          <span style={{ color:T.gold, fontWeight:600 }}>1 Upload</span>
-          <span>›</span>
-          <span style={{ color:T.cream, fontWeight:600 }}>2 Choose Style</span>
-          <span>›</span>
-          <span>3 Preview</span>
-          <span>›</span>
-          <span>4 Order</span>
-        </div>
-        <div style={{ width:60 }}/>
-      </div>
+      <SiteHeader current="upload" onBack={onBack} total={0}/>
 
       {/* Headline */}
       <div style={{ maxWidth:1200, margin:"0 auto", padding:"40px 6vw 20px", textAlign:"center" }}>
