@@ -1736,7 +1736,10 @@ export default function Customize() {
           maxHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
-          background:`radial-gradient(ellipse at 50% 30%, #FFFFFF 0%, ${BG} 70%)`,
+          background:`
+            radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,250,240,.95) 0%, rgba(245,238,228,.4) 40%, rgba(232,222,208,0) 75%),
+            linear-gradient(180deg, #EFE6D6 0%, #E4D7C0 55%, #D4C3A6 100%)
+          `,
           overflow:"hidden",
           position:"relative",
         }}>
