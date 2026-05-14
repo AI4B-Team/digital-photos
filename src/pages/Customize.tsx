@@ -5,6 +5,7 @@ import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import PreviewsDrawer from "@/components/PreviewsDrawer";
+import SiteHeader from "@/components/SiteHeader";
 import shopPayLogo from "@/assets/payment-logos/shop-pay.svg";
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
 import klarnaLogo from "@/assets/payment-logos/klarna.svg";
@@ -1484,12 +1485,6 @@ export default function Customize() {
     }
   };
 
-  const STEPS = [
-    { id:"upload",    label:"Upload",    to:"/" },
-    { id:"customize", label:"Customize", to:"/customize" },
-    { id:"print",     label:"Print",     to:"/checkout" },
-  ];
-
   return (
     <div className="cz-root">
       <style>{G}</style>
@@ -1516,78 +1511,17 @@ export default function Customize() {
       )}
 
       {/* Header */}
-      <header style={{
-        position: "sticky", top: discountAmt > 0 ? 38 : 0, zIndex: 20, background: "rgba(244,241,236,.85)",
-        backdropFilter: "blur(10px)",
-        borderBottom: `1px solid ${BORDER}`, padding: "14px 22px",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-      }}>
-        <button onClick={() => navigate(-1)} style={{
-          background:"transparent", border:"none", cursor:"pointer", color: TXT,
-          display:"flex", alignItems:"center", gap:6, fontFamily:"Poppins", fontWeight:500, fontSize:13.5,
-        }}>
-          <ArrowLeft size={16}/> Back
-        </button>
-
-        <nav style={{
-          display:"flex", alignItems:"center", gap:2,
-          position:"absolute", left:"50%", top:"50%", transform:"translate(-50%, -50%)",
-        }}>
-          {STEPS.map((s, i) => (
-            <div key={s.id} style={{ display:"flex", alignItems:"center", gap:2 }}>
-              <button className={`cz-step ${s.id==="customize"?"on":""}`} onClick={() => navigate(s.to)}>
-                <span className="cz-step-num">{i+1}</span>{s.label}
-              </button>
-              {i < STEPS.length-1 && <ChevronRight size={14} color={MUTED}/>}
-            </div>
-          ))}
-        </nav>
-
-        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-          <div style={{
-            display:"flex", alignItems:"baseline", gap:6,
-            padding:"7px 14px", borderRadius:12, background:"#fff", border:`1px solid ${BORDER}`,
-          }}>
-            <span style={{ fontSize:10.5, letterSpacing:".14em", color:MUTED, fontWeight:600 }}>TOTAL</span>
-            <span className="cz-serif" style={{ fontSize:18, fontWeight:700, color:INK }}>${total}</span>
-          </div>
-          <button
-            onClick={() => setPreviewsOpen(true)}
-            aria-label="Open my previews"
-            title="My Previews"
-            style={{
-              position:"relative", display:"flex", alignItems:"center", gap:6,
-              padding:"9px 12px", borderRadius:12, background:"#fff", color:INK,
-              border:`1px solid ${BORDER}`, cursor:"pointer",
-              fontFamily:"'Poppins',sans-serif", fontWeight:600, fontSize:13,
-            }}
-          >
-            <ImageIcon size={15}/>
-            Previews
-          </button>
-          <button
-            onClick={() => setCartOpen(true)}
-            aria-label="Open cart"
-            style={{
-              position:"relative", display:"flex", alignItems:"center", gap:6,
-              padding:"9px 14px", borderRadius:12, background:INK, color:"#fff",
-              border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif",
-              fontWeight:600, fontSize:13,
-            }}
-          >
-            <ShoppingCart size={15}/>
-            Cart
-            {cartCount > 0 && (
-              <span style={{
-                position:"absolute", top:-6, right:-6, minWidth:20, height:20, padding:"0 6px",
-                borderRadius:10, background:RED, color:"#fff", fontSize:11, fontWeight:800,
-                display:"inline-flex", alignItems:"center", justifyContent:"center",
-                boxShadow:"0 2px 6px rgba(0,0,0,.2)",
-              }}>{cartCount}</span>
-            )}
-          </button>
-        </div>
-      </header>
+      <SiteHeader
+        current="customize"
+        onBack={() => navigate(-1)}
+        total={total}
+        showPreviews
+        onPreviews={() => setPreviewsOpen(true)}
+        showCart
+        onCart={() => setCartOpen(true)}
+        cartCount={cartCount}
+        topOffset={discountAmt > 0 ? 38 : 0}
+      />
 
       {/* Three-column layout */}
       <div className="cz-grid" style={{
