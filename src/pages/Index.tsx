@@ -742,7 +742,7 @@ export const THEMES: Record<string, ThemeGroups> = {
 
 // Live teaser — one per category, cycles automatically
 const TEASERS = [
-  { cat:"Pets",     catId:"pets",     style:"Royal",       before:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop&q=80", after:scenePets,    portrait:portraitPets,
+  { cat:"Pets",     catId:"pets",     style:"Royal",       before:beforePets, after:scenePets,    portrait:portraitPets,
     portraits:[
       { url:portraitPets,       style:"Royal" },
       { url:portraitPetsRen,    style:"Renaissance" },
@@ -751,7 +751,7 @@ const TEASERS = [
       { url:portraitPetsCine,   style:"Cinematic" },
       { url:portraitPetsMin,    style:"Minimal" },
     ] },
-  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&h=600&fit=crop&q=80", after:sceneBabies,  portrait:portraitBabies,
+  { cat:"Babies",   catId:"babies",   style:"Storybook",   before:beforeBabies, after:sceneBabies,  portrait:portraitBabies,
     portraits:[
       { url:portraitBabiesRoyal, style:"Royal" },
       { url:portraitBabiesRen,   style:"Renaissance" },
@@ -760,7 +760,7 @@ const TEASERS = [
       { url:portraitBabiesCine,  style:"Cinematic" },
       { url:portraitBabiesMin,   style:"Minimal" },
     ] },
-  { cat:"Couples",  catId:"couples",  style:"Royal",       before:"https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&h=600&fit=crop&q=80", after:portraitCouplesRoyal, portrait:portraitCouplesRoyal,
+  { cat:"Couples",  catId:"couples",  style:"Royal",       before:beforeCouples, after:portraitCouplesRoyal, portrait:portraitCouplesRoyal,
     portraits:[
       { url:portraitCouplesRoyal, style:"Royal" },
       { url:portraitCouplesRen,   style:"Renaissance" },
@@ -769,7 +769,7 @@ const TEASERS = [
       { url:portraitCouplesCine,  style:"Cinematic" },
       { url:portraitCouplesMin,   style:"Minimal" },
     ] },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=600&fit=crop&q=80", after:scenePeople,  portrait:portraitPeople,
+  { cat:"People",   catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:portraitPeople,
     portraits:[
       { url:portraitPeopleRoyal, style:"Royal" },
       { url:portraitPeopleRen,   style:"Renaissance" },
@@ -778,7 +778,7 @@ const TEASERS = [
       { url:portraitPeopleCine,  style:"Cinematic" },
       { url:portraitPeopleMin,   style:"Minimal" },
     ] },
-  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:"https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=600&h=600&fit=crop&q=80", after:sceneMemorial,portrait:portraitMemorial,
+  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:beforeMemorial, after:sceneMemorial,portrait:portraitMemorial,
     portraits:[
       { url:portraitMemorialRoyal, style:"Royal" },
       { url:portraitMemorialRen,   style:"Renaissance" },
@@ -787,7 +787,7 @@ const TEASERS = [
       { url:portraitMemorialCine,  style:"Cinematic" },
       { url:portraitMemorial,      style:"Minimal" },
     ] },
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts,
+  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:beforeGifts, after:sceneGifts,   portrait:portraitGifts,
     portraits:[
       { url:portraitGiftsRoyal, style:"Royal" },
       { url:portraitGifts,      style:"Renaissance" },
