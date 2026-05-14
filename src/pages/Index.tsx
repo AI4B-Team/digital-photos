@@ -13,6 +13,7 @@ import {
   PawPrint, Baby, Users, Flower2, Search, Image as ImageIcon,
   SlidersHorizontal, Package, Globe, Droplets, FileText, Award
 } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
 import scenePets from "@/assets/scene-pets.jpg";
 import sceneBabies from "@/assets/scene-babies.jpg";
 import scenePeople from "@/assets/scene-people.jpg";
