@@ -2080,7 +2080,7 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confi
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", styleRefUrl:"", sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", templatePrompts:[], styleRefUrl:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
