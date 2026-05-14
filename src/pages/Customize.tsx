@@ -281,22 +281,29 @@ const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sk
 };
 
 const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> = {
-  // Classic frames: 8 Prodigi colours (confirmed)
+  // Classic frames — premium matte palette
   "classic-frame": [
-    { id:"black",          label:"Black",          color:"#1a1a1a" },
-    { id:"white",          label:"White",          color:"#f4f4f4" },
-    { id:"natural",        label:"Natural",        color:"#c89968" },
-    { id:"antique-silver", label:"Antique Silver", color:"#9a9a9a" },
-    { id:"antique-gold",   label:"Antique Gold",   color:"#c4963a" },
-    { id:"dark-grey",      label:"Dark Grey",      color:"#555555" },
-    { id:"light-grey",     label:"Light Grey",     color:"#d0d0d0" },
-    { id:"brown",          label:"Brown",          color:"#8B5E3C" },
+    { id:"black",          label:"Matte Black",     color:"#15151a" },
+    { id:"white",          label:"Matte White",     color:"#efece6" },
+    { id:"natural",        label:"Natural Oak",     color:"#c89968" },
+    { id:"walnut",         label:"Walnut",          color:"#5a3a25" },
+    { id:"espresso",       label:"Espresso",        color:"#2a1d15" },
+    { id:"antique-silver", label:"Antique Silver",  color:"#9a9a9a" },
+    { id:"antique-gold",   label:"Antique Gold",    color:"#c4963a" },
+    { id:"champagne",      label:"Champagne",       color:"#d8c39a" },
+    { id:"dark-grey",      label:"Charcoal",        color:"#3d3d42" },
+    { id:"light-grey",     label:"Stone Grey",      color:"#c2c0bb" },
+    { id:"sage",           label:"Matte Sage",      color:"#7a8a72" },
+    { id:"navy",           label:"Matte Navy",      color:"#1f2a3a" },
+    { id:"bone",           label:"Bone",            color:"#e8e1d0" },
+    { id:"terracotta",     label:"Terracotta",      color:"#a0533a" },
+    { id:"brown",          label:"Cocoa",           color:"#6b4a30" },
   ],
   // Box frames: 3 Prodigi colours ONLY (black, white, natural — no brown)
   "box-frame": [
-    { id:"black",   label:"Black",   color:"#1a1a1a" },
-    { id:"white",   label:"White",   color:"#f4f4f4" },
-    { id:"natural", label:"Natural", color:"#c89968" },
+    { id:"black",   label:"Matte Black",   color:"#15151a" },
+    { id:"white",   label:"Matte White",   color:"#efece6" },
+    { id:"natural", label:"Natural Oak",   color:"#c89968" },
   ],
 };
 
