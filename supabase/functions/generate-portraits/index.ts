@@ -61,6 +61,30 @@ serve(async (req) => {
         ? "This is being created as a gift portrait."
         : "The subject is a person.";
 
+    // Pre-fetch style reference image and convert to base64 data URL
+    // (Gemini cannot fetch from arbitrary preview URLs that may return HTML)
+    let styleRefDataUrl = "";
+    if (styleRefUrl) {
+      try {
+        const refRes = await fetch(styleRefUrl);
+        if (refRes.ok) {
+          const ct = refRes.headers.get("content-type") || "image/jpeg";
+          if (ct.startsWith("image/")) {
+            const buf = new Uint8Array(await refRes.arrayBuffer());
+            let bin = "";
+            for (let i = 0; i < buf.length; i++) bin += String.fromCharCode(buf[i]);
+            styleRefDataUrl = `data:${ct};base64,${btoa(bin)}`;
+          } else {
+            console.warn("Style ref URL did not return an image:", ct);
+          }
+        } else {
+          console.warn("Failed to fetch style ref:", refRes.status);
+        }
+      } catch (e) {
+        console.warn("Style ref fetch error:", e);
+      }
+    }
+
     // Generate portraits for each style
     const results: { style: string; url: string; url_hd: string }[] = [];
 
