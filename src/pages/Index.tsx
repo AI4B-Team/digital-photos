@@ -2007,14 +2007,23 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         const tmpl = templates.find(t => t.id === selected.id);
         const card = tmplCards.find(c => c.id === selected.id);
         const base = tmpl?.prompt || "";
-        const variants = [
-          `${base} — Recreate the scene shown in the TOP-LEFT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
-          `${base} — Recreate the scene shown in the TOP-RIGHT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
-          `${base} — Recreate the scene shown in the BOTTOM-LEFT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
-          `${base} — Recreate the scene shown in the BOTTOM-RIGHT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
-          `${base} — Recreate the TOP-LEFT framed scene but as a tighter close-up crop with the pet's face centered, same costume/props/lighting as the reference frame.`,
-          `${base} — Recreate the BOTTOM-RIGHT framed scene but from a slightly wider angle showing more of the setting, same costume/props/lighting as the reference frame.`,
-        ];
+        const variants = category === "pets"
+          ? [
+              `${base} — Recreate the scene shown in the TOP-LEFT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
+              `${base} — Recreate the scene shown in the TOP-RIGHT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
+              `${base} — Recreate the scene shown in the BOTTOM-LEFT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
+              `${base} — Recreate the scene shown in the BOTTOM-RIGHT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
+              `${base} — Recreate the TOP-LEFT framed scene but as a tighter close-up crop with the pet's face centered, same costume/props/lighting as the reference frame.`,
+              `${base} — Recreate the BOTTOM-RIGHT framed scene but from a slightly wider angle showing more of the setting, same costume/props/lighting as the reference frame.`,
+            ]
+          : [
+              `${base} — Variation 1: keep wardrobe/setting/lighting identical to the reference; full-body composition, both subjects facing camera, relaxed natural pose.`,
+              `${base} — Variation 2: same wardrobe/setting/lighting; three-quarter angle, one partner slightly behind the other, soft genuine smiles.`,
+              `${base} — Variation 3: same wardrobe/setting/lighting; tighter waist-up crop, partners leaning into each other, warm intimate mood.`,
+              `${base} — Variation 4: same wardrobe/setting/lighting; wider shot showing more of the environment, dynamic asymmetric composition.`,
+              `${base} — Variation 5: same wardrobe/setting/lighting; close-up portrait crop of both faces side by side, eyes engaged with viewer, shallow depth of field.`,
+              `${base} — Variation 6: same wardrobe/setting/lighting; playful candid moment — laughing or one looking at the other, golden cinematic light.`,
+            ];
         onConfirm({
           styles: ["v1","v2","v3","v4","v5","v6"],
           templatePrompt: base,
