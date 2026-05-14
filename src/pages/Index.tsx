@@ -739,7 +739,17 @@ function HomePage({ onGenerate }) {
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
-  const [heroName, setHeroName] = useState("");
+  const [heroNames, setHeroNames] = useState<string[]>([""]);
+  const totalPhotos = (photo ? 1 : 0) + extraPhotos.length;
+  useEffect(() => {
+    setHeroNames(prev => {
+      const n = Math.max(1, totalPhotos);
+      if (prev.length === n) return prev;
+      if (prev.length < n) return [...prev, ...Array(n - prev.length).fill("")];
+      return prev.slice(0, n);
+    });
+  }, [totalPhotos]);
+  const heroName = heroNames.filter(Boolean).join(" & ");
   const [quoteIdx, setQuoteIdx] = useState(0);
   useEffect(() => {
     const iv = setInterval(() => setQuoteIdx(p => (p + 1) % SOCIAL_PROOF.length), 4200);
@@ -1056,23 +1066,31 @@ function HomePage({ onGenerate }) {
                     textTransform:"none", letterSpacing:".04em", fontWeight:400,
                     marginLeft:6 }}>(Optional)</span>
                 </div>
-                <input
-                  type="text"
-                  value={heroName}
-                  onChange={e => setHeroName(e.target.value.slice(0, 20))}
-                  placeholder="e.g., Barley, Sofia, Max..."
-                  maxLength={20}
-                  style={{
-                    width:"100%", padding:"9px 12px", borderRadius:6,
-                    border:`1px solid ${T.border}`,
-                    background:"rgba(255,255,255,.04)",
-                    color:T.cream, fontSize:12.5,
-                    fontFamily:"'Poppins',sans-serif", outline:"none",
-                    transition:"border-color .2s",
-                  }}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor=T.gold}
-                  onBlur={e => (e.target as HTMLInputElement).style.borderColor=T.border}
-                />
+                <div style={{ display:"flex", flexDirection:"column", gap:7 }}>
+                  {heroNames.map((nm, i) => (
+                    <input
+                      key={i}
+                      type="text"
+                      value={nm}
+                      onChange={e => {
+                        const v = e.target.value.slice(0, 20);
+                        setHeroNames(prev => prev.map((x, j) => j === i ? v : x));
+                      }}
+                      placeholder={heroNames.length > 1 ? `Name for photo ${i + 1}` : "e.g., Barley, Sofia, Max..."}
+                      maxLength={20}
+                      style={{
+                        width:"100%", padding:"9px 12px", borderRadius:6,
+                        border:`1px solid ${T.border}`,
+                        background:"rgba(255,255,255,.04)",
+                        color:T.cream, fontSize:12.5,
+                        fontFamily:"'Poppins',sans-serif", outline:"none",
+                        transition:"border-color .2s",
+                      }}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor=T.gold}
+                      onBlur={e => (e.target as HTMLInputElement).style.borderColor=T.border}
+                    />
+                  ))}
+                </div>
                 <p style={{ fontSize:9.5, color:T.muted, marginTop:4, letterSpacing:".04em" }}>
                   Add a personal touch — your subject's name printed on the portrait.
                 </p>
