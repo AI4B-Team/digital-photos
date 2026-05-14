@@ -1023,7 +1023,11 @@ function HomePage({ onGenerate }) {
 
   const genLabel = () => {
     if (!cat)   return "Choose A Category To Start";
-    if (!photo) return "Upload A Photo To Continue →";
+    if (!photo) return cat === "couples" ? "Upload 2 Photos To Continue →" : "Upload A Photo To Continue →";
+    if (totalPhotos < req.minPhotos) {
+      const remaining = req.minPhotos - totalPhotos;
+      return `Add ${remaining} More Photo${remaining > 1 ? "s" : ""} To Continue →`;
+    }
     return "See Your Portrait — Free Preview →";
   };
 
