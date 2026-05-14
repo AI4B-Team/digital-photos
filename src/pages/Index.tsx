@@ -1095,7 +1095,8 @@ function HomePage({ onGenerate }) {
                   }}/>
               </div>
 
-              {/* ── NAME (Optional) ── */}
+              {/* ── NAME (Optional) — only after photo uploaded ── */}
+              {photo && (
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
                   textTransform:"uppercase", fontWeight:500, marginBottom:8 }}>
@@ -1124,6 +1125,7 @@ function HomePage({ onGenerate }) {
                   Add a personal touch — your subject's name printed on the portrait.
                 </p>
               </div>
+              )}
 
               {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
               {cat && photo && (
