@@ -1988,7 +1988,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           {baseCards.map(card => {
             const isSelected = selected?.type === "style" && selected?.id === card.id;
             return (
-              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
+              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                 confirming={confirming}
                 onSelect={() => setSelected(isSelected ? null : { type:"style", id:card.id })}
                 onConfirm={handleConfirm}/>
@@ -2009,7 +2009,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
               {tmplCards.map(card => {
                 const isSelected = selected?.type === "template" && selected?.id === card.id;
                 return (
-                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
+                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                     confirming={confirming}
                     onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
                     onConfirm={handleConfirm}/>
@@ -2038,7 +2038,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                     <StyleCard key={`th-${t.id}`}
                       card={{ id:t.id, label:t.label, desc:t.desc, img:t.img }}
                       isSelected={isSelected}
-                      originalPhoto={photo}
+                      originalPhotos={allPhotos}
                       confirming={confirming}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
                       onConfirm={async () => {
