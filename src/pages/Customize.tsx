@@ -719,7 +719,57 @@ export default function Customize() {
     return `${String(m).padStart(2,"0")}m ${String(sec).padStart(2,"0")}s`;
   };
 
-  const applyPromo = () => {
+  // Bake name text onto portrait image using HTML5 Canvas, upload to Storage
+  const composeNameOnImage = async (
+    photoUrl: string,
+    name: string,
+    position: "top" | "bottom",
+    fontId: string,
+    colorId: string,
+  ): Promise<string> => {
+    try {
+      const fontDef  = NAME_FONTS.find(f => f.id === fontId)   || NAME_FONTS[0];
+      const colorDef = NAME_COLORS.find(c => c.id === colorId) || NAME_COLORS[0];
+      const img = await new Promise<HTMLImageElement>((res, rej) => {
+        const el = new Image();
+        el.crossOrigin = "anonymous";
+        el.onload  = () => res(el);
+        el.onerror = () => rej(new Error("Image load failed"));
+        el.src = photoUrl;
+      });
+      const canvas = document.createElement("canvas");
+      canvas.width  = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(img, 0, 0);
+      const fontSize = Math.round(img.naturalHeight * 0.065);
+      ctx.font      = fontDef.css(fontSize);
+      ctx.fillStyle = colorDef.hex;
+      ctx.textAlign = "center";
+      ctx.shadowColor   = colorId === "white" || colorId === "cream"
+        ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.35)";
+      ctx.shadowBlur    = fontSize * 0.18;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = fontSize * 0.04;
+      const x = img.naturalWidth / 2;
+      const padding = img.naturalHeight * 0.055;
+      const y = position === "top" ? padding + fontSize : img.naturalHeight - padding;
+      ctx.fillText(name.toUpperCase(), x, y);
+      const blob = await new Promise<Blob>((res, rej) =>
+        canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas export failed")), "image/jpeg", 0.95)
+      );
+      const { supabase } = await import("@/integrations/supabase/client");
+      const path = `named/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`;
+      const { data: upData, error: upErr } = await supabase.storage
+        .from("portraits").upload(path, blob, { contentType:"image/jpeg", upsert:false });
+      if (upErr) throw upErr;
+      const { data: { publicUrl } } = supabase.storage.from("portraits").getPublicUrl(upData.path);
+      return publicUrl;
+    } catch (err) {
+      console.warn("Name compositing failed, using original:", err);
+      return photoUrl;
+    }
+  };
     const code = promoCode.trim().toUpperCase();
     const p = PROMOS[code];
     if (!p) { setPromoError("That code isn't valid."); return; }
