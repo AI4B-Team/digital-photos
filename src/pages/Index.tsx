@@ -1783,7 +1783,8 @@ export default function App() {
     setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, heroName }));
     setSession({ cat, photo, heroName } as any);
     setScreen("select-style");
-  }, [setSession]);
+    navigate(`/styles-${cat.toLowerCase()}`);
+  }, [setSession, navigate]);
 
   // Step 2: user picks style → create session, then generate
   const handleStyleSelected = useCallback(async ({ styles, templatePrompt }) => {
