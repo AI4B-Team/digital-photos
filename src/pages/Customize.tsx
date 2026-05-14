@@ -922,6 +922,13 @@ export default function Customize() {
     e.target.value = ""; // allow same-file reselect
     if (!file) return;
 
+    const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
+    if (!ALLOWED.includes(file.type)) {
+      alert("Please upload a PNG, JPEG, WebP, or GIF image.");
+      return;
+    }
+
+
     // Read as data URL for preview + generation source
     const dataUrl: string = await new Promise((resolve, reject) => {
       const r = new FileReader();
