@@ -2049,9 +2049,11 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                             `${base} — variation 2: side profile angle, looking off camera, soft cinematic light`,
                             `${base} — variation 3: tight close-up portrait crop, eyes engaged with viewer, shallow depth of field`,
                             `${base} — variation 4: wider shot showing more of the scene and props, dynamic composition`,
+                            `${base} — variation 5: three-quarter angle, warm golden-hour lighting, painterly mood`,
+                            `${base} — variation 6: low-angle hero shot, dramatic rim light, bold confident expression`,
                           ];
                           onConfirm({
-                            styles:["v1","v2","v3","v4"],
+                            styles:["v1","v2","v3","v4","v5","v6"],
                             templatePrompt: base,
                             templatePrompts: variants,
                             styleRefUrl: await getStyleRef(t.img),
