@@ -768,7 +768,7 @@ function HomePage({ onGenerate }) {
 
   const toggleStyle = id => setStyles(p => p.includes(id) ? p.filter(s=>s!==id) : [...p, id]);
   const allOn = styles.length === STYLES.length;
-  const canGo = cat && photo && styles.length > 0;
+  const canGo = !!(cat && photo);
 
   const pickStyleScroll = id => {
     if (!styles.includes(id)) setStyles(p => [...p, id]);
