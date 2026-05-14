@@ -1563,6 +1563,76 @@ export default function Customize() {
             </button>
           ) : (
           <>
+          {/* ── Name / Text Overlay ── */}
+          <div className="cz-section">
+            <div className="cz-label">
+              <span>Name</span>
+              <span className="cz-value" style={{ color:namePosition==="none"?MUTED:INK }}>
+                {namePosition === "none" ? "None" : portraitName || "Add a name"}
+              </span>
+            </div>
+            <input
+              type="text"
+              value={portraitName}
+              onChange={e => {
+                setPortraitName(e.target.value.slice(0, 20));
+                if (e.target.value && namePosition === "none") setNamePosition("bottom");
+              }}
+              placeholder="e.g. BARLEY, MILO, SOPHIE"
+              maxLength={20}
+              style={{
+                width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:10,
+                border:`1px solid ${BORDER}`, fontFamily:"'Poppins',sans-serif",
+                fontSize:13, color:INK, outline:"none", background:"#fff",
+              }}
+            />
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:6, marginBottom:12 }}>
+              {NAME_POSITIONS.map(pos => (
+                <button key={pos.id}
+                  className={`cz-chip ${namePosition===pos.id?"on":""}`}
+                  style={{ justifyContent:"center", padding:"8px 4px", whiteSpace:"nowrap" }}
+                  onClick={() => setNamePosition(pos.id as any)}>
+                  {pos.label}
+                </button>
+              ))}
+            </div>
+            {namePosition !== "none" && portraitName && (
+              <>
+                <div style={{ display:"flex", gap:6, marginBottom:10 }}>
+                  {NAME_FONTS.map(f => (
+                    <button key={f.id}
+                      onClick={() => setNameFontId(f.id)}
+                      style={{
+                        flex:1, padding:"7px 4px", borderRadius:8, cursor:"pointer",
+                        border:`1.5px solid ${nameFontId===f.id?RED:BORDER}`,
+                        background:nameFontId===f.id?"rgba(230,25,25,.05)":"#fff",
+                        fontSize:11, color:nameFontId===f.id?RED:MUTED,
+                        fontFamily: f.id==="serif" ? "Georgia,serif" : "'Poppins',sans-serif",
+                        fontStyle:  f.id==="italic" ? "italic" : "normal",
+                        fontWeight: f.id==="bold" ? 700 : 500,
+                      }}>
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display:"flex", gap:8 }}>
+                  {NAME_COLORS.map(c => (
+                    <button key={c.id} title={c.label}
+                      onClick={() => setNameColorId(c.id)}
+                      style={{
+                        width:30, height:30, borderRadius:"50%",
+                        background:c.hex, cursor:"pointer", border:"none",
+                        outline: nameColorId===c.id ? `3px solid ${RED}` : `2px solid rgba(0,0,0,0.12)`,
+                        outlineOffset: nameColorId===c.id ? 2 : 0,
+                        boxShadow: "0 1px 4px rgba(0,0,0,.15)",
+                        transition:"outline .15s",
+                      }}/>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
             <div style={{ position:"relative" }}>
