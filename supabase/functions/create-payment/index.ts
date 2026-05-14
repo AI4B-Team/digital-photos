@@ -72,6 +72,7 @@ serve(async (req) => {
     }
 
     const sessionParams: any = {
+      payment_method_types: ["card"],
       line_items: stripeLineItems,
       mode: "payment",
       success_url: `${origin}/delivery?session_id={CHECKOUT_SESSION_ID}`,
