@@ -1085,7 +1085,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
       {/* Category dots */}
       <div style={{ display:"flex", gap:8, marginTop:14, alignItems:"center", justifyContent:"center" }}>
         {TEASERS.map((t, i) => (
-          <button key={i} onClick={() => { onCatClick(t.catId); setFading(true); setTimeout(()=>{setIdx(i);setFading(false);},260); }}
+          <button key={i} onClick={() => { onCatClick(t.catId); setIdx(i); }}
             style={{ padding:0, border:"none", background:"none", cursor:"pointer",
               display:"flex", alignItems:"center", gap:7 }}>
             <div style={{ width:i===idx?22:7, height:7, borderRadius:4,
