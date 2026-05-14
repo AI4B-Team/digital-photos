@@ -1594,7 +1594,7 @@ function HomePage({ onGenerate }) {
 /* ═══════════════════════════════════════════════════════════
    GENERATING SCREEN — Real AI generation
 ═══════════════════════════════════════════════════════════ */
-function GenScreen({ selectedStyles, sessionId, photoUrl, category, templatePrompt, styleRefUrl, onDone }) {
+function GenScreen({ selectedStyles, sessionId, photoUrl, category, templatePrompt, templatePrompts, styleRefUrl, onDone }) {
   const [pct,  setPct]  = useState(0);
   const [msg,  setMsg]  = useState(0);
   const [done, setDone] = useState([]);
@@ -1630,7 +1630,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
     (async () => {
       try {
         const { data, error: fnError } = await supabase.functions.invoke("generate-portraits", {
-          body: { sessionId, photoUrl, styles: selectedStyles, category, templatePrompt: templatePrompt || "", styleRefUrl: styleRefUrl || "" },
+          body: { sessionId, photoUrl, styles: selectedStyles, category, templatePrompt: templatePrompt || "", templatePrompts: templatePrompts || [], styleRefUrl: styleRefUrl || "" },
         });
 
         clearInterval(iv);
@@ -1898,7 +1898,19 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       } else {
         const tmpl = templates.find(t => t.id === selected.id);
         const card = tmplCards.find(c => c.id === selected.id);
-        onConfirm({ styles: ["royal","renaissance","cinematic","fantasy"], templatePrompt: tmpl?.prompt || "", styleRefUrl: await getStyleRef(card?.img) });
+        const base = tmpl?.prompt || "";
+        const variants = [
+          `${base} — variation 1: front-facing pose, head tilted slightly, centered composition`,
+          `${base} — variation 2: side profile angle, looking off camera, soft cinematic light`,
+          `${base} — variation 3: tight close-up portrait crop, eyes engaged with viewer, shallow depth of field`,
+          `${base} — variation 4: wider shot showing more of the scene and props, dynamic composition`,
+        ];
+        onConfirm({
+          styles: ["v1","v2","v3","v4"],
+          templatePrompt: base,
+          templatePrompts: variants,
+          styleRefUrl: await getStyleRef(card?.img),
+        });
       }
     } finally {
       setConfirming(false);
@@ -1993,7 +2005,19 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                       onConfirm={async () => {
                         setConfirming(true);
                         try {
-                          onConfirm({ styles:["royal","renaissance","cinematic","fantasy"], templatePrompt: t.prompt, styleRefUrl: await getStyleRef(t.img) });
+                          const base = t.prompt || "";
+                          const variants = [
+                            `${base} — variation 1: front-facing pose, head tilted slightly, centered composition`,
+                            `${base} — variation 2: side profile angle, looking off camera, soft cinematic light`,
+                            `${base} — variation 3: tight close-up portrait crop, eyes engaged with viewer, shallow depth of field`,
+                            `${base} — variation 4: wider shot showing more of the scene and props, dynamic composition`,
+                          ];
+                          onConfirm({
+                            styles:["v1","v2","v3","v4"],
+                            templatePrompt: base,
+                            templatePrompts: variants,
+                            styleRefUrl: await getStyleRef(t.img),
+                          });
                         } finally {
                           setConfirming(false);
                         }
@@ -2080,7 +2104,7 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confi
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", styleRefUrl:"", sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", templatePrompts:[], styleRefUrl:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
@@ -2093,8 +2117,8 @@ export default function App() {
   }, [setSession]);
 
   // Step 2: user picks style → create session, then generate
-  const handleStyleSelected = useCallback(async ({ styles, templatePrompt, styleRefUrl }) => {
-    setLocal(prev => ({ ...prev, styles, templatePrompt, styleRefUrl: styleRefUrl || "" }));
+  const handleStyleSelected = useCallback(async ({ styles, templatePrompt, templatePrompts, styleRefUrl }) => {
+    setLocal(prev => ({ ...prev, styles, templatePrompt, templatePrompts: templatePrompts || [], styleRefUrl: styleRefUrl || "" }));
     setSession({ styles, heroName: localSession.heroName } as any);
     let sessionId = null;
     try {
@@ -2130,6 +2154,7 @@ export default function App() {
                                     photoUrl={localSession.photoUrl || localSession.photo}
                                     category={localSession.cat}
                                     templatePrompt={localSession.templatePrompt}
+                                    templatePrompts={localSession.templatePrompts}
                                     styleRefUrl={localSession.styleRefUrl}
                                     onDone={handleGenDone}/>}
     </>

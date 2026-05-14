@@ -28,7 +28,7 @@ serve(async (req) => {
   }
 
   try {
-    const { sessionId, photoUrl, styles, category, templatePrompt = "", styleRefUrl = "" } = await req.json();
+    const { sessionId, photoUrl, styles, category, templatePrompt = "", templatePrompts = [], styleRefUrl = "" } = await req.json();
 
     if (!photoUrl || !styles?.length) {
       throw new Error("photoUrl and styles are required");
@@ -92,9 +92,12 @@ serve(async (req) => {
     // Generate portraits for each style
     const results: { style: string; url: string; url_hd: string }[] = [];
 
-    for (const style of styles) {
-      const prompt = STYLE_PROMPTS[style];
-      if (!prompt) continue;
+    const GENERIC_PHOTO_PROMPT = "Create a high-quality hyper-realistic photograph portrait of the subject in the scene described. Preserve the subject's likeness, fur/skin/eye features. Natural lighting, sharp detail, professional photography quality.";
+
+    for (let idx = 0; idx < styles.length; idx++) {
+      const style = styles[idx];
+      const prompt = STYLE_PROMPTS[style] || GENERIC_PHOTO_PROMPT;
+      const perVariantPrompt = (Array.isArray(templatePrompts) && templatePrompts[idx]) || templatePrompt;
 
       try {
         const response = await fetch(
@@ -114,8 +117,8 @@ serve(async (req) => {
                     {
                       type: "text",
                       text: styleRefDataUrl
-                        ? `TASK: Style transfer. Recreate IMAGE 2 (subject) in the EXACT visual style of IMAGE 1 (style template).\n\nIMAGE 1 = STYLE TEMPLATE. This is the visual target. Replicate it 1:1 in every visual aspect:\n- Exact same artistic medium (oil painting / watercolor / digital / photo / etc.)\n- Exact same brushwork, texture, and rendering technique\n- Exact same color palette, color grading, and tonal range\n- Exact same lighting direction, intensity, shadows, and highlights\n- Exact same composition, framing, crop, pose orientation, and camera angle\n- Exact same background, setting, props, costume, accessories, and decorative elements\n- Exact same mood, atmosphere, and overall finish quality\nThink of IMAGE 1 as a costume + scene + art-style preset. The output must look like it was made by the same artist in the same series.\n\nIMAGE 2 = SUBJECT SOURCE. Use ONLY for identity: face/head shape, features, fur pattern, markings, eye color, expression, species/breed. Do NOT copy IMAGE 2's background, lighting, color, framing, or art style.\n\n${categoryContext}${templatePrompt ? `\n\nTemplate intent: ${templatePrompt}` : ""}\n\nOutput: ONE finished portrait. Subject identity from IMAGE 2, everything else from IMAGE 1. Do not blend the two styles — fully adopt IMAGE 1's style. Do not include the original IMAGE 2 photo aesthetic (no snapshot look, no original background). Replace the subject in IMAGE 1 with the subject from IMAGE 2 while preserving IMAGE 1's exact pose, costume, scene, and rendering.\n\nCRITICAL — NO FRAMES OR MOCKUP CHROME: If IMAGE 1 is a wall/room mockup showing framed pictures hanging on a wall, you MUST OUTPUT ONLY THE ARTWORK ITSELF at full-bleed (the content INSIDE one of those frames). Do NOT include any picture frame, frame moulding, mat/border, glass reflection, wall texture, room background, furniture, lighting fixtures, shadows of frames, or any mockup chrome. The final image must be the standalone artwork — as if cropped tightly to the painted/photographed scene only — ready to be placed into a separate frame later. Edge to edge artwork, nothing else.`
-                        : `${prompt}\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
+                        ? `TASK: Style transfer. Recreate IMAGE 2 (subject) in the EXACT visual style of IMAGE 1 (style template).\n\nIMAGE 1 = STYLE TEMPLATE. This is the visual target. Replicate it 1:1 in every visual aspect:\n- Exact same artistic medium (oil painting / watercolor / digital / photo / etc.)\n- Exact same brushwork, texture, and rendering technique\n- Exact same color palette, color grading, and tonal range\n- Exact same lighting direction, intensity, shadows, and highlights\n- Exact same composition, framing, crop, pose orientation, and camera angle\n- Exact same background, setting, props, costume, accessories, and decorative elements\n- Exact same mood, atmosphere, and overall finish quality\nThink of IMAGE 1 as a costume + scene + art-style preset. The output must look like it was made by the same artist in the same series.\n\nIMAGE 2 = SUBJECT SOURCE. Use ONLY for identity: face/head shape, features, fur pattern, markings, eye color, expression, species/breed. Do NOT copy IMAGE 2's background, lighting, color, framing, or art style.\n\n${categoryContext}${perVariantPrompt ? `\n\nTemplate intent for THIS variation: ${perVariantPrompt}` : ""}\n\nOutput: ONE finished portrait. Subject identity from IMAGE 2, everything else from IMAGE 1. Do not blend the two styles — fully adopt IMAGE 1's style. Do not include the original IMAGE 2 photo aesthetic (no snapshot look, no original background). Replace the subject in IMAGE 1 with the subject from IMAGE 2 while preserving IMAGE 1's exact pose, costume, scene, and rendering.\n\nCRITICAL — NO FRAMES OR MOCKUP CHROME: If IMAGE 1 is a wall/room mockup showing framed pictures hanging on a wall, you MUST OUTPUT ONLY THE ARTWORK ITSELF at full-bleed (the content INSIDE one of those frames). Do NOT include any picture frame, frame moulding, mat/border, glass reflection, wall texture, room background, furniture, lighting fixtures, shadows of frames, or any mockup chrome. The final image must be the standalone artwork — as if cropped tightly to the painted/photographed scene only — ready to be placed into a separate frame later. Edge to edge artwork, nothing else.`
+                        : `${prompt}\n\n${categoryContext}${perVariantPrompt ? `\n\nScene Direction: ${perVariantPrompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
                     },
                     ...(styleRefDataUrl ? [{ type: "image_url", image_url: { url: styleRefDataUrl } }] : []),
                     {
