@@ -2144,13 +2144,13 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confi
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", templatePrompts:[], styleRefUrl:"", sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", extraPhotos:[], styles:[], templatePrompt:"", templatePrompts:[], styleRefUrl:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
   // Step 1: homepage Generate → go to style select
-  const handleGenerate = useCallback(({ cat, photo, uploadedUrl, heroName = "" }) => {
-    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, heroName }));
+  const handleGenerate = useCallback(({ cat, photo, uploadedUrl, heroName = "", extraPhotos = [] }) => {
+    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, heroName, extraPhotos }));
     setSession({ cat, photo, heroName } as any);
     setScreen("select-style");
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
