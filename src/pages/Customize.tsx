@@ -1484,6 +1484,31 @@ export default function Customize() {
     }
   };
 
+  return (
+    <div className="cz-root">
+      <style>{G}</style>
+
+      {/* Announcement strip — discount countdown */}
+      {discountAmt > 0 && (
+        <div style={{
+          background:"#E61919", borderBottom:"1px solid #B91C1C",
+          padding:"8px 22px", position:"sticky", top:0, zIndex:30,
+          textAlign:"center",
+        }}>
+          <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>
+            {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}: ${discountAmt} OFF
+          </span>
+          <span style={{ fontSize:12, color:"#FFE4E6", marginLeft:6 }}>
+            — Expires When The Timer Hits Zero
+          </span>
+          <span style={{
+            display:"inline-block", marginLeft:10, verticalAlign:"middle",
+            background:"#fff", color:"#E61919", fontSize:12, fontWeight:700,
+            padding:"4px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
+          }}>{fmtCountdown(discountSec)}</span>
+        </div>
+      )}
+
       {/* Header */}
       <SiteHeader
         current="customize"
