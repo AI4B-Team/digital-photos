@@ -1366,7 +1366,7 @@ function HomePage({ onGenerate }) {
                   display:"flex", alignItems:"center", justifyContent:"center", gap:9,
                   animation:canGo?"glow 2s infinite":"none" }}
                 onClick={() => {
-                  onGenerate({ cat, photo, uploadedUrl, heroName });
+                  onGenerate({ cat, photo, uploadedUrl, heroName, extraPhotos });
                 }}>
                 <Wand2 size={15}/>{genLabel()}
               </button>
@@ -1864,7 +1864,8 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
    STYLE SELECT PAGE — between homepage and generation
 ═══════════════════════════════════════════════════════════ */
 function StyleSelectPage({ session, onConfirm, onBack }) {
-  const { cat, heroName, photo } = session;
+  const { cat, heroName, photo, extraPhotos = [] } = session;
+  const allPhotos = [photo, ...(extraPhotos || [])].filter(Boolean);
   const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
   const [confirming, setConfirming] = useState(false);
 
@@ -1987,7 +1988,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           {baseCards.map(card => {
             const isSelected = selected?.type === "style" && selected?.id === card.id;
             return (
-              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
+              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                 confirming={confirming}
                 onSelect={() => setSelected(isSelected ? null : { type:"style", id:card.id })}
                 onConfirm={handleConfirm}/>
@@ -2008,7 +2009,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
               {tmplCards.map(card => {
                 const isSelected = selected?.type === "template" && selected?.id === card.id;
                 return (
-                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhoto={photo}
+                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                     confirming={confirming}
                     onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
                     onConfirm={handleConfirm}/>
@@ -2037,7 +2038,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                     <StyleCard key={`th-${t.id}`}
                       card={{ id:t.id, label:t.label, desc:t.desc, img:t.img }}
                       isSelected={isSelected}
-                      originalPhoto={photo}
+                      originalPhotos={allPhotos}
                       confirming={confirming}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
                       onConfirm={async () => {
@@ -2075,7 +2076,8 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   );
 }
 
-function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confirming }) {
+function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [], confirming }) {
+  const photos = (originalPhotos || []).filter(Boolean).slice(0, 2);
   return (
     <div onClick={onSelect}
       style={{
@@ -2092,17 +2094,23 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confi
         <img src={card.img} alt={card.label}
           style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
 
-        {/* Small original photo thumbnail (Mixtiles-style) */}
-        {originalPhoto && (
+        {/* Small original photo thumbnails (Mixtiles-style) */}
+        {photos.length > 0 && (
           <div style={{
             position:"absolute", left:10, bottom:10,
-            width:64, height:64, borderRadius:10, overflow:"hidden",
-            border:"3px solid #fff",
-            boxShadow:"0 4px 12px rgba(0,0,0,0.35)",
-            background:"#222",
+            display:"flex", gap:6,
           }}>
-            <img src={originalPhoto} alt="Your photo"
-              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+            {photos.map((src, i) => (
+              <div key={i} style={{
+                width:64, height:64, borderRadius:10, overflow:"hidden",
+                border:"3px solid #fff",
+                boxShadow:"0 4px 12px rgba(0,0,0,0.35)",
+                background:"#222",
+              }}>
+                <img src={src} alt={`Your photo ${i+1}`}
+                  style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+              </div>
+            ))}
           </div>
         )}
 
@@ -2144,13 +2152,13 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto, confi
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", templatePrompts:[], styleRefUrl:"", sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", extraPhotos:[], styles:[], templatePrompt:"", templatePrompts:[], styleRefUrl:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
   // Step 1: homepage Generate → go to style select
-  const handleGenerate = useCallback(({ cat, photo, uploadedUrl, heroName = "" }) => {
-    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, heroName }));
+  const handleGenerate = useCallback(({ cat, photo, uploadedUrl, heroName = "", extraPhotos = [] }) => {
+    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, heroName, extraPhotos }));
     setSession({ cat, photo, heroName } as any);
     setScreen("select-style");
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
