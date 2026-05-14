@@ -1967,11 +1967,33 @@ export default function Customize() {
                         </>
                       )}
 
-                      {card.id !== "digital" && (
-                        <div style={{ display:"flex", alignItems:"center", gap:6,
-                          fontSize:12, color:"#16a34a", fontWeight:600, marginBottom:10 }}>
-                          <Truck size={14}/> Free Shipping Included
-                        </div>
+                      {card.frameColors && (
+                        <>
+                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
+                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
+                            Glaze
+                          </div>
+                          <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:14 }}>
+                            {GLAZE_OPTIONS.map(g => (
+                              <button key={g.id}
+                                onClick={() => setGlazeType(g.id as "perspex" | "moth-eye")}
+                                style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                                  padding:"10px 12px", borderRadius:10, cursor:"pointer",
+                                  border:`1.5px solid ${glazeType===g.id?RED:BORDER}`,
+                                  background:glazeType===g.id?"rgba(230,25,25,.04)":"#fff",
+                                  transition:"all .15s", textAlign:"left" }}>
+                                <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+                                  <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>{g.label}</span>
+                                  <span style={{ fontSize:11, color:MUTED }}>{g.desc}</span>
+                                </div>
+                                <span style={{ fontSize:12, fontWeight:800,
+                                  color:g.add>0?RED:MUTED, flexShrink:0, marginLeft:12 }}>
+                                  {g.add > 0 ? `+$${g.add}` : "Included"}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </>
                       )}
 
                       <div style={{ fontSize:11, color:MUTED, fontWeight:600,
