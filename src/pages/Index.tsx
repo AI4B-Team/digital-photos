@@ -745,6 +745,12 @@ function HomePage({ onGenerate }) {
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
+  const [heroName, setHeroName] = useState("");
+  const [quoteIdx, setQuoteIdx] = useState(0);
+  useEffect(() => {
+    const iv = setInterval(() => setQuoteIdx(p => (p + 1) % SOCIAL_PROOF.length), 4200);
+    return () => clearInterval(iv);
+  }, []);
   const err = uploadErr;
   const [scrolled,setScrolled]= useState(false);
   const [baX,     setBaX]     = useState(50);
@@ -901,10 +907,44 @@ function HomePage({ onGenerate }) {
           {/* LEFT PANEL — teaser */}
           <div style={{ display:"flex", flexDirection:"column", gap:24, height:"100%", minWidth:0 }}>
 
-            {/* LIVE TEASER moved into left panel */}
+            {/* LIVE TEASER + floating overlays */}
             <div className="fu" style={{ animationDelay:".3s", width:"100%",
-              display:"flex", flexDirection:"column", flex:1 }}>
+              display:"flex", flexDirection:"column", flex:1, position:"relative" }}>
               <LiveTeaser activeCat={cat} onCatClick={setCat}/>
+
+              {/* Floating star badge */}
+              <div style={{
+                position:"absolute", top:14, left:14, zIndex:10,
+                background:"rgba(255,255,255,0.94)", backdropFilter:"blur(8px)",
+                borderRadius:999, padding:"7px 13px",
+                display:"flex", alignItems:"center", gap:7,
+                boxShadow:"0 2px 14px rgba(0,0,0,0.14)", pointerEvents:"none",
+              }}>
+                <span style={{ fontSize:13, lineHeight:1, color:"#F5A623" }}>★★★★★</span>
+                <span style={{ fontSize:12.5, fontWeight:700, color:"#0A0A0A",
+                  fontFamily:"'Poppins',sans-serif" }}>4.9 / 5</span>
+                <span style={{ fontSize:11, color:"#8C8C8C",
+                  borderLeft:"1px solid #E0E0E0", paddingLeft:8 }}>3,200+ Portraits</span>
+              </div>
+
+              {/* Floating cycling review quote */}
+              <div style={{
+                position:"absolute", bottom:14, left:14, right:14, zIndex:10,
+                background:"rgba(255,255,255,0.93)", backdropFilter:"blur(10px)",
+                borderRadius:12, padding:"11px 14px",
+                boxShadow:"0 4px 18px rgba(0,0,0,0.13)", pointerEvents:"none",
+                transition:"opacity .35s",
+              }}>
+                <div style={{ display:"flex", gap:2, marginBottom:5 }}>
+                  {Array(5).fill(0).map((_, i) => (
+                    <span key={i} style={{ color:"#F5A623", fontSize:11 }}>★</span>
+                  ))}
+                </div>
+                <p style={{ fontSize:12.5, color:"#0A0A0A", lineHeight:1.5,
+                  margin:0, fontStyle:"italic", fontFamily:"'Poppins',sans-serif" }}>
+                  {SOCIAL_PROOF[quoteIdx].review}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -933,6 +973,46 @@ function HomePage({ onGenerate }) {
                   })}
                 </div>
               </div>
+
+              {/* ── STYLE PORTRAIT PREVIEW ── */}
+              {cat && (() => {
+                const teaser = TEASERS.find(t => t.catId === cat);
+                const portraits = teaser?.portraits;
+                if (!portraits?.length) return null;
+                return (
+                  <div style={{ marginBottom:14 }}>
+                    <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
+                      textTransform:"uppercase", fontWeight:500, marginBottom:8 }}>
+                      Sample Portraits · All 6 Styles Included
+                    </div>
+                    <div style={{ display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:4 }}>
+                      {portraits.map((p, i) => (
+                        <div key={i} style={{
+                          position:"relative", borderRadius:6, overflow:"hidden",
+                          aspectRatio:"0.75", border:`1px solid ${T.border}`,
+                        }}>
+                          <img src={p.url} alt={p.style}
+                            style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                          <div style={{
+                            position:"absolute", bottom:0, left:0, right:0,
+                            padding:"3px 2px",
+                            background:"linear-gradient(transparent,rgba(0,0,0,0.7))",
+                          }}>
+                            <span style={{
+                              fontSize:7.5, fontWeight:700, letterSpacing:".1em",
+                              textTransform:"uppercase", color:"#FFFFFF",
+                              display:"block", textAlign:"center",
+                            }}>{p.style}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <p style={{ fontSize:9.5, color:T.muted, marginTop:6, letterSpacing:".04em", textAlign:"center" }}>
+                      You'll receive all 6 styles · Choose your favourite after generation
+                    </p>
+                  </div>
+                );
+              })()}
 
               {/* ── UPLOAD PHOTO ── */}
               <div style={{ marginBottom:14 }}>
@@ -1015,6 +1095,36 @@ function HomePage({ onGenerate }) {
                   }}/>
               </div>
 
+              {/* ── NAME (Optional) ── */}
+              <div style={{ marginBottom:14 }}>
+                <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
+                  textTransform:"uppercase", fontWeight:500, marginBottom:8 }}>
+                  Name <span style={{ color:T.dim, fontSize:8,
+                    textTransform:"none", letterSpacing:".04em", fontWeight:400,
+                    marginLeft:6 }}>(Optional)</span>
+                </div>
+                <input
+                  type="text"
+                  value={heroName}
+                  onChange={e => setHeroName(e.target.value.slice(0, 20))}
+                  placeholder="e.g., Barley, Sofia, Max..."
+                  maxLength={20}
+                  style={{
+                    width:"100%", padding:"9px 12px", borderRadius:6,
+                    border:`1px solid ${T.border}`,
+                    background:"rgba(255,255,255,.04)",
+                    color:T.cream, fontSize:12.5,
+                    fontFamily:"'Poppins',sans-serif", outline:"none",
+                    transition:"border-color .2s",
+                  }}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor=T.gold}
+                  onBlur={e => (e.target as HTMLInputElement).style.borderColor=T.border}
+                />
+                <p style={{ fontSize:9.5, color:T.muted, marginTop:4, letterSpacing:".04em" }}>
+                  Add a personal touch — your subject's name printed on the portrait.
+                </p>
+              </div>
+
               {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
               {cat && photo && (
                 <div style={{ marginBottom:18 }}>
@@ -1081,14 +1191,21 @@ function HomePage({ onGenerate }) {
                   const tmplObj = selectedTemplate
                     ? (TEMPLATES[cat] || []).find(t => t.id === selectedTemplate)
                     : null;
-                  onGenerate({ cat, photo, styles, uploadedUrl, templatePrompt: tmplObj?.prompt || "" });
+                  onGenerate({ cat, photo, styles, uploadedUrl, templatePrompt: tmplObj?.prompt || "", heroName });
                 }}>
                 <Wand2 size={15}/>{genLabel()}
               </button>
 
-              <p style={{ textAlign:"center", fontSize:12, color:T.muted, marginTop:9, letterSpacing:".03em" }}>
-                No Subscription · Free Watermarked Preview Before Purchase
-              </p>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"center",
+                flexWrap:"wrap", gap:"4px 14px", marginTop:9 }}>
+                {["No Credit Card", "Preview In 30 Seconds", "Free Worldwide Shipping"].map((t, i) => (
+                  <span key={i} style={{ display:"flex", alignItems:"center",
+                    gap:4, fontSize:11.5, color:T.muted }}>
+                    <Check size={11} color="#16a34a" strokeWidth={3}/>
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
           </div>
@@ -1587,15 +1704,15 @@ export default function App() {
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
-  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, templatePrompt = "" }) => {
+  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, templatePrompt = "", heroName = "" }) => {
     let sessionId = null;
     setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles, templatePrompt }));
-    setSession({ cat, photo, styles });
+    setSession({ cat, photo, styles, heroName } as any);
 
     // Create a Supabase session record to track generation
     try {
       sessionId = await createSession({ category: cat, styles, photoUrl: uploadedUrl || photo || "" });
-      setSession({ cat, photo, styles, orderId: sessionId });
+      setSession({ cat, photo, styles, orderId: sessionId, heroName } as any);
       setLocal(prev => ({ ...prev, sessionId }));
     } catch (err) {
       console.warn("Could not create session record:", err);

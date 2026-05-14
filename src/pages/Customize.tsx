@@ -617,7 +617,7 @@ export default function Customize() {
   const [mountColor, setMountColor]             = useState("snow-white");
   const [glazeType,  setGlazeType]              = useState<"perspex"|"moth-eye">("perspex");
   // Name overlay
-  const [portraitName,    setPortraitName]    = useState("");
+  const [portraitName,    setPortraitName]    = useState((session as any)?.heroName || "");
   const [namePosition,    setNamePosition]    = useState<"none"|"top"|"bottom">("none");
   const [nameFontId,      setNameFontId]      = useState("bold");
   const [nameColorId,     setNameColorId]     = useState("white");
