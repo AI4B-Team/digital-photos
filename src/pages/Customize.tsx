@@ -1136,6 +1136,14 @@ export default function Customize() {
                         </div>
                       )}
                     </div>
+                    {/* Glaze sheen — visible on Standard Perspex, removed on Moth-Eye */}
+                    {isFramedItem && glazeType === "perspex" && (
+                      <div aria-hidden="true" style={{
+                        position:"absolute", inset:0, zIndex:4, pointerEvents:"none",
+                        background:"linear-gradient(115deg, rgba(255,255,255,0) 38%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0) 62%)",
+                        mixBlendMode:"screen",
+                      }}/>
+                    )}
                     {itemBusy && (
                       <div className="cz-busy" style={{ zIndex: 2 }}>
                         <div className="cz-spinner" />
