@@ -781,7 +781,7 @@ const TEASERS = [
       { url:portraitMemorialCine,  style:"Cinematic" },
       { url:portraitMemorial,      style:"Minimal" },
     ] },
-  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts,
+  { cat:"Gifts",    catId:"gifts",    style:"Renaissance", before:"https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600&h=600&fit=crop&q=80", after:sceneGifts,   portrait:portraitGifts,
     portraits:[
       { url:portraitGiftsRoyal, style:"Royal" },
       { url:portraitGifts,      style:"Renaissance" },
