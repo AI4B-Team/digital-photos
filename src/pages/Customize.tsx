@@ -318,6 +318,26 @@ const CANVAS_EDGES = [
   { id:"museum-white", label:"Museum (White edge)", desc:"Clean solid white edges",  color:"#f4f4f4" },
 ];
 
+// ── Name overlay options ──────────────────────────────
+const NAME_POSITIONS = [
+  { id:"none",   label:"None"   },
+  { id:"top",    label:"Top"    },
+  { id:"bottom", label:"Bottom" },
+] as const;
+
+const NAME_FONTS = [
+  { id:"bold",   label:"Bold Sans",     css:(fs:number)=>`700 ${fs}px 'Poppins',sans-serif` },
+  { id:"serif",  label:"Classic Serif", css:(fs:number)=>`700 ${fs}px Georgia,'Times New Roman',serif` },
+  { id:"italic", label:"Italic",        css:(fs:number)=>`600 italic ${fs}px 'Poppins',sans-serif` },
+] as const;
+
+const NAME_COLORS = [
+  { id:"white", label:"White", hex:"#FFFFFF" },
+  { id:"cream", label:"Cream", hex:"#EDE6D9" },
+  { id:"black", label:"Black", hex:"#0A0A0A" },
+  { id:"gold",  label:"Gold",  hex:"#C4963A" },
+] as const;
+
 const toFrameId = (productType:string, frameColor:string): string => {
   if (productType === "digital" || productType === "print") return "frameless";
   if (productType === "canvas") return "canvas";
@@ -596,6 +616,12 @@ export default function Customize() {
   const [cardFrame, setCardFrame]               = useState("black");
   const [mountColor, setMountColor]             = useState("snow-white");
   const [glazeType,  setGlazeType]              = useState<"perspex"|"moth-eye">("perspex");
+  // Name overlay
+  const [portraitName,    setPortraitName]    = useState("");
+  const [namePosition,    setNamePosition]    = useState<"none"|"top"|"bottom">("none");
+  const [nameFontId,      setNameFontId]      = useState("bold");
+  const [nameColorId,     setNameColorId]     = useState("white");
+  const [nameCompositing, setNameCompositing] = useState(false);
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
@@ -691,6 +717,58 @@ export default function Customize() {
     const sec = s % 60;
     if (h > 0) return `${h}h ${String(m).padStart(2,"0")}m`;
     return `${String(m).padStart(2,"0")}m ${String(sec).padStart(2,"0")}s`;
+  };
+
+  // Bake name text onto portrait image using HTML5 Canvas, upload to Storage
+  const composeNameOnImage = async (
+    photoUrl: string,
+    name: string,
+    position: "top" | "bottom",
+    fontId: string,
+    colorId: string,
+  ): Promise<string> => {
+    try {
+      const fontDef  = NAME_FONTS.find(f => f.id === fontId)   || NAME_FONTS[0];
+      const colorDef = NAME_COLORS.find(c => c.id === colorId) || NAME_COLORS[0];
+      const img = await new Promise<HTMLImageElement>((res, rej) => {
+        const el = new Image();
+        el.crossOrigin = "anonymous";
+        el.onload  = () => res(el);
+        el.onerror = () => rej(new Error("Image load failed"));
+        el.src = photoUrl;
+      });
+      const canvas = document.createElement("canvas");
+      canvas.width  = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(img, 0, 0);
+      const fontSize = Math.round(img.naturalHeight * 0.065);
+      ctx.font      = fontDef.css(fontSize);
+      ctx.fillStyle = colorDef.hex;
+      ctx.textAlign = "center";
+      ctx.shadowColor   = colorId === "white" || colorId === "cream"
+        ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.35)";
+      ctx.shadowBlur    = fontSize * 0.18;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = fontSize * 0.04;
+      const x = img.naturalWidth / 2;
+      const padding = img.naturalHeight * 0.055;
+      const y = position === "top" ? padding + fontSize : img.naturalHeight - padding;
+      ctx.fillText(name.toUpperCase(), x, y);
+      const blob = await new Promise<Blob>((res, rej) =>
+        canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas export failed")), "image/jpeg", 0.95)
+      );
+      const { supabase } = await import("@/integrations/supabase/client");
+      const path = `named/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`;
+      const { data: upData, error: upErr } = await supabase.storage
+        .from("portraits").upload(path, blob, { contentType:"image/jpeg", upsert:false });
+      if (upErr) throw upErr;
+      const { data: { publicUrl } } = supabase.storage.from("portraits").getPublicUrl(upData.path);
+      return publicUrl;
+    } catch (err) {
+      console.warn("Name compositing failed, using original:", err);
+      return photoUrl;
+    }
   };
 
   const applyPromo = () => {
@@ -1021,6 +1099,32 @@ export default function Customize() {
                           ))}
                         </div>
                       </div>
+                      {/* Live name overlay */}
+                      {namePosition !== "none" && portraitName && (
+                        <div style={{
+                          position:"absolute", left:0, right:0, zIndex:3,
+                          top:    namePosition === "top"    ? "5%" : "auto",
+                          bottom: namePosition === "bottom" ? "5%" : "auto",
+                          textAlign:"center", pointerEvents:"none",
+                        }}>
+                          <span style={{
+                            display:"inline-block",
+                            color: NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff",
+                            fontSize:"clamp(14px, 6.5%, 48px)",
+                            fontFamily: nameFontId==="serif"
+                              ? "Georgia,'Times New Roman',serif"
+                              : "'Poppins',sans-serif",
+                            fontWeight: nameFontId==="italic" ? 600 : 700,
+                            fontStyle:  nameFontId==="italic" ? "italic" : "normal",
+                            letterSpacing:".18em",
+                            textShadow: nameColorId==="white"||nameColorId==="cream"
+                              ? "0 2px 8px rgba(0,0,0,0.55)"
+                              : "0 2px 8px rgba(255,255,255,0.35)",
+                          }}>
+                            {portraitName.toUpperCase()}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     {itemBusy && (
                       <div className="cz-busy" style={{ zIndex: 2 }}>
@@ -1485,6 +1589,76 @@ export default function Customize() {
             </button>
           ) : (
           <>
+          {/* ── Name / Text Overlay ── */}
+          <div className="cz-section">
+            <div className="cz-label">
+              <span>Name</span>
+              <span className="cz-value" style={{ color:namePosition==="none"?MUTED:INK }}>
+                {namePosition === "none" ? "None" : portraitName || "Add a name"}
+              </span>
+            </div>
+            <input
+              type="text"
+              value={portraitName}
+              onChange={e => {
+                setPortraitName(e.target.value.slice(0, 20));
+                if (e.target.value && namePosition === "none") setNamePosition("bottom");
+              }}
+              placeholder="e.g. BARLEY, MILO, SOPHIE"
+              maxLength={20}
+              style={{
+                width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:10,
+                border:`1px solid ${BORDER}`, fontFamily:"'Poppins',sans-serif",
+                fontSize:13, color:INK, outline:"none", background:"#fff",
+              }}
+            />
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:6, marginBottom:12 }}>
+              {NAME_POSITIONS.map(pos => (
+                <button key={pos.id}
+                  className={`cz-chip ${namePosition===pos.id?"on":""}`}
+                  style={{ justifyContent:"center", padding:"8px 4px", whiteSpace:"nowrap" }}
+                  onClick={() => setNamePosition(pos.id as any)}>
+                  {pos.label}
+                </button>
+              ))}
+            </div>
+            {namePosition !== "none" && portraitName && (
+              <>
+                <div style={{ display:"flex", gap:6, marginBottom:10 }}>
+                  {NAME_FONTS.map(f => (
+                    <button key={f.id}
+                      onClick={() => setNameFontId(f.id)}
+                      style={{
+                        flex:1, padding:"7px 4px", borderRadius:8, cursor:"pointer",
+                        border:`1.5px solid ${nameFontId===f.id?RED:BORDER}`,
+                        background:nameFontId===f.id?"rgba(230,25,25,.05)":"#fff",
+                        fontSize:11, color:nameFontId===f.id?RED:MUTED,
+                        fontFamily: f.id==="serif" ? "Georgia,serif" : "'Poppins',sans-serif",
+                        fontStyle:  f.id==="italic" ? "italic" : "normal",
+                        fontWeight: f.id==="bold" ? 700 : 500,
+                      }}>
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display:"flex", gap:8 }}>
+                  {NAME_COLORS.map(c => (
+                    <button key={c.id} title={c.label}
+                      onClick={() => setNameColorId(c.id)}
+                      style={{
+                        width:30, height:30, borderRadius:"50%",
+                        background:c.hex, cursor:"pointer", border:"none",
+                        outline: nameColorId===c.id ? `3px solid ${RED}` : `2px solid rgba(0,0,0,0.12)`,
+                        outlineOffset: nameColorId===c.id ? 2 : 0,
+                        boxShadow: "0 1px 4px rgba(0,0,0,.15)",
+                        transition:"outline .15s",
+                      }}/>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
           <div className="cz-section">
             <div className="cz-label"><span>Effect</span><span className="cz-value">{effectDef.label}</span></div>
             <div style={{ position:"relative" }}>
@@ -2297,15 +2471,36 @@ export default function Customize() {
                         const lineQty = selected.qty || 1;
                         const linePrice = itemUnitPrice(snapshot) * lineQty;
                         return (
-                          <button onClick={() => {
-                            addToCart(snapshot, lineQty);
-                            setPendingCart({ snapshot, qty: lineQty });
+                          <button disabled={nameCompositing} onClick={async () => {
+                            let finalPhotoUrl = (snapshot as any).photoUrl;
+                            if (portraitName && namePosition !== "none") {
+                              setNameCompositing(true);
+                              finalPhotoUrl = await composeNameOnImage(
+                                (snapshot as any).photoUrl,
+                                portraitName,
+                                namePosition as "top" | "bottom",
+                                nameFontId,
+                                nameColorId,
+                              );
+                              setNameCompositing(false);
+                            }
+                            const namedSnapshot = {
+                              ...snapshot,
+                              photoUrl: finalPhotoUrl,
+                              portraitName: portraitName || null,
+                              namePosition: portraitName ? namePosition : null,
+                              nameFontId:   portraitName ? nameFontId   : null,
+                              nameColorId:  portraitName ? nameColorId  : null,
+                            };
+                            addToCart(namedSnapshot, lineQty);
+                            setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
                             setUpsellOpen(true);
                           }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
                             borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
                             justifyContent:"center", gap:8 }}>
-                            <ShoppingCart size={15}/> Add {card.label} To Cart —{" "}
-                            <span style={{ fontWeight:900 }}>${linePrice}</span>
+                            {nameCompositing
+                              ? <><div className="cz-spinner" style={{ width:14,height:14 }}/> Adding name…</>
+                              : <><ShoppingCart size={15}/> Add {card.label} To Cart — <span style={{ fontWeight:900 }}>${linePrice}</span></>}
                           </button>
                         );
                       })()}
@@ -2570,6 +2765,14 @@ export default function Customize() {
                         {it.productType !== "digital" && (sd?.label || it.size)}
                         {it.frameColor && it.productType !== "digital" ? ` · ${it.frameColor}` : ""}
                       </div>
+                      {it.portraitName && (
+                        <div style={{ display:"inline-flex", alignItems:"center", gap:4,
+                          marginTop:3, fontSize:10.5, fontWeight:600,
+                          color:RED, letterSpacing:".1em" }}>
+                          <span>✦</span>
+                          <span>NAME: {String(it.portraitName).toUpperCase()}</span>
+                        </div>
+                      )}
                       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
                         <div style={{ display:"flex", alignItems:"center", gap:4, border:`1px solid ${BORDER}`, borderRadius:8 }}>
                           <button
