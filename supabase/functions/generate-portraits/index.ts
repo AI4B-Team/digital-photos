@@ -113,7 +113,7 @@ serve(async (req) => {
                         ? `You are given TWO images:\n1) STYLE REFERENCE — the first image. Replicate its EXACT artistic style: medium, brushwork, color palette, lighting, mood, composition, framing, background treatment, and overall aesthetic.\n2) SUBJECT PHOTO — the second image. Use ONLY this image for the subject's identity and likeness (face, features, fur/skin tones, distinguishing marks).\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nProduce a single high-quality portrait of the SUBJECT rendered in the EXACT style of the STYLE REFERENCE. Do not blend the subject from the reference image — keep the subject strictly from the second photo. Match the reference style as closely as possible: same artistic technique, same color grading, same lighting, same background style, same composition feel. Output one polished portrait artwork.`
                         : `${prompt}\n\n${categoryContext}${templatePrompt ? `\n\nTemplate Direction: ${templatePrompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
                     },
-                    ...(styleRefUrl ? [{ type: "image_url", image_url: { url: styleRefUrl } }] : []),
+                    ...(styleRefDataUrl ? [{ type: "image_url", image_url: { url: styleRefDataUrl } }] : []),
                     {
                       type: "image_url",
                       image_url: { url: photoUrl },
