@@ -739,7 +739,17 @@ function HomePage({ onGenerate }) {
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
-  const [heroName, setHeroName] = useState("");
+  const [heroNames, setHeroNames] = useState<string[]>([""]);
+  const totalPhotos = (photo ? 1 : 0) + extraPhotos.length;
+  useEffect(() => {
+    setHeroNames(prev => {
+      const n = Math.max(1, totalPhotos);
+      if (prev.length === n) return prev;
+      if (prev.length < n) return [...prev, ...Array(n - prev.length).fill("")];
+      return prev.slice(0, n);
+    });
+  }, [totalPhotos]);
+  const heroName = heroNames.filter(Boolean).join(" & ");
   const [quoteIdx, setQuoteIdx] = useState(0);
   useEffect(() => {
     const iv = setInterval(() => setQuoteIdx(p => (p + 1) % SOCIAL_PROOF.length), 4200);
