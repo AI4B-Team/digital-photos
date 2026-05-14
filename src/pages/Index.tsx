@@ -1636,30 +1636,210 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
 
 
 /* ═══════════════════════════════════════════════════════════
+   STYLE SELECT PAGE — between homepage and generation
+═══════════════════════════════════════════════════════════ */
+function StyleSelectPage({ session, onConfirm, onBack }) {
+  const { cat, heroName } = session;
+  const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
+
+  const teaser = TEASERS.find(t => t.catId === cat);
+  const portraits = teaser?.portraits || [];
+  const templates = TEMPLATES[cat] || [];
+
+  const baseCards = STYLES.map(st => ({
+    type: "style" as const,
+    id: st.id,
+    label: st.label,
+    desc: st.desc,
+    img: portraits.find(p => p.style === st.label)?.url || st.preview,
+  }));
+
+  const tmplCards = templates.map(t => ({
+    type: "template" as const,
+    id: t.id,
+    label: t.label,
+    desc: t.desc,
+    img: t.img,
+  }));
+
+  const handleConfirm = () => {
+    if (!selected) return;
+    if (selected.type === "style") {
+      onConfirm({ styles: [selected.id], templatePrompt: "" });
+    } else {
+      const tmpl = templates.find(t => t.id === selected.id);
+      onConfirm({ styles: ["royal"], templatePrompt: tmpl?.prompt || "" });
+    }
+  };
+
+  return (
+    <div style={{ background:T.bg, minHeight:"100vh", color:T.cream }}>
+      <style>{G}</style>
+
+      {/* Top bar */}
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+        padding:"22px 6vw", borderBottom:`1px solid ${T.border}` }}>
+        <button onClick={onBack}
+          style={{ display:"flex", alignItems:"center", gap:7, background:"none",
+            border:"none", cursor:"pointer", color:T.muted, fontSize:13,
+            fontFamily:"'Poppins',sans-serif" }}>
+          <ChevronLeft size={16}/> Back
+        </button>
+        <div style={{ display:"flex", alignItems:"center", gap:10, fontSize:11,
+          color:T.muted, letterSpacing:".08em", fontFamily:"'Poppins',sans-serif" }}>
+          <span style={{ color:T.gold, fontWeight:600 }}>1 Upload</span>
+          <span>›</span>
+          <span style={{ color:T.cream, fontWeight:600 }}>2 Choose Style</span>
+          <span>›</span>
+          <span>3 Preview</span>
+          <span>›</span>
+          <span>4 Order</span>
+        </div>
+        <div style={{ width:60 }}/>
+      </div>
+
+      {/* Headline */}
+      <div style={{ maxWidth:1200, margin:"0 auto", padding:"40px 6vw 20px", textAlign:"center" }}>
+        <h1 style={{ fontSize:"clamp(24px,3.5vw,42px)", fontWeight:800,
+            color:T.cream, marginBottom:10, lineHeight:1.15,
+            fontFamily:"'Poppins',sans-serif" }}>
+          {heroName ? <>Choose An Art Style For <span style={{ color:T.gold }}>{heroName}</span></> : "Choose An Art Style"}
+        </h1>
+        <p style={{ fontSize:13, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
+          Select one style to generate your free preview — takes about 30 seconds.
+        </p>
+      </div>
+
+      {/* Art Styles header */}
+      {baseCards.length > 0 && (
+        <div style={{ maxWidth:1200, margin:"0 auto", padding:"20px 6vw 8px" }}>
+          <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
+            color:T.muted, fontWeight:600 }}>Art Styles</p>
+        </div>
+      )}
+
+      {/* Card grid */}
+      <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 6vw" }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
+          {baseCards.map(card => {
+            const isSelected = selected?.type === "style" && selected?.id === card.id;
+            return (
+              <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected}
+                onSelect={() => setSelected(isSelected ? null : { type:"style", id:card.id })}
+                onConfirm={handleConfirm}/>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Templates section */}
+      {tmplCards.length > 0 && (
+        <>
+          <div style={{ maxWidth:1200, margin:"0 auto", padding:"36px 6vw 8px" }}>
+            <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
+              color:T.muted, fontWeight:600 }}>Scenes & Costumes</p>
+          </div>
+          <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 6vw" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
+              {tmplCards.map(card => {
+                const isSelected = selected?.type === "template" && selected?.id === card.id;
+                return (
+                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected}
+                    onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
+                    onConfirm={handleConfirm}/>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
+      <div style={{ height:60 }}/>
+    </div>
+  );
+}
+
+function StyleCard({ card, isSelected, onSelect, onConfirm }) {
+  return (
+    <div onClick={onSelect}
+      style={{
+        border:`2px solid ${isSelected ? T.gold : T.border}`,
+        borderRadius:16,
+        overflow:"hidden",
+        cursor:"pointer",
+        background:T.bg,
+        transition:"border-color .15s, transform .15s",
+        transform: isSelected ? "translateY(-3px)" : "none",
+        boxShadow: isSelected ? "0 8px 24px rgba(0,0,0,0.3)" : "none",
+      }}>
+      <div style={{ position:"relative", aspectRatio:"4/5", overflow:"hidden", background:"#111" }}>
+        <img src={card.img} alt={card.label}
+          style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+        {isSelected && (
+          <div style={{ position:"absolute", top:10, right:10, width:26, height:26,
+            borderRadius:"50%", background:T.gold, display:"flex",
+            alignItems:"center", justifyContent:"center" }}>
+            <Check size={14} color="#fff" strokeWidth={3}/>
+          </div>
+        )}
+      </div>
+      <div style={{ padding:"14px 14px 16px" }}>
+        <h3 style={{ fontSize:15, fontWeight:700, color:T.cream,
+          marginBottom:4, fontFamily:"'Poppins',sans-serif" }}>{card.label}</h3>
+        <p style={{ fontSize:12, color:T.muted, marginBottom: isSelected ? 12 : 0,
+          fontFamily:"'Poppins',sans-serif" }}>{card.desc}</p>
+        {isSelected && (
+          <button
+            onClick={e => { e.stopPropagation(); onConfirm(); }}
+            style={{ width:"100%", padding:"11px 0",
+              background:T.gold, color:"#fff", border:"none",
+              borderRadius:10, cursor:"pointer", fontSize:13,
+              fontWeight:700, fontFamily:"'Poppins',sans-serif",
+              display:"flex", alignItems:"center",
+              justifyContent:"center", gap:8 }}>
+            <Sparkles size={15}/> Generate Free Preview
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+/* ═══════════════════════════════════════════════════════════
    ROOT
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, styles:[], templatePrompt:"", sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
-  const handleGenerate = useCallback(async ({ cat, photo, styles, uploadedUrl, templatePrompt = "", heroName = "" }) => {
-    let sessionId = null;
-    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, styles, templatePrompt }));
-    setSession({ cat, photo, styles, heroName } as any);
+  // Step 1: homepage Generate → go to style select
+  const handleGenerate = useCallback(({ cat, photo, uploadedUrl, heroName = "" }) => {
+    setLocal(prev => ({ ...prev, cat, photo, photoUrl: uploadedUrl, heroName }));
+    setSession({ cat, photo, heroName } as any);
+    setScreen("select-style");
+  }, [setSession]);
 
-    // Create a Supabase session record to track generation
+  // Step 2: user picks style → create session, then generate
+  const handleStyleSelected = useCallback(async ({ styles, templatePrompt }) => {
+    setLocal(prev => ({ ...prev, styles, templatePrompt }));
+    setSession({ styles, heroName: localSession.heroName } as any);
+    let sessionId = null;
     try {
-      sessionId = await createSession({ category: cat, styles, photoUrl: uploadedUrl || photo || "" });
-      setSession({ cat, photo, styles, orderId: sessionId, heroName } as any);
+      sessionId = await createSession({
+        category: localSession.cat,
+        styles,
+        photoUrl: localSession.photoUrl || localSession.photo || "",
+      });
+      setSession({ orderId: sessionId } as any);
       setLocal(prev => ({ ...prev, sessionId }));
     } catch (err) {
       console.warn("Could not create session record:", err);
     }
-
     setScreen("gen");
-  }, [setSession]);
+  }, [localSession, setSession]);
 
   const handleGenDone = useCallback((portraits) => {
     setLocal(prev => ({ ...prev, generatedPortraits: portraits }));
@@ -1671,13 +1851,16 @@ export default function App() {
   return (
     <>
       <style>{G}</style>
-      {screen==="home"    && <HomePage    onGenerate={handleGenerate}/>}
-      {screen==="gen"     && <GenScreen   selectedStyles={localSession.styles}
-                                sessionId={localSession.sessionId}
-                                photoUrl={localSession.photoUrl || localSession.photo}
-                                category={localSession.cat}
-                                templatePrompt={localSession.templatePrompt}
-                                onDone={handleGenDone}/>}
+      {screen==="home"         && <HomePage        onGenerate={handleGenerate}/>}
+      {screen==="select-style" && <StyleSelectPage session={localSession}
+                                    onConfirm={handleStyleSelected}
+                                    onBack={() => setScreen("home")}/>}
+      {screen==="gen"          && <GenScreen      selectedStyles={localSession.styles}
+                                    sessionId={localSession.sessionId}
+                                    photoUrl={localSession.photoUrl || localSession.photo}
+                                    category={localSession.cat}
+                                    templatePrompt={localSession.templatePrompt}
+                                    onDone={handleGenDone}/>}
     </>
   );
 }
