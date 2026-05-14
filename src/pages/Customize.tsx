@@ -1996,6 +1996,13 @@ export default function Customize() {
                         </>
                       )}
 
+                      {card.id !== "digital" && (
+                        <div style={{ display:"flex", alignItems:"center", gap:6,
+                          fontSize:12, color:"#16a34a", fontWeight:600, marginBottom:10 }}>
+                          <Truck size={14}/> Free Shipping Included
+                        </div>
+                      )}
+
                       <div style={{ fontSize:11, color:MUTED, fontWeight:600,
                         letterSpacing:".06em", textTransform:"uppercase", marginBottom:6 }}>Included</div>
                       <ul style={{ listStyle:"none", padding:0, margin:"0 0 12px",
