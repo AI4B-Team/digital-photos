@@ -37,6 +37,7 @@ serve(async (req) => {
       frameColor,
       canvasEdge,
       mountColor = "snow-white",
+      glazeType = "perspex",
       shippingName,
       shippingEmail,
       shippingLine1,
