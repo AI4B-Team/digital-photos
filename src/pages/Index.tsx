@@ -1864,7 +1864,8 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, category, templateProm
    STYLE SELECT PAGE — between homepage and generation
 ═══════════════════════════════════════════════════════════ */
 function StyleSelectPage({ session, onConfirm, onBack }) {
-  const { cat, heroName, photo } = session;
+  const { cat, heroName, photo, extraPhotos = [] } = session;
+  const allPhotos = [photo, ...(extraPhotos || [])].filter(Boolean);
   const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
   const [confirming, setConfirming] = useState(false);
 
