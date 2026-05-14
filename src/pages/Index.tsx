@@ -1262,10 +1262,16 @@ function HomePage({ onGenerate }) {
                     </button>
                   </div>
                 )}
-                <input ref={fileRef} type="file" accept="image/*" style={{ display:"none" }}
+                <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp,image/gif" style={{ display:"none" }}
                   onChange={e => {
                     const f = e.target.files?.[0];
                     if (!f) return;
+                    const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
+                    if (!ALLOWED.includes(f.type)) {
+                      alert("Please upload a PNG, JPEG, WebP, or GIF image.");
+                      e.target.value = "";
+                      return;
+                    }
                     if (addSlot === "extra") {
                       const reader = new FileReader();
                       reader.onload = ev => setExtraPhotos(p => [...p, ev.target?.result as string]);
