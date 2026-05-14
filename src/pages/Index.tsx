@@ -1127,73 +1127,13 @@ function HomePage({ onGenerate }) {
               </div>
               )}
 
-              {/* ── CHOOSE A TEMPLATE (optional, AI Decides by default) ── */}
-              {cat && photo && (
-                <div style={{ marginBottom:18 }}>
-                  <div style={{ display:"flex", alignItems:"center", marginBottom:8 }}>
-                    <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
-                      textTransform:"uppercase", fontWeight:500 }}>
-                      Choose A Template
-                      <span style={{ color:T.dim, fontSize:8, letterSpacing:".05em",
-                        textTransform:"none", fontWeight:400, marginLeft:8 }}>
-                        (Optional - AI Decides By Default)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="tmpl-wrap">
-                    <button type="button" aria-label="Scroll left" className="tmpl-arrow l" disabled={!tmplCanL} onClick={() => scrollTmpl(-1)}>
-                      <ChevronLeft size={16}/>
-                    </button>
-                    <button type="button" aria-label="Scroll right" className="tmpl-arrow r" disabled={!tmplCanR} onClick={() => scrollTmpl(1)}>
-                      <ChevronRight size={16}/>
-                    </button>
-                  <div className="tmpl-strip" ref={tmplStripRef}>
-                    {/* AI Decides default card */}
-                    <button className={`tmpl-card ${selectedTemplate===null?"on":""}`}
-                      onClick={() => setSelectedTemplate(null)}>
-                      <div className="tmpl-img" style={{ background:"linear-gradient(135deg,rgba(230,25,25,.08),rgba(230,25,25,.18))" }}>
-                        <Sparkles size={26} color={T.gold}/>
-                      </div>
-                      <div className="tmpl-meta">
-                        <div className="tmpl-l">Let AI Choose</div>
-                        <div className="tmpl-d">We'll Pick For You</div>
-                      </div>
-                      {selectedTemplate===null && (
-                        <div className="tmpl-check"><Check size={9} color="#fff" strokeWidth={3}/></div>
-                      )}
-                    </button>
-                    {/* Category-specific template cards */}
-                    {(TEMPLATES[cat] || []).map(tmpl => (
-                      <button key={tmpl.id}
-                        className={`tmpl-card ${selectedTemplate===tmpl.id?"on":""}`}
-                        onClick={() => setSelectedTemplate(tmpl.id)}>
-                        <div className="tmpl-img">
-                          <img src={tmpl.img} alt={tmpl.label}/>
-                        </div>
-                        <div className="tmpl-meta">
-                          <div className="tmpl-l">{tmpl.label}</div>
-                          <div className="tmpl-d">{tmpl.desc}</div>
-                        </div>
-                        {selectedTemplate===tmpl.id && (
-                          <div className="tmpl-check"><Check size={9} color="#fff" strokeWidth={3}/></div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                  </div>
-                </div>
-              )}
-
               {/* ── GENERATE ── */}
               <button className="btn-gold" disabled={!canGo}
                 style={{ width:"100%", padding:"15px", fontSize:13, borderRadius:6,
                   display:"flex", alignItems:"center", justifyContent:"center", gap:9,
                   animation:canGo?"glow 2s infinite":"none" }}
                 onClick={() => {
-                  const tmplObj = selectedTemplate
-                    ? (TEMPLATES[cat] || []).find(t => t.id === selectedTemplate)
-                    : null;
-                  onGenerate({ cat, photo, styles, uploadedUrl, templatePrompt: tmplObj?.prompt || "", heroName });
+                  onGenerate({ cat, photo, uploadedUrl, heroName });
                 }}>
                 <Wand2 size={15}/>{genLabel()}
               </button>
