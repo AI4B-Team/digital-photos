@@ -1748,8 +1748,7 @@ export default function Customize() {
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
           background:`
-            radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,250,240,.95) 0%, rgba(245,238,228,.4) 40%, rgba(232,222,208,0) 75%),
-            linear-gradient(180deg, #EFE6D6 0%, #E4D7C0 55%, #D4C3A6 100%)
+            radial-gradient(ellipse 70% 50% at 50% 25%, #FFFFFF 0%, #FAFAF8 50%, #F0EDE8 100%)
           `,
           overflow:"hidden",
           position:"relative",
