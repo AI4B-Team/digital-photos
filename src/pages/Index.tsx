@@ -1900,10 +1900,10 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         const card = tmplCards.find(c => c.id === selected.id);
         const base = tmpl?.prompt || "";
         const variants = [
-          `${base} — variation 1: front-facing pose, head tilted slightly, centered composition`,
-          `${base} — variation 2: side profile angle, looking off camera, soft cinematic light`,
-          `${base} — variation 3: tight close-up portrait crop, eyes engaged with viewer, shallow depth of field`,
-          `${base} — variation 4: wider shot showing more of the scene and props, dynamic composition`,
+          `${base} — Recreate the scene shown in the TOP-LEFT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
+          `${base} — Recreate the scene shown in the TOP-RIGHT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
+          `${base} — Recreate the scene shown in the BOTTOM-LEFT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
+          `${base} — Recreate the scene shown in the BOTTOM-RIGHT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
         ];
         onConfirm({
           styles: ["v1","v2","v3","v4"],
