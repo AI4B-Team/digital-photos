@@ -1517,7 +1517,7 @@ function HomePage({ onGenerate }) {
           {[
             { Icon:Sparkles, label:"Free Instant Preview" },
             { Icon:FrameIcon, label:"Museum-Quality Print" },
-            { Icon:Truck, label:"Fast & Free Shipping" },
+            { Icon:Truck, label:"Free Worldwide Shipping" },
             { Icon:Award, label:"Proudly Made in the USA" },
           ].map(({ Icon, label }) => (
             <div key={label} style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:12 }}>
