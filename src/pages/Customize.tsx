@@ -2471,15 +2471,36 @@ export default function Customize() {
                         const lineQty = selected.qty || 1;
                         const linePrice = itemUnitPrice(snapshot) * lineQty;
                         return (
-                          <button onClick={() => {
-                            addToCart(snapshot, lineQty);
-                            setPendingCart({ snapshot, qty: lineQty });
+                          <button disabled={nameCompositing} onClick={async () => {
+                            let finalPhotoUrl = (snapshot as any).photoUrl;
+                            if (portraitName && namePosition !== "none") {
+                              setNameCompositing(true);
+                              finalPhotoUrl = await composeNameOnImage(
+                                (snapshot as any).photoUrl,
+                                portraitName,
+                                namePosition as "top" | "bottom",
+                                nameFontId,
+                                nameColorId,
+                              );
+                              setNameCompositing(false);
+                            }
+                            const namedSnapshot = {
+                              ...snapshot,
+                              photoUrl: finalPhotoUrl,
+                              portraitName: portraitName || null,
+                              namePosition: portraitName ? namePosition : null,
+                              nameFontId:   portraitName ? nameFontId   : null,
+                              nameColorId:  portraitName ? nameColorId  : null,
+                            };
+                            addToCart(namedSnapshot, lineQty);
+                            setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
                             setUpsellOpen(true);
                           }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
                             borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
                             justifyContent:"center", gap:8 }}>
-                            <ShoppingCart size={15}/> Add {card.label} To Cart —{" "}
-                            <span style={{ fontWeight:900 }}>${linePrice}</span>
+                            {nameCompositing
+                              ? <><div className="cz-spinner" style={{ width:14,height:14 }}/> Adding name…</>
+                              : <><ShoppingCart size={15}/> Add {card.label} To Cart — <span style={{ fontWeight:900 }}>${linePrice}</span></>}
                           </button>
                         );
                       })()}
