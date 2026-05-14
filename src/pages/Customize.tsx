@@ -616,6 +616,12 @@ export default function Customize() {
   const [cardFrame, setCardFrame]               = useState("black");
   const [mountColor, setMountColor]             = useState("snow-white");
   const [glazeType,  setGlazeType]              = useState<"perspex"|"moth-eye">("perspex");
+  // Name overlay
+  const [portraitName,    setPortraitName]    = useState("");
+  const [namePosition,    setNamePosition]    = useState<"none"|"top"|"bottom">("none");
+  const [nameFontId,      setNameFontId]      = useState("bold");
+  const [nameColorId,     setNameColorId]     = useState("white");
+  const [nameCompositing, setNameCompositing] = useState(false);
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
