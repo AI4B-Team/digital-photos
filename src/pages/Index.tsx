@@ -2280,6 +2280,7 @@ export default function App() {
       {screen==="gen"          && <GenScreen      selectedStyles={localSession.styles}
                                     sessionId={localSession.sessionId}
                                     photoUrl={localSession.photoUrl || localSession.photo}
+                                    extraPhotoUrls={localSession.extraPhotos || []}
                                     category={localSession.cat}
                                     templatePrompt={localSession.templatePrompt}
                                     templatePrompts={localSession.templatePrompts}
