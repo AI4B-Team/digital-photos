@@ -28,6 +28,12 @@ import portraitPets from "@/assets/portrait-pets.jpg";
 import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
 import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
 import portraitPetsFan from "@/assets/portrait-pets-fantasy.jpg";
+import proofRoyal from "@/assets/portrait-people-royal.jpg";
+import proofWatercolor from "@/assets/portrait-pets-storybook.jpg";
+import proofRenaissance from "@/assets/portrait-people-renaissance.jpg";
+import proofStorybook from "@/assets/portrait-babies-fantasy.jpg";
+import proofCinematic from "@/assets/portrait-people-cinematic.jpg";
+import proofFantasy from "@/assets/portrait-pets-fantasy.jpg";
 import portraitPetsCine from "@/assets/portrait-pets-cinematic.jpg";
 import portraitPetsMin from "@/assets/portrait-pets-minimal.jpg";
 import petBathTime from "@/assets/pet-bath-time.jpg";
@@ -804,19 +810,21 @@ const GEN_MSGS = [
 
 // Social proof shown during generation — rotate through customer portraits
 const SOCIAL_PROOF = [
-  { img:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop",
+  { img: proofRoyal,
     style:"Royal", review:'"I cried when I saw it — it\'s perfect." — Jessica T.' },
-  { img:"https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600&h=600&fit=crop",
+  { img: proofWatercolor,
     style:"Watercolor", review:'"My dog passed away last year. This is priceless." — Mark R.' },
-  { img:"https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=600&h=600&fit=crop",
+  { img: proofRenaissance,
     style:"Renaissance", review:'"Everyone at the office asks where I got it." — Sarah M.' },
-  { img:"https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=600&h=600&fit=crop",
+  { img: proofStorybook,
     style:"Storybook", review:'"The canvas quality blew me away." — David L.' },
-  { img:"https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&h=600&fit=crop",
+  { img: proofCinematic,
     style:"Cinematic", review:'"My mom hasn\'t stopped talking about her portrait." — Amy K.' },
-  { img:"https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&h=600&fit=crop",
+  { img: proofFantasy,
     style:"Fantasy", review:'"Best birthday gift I\'ve ever given." — Tom W.' },
 ];
+
+
 
 /* ═══════════════════════════════════════════════════════════
    ATOMS
