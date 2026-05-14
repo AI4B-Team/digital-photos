@@ -1296,7 +1296,7 @@ function HomePage({ onGenerate }) {
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold,
                   textTransform:"uppercase", fontWeight:500, marginBottom:8 }}>
-                  Name <span style={{ color:T.dim, fontSize:8,
+                  {req.namesLabel} <span style={{ color:T.dim, fontSize:8,
                     textTransform:"none", letterSpacing:".04em", fontWeight:400,
                     marginLeft:6 }}>(Optional)</span>
                 </div>
