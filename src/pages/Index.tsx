@@ -803,13 +803,6 @@ const GEN_MSGS = [
 ];
 
 // Social proof shown during generation — rotate through customer portraits
-import proofRoyal from "@/assets/portrait-people-royal.jpg";
-import proofWatercolor from "@/assets/portrait-pets-storybook.jpg";
-import proofRenaissance from "@/assets/portrait-people-renaissance.jpg";
-import proofStorybook from "@/assets/portrait-babies-storybook.jpg";
-import proofCinematic from "@/assets/portrait-people-cinematic.jpg";
-import proofFantasy from "@/assets/portrait-pets-fantasy.jpg";
-
 const SOCIAL_PROOF = [
   { img: proofRoyal,
     style:"Royal", review:'"I cried when I saw it — it\'s perfect." — Jessica T.' },
@@ -824,6 +817,7 @@ const SOCIAL_PROOF = [
   { img: proofFantasy,
     style:"Fantasy", review:'"Best birthday gift I\'ve ever given." — Tom W.' },
 ];
+
 
 
 /* ═══════════════════════════════════════════════════════════
