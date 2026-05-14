@@ -1042,13 +1042,24 @@ export default function Customize() {
             background: isCanvas ? "#fff" : (isFrameless ? "transparent" : actualWood),
             padding: (isFrameless ? 6 : woodPad + 6),
             borderRadius: isFrameless ? 12 : 6,
-            boxShadow: "none",
+            // 3D wall-hung effect: ambient + cast shadow + subtle inner bevel
+            boxShadow: isFrameless
+              ? "0 12px 28px -8px rgba(0,0,0,.18), 0 4px 10px -2px rgba(0,0,0,.10)"
+              : `
+                inset 0 1px 0 rgba(255,255,255,.35),
+                inset 0 -2px 4px rgba(0,0,0,.25),
+                0 1px 2px rgba(0,0,0,.18),
+                0 18px 32px -10px rgba(0,0,0,.45),
+                0 36px 60px -20px rgba(0,0,0,.35)
+              `,
+            transform: "perspective(1400px) rotateX(2deg)",
+            transformOrigin: "center top",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
             maxWidth: "100%",
             border: isSelected ? `2px solid ${RED}` : "2px solid transparent",
-            transition: "border-color .2s ease",
+            transition: "border-color .2s ease, transform .3s ease, box-shadow .3s ease",
           }}>
             <div style={{
               background: bd.px === 0 ? "transparent" : bcd.bg,
@@ -1736,7 +1747,10 @@ export default function Customize() {
           maxHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
-          background:`radial-gradient(ellipse at 50% 30%, #FFFFFF 0%, ${BG} 70%)`,
+          background:`
+            radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,250,240,.95) 0%, rgba(245,238,228,.4) 40%, rgba(232,222,208,0) 75%),
+            linear-gradient(180deg, #EFE6D6 0%, #E4D7C0 55%, #D4C3A6 100%)
+          `,
           overflow:"hidden",
           position:"relative",
         }}>
