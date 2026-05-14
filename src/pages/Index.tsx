@@ -19,6 +19,7 @@ import sceneBabies from "@/assets/scene-babies.jpg";
 import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
+import sceneCouples from "@/assets/scene-couples.jpg";
 import portraitPets from "@/assets/portrait-pets.jpg";
 import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
 import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
