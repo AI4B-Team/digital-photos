@@ -2036,7 +2036,7 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhoto }) {
 ═══════════════════════════════════════════════════════════ */
 export default function App() {
   const [screen,      setScreen]   = useState("home");
-  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", sessionId:null, generatedPortraits:[] });
+  const [localSession, setLocal]   = useState({ cat:"", photo:null, photoUrl:null, heroName:"", styles:[], templatePrompt:"", styleRefUrl:"", sessionId:null, generatedPortraits:[] });
   const { setSession }             = useSession();
   const navigate                   = useNavigate();
 
@@ -2049,8 +2049,8 @@ export default function App() {
   }, [setSession]);
 
   // Step 2: user picks style → create session, then generate
-  const handleStyleSelected = useCallback(async ({ styles, templatePrompt }) => {
-    setLocal(prev => ({ ...prev, styles, templatePrompt }));
+  const handleStyleSelected = useCallback(async ({ styles, templatePrompt, styleRefUrl }) => {
+    setLocal(prev => ({ ...prev, styles, templatePrompt, styleRefUrl: styleRefUrl || "" }));
     setSession({ styles, heroName: localSession.heroName } as any);
     let sessionId = null;
     try {
@@ -2086,6 +2086,7 @@ export default function App() {
                                     photoUrl={localSession.photoUrl || localSession.photo}
                                     category={localSession.cat}
                                     templatePrompt={localSession.templatePrompt}
+                                    styleRefUrl={localSession.styleRefUrl}
                                     onDone={handleGenDone}/>}
     </>
   );
