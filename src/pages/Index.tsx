@@ -1614,9 +1614,13 @@ function HomePage({ onGenerate }) {
                 onMouseLeave={e=>{ e.currentTarget.style.borderColor=T.border; e.currentTarget.style.transform="translateY(0)"; e.currentTarget.style.boxShadow="none"; }}>
                 {/* Hero image */}
                 <div style={{ position:"relative", aspectRatio:"4/3", overflow:"hidden", background:"#000" }}>
-                  <img src={item.img} alt={item.title} loading="lazy"
-                    style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-                  <div style={{ position:"absolute", inset:0,
+                  {item.imgs ? (
+                    <CardSlideshow imgs={item.imgs} alt={item.title}/>
+                  ) : (
+                    <img src={item.img} alt={item.title} loading="lazy"
+                      style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                  )}
+                  <div style={{ position:"absolute", inset:0, pointerEvents:"none",
                     background:"linear-gradient(to top, rgba(10,10,10,.55) 0%, rgba(10,10,10,0) 55%)" }}/>
                   <div style={{ position:"absolute", top:14, left:14, width:38, height:38, borderRadius:12,
                     background:"rgba(255,255,255,.92)", display:"flex", alignItems:"center", justifyContent:"center",
