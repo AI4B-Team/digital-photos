@@ -1589,7 +1589,7 @@ function HomePage({ onGenerate }) {
 
 
       {/* ■■ Occasions ■■ */}
-      <section style={{ padding:"80px 32px", background:T.bg }}>
+      <section style={{ padding:"32px 32px 80px", background:T.bg }}>
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>A Portrait For Every Occasion</p>
           <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>The Most Personal Gift You Can Give</h2>
