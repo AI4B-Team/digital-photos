@@ -1081,14 +1081,6 @@ function LiveTeaser({ activeCat, onCatClick }) {
                   opacity: i===idx ? 1 : 0, transition:"opacity .7s ease-in-out" }}/>
             );
           })}
-          {/* watermark */}
-          <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
-            justifyContent:"center", pointerEvents:"none" }}>
-            <span style={{ fontSize:10, color:"rgba(255,255,255,.22)", letterSpacing:".26em",
-              textTransform:"uppercase", transform:"rotate(-20deg)", whiteSpace:"nowrap" }}>
-              DIGITAL PHOTOS
-            </span>
-          </div>
           {/* "Generated Portrait" label */}
           <div style={{ position:"absolute", top:12, left:12,
             fontSize:10, letterSpacing:".22em", textTransform:"uppercase", color:"#fff",
