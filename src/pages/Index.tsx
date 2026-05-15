@@ -1628,9 +1628,6 @@ function HomePage({ onGenerate }) {
               { cat:"pets",     img:scenePets,     Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesTouch, sceneCouplesKiss], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
-              { cat:"people",   img:scenePeople,   Icon:Users,    title:"People",   body:"Individuals, families, friends, parents. A birthday gift so personal.", cta:"Create A People Portrait" },
-              { cat:"memorial", img:sceneMemorial, Icon:Flower2,  title:"Memorial", body:"A tender tribute to the ones who shaped you.", cta:"Create A Memorial Portrait" },
-              { cat:"gifts",    img:sceneGifts,    Icon:Gift,     title:"Gifts",    body:"Birthdays, holidays, graduations, new arrivals. The portrait they'll never take down.", cta:"Browse Gift Ideas" },
             ].map(item => (
               <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }}
                 style={{ border:`1px solid ${T.border}`, borderRadius:18, overflow:"hidden",
