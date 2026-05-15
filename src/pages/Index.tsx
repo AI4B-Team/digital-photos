@@ -1112,18 +1112,12 @@ function LiveTeaser({ activeCat, onCatClick }) {
    HOME PAGE
 ═══════════════════════════════════════════════════════════ */
 function Step2Slides() {
-  const slides = [stepAi1, stepAi7, stepAi6, stepAi4, stepAi9, stepAi8, stepAi5, stepAi10, stepAi2, stepAi3];
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setI(p => (p + 1) % slides.length), 1800);
-    return () => clearInterval(t);
-  }, []);
+  const trio = [stepAi1, stepAi4, stepAi7];
   return (
-    <div style={{ position:"absolute", inset:0 }}>
-      {slides.map((src, idx) => (
-        <img key={idx} src={src} alt="AI portrait sample" loading="lazy" width={768} height={768}
-          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
-            opacity: i === idx ? 1 : 0, transition:"opacity 700ms ease-in-out" }}/>
+    <div style={{ position:"absolute", inset:0, display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:4, background:"#000" }}>
+      {trio.map((src, idx) => (
+        <img key={idx} src={src} alt="AI portrait sample" loading="lazy"
+          style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
       ))}
     </div>
   );
