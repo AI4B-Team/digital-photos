@@ -942,6 +942,29 @@ const SOCIAL_PROOF = SOCIAL_PROOF_BY_CAT.people;
 /* ═══════════════════════════════════════════════════════════
    ATOMS
 ═══════════════════════════════════════════════════════════ */
+function CardSlideshow({ imgs, alt, interval = 2800 }: { imgs: string[]; alt: string; interval?: number }) {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % imgs.length), interval);
+    return () => clearInterval(t);
+  }, [imgs.length, interval]);
+  return (
+    <div style={{ position:"absolute", inset:0 }}>
+      {imgs.map((src, i) => (
+        <img key={src} src={src} alt={alt} loading="lazy"
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+            opacity: i === idx ? 1 : 0, transition:"opacity .8s ease-in-out" }}/>
+      ))}
+      <div style={{ position:"absolute", bottom:10, left:0, right:0, display:"flex", justifyContent:"center", gap:5, zIndex:2 }}>
+        {imgs.map((_, i) => (
+          <span key={i} style={{ width: i===idx ? 16 : 5, height:5, borderRadius:999,
+            background: i===idx ? "rgba(255,255,255,.95)" : "rgba(255,255,255,.5)", transition:"all .3s" }}/>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Stars({ n = 5, size = 14 }) {
   return (
     <span style={{ display:"inline-flex", gap:2 }}>
