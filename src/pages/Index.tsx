@@ -1105,6 +1105,24 @@ function LiveTeaser({ activeCat, onCatClick }) {
 /* ═══════════════════════════════════════════════════════════
    HOME PAGE
 ═══════════════════════════════════════════════════════════ */
+function Step2Slides() {
+  const slides = [stepAi1, stepAi2, stepAi3, stepAi4];
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI(p => (p + 1) % slides.length), 1800);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div style={{ position:"absolute", inset:0 }}>
+      {slides.map((src, idx) => (
+        <img key={idx} src={src} alt="AI portrait sample" loading="lazy" width={768} height={768}
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+            opacity: i === idx ? 1 : 0, transition:"opacity 700ms ease-in-out" }}/>
+      ))}
+    </div>
+  );
+}
+
 function HomePage({ onGenerate }) {
   const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
   const [cat,     setCat]     = useState("");
