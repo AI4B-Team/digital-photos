@@ -1565,7 +1565,9 @@ function HomePage({ onGenerate }) {
             ].map((step) => (
               <div key={step.n} style={{ position:"relative", border:`1px solid ${T.border}`, borderRadius:18, background:T.bg, overflow:"hidden", display:"flex", flexDirection:"column" }}>
                 <div style={{ position:"relative", aspectRatio:"1/1", background:"linear-gradient(160deg,#dbeafe 0%,#eff6ff 55%,#ffffff 100%)", overflow:"hidden" }}>
-                  <img src={step.img} alt={step.title} loading="lazy" width={768} height={768} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                  {step.n === "2"
+                    ? <Step2Slides/>
+                    : <img src={step.img} alt={step.title} loading="lazy" width={768} height={768} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>}
                   <div style={{ position:"absolute", top:12, left:12, background:T.gold, color:"#FFFFFF", borderRadius:999, width:28, height:28, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:700, fontFamily:"'Poppins',sans-serif", boxShadow:"0 4px 12px rgba(0,0,0,.25)" }}>{step.n}</div>
                 </div>
                 <div style={{ padding:"22px 22px 24px" }}>
