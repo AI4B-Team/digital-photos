@@ -1087,13 +1087,6 @@ function LiveTeaser({ activeCat, onCatClick }) {
             background:"rgba(7,6,10,.78)", padding:"6px 12px", borderRadius:6, fontWeight:600 }}>
             Generated Portrait
           </div>
-          {/* style badge */}
-          <div style={{ position:"absolute", bottom:12, right:12,
-            fontSize:10, letterSpacing:".18em", textTransform:"uppercase", color:T.bg,
-            background:T.gold, padding:"6px 12px", borderRadius:6, fontWeight:700,
-            transition:"opacity .4s" }}>
-            {portraitCur.style}
-          </div>
         </div>
 
         {/* Doodle "becomes" arrow between panels */}
