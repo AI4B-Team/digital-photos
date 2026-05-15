@@ -949,10 +949,10 @@ function CardSlideshow({ imgs, alt, interval = 2800 }: { imgs: string[]; alt: st
     return () => clearInterval(t);
   }, [imgs.length, interval]);
   return (
-    <div style={{ position:"absolute", inset:0 }}>
+    <div style={{ position:"absolute", inset:0, background:"#F7F7F7" }}>
       {imgs.map((src, i) => (
         <img key={src} src={src} alt={alt} loading="lazy"
-          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain",
             opacity: i === idx ? 1 : 0, transition:"opacity .8s ease-in-out" }}/>
       ))}
       <div style={{ position:"absolute", bottom:10, left:0, right:0, display:"flex", justifyContent:"center", gap:5, zIndex:2 }}>
@@ -1636,7 +1636,7 @@ function HomePage({ onGenerate }) {
                 onMouseEnter={e=>{ e.currentTarget.style.borderColor=T.gold; e.currentTarget.style.transform="translateY(-3px)"; e.currentTarget.style.boxShadow="0 16px 36px rgba(0,0,0,.18)"; }}
                 onMouseLeave={e=>{ e.currentTarget.style.borderColor=T.border; e.currentTarget.style.transform="translateY(0)"; e.currentTarget.style.boxShadow="none"; }}>
                 {/* Hero image */}
-                <div style={{ position:"relative", aspectRatio:"4/3", overflow:"hidden", background:"#000" }}>
+                <div style={{ position:"relative", aspectRatio:"4/3", overflow:"hidden", background:"#F7F7F7" }}>
                   {item.imgs ? (
                     <CardSlideshow imgs={item.imgs} alt={item.title}/>
                   ) : (
