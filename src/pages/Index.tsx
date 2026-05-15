@@ -16,6 +16,9 @@ import {
 import SiteHeader from "@/components/SiteHeader";
 import scenePets from "@/assets/scene-pets.jpg";
 import sceneBabies from "@/assets/scene-babies.jpg";
+import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
+import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
+import sceneBabiesSoccer from "@/assets/scene-babies-soccer.jpg";
 import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
@@ -939,6 +942,29 @@ const SOCIAL_PROOF = SOCIAL_PROOF_BY_CAT.people;
 /* ═══════════════════════════════════════════════════════════
    ATOMS
 ═══════════════════════════════════════════════════════════ */
+function CardSlideshow({ imgs, alt, interval = 2800 }: { imgs: string[]; alt: string; interval?: number }) {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % imgs.length), interval);
+    return () => clearInterval(t);
+  }, [imgs.length, interval]);
+  return (
+    <div style={{ position:"absolute", inset:0 }}>
+      {imgs.map((src, i) => (
+        <img key={src} src={src} alt={alt} loading="lazy"
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+            opacity: i === idx ? 1 : 0, transition:"opacity .8s ease-in-out" }}/>
+      ))}
+      <div style={{ position:"absolute", bottom:10, left:0, right:0, display:"flex", justifyContent:"center", gap:5, zIndex:2 }}>
+        {imgs.map((_, i) => (
+          <span key={i} style={{ width: i===idx ? 16 : 5, height:5, borderRadius:999,
+            background: i===idx ? "rgba(255,255,255,.95)" : "rgba(255,255,255,.5)", transition:"all .3s" }}/>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Stars({ n = 5, size = 14 }) {
   return (
     <span style={{ display:"inline-flex", gap:2 }}>
@@ -1597,7 +1623,7 @@ function HomePage({ onGenerate }) {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
               { cat:"pets",     img:scenePets,     Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
-              { cat:"babies",   img:sceneBabies,   Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
+              { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouples,  Icon:Heart,    title:"Couples",  body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
               { cat:"people",   img:scenePeople,   Icon:Users,    title:"People",   body:"Individuals, families, friends, parents. A birthday gift so personal.", cta:"Create A People Portrait" },
               { cat:"memorial", img:sceneMemorial, Icon:Flower2,  title:"Memorial", body:"A tender tribute to the ones who shaped you.", cta:"Create A Memorial Portrait" },
@@ -1611,9 +1637,13 @@ function HomePage({ onGenerate }) {
                 onMouseLeave={e=>{ e.currentTarget.style.borderColor=T.border; e.currentTarget.style.transform="translateY(0)"; e.currentTarget.style.boxShadow="none"; }}>
                 {/* Hero image */}
                 <div style={{ position:"relative", aspectRatio:"4/3", overflow:"hidden", background:"#000" }}>
-                  <img src={item.img} alt={item.title} loading="lazy"
-                    style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-                  <div style={{ position:"absolute", inset:0,
+                  {item.imgs ? (
+                    <CardSlideshow imgs={item.imgs} alt={item.title}/>
+                  ) : (
+                    <img src={item.img} alt={item.title} loading="lazy"
+                      style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                  )}
+                  <div style={{ position:"absolute", inset:0, pointerEvents:"none",
                     background:"linear-gradient(to top, rgba(10,10,10,.55) 0%, rgba(10,10,10,0) 55%)" }}/>
                   <div style={{ position:"absolute", top:14, left:14, width:38, height:38, borderRadius:12,
                     background:"rgba(255,255,255,.92)", display:"flex", alignItems:"center", justifyContent:"center",
