@@ -16,6 +16,9 @@ import {
 import SiteHeader from "@/components/SiteHeader";
 import scenePets from "@/assets/scene-pets.jpg";
 import sceneBabies from "@/assets/scene-babies.jpg";
+import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
+import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
+import sceneBabiesSoccer from "@/assets/scene-babies-soccer.jpg";
 import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
