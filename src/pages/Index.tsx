@@ -1112,7 +1112,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
    HOME PAGE
 ═══════════════════════════════════════════════════════════ */
 function Step2Slides() {
-  const slides = [stepAi1, stepAi2, stepAi3, stepAi4, stepAi5, stepAi6, stepAi7, stepAi8];
+  const slides = [stepAi1, stepAi2, stepAi3, stepAi4, stepAi5, stepAi6, stepAi7, stepAi8, stepAi9, stepAi10];
   const [i, setI] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setI(p => (p + 1) % slides.length), 1800);
