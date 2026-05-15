@@ -26,6 +26,10 @@ import stepAi1 from "@/assets/step-ai-1.jpg";
 import stepAi2 from "@/assets/step-ai-2.jpg";
 import stepAi3 from "@/assets/step-ai-3.jpg";
 import stepAi4 from "@/assets/step-ai-4.jpg";
+import stepAi5 from "@/assets/step-ai-5.jpg";
+import stepAi6 from "@/assets/step-ai-6.jpg";
+import stepAi7 from "@/assets/step-ai-7.jpg";
+import stepAi8 from "@/assets/step-ai-8.jpg";
 import stepCustomize from "@/assets/step-customize.jpg";
 import stepDelivered from "@/assets/step-delivered.jpg";
 import portraitPets from "@/assets/portrait-pets.jpg";
@@ -1106,7 +1110,7 @@ function LiveTeaser({ activeCat, onCatClick }) {
    HOME PAGE
 ═══════════════════════════════════════════════════════════ */
 function Step2Slides() {
-  const slides = [stepAi1, stepAi2, stepAi3, stepAi4];
+  const slides = [stepAi1, stepAi2, stepAi3, stepAi4, stepAi5, stepAi6, stepAi7, stepAi8];
   const [i, setI] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setI(p => (p + 1) % slides.length), 1800);
