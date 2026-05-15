@@ -23,6 +23,9 @@ import scenePeople from "@/assets/scene-people.jpg";
 import sceneMemorial from "@/assets/scene-memorial.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import sceneCouples from "@/assets/scene-couples.jpg";
+import sceneCouplesRings from "@/assets/scene-couples-rings.jpg";
+import sceneCouplesTouch from "@/assets/scene-couples-touch.jpg";
+import sceneCouplesKiss from "@/assets/scene-couples-kiss.jpg";
 import stepUpload from "@/assets/step-upload.jpg";
 import stepAi from "@/assets/step-ai.jpg";
 import stepAi1 from "@/assets/step-ai-1.jpg";
@@ -1624,7 +1627,7 @@ function HomePage({ onGenerate }) {
             {[
               { cat:"pets",     img:scenePets,     Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
-              { cat:"couples",  img:sceneCouples,  Icon:Heart,    title:"Couples",  body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
+              { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesTouch, sceneCouplesKiss], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
               { cat:"people",   img:scenePeople,   Icon:Users,    title:"People",   body:"Individuals, families, friends, parents. A birthday gift so personal.", cta:"Create A People Portrait" },
               { cat:"memorial", img:sceneMemorial, Icon:Flower2,  title:"Memorial", body:"A tender tribute to the ones who shaped you.", cta:"Create A Memorial Portrait" },
               { cat:"gifts",    img:sceneGifts,    Icon:Gift,     title:"Gifts",    body:"Birthdays, holidays, graduations, new arrivals. The portrait they'll never take down.", cta:"Browse Gift Ideas" },
