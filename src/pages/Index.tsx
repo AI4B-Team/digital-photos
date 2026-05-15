@@ -30,6 +30,8 @@ import stepAi5 from "@/assets/step-ai-5.jpg";
 import stepAi6 from "@/assets/step-ai-6.jpg";
 import stepAi7 from "@/assets/step-ai-7.jpg";
 import stepAi8 from "@/assets/step-ai-8.jpg";
+import stepAi9 from "@/assets/step-ai-9.jpg";
+import stepAi10 from "@/assets/step-ai-10.jpg";
 import stepCustomize from "@/assets/step-customize.jpg";
 import stepDelivered from "@/assets/step-delivered.jpg";
 import portraitPets from "@/assets/portrait-pets.jpg";
