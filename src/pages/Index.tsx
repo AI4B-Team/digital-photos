@@ -19,6 +19,7 @@ import scenePets from "@/assets/scene-pets.jpg";
 import scenePetsBrutus  from "@/assets/scene-pets-brutus.jpg";
 import scenePetsPitbull from "@/assets/scene-pets-pitbull.jpg";
 import scenePetsGallery from "@/assets/scene-pets-gallery.jpg";
+import scenePetsShepherdFlag from "@/assets/scene-pets-shepherd-flag.jpg";
 import sceneBabies from "@/assets/scene-babies.jpg";
 import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
 import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
@@ -1837,7 +1838,7 @@ function HomePage({ onGenerate }) {
           <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every purchase is a memory made permanent. Every occasion deserves a masterpiece.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
-              { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsGallery, scenePetKing], Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
+              { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsGallery, scenePetKing, scenePetsShepherdFlag], Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesTouch, sceneCouplesKiss], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
               { cat:"couples",  img:sceneWeddingHeirloom, imgs:[sceneWeddingHeirloom], Icon:Sparkles, title:"Weddings", body:"Immortalize the day you said 'I do' in fine art worthy of the moment.", cta:"Create A Wedding Portrait" },
