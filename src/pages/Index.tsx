@@ -1021,7 +1021,7 @@ const TEASERS = [
        { url:portraitPeopleCine,  style:"Cinematic" },
        { url:portraitPeopleMin,   style:"Minimal" },
      ] },
-   { cat:"Occasions",catId:"occasions",style:"Heirloom",     before:beforeMemorial, after:sceneMemorial,portrait:sceneMemorial,
+   { cat:"Family",   catId:"occasions",style:"Heirloom",     before:beforeMemorial, after:sceneMemorial,portrait:sceneMemorial,
     portraits:[
       { url:sceneMemorial,        style:"Heirloom" },
       { url:portraitMemorialRoyal, style:"Royal" },
