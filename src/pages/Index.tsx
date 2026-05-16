@@ -1361,6 +1361,7 @@ function Step2Slides() {
 function HomePage({ onGenerate }) {
   const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
   const [cat,     setCat]     = useState("");
+  const [preferredTeaser, setPreferredTeaser] = useState<string|null>(null);
   const [styles,  setStyles]  = useState(STYLES.map(s => s.id));
   const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
   const [openFaq, setOpenFaq] = useState<number|null>(0);
