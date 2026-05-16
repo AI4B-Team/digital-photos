@@ -23,7 +23,7 @@ import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
 import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
 import sceneBabiesSoccer from "@/assets/scene-babies-soccer.jpg";
 import scenePeople from "@/assets/scene-people-same-person-v4.jpg";
-import sceneMemorial from "@/assets/scene-family-heirloom-v3.jpg";
+import sceneMemorial from "@/assets/scene-family-heirloom-v4.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import sceneCouples from "@/assets/scene-couples.jpg";
 import sceneCouplesRings from "@/assets/scene-couples-rings.jpg";
