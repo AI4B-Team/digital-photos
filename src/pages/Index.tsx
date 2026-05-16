@@ -1148,14 +1148,12 @@ function CardSlideshow({ imgs, alt, interval = 2800 }: { imgs: string[]; alt: st
     const t = setInterval(() => setIdx(i => (i + 1) % imgs.length), interval);
     return () => clearInterval(t);
   }, [imgs.length, interval]);
-  const getObjectPosition = (src: string) =>
-    src.includes("scene-couples-editorial-embrace") ? "center top" : "center center";
   return (
     <div style={{ position:"absolute", inset:0, background:"#000" }}>
       {imgs.map((src, i) => (
         <img key={src} src={src} alt={alt} loading="lazy"
           style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
-            objectPosition:getObjectPosition(src),
+            objectPosition:"center center",
             opacity: i === idx ? 1 : 0, transition:"opacity .8s ease-in-out" }}/>
       ))}
       <div style={{ position:"absolute", bottom:10, left:0, right:0, display:"flex", justifyContent:"center", gap:5, zIndex:2 }}>
