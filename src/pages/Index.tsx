@@ -212,13 +212,13 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .gold-text{color:#E61919}
 
 /* Buttons — REAL CREATOR style */
-.btn-gold{background:#E61919;color:#FFFFFF;border:none;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
+.btn-gold{background:#E61919;color:#FFFFFF;border:none;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:12px;transition:all .2s}
 .btn-gold:hover{background:#CC1414;transform:translateY(-1px);box-shadow:0 6px 18px rgba(230,25,25,.25)}
 .btn-gold:active{transform:translateY(0)}
 .btn-gold:disabled{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important;animation:none!important}
-.btn-ghost{background:transparent;border:1px solid rgba(0,0,0,.12);color:#0A0A0A;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
+.btn-ghost{background:transparent;border:1px solid rgba(0,0,0,.12);color:#0A0A0A;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.01em;text-transform:none;border-radius:12px;transition:all .2s}
 .btn-ghost:hover{border-color:rgba(0,0,0,.3);background:rgba(0,0,0,.03)}
-.btn-outline{background:transparent;border:1px solid #E61919;color:#E61919;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:999px;transition:all .2s}
+.btn-outline{background:transparent;border:1px solid #E61919;color:#E61919;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.01em;text-transform:none;border-radius:12px;transition:all .2s}
 .btn-outline:hover{background:rgba(230,25,25,.08)}
 
 /* Chips */
@@ -252,7 +252,7 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .tstrip::-webkit-scrollbar-thumb{background:#E61919}
 
 /* Size button */
-.szb{padding:6px 12px;font-size:12px;font-family:'Poppins',sans-serif;font-weight:500;cursor:pointer;border-radius:999px;transition:all .18s}
+.szb{padding:6px 12px;font-size:12px;font-family:'Poppins',sans-serif;font-weight:500;cursor:pointer;border-radius:12px;transition:all .18s}
 .szon{border:1px solid #E61919;background:rgba(230,25,25,.08);color:#E61919}
 .szoff{border:1px solid rgba(0,0,0,.1);background:transparent;color:#525252}
 .szoff:hover{border-color:rgba(0,0,0,.25);color:#0A0A0A}
@@ -1900,7 +1900,7 @@ function HomePage({ onGenerate }) {
           </div>
           <div style={{ textAlign:"center", marginTop:56 }}>
             <p style={{ fontSize:15, color:T.muted, marginBottom:20, fontFamily:"'Poppins',sans-serif", letterSpacing:".01em" }}>Explore Hundreds Of Portrait Styles & Occasions</p>
-            <button onClick={scrollToHero} style={{ background:T.gold, color:"#fff", border:"none", padding:"15px 32px", borderRadius:999, fontWeight:700, fontSize:14.5, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:8, letterSpacing:".01em", boxShadow:"0 10px 28px rgba(230,25,25,.25)" }}>
+            <button onClick={scrollToHero} style={{ background:T.gold, color:"#fff", border:"none", padding:"15px 32px", borderRadius:12, fontWeight:700, fontSize:14.5, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:8, letterSpacing:".01em", boxShadow:"0 10px 28px rgba(230,25,25,.25)" }}>
               Preview Your Portrait Free →
             </button>
           </div>
@@ -2012,7 +2012,7 @@ function HomePage({ onGenerate }) {
         <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:"rgba(255,255,255,.85)", fontWeight:600, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Start Creating</p>
         <h2 style={{ fontSize:40, fontWeight:800, color:"#FFFFFF", lineHeight:1.2, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Turn Your Favourite Photo Into A Masterpiece.</h2>
         <p style={{ fontSize:15, color:"rgba(255,255,255,.9)", marginBottom:28, fontFamily:"'Poppins',sans-serif" }}>Free Preview Before You Buy. No Subscription. No Risk.</p>
-        <button onClick={scrollToHero} style={{ background:"#FFFFFF", color:T.gold, border:"none", padding:"16px 36px", borderRadius:999, fontWeight:700, fontSize:15, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:10, letterSpacing:".01em" }}>
+        <button onClick={scrollToHero} style={{ background:"#FFFFFF", color:T.gold, border:"none", padding:"16px 36px", borderRadius:12, fontWeight:700, fontSize:15, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:10, letterSpacing:".01em" }}>
           <Upload size={17}/> Upload A Photo — It's Free
         </button>
         <p style={{ fontSize:11.5, color:"rgba(255,255,255,.85)", marginTop:18, letterSpacing:".06em", fontFamily:"'Poppins',sans-serif" }}>4.9 ★ Rated · Free Worldwide Shipping · 100-Day Guarantee</p>
