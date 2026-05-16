@@ -167,6 +167,8 @@ import scenePetKing from "@/assets/scene-pet-king.jpg";
 import beforePetCat from "@/assets/before-pet-cat.jpg";
 import scenePetCatReader from "@/assets/scene-pet-cat-reader.jpg";
 import scenePetBestfriend from "@/assets/scene-pet-bestfriend.jpg";
+import beforeFamilyGrandparents from "@/assets/before-family-grandparents.jpg";
+import sceneFamilyGrandparentsJoy from "@/assets/scene-family-grandparents-joy.jpg";
 import beforeBabyChef from "@/assets/before-baby-chef.jpg";
 import sceneBabyChef from "@/assets/scene-baby-chef.jpg";
 
@@ -1043,8 +1045,10 @@ const TEASERS = [
       portraits:[ { url:sceneBabyChef, style:"Whimsical" } ] },
    { cat:"Best Friend", catId:"pets", style:"Editorial", before:beforePets, after:scenePetBestfriend, portrait:scenePetBestfriend,
      portraits:[ { url:scenePetBestfriend, style:"Editorial" } ] },
-   { cat:"Storyteller", catId:"pets", style:"Whimsical", before:beforePetCat, after:scenePetCatReader, portrait:scenePetCatReader,
-     portraits:[ { url:scenePetCatReader, style:"Whimsical" } ] },
+    { cat:"Storyteller", catId:"pets", style:"Whimsical", before:beforePetCat, after:scenePetCatReader, portrait:scenePetCatReader,
+      portraits:[ { url:scenePetCatReader, style:"Whimsical" } ] },
+    { cat:"Grandparents", catId:"occasions", style:"Editorial", before:beforeFamilyGrandparents, after:sceneFamilyGrandparentsJoy, portrait:sceneFamilyGrandparentsJoy,
+      portraits:[ { url:sceneFamilyGrandparentsJoy, style:"Editorial" } ] },
 ];
 
 const PLANS = [
