@@ -1577,7 +1577,7 @@ function HomePage({ onGenerate }) {
               {/* ── WHO IS THIS FOR ── */}
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold, textTransform:"uppercase",
-                  fontWeight:500, marginBottom:8 }}>Who Is This For?</div>
+                  fontWeight:500, marginBottom:8 }}>What Are You Creating?</div>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
                   {CATS.map(c => {
                     const CIcon = c.Icon;
