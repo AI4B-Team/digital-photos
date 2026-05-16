@@ -30,6 +30,7 @@ import sceneMemorialGrandmother from "@/assets/scene-memorial-grandmother.jpg";
 import sceneMemorialVintageFamily from "@/assets/scene-memorial-vintage-family.jpg";
 import sceneMemorialPet from "@/assets/scene-memorial-pet.jpg";
 import sceneMemorialFather from "@/assets/scene-memorial-father.jpg";
+import sceneMemorialCatAngel from "@/assets/scene-memorial-cat-angel.jpg";
 import sceneMemorialFamily from "@/assets/scene-memorial-family.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import sceneFathersShoulders from "@/assets/scene-fathers-shoulders.jpg";
