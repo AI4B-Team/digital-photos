@@ -2012,7 +2012,7 @@ function HomePage({ onGenerate }) {
         <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:"rgba(255,255,255,.85)", fontWeight:600, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Start Creating</p>
         <h2 style={{ fontSize:40, fontWeight:800, color:"#FFFFFF", lineHeight:1.2, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Turn Your Favourite Photo Into A Masterpiece.</h2>
         <p style={{ fontSize:15, color:"rgba(255,255,255,.9)", marginBottom:28, fontFamily:"'Poppins',sans-serif" }}>Free Preview Before You Buy. No Subscription. No Risk.</p>
-        <button onClick={scrollToHero} style={{ background:"#FFFFFF", color:T.gold, border:"none", padding:"16px 36px", borderRadius:999, fontWeight:700, fontSize:15, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:10, letterSpacing:".01em" }}>
+        <button onClick={scrollToHero} style={{ background:"#FFFFFF", color:T.gold, border:"none", padding:"16px 36px", borderRadius:12, fontWeight:700, fontSize:15, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:10, letterSpacing:".01em" }}>
           <Upload size={17}/> Upload A Photo — It's Free
         </button>
         <p style={{ fontSize:11.5, color:"rgba(255,255,255,.85)", marginTop:18, letterSpacing:".06em", fontFamily:"'Poppins',sans-serif" }}>4.9 ★ Rated · Free Worldwide Shipping · 100-Day Guarantee</p>
