@@ -134,6 +134,14 @@ import beforeCouples from "@/assets/before-couples.jpg";
 import beforePeople from "@/assets/before-people.jpg";
 import beforeMemorial from "@/assets/before-memorial.jpg";
 import beforeGifts from "@/assets/before-gifts.jpg";
+import beforeWedding from "@/assets/before-wedding.jpg";
+import sceneWeddingHeirloom from "@/assets/scene-wedding-heirloom.jpg";
+import beforePetMemorial from "@/assets/before-pet-memorial.jpg";
+import scenePetRemembrance from "@/assets/scene-pet-remembrance.jpg";
+import beforeVintage from "@/assets/before-vintage.jpg";
+import sceneVintageRestored from "@/assets/scene-vintage-restored.jpg";
+import beforePetViral from "@/assets/before-pet-viral.jpg";
+import scenePetKing from "@/assets/scene-pet-king.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -1018,6 +1026,14 @@ const TEASERS = [
       { url:portraitMemorialCine,  style:"Cinematic" },
       { url:portraitMemorial,      style:"Minimal" },
     ] },
+   { cat:"Wedding",  catId:"occasions", style:"Heirloom",   before:beforeWedding,    after:sceneWeddingHeirloom, portrait:sceneWeddingHeirloom,
+     portraits:[ { url:sceneWeddingHeirloom, style:"Heirloom" } ] },
+   { cat:"Remembrance", catId:"pets",   style:"Painterly",  before:beforePetMemorial, after:scenePetRemembrance, portrait:scenePetRemembrance,
+     portraits:[ { url:scenePetRemembrance, style:"Painterly" } ] },
+   { cat:"Restored", catId:"occasions", style:"Archival",   before:beforeVintage,    after:sceneVintageRestored, portrait:sceneVintageRestored,
+     portraits:[ { url:sceneVintageRestored, style:"Archival" } ] },
+   { cat:"Viral",    catId:"pets",      style:"Cinematic",  before:beforePetViral,   after:scenePetKing,         portrait:scenePetKing,
+     portraits:[ { url:scenePetKing, style:"Cinematic" } ] },
 ];
 
 const PLANS = [
