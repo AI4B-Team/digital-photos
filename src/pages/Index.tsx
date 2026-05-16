@@ -1916,7 +1916,7 @@ function HomePage({ onGenerate }) {
               <Award size={14} color={T.gold}/> Fine Art Quality
             </div>
             <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, lineHeight:1.2, marginBottom:18, fontFamily:"'Poppins',sans-serif" }}>Art That Lasts A Hundred Years.</h2>
-            <p style={{ fontSize:15, color:T.muted, maxWidth:680, margin:"0 auto 24px", lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every REAL ART portrait is printed using the same archival standards used by the world's leading museums and galleries. Made to be passed down through generations.</p>
+            <p style={{ fontSize:15, color:T.muted, maxWidth:680, margin:"0 auto 24px", lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every REAL ART Portrait Is Printed Using The Same Archival Standards Used By The World's Leading Museums And Galleries. Made To Be Passed Down Through Generations.</p>
             <div style={{ display:"flex", justifyContent:"center", gap:10, flexWrap:"wrap" }}>
               {[
                 { Icon:Star,   label:"100-Year Color Guarantee" },
