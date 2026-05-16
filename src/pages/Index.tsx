@@ -1371,7 +1371,7 @@ function HomePage({ onGenerate }) {
               <div style={{
                 marginBottom:16,
                 padding:"12px 14px",
-                background:`linear-gradient(90deg, rgba(196,150,58,.14), rgba(196,150,58,.06))`,
+                background:"#F5F3EE",
                 border:`1px solid ${T.gold}`,
                 borderRadius:6,
                 display:"flex",
