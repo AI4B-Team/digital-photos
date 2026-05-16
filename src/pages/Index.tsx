@@ -980,16 +980,6 @@ const TEASERS = [
       { url:portraitPetsCine,   style:"Cinematic" },
       { url:portraitPetsMin,    style:"Minimal" },
     ] },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:scenePeople,
-    portraits:[
-      { url:scenePeople,        style:"Cinematic" },
-      { url:portraitPeopleRoyal, style:"Royal" },
-      { url:portraitPeopleRen,   style:"Renaissance" },
-      { url:portraitPeopleStory, style:"Storybook" },
-      { url:portraitPeople,      style:"Fantasy" },
-      { url:portraitPeopleCine,  style:"Cinematic" },
-      { url:portraitPeopleMin,   style:"Minimal" },
-    ] },
    { cat:"Babies",   catId:"people",   style:"Storybook",   before:beforeBabies, after:sceneBabies,  portrait:sceneBabies,
      portraits:[
        { url:sceneBabies,             style:"Storybook" },
@@ -1009,6 +999,16 @@ const TEASERS = [
        { url:portraitCouplesRoyal,   style:"Royal" },
        { url:portraitCouplesFan,     style:"Fantasy" },
        { url:portraitCouplesMin,     style:"Minimal" },
+     ] },
+   { cat:"People",   catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:scenePeople,
+     portraits:[
+       { url:scenePeople,        style:"Cinematic" },
+       { url:portraitPeopleRoyal, style:"Royal" },
+       { url:portraitPeopleRen,   style:"Renaissance" },
+       { url:portraitPeopleStory, style:"Storybook" },
+       { url:portraitPeople,      style:"Fantasy" },
+       { url:portraitPeopleCine,  style:"Cinematic" },
+       { url:portraitPeopleMin,   style:"Minimal" },
      ] },
    { cat:"Occasions",catId:"occasions",style:"Heirloom",     before:beforeMemorial, after:sceneMemorial,portrait:sceneMemorial,
     portraits:[
