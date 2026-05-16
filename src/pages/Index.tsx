@@ -41,6 +41,8 @@ import sceneCouples from "@/assets/scene-couples.jpg";
 import sceneCouplesRings from "@/assets/scene-couples-rings.jpg";
 import sceneCouplesTouch from "@/assets/scene-couples-touch.jpg";
 import sceneCouplesKiss from "@/assets/scene-couples-kiss.jpg";
+import sceneCouplesBackToBack from "@/assets/scene-couples-back-to-back.jpg";
+import sceneCouplesEmbrace from "@/assets/scene-couples-embrace.jpg";
 import stepUpload from "@/assets/step-upload.jpg";
 import stepAi from "@/assets/step-ai.jpg";
 import stepAi1 from "@/assets/step-ai-1.jpg";
@@ -1855,7 +1857,7 @@ function HomePage({ onGenerate }) {
             {[
               { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsGallery, scenePetKing, scenePetsShepherdFlag], Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
-              { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesKiss], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
+              { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesKiss, sceneCouplesBackToBack, sceneCouplesEmbrace], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
               { cat:"couples",  img:sceneWeddingConfetti, imgs:[sceneWeddingConfetti, sceneWeddingStreet, sceneWeddingBeach, sceneWeddingCar, sceneWeddingKiss], Icon:Sparkles, title:"Weddings", body:"Immortalize the day you said 'I do' in fine art worthy of the moment.", cta:"Create A Wedding Portrait" },
               { cat:"memorial", img:sceneMemorialGrandmother, imgs:[sceneMemorialGrandmother, sceneMemorialVintageFamily, sceneMemorialPet, sceneMemorialFather], Icon:Flower2, title:"Memorial", body:"A timeless tribute that keeps the ones you love close forever.", cta:"Create A Memorial Portrait" },
               { cat:"gifts",    img:sceneFathersShoulders, imgs:[sceneFathersShoulders, sceneFathersGenerations, sceneFathersReading, sceneFathersExecutive, sceneFathersRanch], Icon:Gift, title:"Father's Day", body:"Give Dad a masterpiece — the gift he'll treasure for a lifetime.", cta:"Create A Father's Day Portrait" },
