@@ -22,8 +22,8 @@ import sceneBabies from "@/assets/scene-babies.jpg";
 import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
 import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
 import sceneBabiesSoccer from "@/assets/scene-babies-soccer.jpg";
-import scenePeople from "@/assets/scene-people-v2.jpg";
-import sceneMemorial from "@/assets/scene-memorial-v2.jpg";
+import scenePeople from "@/assets/scene-people-premium-office-v3.jpg";
+import sceneMemorial from "@/assets/scene-family-heirloom-v3.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import sceneCouples from "@/assets/scene-couples.jpg";
 import sceneCouplesRings from "@/assets/scene-couples-rings.jpg";
@@ -827,8 +827,9 @@ const TEASERS = [
       { url:portraitCouplesCine,  style:"Cinematic" },
       { url:portraitCouplesMin,   style:"Minimal" },
     ] },
-  { cat:"Professional", catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:portraitPeople,
+  { cat:"Professional", catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:scenePeople,
     portraits:[
+      { url:scenePeople,        style:"Cinematic" },
       { url:portraitPeopleRoyal, style:"Royal" },
       { url:portraitPeopleRen,   style:"Renaissance" },
       { url:portraitPeopleStory, style:"Storybook" },
@@ -836,8 +837,9 @@ const TEASERS = [
       { url:portraitPeopleCine,  style:"Cinematic" },
       { url:portraitPeopleMin,   style:"Minimal" },
     ] },
-  { cat:"Family",   catId:"memorial", style:"Minimal",     before:beforeMemorial, after:sceneMemorial,portrait:portraitMemorial,
+  { cat:"Family",   catId:"memorial", style:"Heirloom",     before:beforeMemorial, after:sceneMemorial,portrait:sceneMemorial,
     portraits:[
+      { url:sceneMemorial,        style:"Heirloom" },
       { url:portraitMemorialRoyal, style:"Royal" },
       { url:portraitMemorialRen,   style:"Renaissance" },
       { url:portraitMemorialStory, style:"Storybook" },
