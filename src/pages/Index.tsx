@@ -980,9 +980,8 @@ const TEASERS = [
       { url:portraitPetsCine,   style:"Cinematic" },
       { url:portraitPetsMin,    style:"Minimal" },
     ] },
-   { cat:"Babies",   catId:"people",   style:"Storybook",   before:beforeBabies, after:sceneBabies,  portrait:sceneBabies,
+   { cat:"Babies",   catId:"people",   style:"Cinematic",   before:beforeBabies, after:sceneBabiesSkateboard,  portrait:sceneBabiesSkateboard,
      portraits:[
-       { url:sceneBabies,             style:"Storybook" },
        { url:sceneBabiesSkateboard,   style:"Cinematic" },
        { url:sceneBabiesSuperman,     style:"Fantasy" },
        { url:sceneBabiesSoccer,       style:"Storybook" },
@@ -990,9 +989,8 @@ const TEASERS = [
        { url:portraitBabiesRen,       style:"Renaissance" },
        { url:portraitBabiesMin,       style:"Minimal" },
      ] },
-   { cat:"Couples",  catId:"people",   style:"Romantic",    before:beforeCouples, after:sceneCouples, portrait:sceneCouples,
+   { cat:"Couples",  catId:"people",   style:"Cinematic",   before:beforeCouples, after:sceneCouplesRings, portrait:sceneCouplesRings,
      portraits:[
-       { url:sceneCouples,           style:"Romantic" },
        { url:sceneCouplesRings,      style:"Cinematic" },
        { url:sceneCouplesTouch,      style:"Renaissance" },
        { url:sceneCouplesKiss,       style:"Storybook" },
