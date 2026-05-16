@@ -144,6 +144,7 @@ import beforePetViral from "@/assets/before-pet-viral.jpg";
 import scenePetKing from "@/assets/scene-pet-king.jpg";
 import beforePetCat from "@/assets/before-pet-cat.jpg";
 import scenePetCatReader from "@/assets/scene-pet-cat-reader.jpg";
+import scenePetBestfriend from "@/assets/scene-pet-bestfriend.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -1038,6 +1039,8 @@ const TEASERS = [
      portraits:[ { url:scenePetKing, style:"Cinematic" } ] },
    { cat:"Bookworm", catId:"pets",      style:"Cinematic",  before:beforePetCat,     after:scenePetCatReader,    portrait:scenePetCatReader,
      portraits:[ { url:scenePetCatReader, style:"Cinematic" } ] },
+   { cat:"Best Friend", catId:"pets",   style:"Editorial",  before:beforePets,       after:scenePetBestfriend,   portrait:scenePetBestfriend,
+     portraits:[ { url:scenePetBestfriend, style:"Editorial" } ] },
 ];
 
 const PLANS = [
