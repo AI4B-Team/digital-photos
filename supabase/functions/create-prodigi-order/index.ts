@@ -44,6 +44,7 @@ serve(async (req) => {
       shippingCity,
       shippingZip,
       shippingCountry = "US",
+      vipPurchased = false,
     } = await req.json();
 
     if (!portraitUrl || !sku || !shippingLine1) {
@@ -58,13 +59,14 @@ serve(async (req) => {
     const apiKey = Deno.env.get("PRODIGI_API_KEY");
     if (!apiKey) throw new Error("PRODIGI_API_KEY secret not set");
 
-    // Build per-product attributes
+    // Build per-product attributes (skip for mug/case which have none)
+    const isPhysicalPrint = ["classic-frame","box-frame","print","canvas"].includes(productType);
     const attributes: Record<string, string> = {};
-    if ((productType === "classic-frame" || productType === "box-frame") && frameColor) {
+    if (isPhysicalPrint && (productType === "classic-frame" || productType === "box-frame") && frameColor) {
       attributes.color = FRAME_COLOR_ATTR[frameColor] || frameColor;
     }
     // Mount/mat colour for CFPM and BOXM
-    if ((productType === "classic-frame" || productType === "box-frame") && mountColor) {
+    if (isPhysicalPrint && (productType === "classic-frame" || productType === "box-frame") && mountColor) {
       const mountAttr: Record<string,string> = {
         "snow-white": "snowWhite", "hayseed": "hayseed", "black": "black",
       };
@@ -72,13 +74,14 @@ serve(async (req) => {
       // Glaze: perspex (standard) or moth-eye (premium anti-reflective)
       attributes.glaze = glazeType === "moth-eye" ? "mothEye" : "perspex";
     }
-    if (productType === "canvas" && canvasEdge) {
+    if (isPhysicalPrint && productType === "canvas" && canvasEdge) {
       attributes.wrap = CANVAS_EDGE_ATTR[canvasEdge] || canvasEdge;
     }
 
     const orderPayload = {
       merchantReference: sessionId || `dp-${Date.now()}`,
-      shippingMethod: "Budget",
+      // VIP upgrades shipping to Standard (2–3 days faster than Budget)
+      shippingMethod: vipPurchased ? "Standard" : "Budget",
       recipient: {
         name: shippingName || "REAL ART Customer",
         email: shippingEmail || "",

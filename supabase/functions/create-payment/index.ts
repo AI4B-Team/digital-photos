@@ -31,6 +31,7 @@ serve(async (req) => {
       printSku = "",
       printMount = "snow-white",
       printGlaze = "perspex",
+      vipPurchased = false,
     } = await req.json();
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
@@ -117,6 +118,7 @@ serve(async (req) => {
           print_size: printSize || null,
           print_frame: printFrame || null,
           print_sku: printSku || null,
+          vip_purchased: vipPurchased,
         })
         .eq("id", sessionId);
     }
