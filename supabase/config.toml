@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.download-portrait]
 verify_jwt = false
+
+[functions.handle-prodigi-webhook]
+verify_jwt = false

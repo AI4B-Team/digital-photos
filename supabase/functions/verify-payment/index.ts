@@ -64,6 +64,7 @@ serve(async (req) => {
           status: "purchased",
           order_product: orderProduct,
           order_id: checkoutSession.id,
+          customer_email: checkoutSession.customer_details?.email || "",
         })
         .eq("id", sessionId);
 
@@ -123,6 +124,7 @@ serve(async (req) => {
                 shippingCity: shipping.city || "",
                 shippingZip: shipping.postal_code || "",
                 shippingCountry: shipping.country || "US",
+                vipPurchased: sessionRecord?.vip_purchased || false,
               },
             }
           );

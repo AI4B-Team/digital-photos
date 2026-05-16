@@ -181,6 +181,7 @@ export type Database = {
         Row: {
           category: string | null
           created_at: string | null
+          customer_email: string | null
           id: string
           order_id: string | null
           order_product: string | null
@@ -190,6 +191,7 @@ export type Database = {
           print_sku: string | null
           prodigi_order_id: string | null
           prodigi_status: string | null
+          shipped_at: string | null
           shipping_city: string | null
           shipping_country: string | null
           shipping_email: string | null
@@ -199,12 +201,15 @@ export type Database = {
           status: string | null
           stripe_session_id: string | null
           styles: string[] | null
+          tracking_url: string | null
           user_email: string | null
           user_id: string | null
+          vip_purchased: boolean | null
         }
         Insert: {
           category?: string | null
           created_at?: string | null
+          customer_email?: string | null
           id?: string
           order_id?: string | null
           order_product?: string | null
@@ -214,6 +219,7 @@ export type Database = {
           print_sku?: string | null
           prodigi_order_id?: string | null
           prodigi_status?: string | null
+          shipped_at?: string | null
           shipping_city?: string | null
           shipping_country?: string | null
           shipping_email?: string | null
@@ -223,12 +229,15 @@ export type Database = {
           status?: string | null
           stripe_session_id?: string | null
           styles?: string[] | null
+          tracking_url?: string | null
           user_email?: string | null
           user_id?: string | null
+          vip_purchased?: boolean | null
         }
         Update: {
           category?: string | null
           created_at?: string | null
+          customer_email?: string | null
           id?: string
           order_id?: string | null
           order_product?: string | null
@@ -238,6 +247,7 @@ export type Database = {
           print_sku?: string | null
           prodigi_order_id?: string | null
           prodigi_status?: string | null
+          shipped_at?: string | null
           shipping_city?: string | null
           shipping_country?: string | null
           shipping_email?: string | null
@@ -247,8 +257,10 @@ export type Database = {
           status?: string | null
           stripe_session_id?: string | null
           styles?: string[] | null
+          tracking_url?: string | null
           user_email?: string | null
           user_id?: string | null
+          vip_purchased?: boolean | null
         }
         Relationships: []
       }
@@ -267,6 +279,39 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      webhook_events: {
+        Row: {
+          email_sent: boolean | null
+          event_type: string | null
+          id: string
+          payload: Json | null
+          processed_at: string | null
+          prodigi_order_id: string | null
+          session_id: string | null
+          source: string
+        }
+        Insert: {
+          email_sent?: boolean | null
+          event_type?: string | null
+          id?: string
+          payload?: Json | null
+          processed_at?: string | null
+          prodigi_order_id?: string | null
+          session_id?: string | null
+          source?: string
+        }
+        Update: {
+          email_sent?: boolean | null
+          event_type?: string | null
+          id?: string
+          payload?: Json | null
+          processed_at?: string | null
+          prodigi_order_id?: string | null
+          session_id?: string | null
+          source?: string
         }
         Relationships: []
       }
