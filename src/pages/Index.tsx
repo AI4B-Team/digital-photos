@@ -1340,7 +1340,7 @@ function HomePage({ onGenerate }) {
 
             <p className="fu" style={{ animationDelay:".15s", fontSize:21, color:T.muted,
               lineHeight:1.6, marginBottom:24, maxWidth:"none", whiteSpace:"nowrap" }}>
-              Turn Photos Of Your Pets, Babies, People, Or Precious Memories Into Timeless Portraits In Seconds.
+              Turn Your Favorite Memories Into Beautiful Art In Seconds
             </p>
           </div>
 
