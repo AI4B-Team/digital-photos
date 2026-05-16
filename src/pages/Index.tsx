@@ -1832,7 +1832,7 @@ function HomePage({ onGenerate }) {
       {/* ■■ Occasions ■■ */}
       <section style={{ padding:"32px 32px 80px", background:T.bg }}>
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
-          <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>A Portrait For Every Occasion</p>
+          <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>A Portrait For Everyone</p>
           <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>The Most Personal Gift You Can Give</h2>
           <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every purchase is a memory made permanent. Every occasion deserves a masterpiece.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
@@ -1840,6 +1840,9 @@ function HomePage({ onGenerate }) {
               { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsGallery, scenePetKing], Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesTouch, sceneCouplesKiss], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
+              { cat:"couples",  img:sceneWeddingHeirloom, imgs:[sceneWeddingHeirloom], Icon:Sparkles, title:"Weddings", body:"Immortalize the day you said 'I do' in fine art worthy of the moment.", cta:"Create A Wedding Portrait" },
+              { cat:"memorial", img:sceneMemorial, imgs:[sceneMemorial], Icon:Flower2, title:"Memorial", body:"A timeless tribute that keeps the ones you love close forever.", cta:"Create A Memorial Portrait" },
+              { cat:"gifts",    img:sceneGifts, imgs:[sceneGifts], Icon:Gift, title:"Mother's Day", body:"Give Mom a masterpiece — the gift she'll treasure for a lifetime.", cta:"Create A Mother's Day Portrait" },
             ].map(item => (
               <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }}
                 style={{ border:`1px solid ${T.border}`, borderRadius:18, overflow:"hidden",
