@@ -169,6 +169,8 @@ import scenePetCatReader from "@/assets/scene-pet-cat-reader.jpg";
 import scenePetBestfriend from "@/assets/scene-pet-bestfriend.jpg";
 import beforeFamilyGrandparents from "@/assets/before-family-grandparents.jpg";
 import sceneFamilyGrandparentsJoy from "@/assets/scene-family-grandparents-joy.jpg";
+import beforePetCatHug from "@/assets/before-pet-cat-hug.jpg";
+import scenePetCatHug from "@/assets/scene-pet-cat-hug.jpg";
 import beforeBabyChef from "@/assets/before-baby-chef.jpg";
 import sceneBabyChef from "@/assets/scene-baby-chef.jpg";
 
