@@ -990,7 +990,17 @@ const TEASERS = [
       { url:portraitPeopleCine,  style:"Cinematic" },
       { url:portraitPeopleMin,   style:"Minimal" },
     ] },
-  { cat:"Occasions",catId:"occasions",style:"Heirloom",     before:beforeMemorial, after:sceneMemorial,portrait:sceneMemorial,
+   { cat:"Babies",   catId:"people",   style:"Storybook",   before:beforeBabies, after:sceneBabies,  portrait:sceneBabies,
+     portraits:[
+       { url:sceneBabies,             style:"Storybook" },
+       { url:sceneBabiesSkateboard,   style:"Cinematic" },
+       { url:sceneBabiesSuperman,     style:"Fantasy" },
+       { url:sceneBabiesSoccer,       style:"Storybook" },
+       { url:portraitBabiesRoyal,     style:"Royal" },
+       { url:portraitBabiesRen,       style:"Renaissance" },
+       { url:portraitBabiesMin,       style:"Minimal" },
+     ] },
+   { cat:"Occasions",catId:"occasions",style:"Heirloom",     before:beforeMemorial, after:sceneMemorial,portrait:sceneMemorial,
     portraits:[
       { url:sceneMemorial,        style:"Heirloom" },
       { url:portraitMemorialRoyal, style:"Royal" },
