@@ -1045,8 +1045,6 @@ const TEASERS = [
      portraits:[ { url:sceneWeddingHeirloom, style:"Heirloom" } ] },
    { cat:"Restored", catId:"occasions", style:"Archival",   before:beforeVintage,    after:sceneVintageRestored, portrait:sceneVintageRestored,
      portraits:[ { url:sceneVintageRestored, style:"Archival" } ] },
-     { cat:"Best Friend", catId:"pets",   style:"Editorial",  before:beforePets,       after:scenePetBestfriend,   portrait:scenePetBestfriend,
-       portraits:[ { url:scenePetBestfriend, style:"Editorial" } ] },
     { cat:"Little Chef", catId:"babies", style:"Whimsical",  before:beforeBabyChef,   after:sceneBabyChef,        portrait:sceneBabyChef,
       portraits:[ { url:sceneBabyChef, style:"Whimsical" } ] },
 ];
