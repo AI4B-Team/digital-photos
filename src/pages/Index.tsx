@@ -1742,6 +1742,18 @@ function HomePage({ onGenerate }) {
                     </button>
                   </div>
                 )}
+                {(lowResWarning || extraLowRes.some(Boolean)) && photo && (
+                  <div style={{ marginTop:10, padding:"8px 10px", borderRadius:8,
+                    border:"1px solid rgba(224,160,64,.5)", background:"rgba(224,160,64,.08)",
+                    display:"flex", gap:8, alignItems:"flex-start", color:"#E0A040", fontSize:10, lineHeight:1.5 }}>
+                    <AlertCircle size={12} style={{ flexShrink:0, marginTop:1 }}/>
+                    <span>
+                      <strong style={{ letterSpacing:".06em" }}>LOW-RESOLUTION PHOTO DETECTED.</strong>{" "}
+                      {lowResWarning || `One of your additional photos is below ${LOW_RES_THRESHOLD}×${LOW_RES_THRESHOLD}px.`}{" "}
+                      For sharpest recreations, replace it with a higher-resolution image (at least {LOW_RES_THRESHOLD}px on the shortest side).
+                    </span>
+                  </div>
+                )}
                 {cat === "babies" && photo && (
                   <p style={{ fontSize:10, color:T.muted, marginTop:8, lineHeight:1.5, letterSpacing:".02em" }}>
                     Tip: Most baby templates feature mom & baby together. Add an optional photo of mom for the best face likeness.
