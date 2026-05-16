@@ -1224,7 +1224,7 @@ function CheckRow({ label, gold }) {
 /* ═══════════════════════════════════════════════════════════
    LIVE TEASER  (animated before→after carousel)
 ═══════════════════════════════════════════════════════════ */
-function LiveTeaser({ activeCat, onCatClick }) {
+function LiveTeaser({ activeCat, onCatClick, preferredSlide }: { activeCat: string; onCatClick: (c:string)=>void; preferredSlide?: string|null }) {
   const [idx, setIdx] = useState(0);
 
   // Preload all teaser images once so transitions don't flash while loading
@@ -1236,9 +1236,16 @@ function LiveTeaser({ activeCat, onCatClick }) {
     });
   }, []);
 
+  // Preferred slide override takes precedence (e.g. nav "Occasions" → Wedding)
+  useEffect(() => {
+    if (!preferredSlide) return;
+    const m = TEASERS.findIndex(t => t.cat === preferredSlide);
+    if (m >= 0) setIdx(m);
+  }, [preferredSlide]);
+
   // When user picks a category, jump to matching teaser
   useEffect(() => {
-    if (!activeCat) return;
+    if (!activeCat || preferredSlide) return;
     const match = TEASERS.findIndex(t => t.catId === activeCat);
     if (match >= 0 && match !== idx) setIdx(match);
   }, [activeCat]); // eslint-disable-line
