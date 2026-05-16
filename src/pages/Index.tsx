@@ -1494,6 +1494,7 @@ function HomePage({ onGenerate }) {
             return (
               <button key={c.id} onClick={() => {
                   setCat(c.id); setSelectedTemplate(null);
+                  setPreferredTeaser(c.id === "occasions" ? "Wedding" : null);
                   heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
                 }}
                 style={{ background:"none", border:"none", cursor:"pointer",
