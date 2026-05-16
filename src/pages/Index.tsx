@@ -1663,7 +1663,7 @@ function HomePage({ onGenerate }) {
                           ? (cat === "couples" ? "Add Partner 2" : "Add Required Photo")
                           : cat === "babies"
                             ? "Add Mom (Optional)"
-                            : "Add Another"}
+                            : "Add Another (Optional)"}
                       </span>
                     </button>
                   </div>
