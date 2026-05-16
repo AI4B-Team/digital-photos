@@ -1000,6 +1000,16 @@ const TEASERS = [
        { url:portraitBabiesRen,       style:"Renaissance" },
        { url:portraitBabiesMin,       style:"Minimal" },
      ] },
+   { cat:"Couples",  catId:"people",   style:"Romantic",    before:beforeCouples, after:sceneCouples, portrait:sceneCouples,
+     portraits:[
+       { url:sceneCouples,           style:"Romantic" },
+       { url:sceneCouplesRings,      style:"Cinematic" },
+       { url:sceneCouplesTouch,      style:"Renaissance" },
+       { url:sceneCouplesKiss,       style:"Storybook" },
+       { url:portraitCouplesRoyal,   style:"Royal" },
+       { url:portraitCouplesFan,     style:"Fantasy" },
+       { url:portraitCouplesMin,     style:"Minimal" },
+     ] },
    { cat:"Occasions",catId:"occasions",style:"Heirloom",     before:beforeMemorial, after:sceneMemorial,portrait:sceneMemorial,
     portraits:[
       { url:sceneMemorial,        style:"Heirloom" },
