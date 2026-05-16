@@ -1892,14 +1892,21 @@ function HomePage({ onGenerate }) {
                 </div>
                 {/* Body */}
                 <div style={{ padding:"20px 22px 22px" }}>
-                  <p style={{ fontSize:13, color:T.muted, lineHeight:1.65, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>{item.body}</p>
+                  <p style={{ fontSize:12.5, color:T.muted, lineHeight:1.65, marginBottom:14, fontFamily:"'Poppins',sans-serif", letterSpacing:".01em" }}>{item.body}</p>
                   <span style={{ fontSize:11, letterSpacing:".14em", textTransform:"uppercase", color:T.gold, fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>{item.cta} →</span>
                 </div>
               </div>
             ))}
           </div>
+          <div style={{ textAlign:"center", marginTop:56 }}>
+            <p style={{ fontSize:15, color:T.muted, marginBottom:20, fontFamily:"'Poppins',sans-serif", letterSpacing:".01em" }}>Explore Hundreds Of Portrait Styles & Occasions</p>
+            <button onClick={scrollToHero} style={{ background:T.gold, color:"#fff", border:"none", padding:"15px 32px", borderRadius:999, fontWeight:700, fontSize:14.5, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:8, letterSpacing:".01em", boxShadow:"0 10px 28px rgba(230,25,25,.25)" }}>
+              Preview Your Portrait Free →
+            </button>
+          </div>
         </div>
       </section>
+
 
       {/* ■■ Quality Story ■■ */}
       <section style={{ background:"#F4F1ED", borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}`, padding:"80px 32px" }}>
