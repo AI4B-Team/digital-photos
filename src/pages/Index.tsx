@@ -145,6 +145,8 @@ import scenePetKing from "@/assets/scene-pet-king.jpg";
 import beforePetCat from "@/assets/before-pet-cat.jpg";
 import scenePetCatReader from "@/assets/scene-pet-cat-reader.jpg";
 import scenePetBestfriend from "@/assets/scene-pet-bestfriend.jpg";
+import beforeBabyChef from "@/assets/before-baby-chef.jpg";
+import sceneBabyChef from "@/assets/scene-baby-chef.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
