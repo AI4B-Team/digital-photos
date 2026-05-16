@@ -1036,7 +1036,9 @@ const TEASERS = [
       { url:portraitMemorialFan,   style:"Fantasy" },
       { url:portraitMemorialCine,  style:"Cinematic" },
       { url:portraitMemorial,      style:"Minimal" },
-    ] },
+     ] },
+     { cat:"Grandparents", catId:"occasions", style:"Editorial", before:beforeFamilyGrandparents, after:sceneFamilyGrandparentsJoy, portrait:sceneFamilyGrandparentsJoy,
+       portraits:[ { url:sceneFamilyGrandparentsJoy, style:"Editorial" } ] },
    { cat:"Wedding",  catId:"occasions", style:"Heirloom",   before:beforeWedding,    after:sceneWeddingHeirloom, portrait:sceneWeddingHeirloom,
      portraits:[ { url:sceneWeddingHeirloom, style:"Heirloom" } ] },
    { cat:"Restored", catId:"occasions", style:"Archival",   before:beforeVintage,    after:sceneVintageRestored, portrait:sceneVintageRestored,
@@ -1047,8 +1049,6 @@ const TEASERS = [
      portraits:[ { url:scenePetBestfriend, style:"Editorial" } ] },
     { cat:"Storyteller", catId:"pets", style:"Whimsical", before:beforePetCat, after:scenePetCatReader, portrait:scenePetCatReader,
       portraits:[ { url:scenePetCatReader, style:"Whimsical" } ] },
-    { cat:"Grandparents", catId:"occasions", style:"Editorial", before:beforeFamilyGrandparents, after:sceneFamilyGrandparentsJoy, portrait:sceneFamilyGrandparentsJoy,
-      portraits:[ { url:sceneFamilyGrandparentsJoy, style:"Editorial" } ] },
 ];
 
 const PLANS = [
