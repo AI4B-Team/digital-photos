@@ -1002,7 +1002,7 @@ const TEASERS = [
         { url:portraitBabiesRen,       style:"Renaissance" },
         { url:portraitBabiesMin,       style:"Minimal" },
       ] },
-   { cat:"People",   catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:scenePeople,
+   { cat:"Professional",   catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:scenePeople,
      portraits:[
        { url:scenePeople,        style:"Cinematic" },
        { url:portraitPeopleRoyal, style:"Royal" },
