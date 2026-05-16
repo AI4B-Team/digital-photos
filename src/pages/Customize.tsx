@@ -1973,6 +1973,22 @@ export default function Customize() {
               { id:"canvas", label:"Canvas Print", sub:"Ready to hang.", badge:null,
                 features:["Fine-textured canvas, vivid detail & color","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included","Hi-res digital download included"],
                 delivery:"4–7 Business Days", canvasAddon:true },
+              { id:"mug", label:"Portrait Mug", sub:"11oz ceramic · dishwasher safe.", badge:null,
+                features:[
+                  "Your portrait printed on a premium 11oz ceramic mug",
+                  "Dye sublimation — vivid, fade-resistant colour",
+                  "Dishwasher safe · scratch and chip resistant",
+                  "Hi-res digital download included",
+                ],
+                delivery:"5–8 Business Days" },
+              { id:"case", label:"Phone Case", sub:"Tough case · your device, your portrait.", badge:null,
+                features:[
+                  "Your portrait on a premium tough phone case",
+                  "Dual-layer protection · raised camera bezel",
+                  "Available for iPhone 15/16 + Samsung S24/S25",
+                  "Hi-res digital download included",
+                ],
+                delivery:"5–8 Business Days", deviceSelector:true },
             ].map((card:any) => {
               const isActive = activeCard === card.id;
               const fullSizes = SIZES_BY_PRODUCT[card.id] || [];
@@ -2141,7 +2157,7 @@ export default function Customize() {
                         <>
                           <div style={{ fontSize:11, color:MUTED, fontWeight:600,
                             letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            Choose Size
+                            {card.id === "case" ? "Choose Your Phone" : "Choose Size"}
                           </div>
                           <div style={{ position:"relative", marginBottom:12 }}>
                             {sizes.length > 3 && (
