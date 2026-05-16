@@ -1821,7 +1821,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>How It Works</p>
           <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>From Photo To Masterpiece In Four Simple Steps</h2>
-          <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Upload once. Receive a portrait worth treasuring forever.</p>
+          <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Upload Once. Receive A Portrait Worth Treasuring Forever.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:20 }} className="sg3">
             {[
               { n:"1", Icon:Upload,             img:stepUpload,    title:"Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
