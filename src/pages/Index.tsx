@@ -1566,7 +1566,7 @@ function HomePage({ onGenerate }) {
             {/* LIVE TEASER */}
             <div className="fu" style={{ animationDelay:".3s", width:"100%",
               display:"flex", flexDirection:"column", flex:1, position:"relative" }}>
-              <LiveTeaser activeCat={cat} onCatClick={setCat}/>
+              <LiveTeaser activeCat={cat} preferredSlide={preferredTeaser} onCatClick={(c) => { setCat(c); setPreferredTeaser(null); }}/>
             </div>
 
           </div>
