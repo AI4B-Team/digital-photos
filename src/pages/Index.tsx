@@ -268,8 +268,8 @@ const CATS = [
   { id:"pets",     label:"Pets",     icon:"🐾", Icon: PawPrint },
   { id:"babies",   label:"Babies",   icon:"🍼", Icon: Baby     },
   { id:"couples",  label:"Couples",  icon:"💞", Icon: Heart    },
-  { id:"people",   label:"People",   icon:"👤", Icon: Users    },
-  { id:"memorial", label:"Memorial", icon:"✦",  Icon: Flower2  },
+  { id:"people",   label:"Professional", icon:"👤", Icon: Users    },
+  { id:"memorial", label:"Family",       icon:"✦",  Icon: Flower2  },
   { id:"gifts",    label:"Gifts",    icon:"🎁", Icon: Gift     },
 ];
 
@@ -827,7 +827,7 @@ const TEASERS = [
       { url:portraitCouplesCine,  style:"Cinematic" },
       { url:portraitCouplesMin,   style:"Minimal" },
     ] },
-  { cat:"People",   catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:portraitPeople,
+  { cat:"Professional", catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:portraitPeople,
     portraits:[
       { url:portraitPeopleRoyal, style:"Royal" },
       { url:portraitPeopleRen,   style:"Renaissance" },
@@ -836,7 +836,7 @@ const TEASERS = [
       { url:portraitPeopleCine,  style:"Cinematic" },
       { url:portraitPeopleMin,   style:"Minimal" },
     ] },
-  { cat:"Memorial", catId:"memorial", style:"Minimal",     before:beforeMemorial, after:sceneMemorial,portrait:portraitMemorial,
+  { cat:"Family",   catId:"memorial", style:"Minimal",     before:beforeMemorial, after:sceneMemorial,portrait:portraitMemorial,
     portraits:[
       { url:portraitMemorialRoyal, style:"Royal" },
       { url:portraitMemorialRen,   style:"Renaissance" },
