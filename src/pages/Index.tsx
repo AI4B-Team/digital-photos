@@ -1308,11 +1308,12 @@ function LiveTeaser({ activeCat, onCatClick }) {
       </div>
 
       {/* Category dots */}
-      <div style={{ display:"flex", gap:8, marginTop:14, alignItems:"center", justifyContent:"center" }}>
+      <div style={{ display:"flex", gap:4, marginTop:14, alignItems:"center", justifyContent:"center" }}>
         {TEASERS.map((t, i) => (
           <button key={i} onClick={() => { onCatClick(t.catId); setIdx(i); }}
-            style={{ padding:0, border:"none", background:"none", cursor:"pointer",
-              display:"flex", alignItems:"center", gap:7 }}>
+            aria-label={`Show ${t.cat} example`}
+            style={{ padding:"12px 6px", border:"none", background:"none", cursor:"pointer",
+              display:"flex", alignItems:"center", gap:7, minHeight:44 }}>
             <div style={{ width:i===idx?22:7, height:7, borderRadius:4,
               background:i===idx?T.gold:T.dim, transition:"all .3s" }}/>
             {i===idx && <span style={{ fontSize:11, color:T.muted, letterSpacing:".12em" }}>{t.cat}</span>}
