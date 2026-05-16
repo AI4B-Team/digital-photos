@@ -1232,7 +1232,9 @@ function LiveTeaser({ activeCat, onCatClick }) {
     return () => clearInterval(iv);
   }, [activeCat]);
 
-  const cur = TEASERS[idx];
+  const safeIdx = TEASERS.length ? idx % TEASERS.length : 0;
+  const cur = TEASERS[safeIdx];
+  if (!cur) return null;
   const variants = cur.portraits || [{ url: cur.portrait, style: cur.style }];
   const portraitCur = variants[0];
 
