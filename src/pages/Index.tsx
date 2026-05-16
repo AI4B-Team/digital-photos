@@ -1002,15 +1002,6 @@ const TEASERS = [
         { url:portraitBabiesRen,       style:"Renaissance" },
         { url:portraitBabiesMin,       style:"Minimal" },
       ] },
-    { cat:"Couples",  catId:"people",   style:"Renaissance", before:beforeCouples, after:sceneCouplesTouch, portrait:sceneCouplesTouch,
-      portraits:[
-        { url:sceneCouplesTouch,      style:"Renaissance" },
-        { url:sceneCouplesRings,      style:"Cinematic" },
-        { url:sceneCouplesKiss,       style:"Storybook" },
-        { url:portraitCouplesRoyal,   style:"Royal" },
-        { url:portraitCouplesFan,     style:"Fantasy" },
-        { url:portraitCouplesMin,     style:"Minimal" },
-      ] },
    { cat:"People",   catId:"people",   style:"Cinematic",   before:beforePeople, after:scenePeople,  portrait:scenePeople,
      portraits:[
        { url:scenePeople,        style:"Cinematic" },
