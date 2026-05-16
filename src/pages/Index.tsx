@@ -27,6 +27,11 @@ import sceneBabiesSoccer from "@/assets/scene-babies-soccer.jpg";
 import scenePeople from "@/assets/scene-people-ceo-v5.jpg";
 import sceneMemorial from "@/assets/scene-family-heirloom-v4.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
+import sceneFathersShoulders from "@/assets/scene-fathers-shoulders.jpg";
+import sceneFathersGenerations from "@/assets/scene-fathers-generations.jpg";
+import sceneFathersReading from "@/assets/scene-fathers-reading.jpg";
+import sceneFathersExecutive from "@/assets/scene-fathers-executive.jpg";
+import sceneFathersRanch from "@/assets/scene-fathers-ranch.jpg";
 import sceneCouples from "@/assets/scene-couples.jpg";
 import sceneCouplesRings from "@/assets/scene-couples-rings.jpg";
 import sceneCouplesTouch from "@/assets/scene-couples-touch.jpg";
@@ -1848,7 +1853,7 @@ function HomePage({ onGenerate }) {
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesTouch, sceneCouplesKiss], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
               { cat:"couples",  img:sceneWeddingConfetti, imgs:[sceneWeddingConfetti, sceneWeddingStreet, sceneWeddingBeach, sceneWeddingCar, sceneWeddingKiss], Icon:Sparkles, title:"Weddings", body:"Immortalize the day you said 'I do' in fine art worthy of the moment.", cta:"Create A Wedding Portrait" },
               { cat:"memorial", img:sceneMemorial, imgs:[sceneMemorial], Icon:Flower2, title:"Memorial", body:"A timeless tribute that keeps the ones you love close forever.", cta:"Create A Memorial Portrait" },
-              { cat:"gifts",    img:sceneGifts, imgs:[sceneGifts], Icon:Gift, title:"Mother's Day", body:"Give Mom a masterpiece — the gift she'll treasure for a lifetime.", cta:"Create A Mother's Day Portrait" },
+              { cat:"gifts",    img:sceneFathersShoulders, imgs:[sceneFathersShoulders, sceneFathersGenerations, sceneFathersReading, sceneFathersExecutive, sceneFathersRanch], Icon:Gift, title:"Father's Day", body:"Give Dad a masterpiece — the gift he'll treasure for a lifetime.", cta:"Create A Father's Day Portrait" },
             ].map(item => (
               <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }}
                 style={{ border:`1px solid ${T.border}`, borderRadius:18, overflow:"hidden",
