@@ -902,6 +902,34 @@ export default function Customize() {
   const promoSave    = Math.round((subtotal - bundleSave) * promoPct);
   const discountSave = discountAmt > 0 && subtotal > 0 ? Math.min(discountAmt, subtotal - bundleSave - promoSave) : 0;
   const total        = Math.max(0, subtotal - bundleSave - promoSave - discountSave);
+
+  // Live preview price for the currently-active product card (so the header TOTAL
+  // pill reflects the user's selection even before they add it to the cart)
+  const pendingUnitPrice = (() => {
+    const cardId = activeCard;
+    const hasFrameColors = cardId === "classic-frame" || cardId === "box-frame";
+    const hasCanvasAddon = cardId === "canvas";
+    const fullSizes   = SIZES_BY_PRODUCT[cardId] || [];
+    const simpleSizes = SIMPLE_SIZES[cardId] || [];
+    const bestPid = simpleSizes.find(s => s.best)?.pid;
+    const sizes = fullSizes.length
+      ? fullSizes.map(s => ({ id: s.id, pid: s.id, sku: s.sku, price: s.price }))
+      : simpleSizes;
+    const defaultSize = bestPid || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
+    const selSize     = cardSize[cardId] || defaultSize;
+    const snapshot: any = {
+      productType: cardId,
+      size: cardId === "digital" ? (selected as any).size : (sizes.find(s => s.id === selSize)?.pid || selSize),
+      frameColor: hasFrameColors ? cardFrame : undefined,
+      glazeType:  hasFrameColors ? glazeType : undefined,
+      canvasEdge: hasCanvasAddon && canvasFrame ? "mirror" : undefined,
+      qty: (selected as any).qty || 1,
+    };
+    const unit = itemUnitPrice(snapshot);
+    const addon = hasCanvasAddon && canvasFrame ? 49 : 0;
+    return (unit + addon) * (snapshot.qty || 1);
+  })();
+  const headerTotal = total > 0 ? total : pendingUnitPrice;
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
@@ -1607,7 +1635,7 @@ export default function Customize() {
       <SiteHeader
         current="customize"
         onBack={() => navigate("/")}
-        total={total}
+        total={headerTotal}
         showPreviews
         onPreviews={() => setPreviewsOpen(true)}
         showCart
