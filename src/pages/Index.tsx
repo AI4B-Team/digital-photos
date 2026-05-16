@@ -1595,7 +1595,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1200, margin:"0 auto", display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:20, alignItems:"center" }} className="trust4">
           {[
             { Icon:Sparkles, label:"Free Instant Preview" },
-            { Icon:Award, label:"Unlimited Revisions" },
+            { Icon:RefreshCw, label:"Unlimited Revisions" },
             { Icon:FrameIcon, label:"Museum-Quality Print" },
             { Icon:Truck, label:"Free Worldwide Shipping" },
           ].map(({ Icon, label }) => (
