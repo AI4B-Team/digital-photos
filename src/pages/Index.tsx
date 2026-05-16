@@ -1900,7 +1900,7 @@ function HomePage({ onGenerate }) {
           </div>
           <div style={{ textAlign:"center", marginTop:56 }}>
             <p style={{ fontSize:15, color:T.muted, marginBottom:20, fontFamily:"'Poppins',sans-serif", letterSpacing:".01em" }}>Explore Hundreds Of Portrait Styles & Occasions</p>
-            <button onClick={scrollToHero} style={{ background:T.gold, color:"#fff", border:"none", padding:"15px 32px", borderRadius:999, fontWeight:700, fontSize:14.5, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:8, letterSpacing:".01em", boxShadow:"0 10px 28px rgba(230,25,25,.25)" }}>
+            <button onClick={scrollToHero} style={{ background:T.gold, color:"#fff", border:"none", padding:"15px 32px", borderRadius:12, fontWeight:700, fontSize:14.5, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:8, letterSpacing:".01em", boxShadow:"0 10px 28px rgba(230,25,25,.25)" }}>
               Preview Your Portrait Free →
             </button>
           </div>
