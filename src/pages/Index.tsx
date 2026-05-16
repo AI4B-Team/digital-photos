@@ -19,6 +19,7 @@ import scenePets from "@/assets/scene-pets.jpg";
 import scenePetsBrutus  from "@/assets/scene-pets-brutus.jpg";
 import scenePetsPitbull from "@/assets/scene-pets-pitbull.jpg";
 import scenePetsGallery from "@/assets/scene-pets-gallery.jpg";
+import scenePetsShepherdFlag from "@/assets/scene-pets-shepherd-flag.jpg";
 import sceneBabies from "@/assets/scene-babies.jpg";
 import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
 import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
