@@ -1693,12 +1693,26 @@ function HomePage({ onGenerate }) {
                     {[{ src: photo, onRemove: () => { clearPhoto(); if (fileRef.current) fileRef.current.value = ""; } },
                       ...extraPhotos.map((src, i) => ({
                         src,
-                        onRemove: () => setExtraPhotos(p => p.filter((_, j) => j !== i)),
+                        low: extraLowRes[i],
+                        onRemove: () => {
+                          setExtraPhotos(p => p.filter((_, j) => j !== i));
+                          setExtraLowRes(p => p.filter((_, j) => j !== i));
+                        },
                       }))
-                    ].map((item, i) => (
+                    ].map((item: any, i) => {
+                      const isLow = i === 0 ? !!lowResWarning : !!item.low;
+                      return (
                       <div key={i} style={{ position:"relative", width:90, height:70, borderRadius:10,
-                        overflow:"hidden", border:`1px solid ${T.bGold}`, background:"rgba(255,255,255,.04)" }}>
+                        overflow:"hidden", border:`1px solid ${isLow ? "#E0A040" : T.bGold}`, background:"rgba(255,255,255,.04)" }}>
                         <img src={item.src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                        {isLow && (
+                          <div title="Low resolution" style={{ position:"absolute", left:4, bottom:4,
+                            background:"rgba(224,160,64,.95)", color:"#1a1208", fontSize:8, fontWeight:700,
+                            letterSpacing:".05em", padding:"2px 5px", borderRadius:4, display:"flex",
+                            alignItems:"center", gap:3 }}>
+                            <AlertCircle size={9} strokeWidth={3}/>LOW-RES
+                          </div>
+                        )}
                         <button onClick={item.onRemove} aria-label="Remove photo"
                           style={{ position:"absolute", top:4, right:4, width:18, height:18,
                             background:"#E0353F", border:"none", borderRadius:"50%", display:"flex",
@@ -1707,7 +1721,7 @@ function HomePage({ onGenerate }) {
                           <X size={10} color="#fff" strokeWidth={3}/>
                         </button>
                       </div>
-                    ))}
+                    );})}
                     {/* Add another photo card */}
                     <button type="button"
                       onClick={() => { setAddSlot("extra"); fileRef.current?.click(); }}
