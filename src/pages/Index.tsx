@@ -145,6 +145,8 @@ import scenePetKing from "@/assets/scene-pet-king.jpg";
 import beforePetCat from "@/assets/before-pet-cat.jpg";
 import scenePetCatReader from "@/assets/scene-pet-cat-reader.jpg";
 import scenePetBestfriend from "@/assets/scene-pet-bestfriend.jpg";
+import beforeBabyChef from "@/assets/before-baby-chef.jpg";
+import sceneBabyChef from "@/assets/scene-baby-chef.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -1037,8 +1039,10 @@ const TEASERS = [
      portraits:[ { url:sceneVintageRestored, style:"Archival" } ] },
    { cat:"Bookworm", catId:"pets",      style:"Cinematic",  before:beforePetCat,     after:scenePetCatReader,    portrait:scenePetCatReader,
      portraits:[ { url:scenePetCatReader, style:"Cinematic" } ] },
-   { cat:"Best Friend", catId:"pets",   style:"Editorial",  before:beforePets,       after:scenePetBestfriend,   portrait:scenePetBestfriend,
-     portraits:[ { url:scenePetBestfriend, style:"Editorial" } ] },
+    { cat:"Best Friend", catId:"pets",   style:"Editorial",  before:beforePets,       after:scenePetBestfriend,   portrait:scenePetBestfriend,
+      portraits:[ { url:scenePetBestfriend, style:"Editorial" } ] },
+    { cat:"Little Chef", catId:"babies", style:"Whimsical",  before:beforeBabyChef,   after:sceneBabyChef,        portrait:sceneBabyChef,
+      portraits:[ { url:sceneBabyChef, style:"Whimsical" } ] },
 ];
 
 const PLANS = [
