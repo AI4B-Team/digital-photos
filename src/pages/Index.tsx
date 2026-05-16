@@ -34,6 +34,7 @@ import sceneMemorialCatAngel from "@/assets/scene-memorial-cat-angel.jpg";
 import sceneMemorialFamily from "@/assets/scene-memorial-family.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import sceneFathersShoulders from "@/assets/scene-fathers-shoulders.jpg";
+import sceneFathersFamilyEmbrace from "@/assets/scene-fathers-family-embrace.jpg";
 import sceneFathersGenerations from "@/assets/scene-fathers-generations.jpg";
 import sceneFathersReading from "@/assets/scene-fathers-reading.jpg";
 import sceneFathersExecutive from "@/assets/scene-fathers-executive.jpg";
