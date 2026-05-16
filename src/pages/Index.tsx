@@ -58,7 +58,6 @@ import stepAi9 from "@/assets/step-ai-9.jpg";
 import stepAi10 from "@/assets/step-ai-10.jpg";
 import stepCustomize from "@/assets/step-customize.jpg";
 import stepDelivered from "@/assets/step-delivered.jpg";
-import portraitPets from "@/assets/portrait-pets.jpg";
 import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
 import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
 import portraitPetsFan from "@/assets/portrait-pets-fantasy.jpg";
@@ -1002,9 +1001,8 @@ export const SUBTYPES: Record<string, {
 
 // Live teaser — one per category, cycles automatically
 const TEASERS = [
-  { cat:"Pets",     catId:"pets",     style:"Royal",       before:beforePets, after:scenePets,    portrait:portraitPets,
+  { cat:"Pets",     catId:"pets",     style:"Renaissance", before:beforePets, after:scenePets,    portrait:portraitPetsRen,
     portraits:[
-      { url:portraitPets,       style:"Royal" },
       { url:portraitPetsRen,    style:"Renaissance" },
       { url:portraitPetsStory,  style:"Storybook" },
       { url:portraitPetsFan,    style:"Fantasy" },
