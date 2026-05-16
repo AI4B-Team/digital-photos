@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate }  from "react-router-dom";
 import { useSession }   from "@/context/SessionContext";
-import { useUpload }    from "@/hooks/useUpload";
+import { useUpload, getImageDimensions, isLowRes, LOW_RES_THRESHOLD } from "@/hooks/useUpload";
 import { createSession } from "@/lib/supabaseHelpers";
 import { supabase }     from "@/integrations/supabase/client";
 import {
@@ -1377,7 +1377,8 @@ function Step2Slides() {
 }
 
 function HomePage({ onGenerate }) {
-  const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
+  const { preview: photo, uploadedUrl, uploading, uploadErr, lowResWarning, loadFile, clearPhoto } = useUpload();
+  const [extraLowRes, setExtraLowRes] = useState<boolean[]>([]);
   const [cat,     setCat]     = useState("");
   const [preferredTeaser, setPreferredTeaser] = useState<string|null>(null);
   const [styles,  setStyles]  = useState(STYLES.map(s => s.id));
@@ -1692,12 +1693,26 @@ function HomePage({ onGenerate }) {
                     {[{ src: photo, onRemove: () => { clearPhoto(); if (fileRef.current) fileRef.current.value = ""; } },
                       ...extraPhotos.map((src, i) => ({
                         src,
-                        onRemove: () => setExtraPhotos(p => p.filter((_, j) => j !== i)),
+                        low: extraLowRes[i],
+                        onRemove: () => {
+                          setExtraPhotos(p => p.filter((_, j) => j !== i));
+                          setExtraLowRes(p => p.filter((_, j) => j !== i));
+                        },
                       }))
-                    ].map((item, i) => (
+                    ].map((item: any, i) => {
+                      const isLow = i === 0 ? !!lowResWarning : !!item.low;
+                      return (
                       <div key={i} style={{ position:"relative", width:90, height:70, borderRadius:10,
-                        overflow:"hidden", border:`1px solid ${T.bGold}`, background:"rgba(255,255,255,.04)" }}>
+                        overflow:"hidden", border:`1px solid ${isLow ? "#E0A040" : T.bGold}`, background:"rgba(255,255,255,.04)" }}>
                         <img src={item.src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                        {isLow && (
+                          <div title="Low resolution" style={{ position:"absolute", left:4, bottom:4,
+                            background:"rgba(224,160,64,.95)", color:"#1a1208", fontSize:8, fontWeight:700,
+                            letterSpacing:".05em", padding:"2px 5px", borderRadius:4, display:"flex",
+                            alignItems:"center", gap:3 }}>
+                            <AlertCircle size={9} strokeWidth={3}/>LOW-RES
+                          </div>
+                        )}
                         <button onClick={item.onRemove} aria-label="Remove photo"
                           style={{ position:"absolute", top:4, right:4, width:18, height:18,
                             background:"#E0353F", border:"none", borderRadius:"50%", display:"flex",
@@ -1706,7 +1721,7 @@ function HomePage({ onGenerate }) {
                           <X size={10} color="#fff" strokeWidth={3}/>
                         </button>
                       </div>
-                    ))}
+                    );})}
                     {/* Add another photo card */}
                     <button type="button"
                       onClick={() => { setAddSlot("extra"); fileRef.current?.click(); }}
@@ -1727,6 +1742,18 @@ function HomePage({ onGenerate }) {
                     </button>
                   </div>
                 )}
+                {(lowResWarning || extraLowRes.some(Boolean)) && photo && (
+                  <div style={{ marginTop:10, padding:"8px 10px", borderRadius:8,
+                    border:"1px solid rgba(224,160,64,.5)", background:"rgba(224,160,64,.08)",
+                    display:"flex", gap:8, alignItems:"flex-start", color:"#E0A040", fontSize:10, lineHeight:1.5 }}>
+                    <AlertCircle size={12} style={{ flexShrink:0, marginTop:1 }}/>
+                    <span>
+                      <strong style={{ letterSpacing:".06em" }}>LOW-RESOLUTION PHOTO DETECTED.</strong>{" "}
+                      {lowResWarning || `One of your additional photos is below ${LOW_RES_THRESHOLD}×${LOW_RES_THRESHOLD}px.`}{" "}
+                      For sharpest recreations, replace it with a higher-resolution image (at least {LOW_RES_THRESHOLD}px on the shortest side).
+                    </span>
+                  </div>
+                )}
                 {cat === "babies" && photo && (
                   <p style={{ fontSize:10, color:T.muted, marginTop:8, lineHeight:1.5, letterSpacing:".02em" }}>
                     Tip: Most baby templates feature mom & baby together. Add an optional photo of mom for the best face likeness.
@@ -1744,7 +1771,13 @@ function HomePage({ onGenerate }) {
                     }
                     if (addSlot === "extra") {
                       const reader = new FileReader();
-                      reader.onload = ev => setExtraPhotos(p => [...p, ev.target?.result as string]);
+                      reader.onload = async ev => {
+                        const dataUrl = ev.target?.result as string;
+                        setExtraPhotos(p => [...p, dataUrl]);
+                        let low = false;
+                        try { const { w, h } = await getImageDimensions(dataUrl); low = isLowRes(w, h); } catch {}
+                        setExtraLowRes(p => [...p, low]);
+                      };
                       reader.readAsDataURL(f);
                     } else {
                       loadFile(f);
