@@ -1367,6 +1367,40 @@ function HomePage({ onGenerate }) {
               <div style={{ position:"absolute", top:0, left:"16%", right:"16%", height:1,
                 background:`linear-gradient(90deg,transparent,${T.gold},transparent)` }}/>
 
+              {/* ── FREE PREVIEW VALUE PROP ── */}
+              <div style={{
+                marginBottom:16,
+                padding:"12px 14px",
+                background:`linear-gradient(90deg, rgba(196,150,58,.14), rgba(196,150,58,.06))`,
+                border:`1px solid ${T.gold}`,
+                borderRadius:6,
+                display:"flex",
+                alignItems:"center",
+                gap:10,
+              }}>
+                <div style={{
+                  width:32, height:32, flexShrink:0, borderRadius:"50%",
+                  background:T.gold, color:T.bg,
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  fontSize:16, fontWeight:700,
+                }}>
+                  <Sparkles size={16} strokeWidth={2.2}/>
+                </div>
+                <div style={{ minWidth:0 }}>
+                  <div style={{
+                    fontFamily:"'Playfair Display',serif",
+                    fontSize:16, lineHeight:1.15, color:T.cream, fontWeight:600,
+                  }}>
+                    Preview Your Portrait — Free Before You Buy
+                  </div>
+                  <div style={{
+                    fontSize:11, color:T.muted, marginTop:3, letterSpacing:".02em",
+                  }}>
+                    See exactly what you'll get in 60 seconds. No card. No risk.
+                  </div>
+                </div>
+              </div>
+
               {/* ── WHO IS THIS FOR ── */}
               <div style={{ marginBottom:14 }}>
                 <div style={{ fontSize:9, letterSpacing:".24em", color:T.gold, textTransform:"uppercase",
