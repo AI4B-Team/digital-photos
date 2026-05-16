@@ -47,6 +47,7 @@ import sceneCouplesBackToBack from "@/assets/scene-couples-back-to-back.jpg";
 import sceneCouplesEmbrace from "@/assets/scene-couples-embrace.jpg";
 import sceneCouplesEditorialEmbrace from "@/assets/scene-couples-editorial-embrace.jpg";
 import sceneCouplesCinematicKiss from "@/assets/scene-couples-cinematic-kiss.jpg";
+import sceneCouplesBeachTender from "@/assets/scene-couples-beach-tender.jpg";
 import stepUpload from "@/assets/step-upload.jpg";
 import stepAi from "@/assets/step-ai.jpg";
 import stepAi1 from "@/assets/step-ai-1.jpg";
