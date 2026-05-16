@@ -2244,6 +2244,17 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const allPhotos = [photo, ...(extraPhotos || [])].filter(Boolean);
   const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
   const [confirming, setConfirming] = useState(false);
+  const [subType, setSubType] = useState<string | null>(null);
+  const [stSearch, setStSearch] = useState("");
+
+  const needsSubType = cat === "people" || cat === "occasions";
+  const subTypeDefs = SUBTYPES[cat] || [];
+  const filteredSubs = stSearch
+    ? subTypeDefs.filter(s => s.label.toLowerCase().includes(stSearch.toLowerCase())
+                           || s.desc.toLowerCase().includes(stSearch.toLowerCase()))
+    : subTypeDefs;
+  const selectedSubDef = subTypeDefs.find(s => s.id === subType);
+  const subTypePromptContext = selectedSubDef?.context || "";
 
   const teaser = TEASERS.find(t => t.catId === cat);
   const portraits = teaser?.portraits || [];
@@ -2307,11 +2318,11 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     try {
       if (selected.type === "style") {
         const card = baseCards.find(c => c.id === selected.id);
-        onConfirm({ styles: [selected.id], templatePrompt: "", styleRefUrl: await getStyleRef(card?.img) });
+        onConfirm({ styles: [selected.id], templatePrompt: subTypePromptContext, styleRefUrl: await getStyleRef(card?.img) });
       } else {
         const tmpl = templates.find(t => t.id === selected.id);
         const card = tmplCards.find(c => c.id === selected.id);
-        const base = tmpl?.prompt || "";
+        const base = [subTypePromptContext, tmpl?.prompt].filter(Boolean).join(" ");
         const variants = cat === "pets"
           ? [
               `${base} — Recreate the scene shown in the TOP-LEFT framed picture of the reference template (same pose, same props, same setting, same lighting). Replace the pet with the user's pet.`,
@@ -2352,12 +2363,87 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         <h1 style={{ fontSize:"clamp(24px,3.5vw,42px)", fontWeight:800,
             color:T.cream, marginBottom:10, lineHeight:1.15,
             fontFamily:"'Poppins',sans-serif" }}>
-          Choose An Art Style
+          {heroName && subType
+            ? `Choose A Style For ${heroName}'s ${selectedSubDef?.label} Portrait`
+            : heroName
+            ? `Choose A Style For ${heroName}`
+            : subType
+            ? `Choose A ${selectedSubDef?.label} Style`
+            : "Choose An Art Style"}
         </h1>
         <p style={{ fontSize:17, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
           Select One Style To Generate Your Free Preview — Takes About 30 Seconds.
         </p>
       </div>
+
+      {/* Sub-type selector (People + Occasions only) */}
+      {needsSubType && (
+        <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 24px 24px" }}>
+          <p style={{ fontSize:11, letterSpacing:".24em", textTransform:"uppercase",
+              color:T.gold, fontWeight:600, marginBottom:6, fontFamily:"'Poppins',sans-serif" }}>
+            {cat === "people" ? "Who Is This For?" : "What's The Occasion?"}
+          </p>
+          <p style={{ fontSize:14, color:T.muted, marginBottom:14,
+              fontFamily:"'Poppins',sans-serif" }}>
+            {subType
+              ? `Great — showing styles for ${selectedSubDef?.label}`
+              : "Choose a type to find the most relevant styles"}
+          </p>
+
+          <div style={{ position:"relative", marginBottom:16, maxWidth:360 }}>
+            <Search size={14} color={T.muted}
+              style={{ position:"absolute", left:12, top:"50%",
+                transform:"translateY(-50%)", pointerEvents:"none" }}/>
+            <input
+              type="text"
+              value={stSearch}
+              onChange={e => setStSearch(e.target.value)}
+              placeholder={cat === "people" ? "Search (baby, couple…)" : "Search occasions…"}
+              style={{ width:"100%", paddingLeft:34, paddingRight:12, paddingTop:9,
+                paddingBottom:9, borderRadius:8, fontSize:13,
+                border:`1px solid ${T.border}`, outline:"none",
+                background:"#fff", color:"#1a1a1a", fontFamily:"'Poppins',sans-serif",
+                boxSizing:"border-box" as any }}/>
+          </div>
+
+          <div style={{ display:"grid",
+              gridTemplateColumns:"repeat(auto-fill, minmax(140px, 1fr))", gap:12 }}>
+            {filteredSubs.map(sub => {
+              const isSel = subType === sub.id;
+              return (
+                <div key={sub.id}
+                  onClick={() => setSubType(isSel ? null : sub.id)}
+                  style={{ position:"relative", aspectRatio:"1", borderRadius:14,
+                    overflow:"hidden", cursor:"pointer",
+                    border:`2px solid ${isSel ? T.gold : "transparent"}`,
+                    boxShadow: isSel
+                      ? `0 0 0 3px rgba(230,180,80,.25)`
+                      : "0 2px 10px rgba(0,0,0,.25)",
+                    transition:"border-color .15s, box-shadow .15s, transform .15s",
+                    transform: isSel ? "scale(1.04)" : "scale(1)" }}>
+                  <img src={sub.img} alt={sub.label}
+                    style={{ width:"100%", height:"100%",
+                      objectFit:"cover", display:"block" }}/>
+                  <div style={{ position:"absolute", inset:0,
+                    background:"linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.1) 55%, transparent 100%)" }}/>
+                  <div style={{ position:"absolute", left:10, right:10, bottom:8,
+                    color:"#fff", fontFamily:"'Poppins',sans-serif" }}>
+                    <div style={{ fontSize:13, fontWeight:700, lineHeight:1.1 }}>{sub.label}</div>
+                    <div style={{ fontSize:11, opacity:.85, marginTop:2 }}>{sub.desc}</div>
+                  </div>
+                  {isSel && (
+                    <div style={{ position:"absolute", top:8, right:8,
+                      width:22, height:22, borderRadius:"50%", background:T.gold,
+                      display:"flex", alignItems:"center", justifyContent:"center" }}>
+                      <Check size={13} color="#fff" strokeWidth={3}/>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Art Styles header */}
       {baseCards.length > 0 && (
