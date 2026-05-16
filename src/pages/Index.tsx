@@ -1759,7 +1759,13 @@ function HomePage({ onGenerate }) {
                     }
                     if (addSlot === "extra") {
                       const reader = new FileReader();
-                      reader.onload = ev => setExtraPhotos(p => [...p, ev.target?.result as string]);
+                      reader.onload = async ev => {
+                        const dataUrl = ev.target?.result as string;
+                        setExtraPhotos(p => [...p, dataUrl]);
+                        let low = false;
+                        try { const { w, h } = await getImageDimensions(dataUrl); low = isLowRes(w, h); } catch {}
+                        setExtraLowRes(p => [...p, low]);
+                      };
                       reader.readAsDataURL(f);
                     } else {
                       loadFile(f);
