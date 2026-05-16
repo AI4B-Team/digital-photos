@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate }  from "react-router-dom";
 import { useSession }   from "@/context/SessionContext";
-import { useUpload }    from "@/hooks/useUpload";
+import { useUpload, getImageDimensions, isLowRes, LOW_RES_THRESHOLD } from "@/hooks/useUpload";
 import { createSession } from "@/lib/supabaseHelpers";
 import { supabase }     from "@/integrations/supabase/client";
 import {
