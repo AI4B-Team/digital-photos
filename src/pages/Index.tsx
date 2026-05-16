@@ -137,6 +137,11 @@ import beforeMemorial from "@/assets/before-memorial.jpg";
 import beforeGifts from "@/assets/before-gifts.jpg";
 import beforeWedding from "@/assets/before-wedding.jpg";
 import sceneWeddingHeirloom from "@/assets/scene-wedding-heirloom.jpg";
+import sceneWeddingConfetti from "@/assets/scene-wedding-confetti.jpg";
+import sceneWeddingStreet from "@/assets/scene-wedding-street.jpg";
+import sceneWeddingBeach from "@/assets/scene-wedding-beach.jpg";
+import sceneWeddingCar from "@/assets/scene-wedding-car.jpg";
+import sceneWeddingKiss from "@/assets/scene-wedding-kiss.jpg";
 import beforePetMemorial from "@/assets/before-pet-memorial.jpg";
 import scenePetRemembrance from "@/assets/scene-pet-remembrance.jpg";
 import beforeVintage from "@/assets/before-vintage.jpg";
@@ -1841,7 +1846,7 @@ function HomePage({ onGenerate }) {
               { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsGallery, scenePetKing, scenePetsShepherdFlag], Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesTouch, sceneCouplesKiss], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
-              { cat:"couples",  img:sceneWeddingHeirloom, imgs:[sceneWeddingHeirloom], Icon:Sparkles, title:"Weddings", body:"Immortalize the day you said 'I do' in fine art worthy of the moment.", cta:"Create A Wedding Portrait" },
+              { cat:"couples",  img:sceneWeddingConfetti, imgs:[sceneWeddingConfetti, sceneWeddingStreet, sceneWeddingBeach, sceneWeddingCar, sceneWeddingKiss], Icon:Sparkles, title:"Weddings", body:"Immortalize the day you said 'I do' in fine art worthy of the moment.", cta:"Create A Wedding Portrait" },
               { cat:"memorial", img:sceneMemorial, imgs:[sceneMemorial], Icon:Flower2, title:"Memorial", body:"A timeless tribute that keeps the ones you love close forever.", cta:"Create A Memorial Portrait" },
               { cat:"gifts",    img:sceneGifts, imgs:[sceneGifts], Icon:Gift, title:"Mother's Day", body:"Give Mom a masterpiece — the gift she'll treasure for a lifetime.", cta:"Create A Mother's Day Portrait" },
             ].map(item => (
