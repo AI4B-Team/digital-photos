@@ -1002,14 +1002,6 @@ export const SUBTYPES: Record<string, {
 
 // Live teaser — one per category, cycles automatically
 const TEASERS = [
-  { cat:"Pets",     catId:"pets",     style:"Renaissance", before:beforePets, after:scenePets,    portrait:portraitPetsRen,
-    portraits:[
-      { url:portraitPetsRen,    style:"Renaissance" },
-      { url:portraitPetsStory,  style:"Storybook" },
-      { url:portraitPetsFan,    style:"Fantasy" },
-      { url:portraitPetsCine,   style:"Cinematic" },
-      { url:portraitPetsMin,    style:"Minimal" },
-    ] },
     { cat:"Babies",   catId:"people",   style:"Royal",       before:beforeBabies, after:portraitBabiesRoyal,  portrait:portraitBabiesRoyal,
       portraits:[
         { url:portraitBabiesRoyal,     style:"Royal" },
