@@ -1035,8 +1035,6 @@ const TEASERS = [
      portraits:[ { url:scenePetRemembrance, style:"Painterly" } ] },
    { cat:"Restored", catId:"occasions", style:"Archival",   before:beforeVintage,    after:sceneVintageRestored, portrait:sceneVintageRestored,
      portraits:[ { url:sceneVintageRestored, style:"Archival" } ] },
-   { cat:"Viral",    catId:"pets",      style:"Cinematic",  before:beforePetViral,   after:scenePetKing,         portrait:scenePetKing,
-     portraits:[ { url:scenePetKing, style:"Cinematic" } ] },
    { cat:"Bookworm", catId:"pets",      style:"Cinematic",  before:beforePetCat,     after:scenePetCatReader,    portrait:scenePetCatReader,
      portraits:[ { url:scenePetCatReader, style:"Cinematic" } ] },
    { cat:"Best Friend", catId:"pets",   style:"Editorial",  before:beforePets,       after:scenePetBestfriend,   portrait:scenePetBestfriend,
@@ -1843,7 +1841,7 @@ function HomePage({ onGenerate }) {
           <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every purchase is a memory made permanent. Every occasion deserves a masterpiece.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
-              { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsGallery], Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
+              { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsGallery, scenePetKing], Icon:PawPrint, title:"Pets",     body:"Honor the companion who fills your days with unconditional joy.", cta:"Create A Pet Portrait" },
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesTouch, sceneCouplesKiss], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
             ].map(item => (
