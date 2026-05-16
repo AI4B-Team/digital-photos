@@ -1039,8 +1039,10 @@ const TEASERS = [
      portraits:[ { url:sceneVintageRestored, style:"Archival" } ] },
    { cat:"Bookworm", catId:"pets",      style:"Cinematic",  before:beforePetCat,     after:scenePetCatReader,    portrait:scenePetCatReader,
      portraits:[ { url:scenePetCatReader, style:"Cinematic" } ] },
-   { cat:"Best Friend", catId:"pets",   style:"Editorial",  before:beforePets,       after:scenePetBestfriend,   portrait:scenePetBestfriend,
-     portraits:[ { url:scenePetBestfriend, style:"Editorial" } ] },
+    { cat:"Best Friend", catId:"pets",   style:"Editorial",  before:beforePets,       after:scenePetBestfriend,   portrait:scenePetBestfriend,
+      portraits:[ { url:scenePetBestfriend, style:"Editorial" } ] },
+    { cat:"Little Chef", catId:"babies", style:"Whimsical",  before:beforeBabyChef,   after:sceneBabyChef,        portrait:sceneBabyChef,
+      portraits:[ { url:sceneBabyChef, style:"Whimsical" } ] },
 ];
 
 const PLANS = [
