@@ -1224,7 +1224,7 @@ function CheckRow({ label, gold }) {
 /* ═══════════════════════════════════════════════════════════
    LIVE TEASER  (animated before→after carousel)
 ═══════════════════════════════════════════════════════════ */
-function LiveTeaser({ activeCat, onCatClick }) {
+function LiveTeaser({ activeCat, onCatClick, preferredSlide }: { activeCat: string; onCatClick: (c:string)=>void; preferredSlide?: string|null }) {
   const [idx, setIdx] = useState(0);
 
   // Preload all teaser images once so transitions don't flash while loading
@@ -1236,9 +1236,16 @@ function LiveTeaser({ activeCat, onCatClick }) {
     });
   }, []);
 
+  // Preferred slide override takes precedence (e.g. nav "Occasions" → Wedding)
+  useEffect(() => {
+    if (!preferredSlide) return;
+    const m = TEASERS.findIndex(t => t.cat === preferredSlide);
+    if (m >= 0) setIdx(m);
+  }, [preferredSlide]);
+
   // When user picks a category, jump to matching teaser
   useEffect(() => {
-    if (!activeCat) return;
+    if (!activeCat || preferredSlide) return;
     const match = TEASERS.findIndex(t => t.catId === activeCat);
     if (match >= 0 && match !== idx) setIdx(match);
   }, [activeCat]); // eslint-disable-line
@@ -1361,6 +1368,7 @@ function Step2Slides() {
 function HomePage({ onGenerate }) {
   const { preview: photo, uploadedUrl, uploading, uploadErr, loadFile, clearPhoto } = useUpload();
   const [cat,     setCat]     = useState("");
+  const [preferredTeaser, setPreferredTeaser] = useState<string|null>(null);
   const [styles,  setStyles]  = useState(STYLES.map(s => s.id));
   const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);
   const [openFaq, setOpenFaq] = useState<number|null>(0);
@@ -1493,6 +1501,7 @@ function HomePage({ onGenerate }) {
             return (
               <button key={c.id} onClick={() => {
                   setCat(c.id); setSelectedTemplate(null);
+                  setPreferredTeaser(c.id === "occasions" ? "Wedding" : null);
                   heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
                 }}
                 style={{ background:"none", border:"none", cursor:"pointer",
@@ -1564,7 +1573,7 @@ function HomePage({ onGenerate }) {
             {/* LIVE TEASER */}
             <div className="fu" style={{ animationDelay:".3s", width:"100%",
               display:"flex", flexDirection:"column", flex:1, position:"relative" }}>
-              <LiveTeaser activeCat={cat} onCatClick={setCat}/>
+              <LiveTeaser activeCat={cat} preferredSlide={preferredTeaser} onCatClick={(c) => { setCat(c); setPreferredTeaser(null); }}/>
             </div>
 
           </div>
