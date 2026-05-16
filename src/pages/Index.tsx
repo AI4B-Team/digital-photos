@@ -30,6 +30,7 @@ import sceneMemorialGrandmother from "@/assets/scene-memorial-grandmother.jpg";
 import sceneMemorialVintageFamily from "@/assets/scene-memorial-vintage-family.jpg";
 import sceneMemorialPet from "@/assets/scene-memorial-pet.jpg";
 import sceneMemorialFather from "@/assets/scene-memorial-father.jpg";
+import sceneMemorialCatAngel from "@/assets/scene-memorial-cat-angel.jpg";
 import sceneMemorialFamily from "@/assets/scene-memorial-family.jpg";
 import sceneGifts from "@/assets/scene-gifts.jpg";
 import sceneFathersShoulders from "@/assets/scene-fathers-shoulders.jpg";
@@ -1859,7 +1860,7 @@ function HomePage({ onGenerate }) {
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Capture the wonder of their earliest moments before they become memories.", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesKiss, sceneCouplesBackToBack, sceneCouplesEmbrace], Icon:Heart, title:"Couples", body:"Your love story told in timeless art. The perfect anniversary gift.", cta:"Create A Couples Portrait" },
               { cat:"couples",  img:sceneWeddingConfetti, imgs:[sceneWeddingConfetti, sceneWeddingStreet, sceneWeddingBeach, sceneWeddingCar, sceneWeddingKiss], Icon:Sparkles, title:"Weddings", body:"Immortalize the day you said 'I do' in fine art worthy of the moment.", cta:"Create A Wedding Portrait" },
-              { cat:"memorial", img:sceneMemorialGrandmother, imgs:[sceneMemorialGrandmother, sceneMemorialVintageFamily, sceneMemorialPet, sceneMemorialFather], Icon:Flower2, title:"Memorial", body:"A timeless tribute that keeps the ones you love close forever.", cta:"Create A Memorial Portrait" },
+              { cat:"memorial", img:sceneMemorialGrandmother, imgs:[sceneMemorialGrandmother, sceneMemorialVintageFamily, sceneMemorialPet, sceneMemorialFather, sceneMemorialCatAngel], Icon:Flower2, title:"Memorial", body:"A timeless tribute that keeps the ones you love close forever.", cta:"Create A Memorial Portrait" },
               { cat:"gifts",    img:sceneFathersShoulders, imgs:[sceneFathersShoulders, sceneFathersGenerations, sceneFathersReading, sceneFathersExecutive, sceneFathersRanch], Icon:Gift, title:"Father's Day", body:"Give Dad a masterpiece — the gift he'll treasure for a lifetime.", cta:"Create A Father's Day Portrait" },
             ].map(item => (
               <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }}
