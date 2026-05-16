@@ -1821,7 +1821,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>How It Works</p>
           <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>From Photo To Masterpiece In Four Simple Steps</h2>
-          <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Upload Once. Receive A Portrait Worth Treasuring Forever.</p>
+          <p style={{ fontSize:22, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Upload Once. Receive A Portrait Worth Treasuring Forever.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:20 }} className="sg3">
             {[
               { n:"1", Icon:Upload,             img:stepUpload,    title:"Upload Your Photo", body:"Select who this portrait is for — pets, babies, couples, or people — then upload any photo from your camera roll. Clear, well-lit photos give the most stunning results." },
@@ -1853,7 +1853,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:T.gold, fontWeight:600, textAlign:"center", marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Choose Your Style</p>
           <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:10, fontFamily:"'Poppins',sans-serif" }}>Turn Any Photo Into Timeless Art</h2>
-          <p style={{ fontSize:15, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif", whiteSpace:"nowrap" }}>Choose From 30+ Styles — Royal, Renaissance, Watercolor, Storybook And More For Every Moment.</p>
+          <p style={{ fontSize:22, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif", whiteSpace:"nowrap" }}>Choose From 30+ Styles — Royal, Renaissance, Watercolor, Storybook And More For Every Moment.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
               { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsGallery, scenePetKing, scenePetsShepherdFlag], Icon:PawPrint, title:"Pets",     body:"Royal · Viking · Astronaut · Watercolor · +25 more", cta:"Create A Pet Portrait" },
@@ -1916,7 +1916,7 @@ function HomePage({ onGenerate }) {
               <Award size={14} color={T.gold}/> Fine Art Quality
             </div>
             <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, lineHeight:1.2, marginBottom:18, fontFamily:"'Poppins',sans-serif" }}>Art That Lasts A Hundred Years.</h2>
-            <p style={{ fontSize:15, color:T.muted, maxWidth:680, margin:"0 auto 24px", lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every REAL ART Portrait Is Printed Using The Same Archival Standards Used By The World's Leading Museums And Galleries. Made To Be Passed Down Through Generations.</p>
+            <p style={{ fontSize:22, color:T.muted, maxWidth:680, margin:"0 auto 24px", lineHeight:1.65, fontFamily:"'Poppins',sans-serif" }}>Every REAL ART Portrait Is Printed Using The Same Archival Standards Used By The World's Leading Museums And Galleries. Made To Be Passed Down Through Generations.</p>
             <div style={{ display:"flex", justifyContent:"center", gap:10, flexWrap:"wrap" }}>
               {[
                 { Icon:Star,   label:"100-Year Color Guarantee" },
@@ -2011,7 +2011,7 @@ function HomePage({ onGenerate }) {
       <section style={{ background:T.gold, padding:"80px 32px", textAlign:"center" }}>
         <p style={{ fontSize:10.5, letterSpacing:".28em", textTransform:"uppercase", color:"rgba(255,255,255,.85)", fontWeight:600, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Start Creating</p>
         <h2 style={{ fontSize:40, fontWeight:800, color:"#FFFFFF", lineHeight:1.2, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>Turn Your Favourite Photo Into A Masterpiece.</h2>
-        <p style={{ fontSize:15, color:"rgba(255,255,255,.9)", marginBottom:28, fontFamily:"'Poppins',sans-serif" }}>Free Preview Before You Buy. No Subscription. No Risk.</p>
+        <p style={{ fontSize:22, color:"rgba(255,255,255,.9)", marginBottom:28, fontFamily:"'Poppins',sans-serif" }}>Free Preview Before You Buy. No Subscription. No Risk.</p>
         <button onClick={scrollToHero} style={{ background:"#FFFFFF", color:T.gold, border:"none", padding:"16px 36px", borderRadius:12, fontWeight:700, fontSize:15, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:10, letterSpacing:".01em" }}>
           <Upload size={17}/> Upload A Photo — It's Free
         </button>
