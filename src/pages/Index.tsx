@@ -1327,18 +1327,29 @@ function LiveTeaser({ activeCat, onCatClick, preferredSlide }: { activeCat: stri
         </div>
       </div>
 
-      {/* Category dots */}
-      <div style={{ display:"flex", gap:4, marginTop:14, alignItems:"center", justifyContent:"center" }}>
-        {TEASERS.map((t, i) => (
-          <button key={i} onClick={() => { onCatClick(t.catId); setIdx(i); }}
-            aria-label={`Show ${t.cat} example`}
-            style={{ padding:"12px 6px", border:"none", background:"none", cursor:"pointer",
-              display:"flex", alignItems:"center", gap:7, minHeight:44 }}>
-            <div style={{ width:i===idx?22:7, height:7, borderRadius:4,
-              background:i===idx?T.gold:T.dim, transition:"all .3s" }}/>
-            {i===idx && <span style={{ fontSize:11, color:T.muted, letterSpacing:".12em" }}>{t.cat}</span>}
-          </button>
-        ))}
+      {/* Prev / Next slide controls — big, easy to tap */}
+      <div style={{ display:"flex", gap:10, marginTop:14, alignItems:"center", justifyContent:"center" }}>
+        <button
+          onClick={() => { const n = (safeIdx - 1 + TEASERS.length) % TEASERS.length; setIdx(n); onCatClick(TEASERS[n].catId); }}
+          aria-label="Previous example"
+          style={{ width:44, height:44, borderRadius:22, border:`1px solid ${T.bGold}`,
+            background:"#fff", cursor:"pointer", fontSize:18, color:T.gold, fontWeight:700,
+            display:"flex", alignItems:"center", justifyContent:"center" }}>
+          ‹
+        </button>
+        <div style={{ minWidth:180, textAlign:"center", padding:"10px 18px",
+          borderRadius:22, background:T.gold, color:"#fff",
+          fontSize:12, letterSpacing:".18em", textTransform:"uppercase", fontWeight:700 }}>
+          {cur.cat} <span style={{ opacity:.7, marginLeft:6 }}>{safeIdx+1}/{TEASERS.length}</span>
+        </div>
+        <button
+          onClick={() => { const n = (safeIdx + 1) % TEASERS.length; setIdx(n); onCatClick(TEASERS[n].catId); }}
+          aria-label="Next example"
+          style={{ width:44, height:44, borderRadius:22, border:`1px solid ${T.bGold}`,
+            background:"#fff", cursor:"pointer", fontSize:18, color:T.gold, fontWeight:700,
+            display:"flex", alignItems:"center", justifyContent:"center" }}>
+          ›
+        </button>
       </div>
     </div>
   );
