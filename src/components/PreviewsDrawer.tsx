@@ -273,6 +273,23 @@ export default function PreviewsDrawer({
                     }}>
                       <img src={p.url} alt={p.style || "preview"}
                         style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <button
+                        onClick={() => handleDeletePortrait(row.id, p.url)}
+                        aria-label="Delete image"
+                        title="Delete image"
+                        style={{
+                          position: "absolute", top: 4, right: 4,
+                          width: 22, height: 22, borderRadius: "50%",
+                          background: "rgba(0,0,0,.55)", border: "none",
+                          color: "#fff", cursor: "pointer", padding: 0,
+                          display: "inline-flex", alignItems: "center", justifyContent: "center",
+                          backdropFilter: "blur(4px)",
+                        }}
+                        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = RED; }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,.55)"; }}
+                      >
+                        <Trash2 size={11} />
+                      </button>
                       {p.style && (
                         <div style={{
                           position: "absolute", bottom: 0, left: 0, right: 0,
