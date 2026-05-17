@@ -2399,6 +2399,7 @@ export default function Customize() {
                 isDragging={isDragging} setIsDragging={setIsDragging}
                 dragStart={dragStart} setDragStart={setDragStart}
                 roomContainerRef={roomContainerRef}
+                setRoomView={setRoomView}
               />
             </div>
           ) : (
