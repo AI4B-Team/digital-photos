@@ -552,6 +552,7 @@ function RoomViewPanel({
   aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
   dragStart, setDragStart, roomContainerRef, setRoomView,
+  stagedAiCache, setStagedAiCache, stagedAiLoading, setStagedAiLoading,
 }: any) {
   const room     = ROOMS[roomIdx];
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
@@ -564,7 +565,11 @@ function RoomViewPanel({
   };
   const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
 
-  const bgUrl = roomMode === "myroom" && userRoomUrl ? userRoomUrl
+  const stagedKey = `${roomIdx}|${portraitUrl}|${frameColor}`;
+  const stagedAiUrl = stagedAiCache?.[stagedKey] || null;
+
+  const bgUrl = roomMode === "staged" && stagedAiUrl ? stagedAiUrl
+              : roomMode === "myroom" && userRoomUrl ? userRoomUrl
               : roomMode === "ai" && aiRoomUrl       ? aiRoomUrl
               : room.url;
 
