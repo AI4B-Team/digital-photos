@@ -2157,7 +2157,15 @@ export default function Customize() {
                           const unitPrice = itemUnitPrice(it);
                           const qty = it.qty || 1;
                           const listP = unitPrice * qty;
-                          const lineP = listP; // retail; discount shown once in cart
+                          const maxPrintPrice = printItems.length > 0
+                            ? Math.max(...printItems.map(x => itemUnitPrice(x)))
+                            : 0;
+                          const itemGetsDiscount = discountAmt > 0
+                            && it.productType !== "vip"
+                            && it.productType !== "digital"
+                            && itemUnitPrice(it) >= maxPrintPrice;
+                          const unitDisc = itemGetsDiscount ? Math.max(0, unitPrice - discountAmt) : unitPrice;
+                          const lineP = unitDisc * qty;
                           const isSel = it.id === selectedId;
                           return (
                             <div key={it.id} onClick={() => setSelectedId(it.id)} style={{
