@@ -337,6 +337,45 @@ const GLAZE_OPTIONS = [
   { id:"moth-eye",    label:"Moth-Eye ✦",   desc:"Anti-reflective, no-glare museum-grade glass",    add:17 },
 ] as const;
 
+// ── Room View ─────────────────────────────────────────
+const ROOMS = [
+  { label:"Modern Living Room",
+    url:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&h=900&fit=crop&q=85",
+    wallX:52, wallY:12, wallW:26 },
+  { label:"Warm Bedroom",
+    url:"https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:10, wallW:24 },
+  { label:"Scandinavian Living Room",
+    url:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&h=900&fit=crop&q=85",
+    wallX:48, wallY:14, wallW:28 },
+  { label:"Moody Dark Study",
+    url:"https://images.unsplash.com/photo-1597072689227-8882273e8f6a?w=1400&h=900&fit=crop&q=85",
+    wallX:55, wallY:16, wallW:22 },
+  { label:"Gallery Hallway",
+    url:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:18, wallW:30 },
+  { label:"Traditional Family Room",
+    url:"https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:12, wallW:26 },
+  { label:"Minimalist Home Office",
+    url:"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1400&h=900&fit=crop&q=85",
+    wallX:62, wallY:10, wallW:20 },
+  { label:"Bohemian Sitting Room",
+    url:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1400&h=900&fit=crop&q=85",
+    wallX:45, wallY:15, wallW:25 },
+] as const;
+
+const FRAME_COLOR_HEX: Record<string,string> = {
+  "black":          "#15151a",
+  "white":          "#efece6",
+  "natural":        "#c89968",
+  "antique-silver": "#9a9a9a",
+  "antique-gold":   "#c4963a",
+  "dark-grey":      "#3d3d42",
+  "light-grey":     "#c2c0bb",
+  "brown":          "#6b4a30",
+};
+
 const CANVAS_EDGES = [
   { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
   { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",  color:"#1a1a1a" },
