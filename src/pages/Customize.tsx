@@ -2444,17 +2444,24 @@ export default function Customize() {
                         </div>
                       )}
 
-                      <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                        letterSpacing:".06em", textTransform:"uppercase", marginBottom:6 }}>Included</div>
-                      <ul style={{ listStyle:"none", padding:0, margin:"0 0 12px",
-                        display:"flex", flexDirection:"column", gap:5 }}>
-                        {card.features.map((f:string, i:number) => (
-                          <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
-                            fontSize:12, color:INK, lineHeight:1.5 }}>
-                            <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
-                          </li>
-                        ))}
-                      </ul>
+                      <details className="cz-acc">
+                        <summary>
+                          <span>What's Included</span>
+                          <span className="cz-acc-val">{card.features.length} items</span>
+                          <ChevronDown className="cz-acc-chev" size={15}/>
+                        </summary>
+                        <div className="cz-acc-body">
+                          <ul style={{ listStyle:"none", padding:0, margin:0,
+                            display:"flex", flexDirection:"column", gap:5 }}>
+                            {card.features.map((f:string, i:number) => (
+                              <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
+                                fontSize:12, color:INK, lineHeight:1.5 }}>
+                                <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </details>
 
                       {cardDiscount > 0 && (
                         <div style={{ fontSize:12, color:"#16a34a", fontWeight:700, marginBottom:10 }}>
