@@ -339,32 +339,30 @@ const GLAZE_OPTIONS = [
 ] as const;
 
 // ── Room View ─────────────────────────────────────────
+// Curated staged rooms — each MUST have a large empty wall area
+// where a single portrait can be placed cleanly. No gallery walls,
+// no existing art, no shelving directly above the placement spot.
 const ROOMS = [
   { label:"Modern Living Room",
     url:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&h=900&fit=crop&q=85",
-    wallX:52, wallY:12, wallW:26 },
-  { label:"Warm Bedroom",
-    url:"https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=1400&h=900&fit=crop&q=85",
-    wallX:50, wallY:10, wallW:24 },
-  { label:"Scandinavian Living Room",
+    wallX:50, wallY:14, wallW:24 },
+  { label:"Warm Neutral Sofa",
+    url:"https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:12, wallW:22 },
+  { label:"Scandinavian Lounge",
     url:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&h=900&fit=crop&q=85",
-    wallX:48, wallY:14, wallW:28 },
-  { label:"Moody Dark Study",
-    url:"https://images.unsplash.com/photo-1597072689227-8882273e8f6a?w=1400&h=900&fit=crop&q=85",
-    wallX:55, wallY:16, wallW:22 },
-  { label:"Gallery Hallway",
-    url:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1400&h=900&fit=crop&q=85",
-    wallX:50, wallY:18, wallW:30 },
-  { label:"Traditional Family Room",
-    url:"https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1400&h=900&fit=crop&q=85",
-    wallX:50, wallY:12, wallW:26 },
-  { label:"Minimalist Home Office",
-    url:"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1400&h=900&fit=crop&q=85",
-    wallX:62, wallY:10, wallW:20 },
-  { label:"Bohemian Sitting Room",
-    url:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1400&h=900&fit=crop&q=85",
-    wallX:45, wallY:15, wallW:25 },
+    wallX:48, wallY:14, wallW:26 },
+  { label:"Minimalist Bedroom",
+    url:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:12, wallW:24 },
+  { label:"Bright Dining Room",
+    url:"https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:14, wallW:24 },
+  { label:"Cozy Reading Nook",
+    url:"https://images.unsplash.com/photo-1616627781809-781c12d0fb88?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:14, wallW:22 },
 ] as const;
+
 
 const FRAME_COLOR_HEX: Record<string,string> = {
   "black":          "#15151a",
@@ -553,7 +551,7 @@ function RoomViewPanel({
   roomMode, setRoomMode, userRoomUrl, setUserRoomUrl,
   aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
-  dragStart, setDragStart, roomContainerRef,
+  dragStart, setDragStart, roomContainerRef, setRoomView,
 }: any) {
   const room     = ROOMS[roomIdx];
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
@@ -628,8 +626,20 @@ function RoomViewPanel({
       width:"100%", height:"100%", display:"flex", flexDirection:"column",
       gap:10, background:"#111", borderRadius:14, padding:12, color:"#fff",
     }}>
-      {/* Mode tabs */}
-      <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+      {/* Mode tabs + Back to portrait */}
+      <div style={{ display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
+        <button
+          onClick={() => setRoomView(false)}
+          style={{
+            padding:"5px 11px", borderRadius:8, fontSize:11, fontWeight:600,
+            cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+            background:"rgba(255,255,255,.1)", color:"#fff",
+            border:"1px solid rgba(255,255,255,.18)",
+            display:"inline-flex", alignItems:"center", gap:5,
+          }}>
+          <ChevronLeft size={13}/> Back to portrait
+        </button>
+        <div style={{ width:1, height:18, background:"rgba(255,255,255,.12)", margin:"0 4px" }}/>
         {TABS.map(tab => (
           <button key={tab.id}
             onClick={() => { setRoomMode(tab.id); setAiRoomUrl(null); }}
@@ -2389,6 +2399,7 @@ export default function Customize() {
                 isDragging={isDragging} setIsDragging={setIsDragging}
                 dragStart={dragStart} setDragStart={setDragStart}
                 roomContainerRef={roomContainerRef}
+                setRoomView={setRoomView}
               />
             </div>
           ) : (
