@@ -1957,17 +1957,29 @@ export default function Customize() {
           )}
         </aside>
 
-        {/* Preview (middle) */}
+        {/* Preview (middle) — gallery wall ambience */}
         <div className="cz-stage cz-fade" style={{
           padding:"0 24px 24px",
           minHeight:"calc(100vh - 70px)",
           maxHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
-          background:"#F2EBDD",
+          background:`
+            radial-gradient(ellipse 80% 55% at 50% 0%, rgba(255,250,240,.55) 0%, rgba(255,250,240,0) 60%),
+            radial-gradient(ellipse 90% 70% at 50% 110%, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 60%),
+            linear-gradient(180deg, #F5EEDF 0%, #EFE6D2 100%)
+          `,
           overflow:"hidden",
           position:"relative",
+          boxShadow:"inset 0 0 120px rgba(0,0,0,.06)",
         }}>
+          {/* subtle wall noise/texture overlay */}
+          <div aria-hidden style={{
+            position:"absolute", inset:0, pointerEvents:"none", zIndex:0, opacity:.35,
+            backgroundImage:"radial-gradient(rgba(0,0,0,.05) 1px, transparent 1px)",
+            backgroundSize:"3px 3px",
+            mixBlendMode:"multiply",
+          }}/>
           <div style={{
             textAlign:"center", flexShrink:0, padding:"32px 0 8px",
             position:"sticky", top:0, zIndex:5, width:"100%",
