@@ -2754,6 +2754,38 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       })}
 
       <div style={{ height:60 }}/>
+
+      {/* Zoom modal */}
+      {zoomImg && (
+        <div onClick={() => setZoomImg(null)}
+          style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.88)",
+            zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center",
+            padding:"40px 20px", cursor:"zoom-out", backdropFilter:"blur(6px)" }}>
+          <button onClick={(e) => { e.stopPropagation(); setZoomImg(null); }}
+            aria-label="Close"
+            style={{ position:"absolute", top:20, right:24, width:42, height:42,
+              borderRadius:"50%", background:"rgba(255,255,255,0.12)", border:"none",
+              color:"#fff", cursor:"pointer", display:"flex", alignItems:"center",
+              justifyContent:"center", fontSize:22, fontFamily:"'Poppins',sans-serif" }}>
+            <X size={22}/>
+          </button>
+          <div onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth:"min(1100px, 95vw)", maxHeight:"90vh", display:"flex",
+              flexDirection:"column", alignItems:"center", gap:14, cursor:"default" }}>
+            <img src={zoomImg.src} alt={zoomImg.label}
+              style={{ maxWidth:"100%", maxHeight:"78vh", objectFit:"contain",
+                borderRadius:12, boxShadow:"0 20px 60px rgba(0,0,0,0.6)" }}/>
+            <div style={{ textAlign:"center", color:"#fff" }}>
+              <h3 style={{ fontSize:20, fontWeight:700, margin:0,
+                fontFamily:"'Poppins',sans-serif" }}>{zoomImg.label}</h3>
+              {zoomImg.desc && (
+                <p style={{ fontSize:13, color:"rgba(255,255,255,0.7)", margin:"4px 0 0",
+                  fontFamily:"'Poppins',sans-serif" }}>{zoomImg.desc}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
