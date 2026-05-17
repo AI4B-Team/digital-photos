@@ -2102,21 +2102,21 @@ export default function Customize() {
               const digitalPrice = Math.max(0, 37 - discountAmt);
 
               return (
-                <div key={card.id} style={{
-                  border:`1px solid ${isActive ? RED : BORDER}`,
-                  borderRadius:14, marginBottom:18,
-                  transition:"border-color .15s", background:"#fff",
-                  position:"relative",
-                }}>
-                  {card.badge && (
-                    <span style={{
-                      position:"absolute", top:-9, left:12, zIndex:1,
-                      fontSize:9, fontWeight:700, background:RED,
-                      color:"#fff", padding:"3px 8px", borderRadius:20,
-                      letterSpacing:".08em", textTransform:"uppercase",
-                      fontFamily:"'Poppins',sans-serif",
-                    }}>{card.badge}</span>
-                  )}
+                 <div key={card.id} style={{
+                   border:`1px solid ${isActive ? INK : BORDER}`,
+                   borderRadius:14, marginBottom:18,
+                   transition:"border-color .15s", background:"#fff",
+                   position:"relative",
+                 }}>
+                   {card.badge && (
+                     <span style={{
+                       position:"absolute", top:-9, left:12, zIndex:1,
+                       fontSize:9, fontWeight:700, background:INK,
+                       color:"#fff", padding:"3px 8px", borderRadius:20,
+                       letterSpacing:".08em", textTransform:"uppercase",
+                       fontFamily:"'Poppins',sans-serif",
+                     }}>{card.badge}</span>
+                   )}
                   <button
                     onClick={() => setActiveCard(isActive ? "" : card.id)}
                     style={{ width:"100%", display:"flex", alignItems:"center",
@@ -2148,9 +2148,9 @@ export default function Customize() {
                           </div>
                         </div>
                       )}
-                      <ChevronDown size={15} color={isActive?RED:MUTED}
-                        style={{ transform:isActive?"rotate(180deg)":"rotate(0)",
-                          transition:"transform .2s", flexShrink:0 }}/>
+                       <ChevronDown size={15} color={isActive?INK:MUTED}
+                         style={{ transform:isActive?"rotate(180deg)":"rotate(0)",
+                           transition:"transform .2s", flexShrink:0 }}/>
                     </div>
                   </button>
 
@@ -2304,7 +2304,7 @@ export default function Customize() {
                                 {sz.best && (
                                   <span style={{ position:"absolute", top:-9, left:"50%",
                                     transform:"translateX(-50%)", fontSize:8, fontWeight:700,
-                                    background:RED, color:"#fff", padding:"3px 7px",
+                                    background:"#8B6B3D", color:"#fff", padding:"3px 7px",
                                     borderRadius:10, letterSpacing:".06em", textTransform:"uppercase",
                                     whiteSpace:"nowrap" }}>Best Value</span>
                                 )}
