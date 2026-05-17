@@ -2692,7 +2692,7 @@ export default function Customize() {
                           qty: selected.qty || 1,
                         };
                         const lineQty = selected.qty || 1;
-                        const linePrice = itemUnitPrice(snapshot) * lineQty; // retail
+                        const linePrice = Math.max(0, itemUnitPrice(snapshot) - discountAmt) * lineQty;
                         return (
                           <button disabled={nameCompositing} onClick={async () => {
                             let finalPhotoUrl = (snapshot as any).photoUrl;
