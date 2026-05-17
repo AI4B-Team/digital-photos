@@ -15,6 +15,7 @@ import {
   CalendarDays
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
+import { useAuth } from "@/context/AuthContext";
 import scenePets from "@/assets/scene-pets.jpg";
 import scenePetsBrutus  from "@/assets/scene-pets-brutus.jpg";
 import scenePetsPitbull from "@/assets/scene-pets-pitbull.jpg";
@@ -1381,6 +1382,7 @@ function Step2Slides() {
 }
 
 function HomePage({ onGenerate }) {
+  const { user, signOut } = useAuth();
   const { preview: photo, uploadedUrl, uploading, uploadErr, lowResWarning, loadFile, clearPhoto } = useUpload();
   const [extraLowRes, setExtraLowRes] = useState<boolean[]>([]);
   const [cat,     setCat]     = useState("");
@@ -1535,12 +1537,29 @@ function HomePage({ onGenerate }) {
         </div>
 
         <div style={{ display:"flex", gap:10, alignItems:"center" }}>
-          <a href="/auth" style={{ fontSize:11, color:T.muted, textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
-            padding:"6px 14px", border:`1px solid ${T.border}`, transition:"all .25s" }}
-            onMouseOver={e => { e.target.style.borderColor="rgba(196,150,58,.4)"; e.target.style.color=T.cream; }}
-            onMouseOut={e => { e.target.style.borderColor=T.border; e.target.style.color=T.muted; }}>
-            Sign In
-          </a>
+          {user ? (
+            <>
+              <a href="/customize" style={{ fontSize:11, color:T.gold, textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
+                padding:"6px 14px", border:`1px solid rgba(196,150,58,.5)`, transition:"all .25s" }}
+                onMouseOver={e => { e.currentTarget.style.background="rgba(196,150,58,.1)"; }}
+                onMouseOut={e => { e.currentTarget.style.background="transparent"; }}>
+                My Portraits
+              </a>
+              <button onClick={() => signOut()} style={{ background:"none", fontSize:11, color:T.muted, cursor:"pointer", letterSpacing:".08em", textTransform:"uppercase",
+                padding:"6px 14px", border:`1px solid ${T.border}`, transition:"all .25s", fontFamily:"'Poppins',sans-serif" }}
+                onMouseOver={e => { e.currentTarget.style.color = T.cream; }}
+                onMouseOut={e => { e.currentTarget.style.color = T.muted; }}>
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <a href="/auth" style={{ fontSize:11, color:T.muted, textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
+              padding:"6px 14px", border:`1px solid ${T.border}`, transition:"all .25s" }}
+              onMouseOver={e => { e.currentTarget.style.borderColor="rgba(196,150,58,.4)"; e.currentTarget.style.color=T.cream; }}
+              onMouseOut={e => { e.currentTarget.style.borderColor=T.border; e.currentTarget.style.color=T.muted; }}>
+              Sign In
+            </a>
+          )}
         </div>
       </nav>
 
@@ -2139,7 +2158,10 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
   const [emailGate, setEmailGate] = useState(false);
   const [donePortraits, setDonePortraits] = useState<any>(null);
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState<string | null>(null);
   const [emailBusy, setEmailBusy] = useState(false);
+  const { signUp, signIn, user } = useAuth();
   const active = STYLES.filter(s => selectedStyles.includes(s.id));
   const proofDeck = getSocialProof(category);
   const startedRef = useRef(false);
@@ -2195,21 +2217,49 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
   }, []);
 
   const handleEmailSubmit = async () => {
-    if (!email.includes("@")) return;
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail.includes("@")) return;
+    if (!user && password.length < 6) {
+      setAuthError("Password must be at least 6 characters.");
+      return;
+    }
+    setAuthError(null);
     setEmailBusy(true);
     try {
-      await supabase.from("lead_captures" as any).insert({
-        email: email.trim().toLowerCase(),
-        session_id: sessionId || null,
-        category,
-        source: "portrait_generation",
-      });
-      // Persist this client's preview gallery so they can revisit it from the
-      // "My Previews" drawer and receive 7-day expiry reminders.
+      // Create account (or sign in if it already exists) so the user can
+      // revisit their gallery, place orders, and manage previews.
+      if (!user) {
+        const { error: signUpErr } = await signUp(cleanEmail, password);
+        if (signUpErr) {
+          const msg = String(signUpErr.message || "").toLowerCase();
+          if (msg.includes("already") || msg.includes("registered") || msg.includes("exists")) {
+            const { error: signInErr } = await signIn(cleanEmail, password);
+            if (signInErr) {
+              setAuthError("That email is taken. Please enter the correct password.");
+              setEmailBusy(false);
+              return;
+            }
+          } else {
+            setAuthError(signUpErr.message || "Could not create account.");
+            setEmailBusy(false);
+            return;
+          }
+        }
+      }
+
+      try {
+        await supabase.from("lead_captures" as any).insert({
+          email: cleanEmail,
+          session_id: sessionId || null,
+          category,
+          source: "portrait_generation",
+        });
+      } catch (_) { /* non-blocking */ }
+
       try {
         await supabase.functions.invoke("save-client-previews", {
           body: {
-            email: email.trim().toLowerCase(),
+            email: cleanEmail,
             sessionId: sessionId || null,
             category,
             sourcePhotoUrl: photoUrl || null,
@@ -2220,7 +2270,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
             })),
           },
         });
-        try { localStorage.setItem("dp:previewEmail", email.trim().toLowerCase()); } catch {}
+        try { localStorage.setItem("dp:previewEmail", cleanEmail); } catch {}
       } catch (_) { /* non-blocking */ }
     } catch (_) { /* non-blocking */ }
     setEmailBusy(false);
@@ -2240,8 +2290,10 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
           color:T.cream, marginBottom:10, textAlign:"center" }}>
           Your Portrait Is Ready!
         </h2>
-        <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center" }}>
-          Where Should We Send It?
+        <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center", maxWidth:420 }}>
+          {user
+            ? "Save it to your gallery and continue to checkout."
+            : "Create a free account to save your portrait, revisit your gallery, and place orders."}
         </p>
         <div style={{ width:"100%", maxWidth:380, display:"flex", flexDirection:"column", gap:10 }}>
           <input
@@ -2249,21 +2301,43 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
             placeholder="Email address"
             value={email}
             onChange={e => setEmail(e.target.value)}
+            disabled={!!user}
             onKeyDown={e => e.key === "Enter" && handleEmailSubmit()}
             style={{ padding:"14px 16px", fontSize:14, borderRadius:10,
               border:`1px solid ${T.border}`, outline:"none",
-              fontFamily:"'Poppins',sans-serif", background:"#fff", color:"#1a1a1a" }}
+              fontFamily:"'Poppins',sans-serif", background:"#fff", color:"#1a1a1a",
+              opacity: user ? .7 : 1 }}
           />
+          {!user && (
+            <input
+              type="password"
+              placeholder="Create a password (min 6 characters)"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && handleEmailSubmit()}
+              autoComplete="new-password"
+              style={{ padding:"14px 16px", fontSize:14, borderRadius:10,
+                border:`1px solid ${T.border}`, outline:"none",
+                fontFamily:"'Poppins',sans-serif", background:"#fff", color:"#1a1a1a" }}
+            />
+          )}
+          {authError && (
+            <p style={{ color:"#E06060", fontSize:12, margin:"2px 2px 0", textAlign:"center" }}>
+              {authError}
+            </p>
+          )}
           <button
             onClick={handleEmailSubmit}
-            disabled={emailBusy || !email.includes("@")}
+            disabled={emailBusy || !email.includes("@") || (!user && password.length < 6)}
             className="btn-gold"
             style={{ padding:"15px 0", borderRadius:10, fontSize:14,
               display:"flex", alignItems:"center", justifyContent:"center", gap:10,
-              opacity: (!email.includes("@") || emailBusy) ? .55 : 1 }}>
-            {emailBusy ? "Saving..." : <>Send Me My Portrait <ArrowRight size={17}/></>}
+              opacity: (!email.includes("@") || emailBusy || (!user && password.length < 6)) ? .55 : 1 }}>
+            {emailBusy
+              ? "Creating account..."
+              : <>{user ? "Save & Continue" : "Create Account & Continue"} <ArrowRight size={17}/></>}
           </button>
-          <p style={{ color:T.dim, fontSize:11.5, textAlign:"center", marginTop:6, whiteSpace:"nowrap" }}>
+          <p style={{ color:T.dim, fontSize:11.5, textAlign:"center", marginTop:6 }}>
             Your portrait will be saved to your gallery — no spam, unsubscribe anytime.
           </p>
           <button onClick={() => onDone(donePortraits)}
