@@ -2292,10 +2292,10 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
           color:T.cream, marginBottom:10, textAlign:"center" }}>
           Your Portrait Is Ready!
         </h2>
-        <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center", maxWidth:420 }}>
+        <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center", whiteSpace:"nowrap" }}>
           {user
             ? "Save it to your gallery and continue to checkout."
-            : "Create a free account to save your portrait, revisit your gallery, and place orders."}
+            : "Create a free account to save and order your portrait."}
         </p>
         <div style={{ width:"100%", maxWidth:380, display:"flex", flexDirection:"column", gap:10 }}>
           <input
