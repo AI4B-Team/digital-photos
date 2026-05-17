@@ -2063,16 +2063,20 @@ export default function Customize() {
               const selectedSizeForCard = (selected as any).productType === card.id
                 ? (selected as any).size
                 : undefined;
-              const selSize = cardSize[card.id] || selectedSizeForCard || defaultSize;
+              const existingItemOfType = items.find(it => (it as any).productType === card.id);
+              const selSize = cardSize[card.id]
+                || selectedSizeForCard
+                || (existingItemOfType as any)?.size
+                || defaultSize;
               const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[0];
               const basePrice = card.id === "digital" ? 37 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
               const cardDiscount = Math.min(discountAmt, basePrice + frameAdd);
-              const price    = basePrice + frameAdd - cardDiscount;
-              // origPrice = retail (the crossed-out price when discount is active)
-              const origPrice = basePrice;   // basePrice IS the retail in SIMPLE_SIZES
-              const digitalOrig = 37;        // digital retail
-              const digitalPrice = Math.max(0, 37 - discountAmt);
+              // Show retail on card header — discount shown ONCE in cart summary
+              const price    = basePrice + frameAdd; // retail
+              const origPrice = basePrice;
+              const digitalOrig = 37;
+              const digitalPrice = 37; // retail
 
               return (
                 <div key={card.id} style={{
