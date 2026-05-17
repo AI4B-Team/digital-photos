@@ -2140,7 +2140,10 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
   const [emailGate, setEmailGate] = useState(false);
   const [donePortraits, setDonePortraits] = useState<any>(null);
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState<string | null>(null);
   const [emailBusy, setEmailBusy] = useState(false);
+  const { signUp, signIn, user } = useAuth();
   const active = STYLES.filter(s => selectedStyles.includes(s.id));
   const proofDeck = getSocialProof(category);
   const startedRef = useRef(false);
