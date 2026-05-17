@@ -815,7 +815,7 @@ function RoomViewPanel({
         )}
 
         {/* AI loading overlay */}
-        {aiRoomLoading && (
+        {(aiRoomLoading || stagedAiLoading) && (
           <div style={{
             position:"absolute", inset:0, background:"rgba(0,0,0,.6)",
             display:"flex", flexDirection:"column", alignItems:"center",
