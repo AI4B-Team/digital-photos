@@ -3640,7 +3640,7 @@ export default function Customize() {
                 <span style={{
                   fontSize:11, fontWeight:700, letterSpacing:".2em",
                   textTransform:"uppercase", color:"#fff",
-                }}>Exclusive Add-On</span>
+                }}>Exclusive add-on</span>
               </div>
               <button
                 onClick={() => { setUpsellOpen(false); checkoutCart(); }}
@@ -3657,18 +3657,18 @@ export default function Customize() {
               <h2 style={{
                 fontSize:22, fontWeight:800, color:INK, textAlign:"center",
                 marginBottom:6,
-              }}>Portrait VIP Package</h2>
+              }}>Portrait VIP package</h2>
               <div style={{ fontSize:13, color:MUTED, textAlign:"center", marginBottom:18 }}>
                 Protect, prioritise & guarantee your portrait.
               </div>
 
               {/* Three items */}
               {[
-                { Icon:Zap,    title:"Priority Production",
+                { Icon:Zap,    title:"Priority production",
                   desc:"Your order jumps to the front — ships in 2–3 days instead of 5–7", price:14 },
-                { Icon:Shield, title:"Shipping Insurance",
+                { Icon:Shield, title:"Shipping insurance",
                   desc:"Full replacement if your print is lost or damaged in transit", price:12 },
-                { Icon:RefreshCw, title:"Lifetime Reprint Protection",
+                { Icon:RefreshCw, title:"Lifetime reprint protection",
                   desc:"Free reprint anytime if your print ever fades or is damaged", price:11 },
               ].map((item, i) => (
                 <div key={i} style={{
@@ -3703,7 +3703,7 @@ export default function Customize() {
                 background:"#FAFAF7", border:`1px solid ${BORDER}`,
               }}>
                 <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:MUTED }}>
-                  <span>Total Value</span>
+                  <span>Total value</span>
                   <span style={{ textDecoration:"line-through" }}>$37</span>
                 </div>
                 <div style={{ fontSize:11.5, color:RED, fontWeight:700, marginTop:2 }}>
@@ -3714,7 +3714,7 @@ export default function Customize() {
                   paddingTop:8, borderTop:`1px solid ${BORDER}`,
                   fontSize:15, fontWeight:800, color:INK,
                 }}>
-                  <span>Your Price</span>
+                  <span>Your price</span>
                   <span style={{ color:RED }}>$17</span>
                 </div>
               </div>
@@ -3748,7 +3748,7 @@ export default function Customize() {
                     display:"flex", alignItems:"center",
                     justifyContent:"center", gap:10,
                   }}>
-                  <Check size={17}/> Yes, Upgrade My Order — $17
+                  <Check size={17}/> Yes, upgrade my order — $17
                 </button>
                 <button
                   onClick={() => { setUpsellOpen(false); checkoutCart(); }}
