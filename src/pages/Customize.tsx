@@ -2103,7 +2103,26 @@ export default function Customize() {
                   return (
                     <div key={p.url + idx} style={{ display:"flex", flexDirection:"column", gap:4, alignItems:"center" }}>
                       <button
-                        onClick={() => updateSelected({ photoUrl: p.url, style: p.style, photoAspect: undefined, offsetX: 0, offsetY: 0 })}
+                        onClick={() => {
+                          const existing = items.find(i => i.photoUrl === p.url);
+                          if (existing) {
+                            setSelectedId(existing.id);
+                            return;
+                          }
+                          const newItem = makeItem({
+                            photoUrl: p.url,
+                            style: p.style,
+                            frame: selected.frame,
+                            size: selected.size,
+                            effect: selected.effect,
+                            border: selected.border,
+                            borderColor: selected.borderColor,
+                            productType: (selected as any).productType,
+                            sku: (selected as any).sku,
+                          } as any);
+                          setItems(prev => [...prev, newItem]);
+                          setSelectedId(newItem.id);
+                        }}
                         title={p.style}
                         style={{
                           width:"100%", aspectRatio:"1 / 1", padding:0, borderRadius:8, overflow:"hidden",
