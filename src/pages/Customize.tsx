@@ -551,7 +551,7 @@ function RoomViewPanel({
   roomMode, setRoomMode, userRoomUrl, setUserRoomUrl,
   aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
-  dragStart, setDragStart, roomContainerRef,
+  dragStart, setDragStart, roomContainerRef, setRoomView,
 }: any) {
   const room     = ROOMS[roomIdx];
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
