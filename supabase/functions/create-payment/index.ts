@@ -79,7 +79,10 @@ serve(async (req) => {
     }
 
     const sessionParams: any = {
-      payment_method_types: ["card"],
+      // Auto-shows every payment method enabled in the Stripe Dashboard
+      // (cards, Afterpay, Klarna, Affirm, Apple Pay, Google Pay) based on
+      // customer location and order amount. Required for truthful BNPL display.
+      automatic_payment_methods: { enabled: true },
       line_items: stripeLineItems,
       mode: "payment",
       success_url: `${origin}/delivery?session_id={CHECKOUT_SESSION_ID}`,
