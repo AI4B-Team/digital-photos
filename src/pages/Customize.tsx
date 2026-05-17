@@ -932,7 +932,11 @@ export default function Customize() {
       ? fullSizes.map(s => ({ id: s.id, pid: s.id, sku: s.sku, price: s.price }))
       : simpleSizes;
     const defaultSize = bestPid || sizes.find(s => s.id === "8x10")?.id || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
-    const selSize     = cardSize[cardId] || defaultSize;
+    // Prefer the user's currently-selected size for THIS product so the header
+    // TOTAL matches what they see on the live preview / order panel.
+    const selectedSizeForCard =
+      (selected as any).productType === cardId ? (selected as any).size : undefined;
+    const selSize     = cardSize[cardId] || selectedSizeForCard || defaultSize;
     const snapshot: any = {
       productType: cardId,
       size: cardId === "digital" ? (selected as any).size : (sizes.find(s => s.id === selSize)?.pid || selSize),
