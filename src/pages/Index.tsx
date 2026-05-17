@@ -2461,6 +2461,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const [confirming, setConfirming] = useState(false);
   const [subType, setSubType] = useState<string | null>(null);
   const [stSearch, setStSearch] = useState("");
+  const [collection, setCollection] = useState<string>("all");
   const [zoomImg, setZoomImg] = useState<{ src: string; label: string; desc?: string } | null>(null);
 
   useEffect(() => {
