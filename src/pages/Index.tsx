@@ -2828,6 +2828,22 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [],
           </div>
         )}
 
+        {onZoom && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onZoom(); }}
+            aria-label={`Zoom ${card.label}`}
+            style={{ position:"absolute", top:10, right: isSelected ? 44 : 10,
+              width:32, height:32, borderRadius:"50%",
+              background:"rgba(0,0,0,0.55)", border:"1px solid rgba(255,255,255,0.18)",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              cursor:"pointer", color:"#fff", padding:0,
+              backdropFilter:"blur(4px)", transition:"background .15s" }}
+            onMouseOver={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.8)"; }}
+            onMouseOut={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.55)"; }}>
+            <ZoomIn size={16}/>
+          </button>
+        )}
+
         {isSelected && (
           <div style={{ position:"absolute", top:10, right:10, width:26, height:26,
             borderRadius:"50%", background:T.gold, display:"flex",
