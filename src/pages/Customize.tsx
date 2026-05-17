@@ -906,11 +906,17 @@ export default function Customize() {
   const packsSubtotal  = addedPacks.reduce((sum, p) => sum + p.price * p.qty, 0);
   const subtotal     = cartPrintsSubtotal + packsSubtotal;
   const listSubtotal = cartPrintsListSubtotal + packsSubtotal;
+  // Limited-time / welcome discount: $X OFF each print
+  const cartPromoSave = cartItems.reduce(
+    (sum, it) => sum + Math.min(discountAmt, itemUnitPrice(it)) * (it.qty || 1),
+    0
+  );
+  const cartPrintsAfterPromo = Math.max(0, cartPrintsSubtotal - cartPromoSave);
   const bundlePct    = cartPhotoCount >= 3 ? 0.15 : cartPhotoCount >= 2 ? 0.10 : 0;
-  const bundleSave   = Math.round(cartPrintsSubtotal * bundlePct);
+  const bundleSave   = Math.round(cartPrintsAfterPromo * bundlePct);
   const promoPct     = promoApplied?.pct || 0;
-  const promoSave    = Math.round((subtotal - bundleSave) * promoPct);
-  const discountSave = discountAmt > 0 && subtotal > 0 ? Math.min(discountAmt, subtotal - bundleSave - promoSave) : 0;
+  const promoSave    = Math.round((subtotal - cartPromoSave - bundleSave) * promoPct);
+  const discountSave = cartPromoSave;
   const total        = Math.max(0, subtotal - bundleSave - promoSave - discountSave);
 
   // Live preview price for the currently-active product card (so the header TOTAL
@@ -2975,7 +2981,19 @@ export default function Customize() {
                           ><Plus size={12}/></button>
                         </div>
                         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                          <span style={{ fontSize:13, fontWeight:800, color:INK }}>${unit * (it.qty || 1)}</span>
+                          {(() => {
+                            const qty = it.qty || 1;
+                            const list = unit * qty;
+                            const disc = Math.max(0, unit - (discountAmt || 0)) * qty;
+                            return discountAmt > 0 && disc < list ? (
+                              <>
+                                <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>${list}</span>
+                                <span style={{ fontSize:13, fontWeight:800, color:RED }}>${disc}</span>
+                              </>
+                            ) : (
+                              <span style={{ fontSize:13, fontWeight:800, color:INK }}>${list}</span>
+                            );
+                          })()}
                           <button
                             onClick={() => removeCartItem(it.id)}
                             disabled={false}
