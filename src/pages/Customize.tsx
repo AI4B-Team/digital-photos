@@ -2735,11 +2735,10 @@ export default function Customize() {
                         border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
                       }}>
                         <div style={{ fontSize:11.5, color:INK, fontWeight:600, marginBottom:8, textAlign:"center" }}>
-                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(headerTotal/4).toFixed(2)}</span> with Afterpay / Klarna
+                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(headerTotal/4).toFixed(2)}</span>
                         </div>
-                        <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
+                        <div style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
                           {[
-                            { name: "Shop Pay", logo: shopPayLogo, bg: "#5A31F4", scale: "86%" },
                             { name: "Klarna", logo: klarnaLogo, bg: "#FFA8CD", scale: "80%" },
                             { name: "Affirm", logo: affirmLogo, bg: "transparent", scale: "100%", maxHeight: 30, pad: 0 },
                             { name: "Afterpay", logo: afterpayLogo, bg: "#B2FCE4", scale: "84%" },
