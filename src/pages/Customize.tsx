@@ -722,9 +722,9 @@ export default function Customize() {
   const [discountTier, setDiscountTier] = useState("");
 
   useEffect(() => {
-    const LS_KEY = "ra_discount_start_v2";
+    const LS_KEY = "ra_discount_start_v3";
     const FIFTEEN_MIN = 15 * 60 * 1000;
-    const TOTAL = FIFTEEN_MIN + 2 * 24 * 60 * 60 * 1000; // 15min + 2 days
+    const TOTAL = FIFTEEN_MIN + 24 * 60 * 60 * 1000; // 15min welcome + 24h extended
     let startTs = parseInt(localStorage.getItem(LS_KEY) || "0");
     if (!startTs) {
       startTs = Date.now();
