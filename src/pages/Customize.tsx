@@ -2076,11 +2076,10 @@ export default function Customize() {
               const basePrice = card.id === "digital" ? 37 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
               const cardDiscount = Math.min(discountAmt, basePrice + frameAdd);
-              // Show retail on card header — discount shown ONCE in cart summary
-              const price    = basePrice + frameAdd; // retail
+              const price = basePrice + frameAdd - cardDiscount;
               const origPrice = basePrice;
               const digitalOrig = 37;
-              const digitalPrice = 37; // retail
+              const digitalPrice = Math.max(0, 37 - discountAmt);
 
               return (
                 <div key={card.id} style={{
@@ -2118,9 +2117,13 @@ export default function Customize() {
                         <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:1 }}>
                           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
                             <span style={{ fontSize:13, color:MUTED, marginRight:2 }}>from</span>
-                            <span style={{ fontSize:15, fontWeight:800, color:INK,
-                              fontFamily:"'Poppins',sans-serif" }}>
-                              ${card.id==="digital"?digitalPrice:price}
+                            {discountAmt > 0 && (
+                              <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
+                                ${card.id==="digital" ? digitalOrig : origPrice}
+                              </span>
+                            )}
+                            <span style={{ fontSize:15, fontWeight:800, color:RED, fontFamily:"'Poppins',sans-serif" }}>
+                              ${card.id==="digital" ? digitalPrice : price}
                             </span>
                           </div>
                         </div>
@@ -2154,7 +2157,15 @@ export default function Customize() {
                           const unitPrice = itemUnitPrice(it);
                           const qty = it.qty || 1;
                           const listP = unitPrice * qty;
-                          const lineP = listP; // retail; discount shown once in cart
+                          const maxPrintPrice = printItems.length > 0
+                            ? Math.max(...printItems.map(x => itemUnitPrice(x)))
+                            : 0;
+                          const itemGetsDiscount = discountAmt > 0
+                            && it.productType !== "vip"
+                            && it.productType !== "digital"
+                            && itemUnitPrice(it) >= maxPrintPrice;
+                          const unitDisc = itemGetsDiscount ? Math.max(0, unitPrice - discountAmt) : unitPrice;
+                          const lineP = unitDisc * qty;
                           const isSel = it.id === selectedId;
                           return (
                             <div key={it.id} onClick={() => setSelectedId(it.id)} style={{
@@ -2184,7 +2195,10 @@ export default function Customize() {
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:3 }}>
                                   <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
-                                    <span style={{ fontSize:12, fontWeight:700, color:INK }}>${lineP}</span>
+                                    {itemGetsDiscount && lineP < listP && (
+                                      <span style={{ fontSize:10, color:MUTED, textDecoration:"line-through" }}>${listP}</span>
+                                    )}
+                                    <span style={{ fontSize:12, fontWeight:700, color:RED }}>${lineP}</span>
                                   </div>
                                   <div onClick={(e) => e.stopPropagation()} style={{
                                     display:"inline-flex", alignItems:"center",
@@ -2280,8 +2294,13 @@ export default function Customize() {
                                 </div>
                                 <div style={{ fontSize:11.5, fontWeight:700, color:INK, whiteSpace:"nowrap" }}>{sz.dim}</div>
                                 <div style={{ fontSize:10, color:MUTED, marginTop:1, whiteSpace:"nowrap" }}>{sz.label}</div>
-                                <div style={{ fontSize:12.5, fontWeight:800, color: selSize===sz.id ? RED : INK, marginTop:4 }}>
-                                  ${sz.price}
+                                {discountAmt > 0 && (
+                                  <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
+                                    ${sz.price}
+                                  </div>
+                                )}
+                                <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>
+                                  ${Math.max(0, sz.price - discountAmt)}
                                 </div>
                               </button>
                             );})}
@@ -2684,7 +2703,7 @@ export default function Customize() {
                           qty: selected.qty || 1,
                         };
                         const lineQty = selected.qty || 1;
-                        const linePrice = itemUnitPrice(snapshot) * lineQty; // retail
+                        const linePrice = Math.max(0, itemUnitPrice(snapshot) - discountAmt) * lineQty;
                         return (
                           <button disabled={nameCompositing} onClick={async () => {
                             let finalPhotoUrl = (snapshot as any).photoUrl;
@@ -3007,9 +3026,23 @@ export default function Customize() {
                         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
                           {(() => {
                             const qty = it.qty || 1;
-                            const list = unit * qty;
+                            const listP = unit * qty;
+                            const maxPrintPrice = printItems.length > 0
+                              ? Math.max(...printItems.map(x => itemUnitPrice(x)))
+                              : 0;
+                            const itemGetsDiscount = discountAmt > 0
+                              && it.productType !== "vip"
+                              && it.productType !== "digital"
+                              && unit >= maxPrintPrice;
+                            const unitDisc = itemGetsDiscount ? Math.max(0, unit - discountAmt) : unit;
+                            const lineP = unitDisc * qty;
                             return (
-                              <span style={{ fontSize:13, fontWeight:800, color:INK }}>${list}</span>
+                              <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
+                                {itemGetsDiscount && lineP < listP && (
+                                  <span style={{ fontSize:10, color:MUTED, textDecoration:"line-through" }}>${listP}</span>
+                                )}
+                                <span style={{ fontSize:12, fontWeight:700, color:RED }}>${lineP}</span>
+                              </div>
                             );
                           })()}
                           <button
