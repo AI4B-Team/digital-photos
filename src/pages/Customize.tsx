@@ -722,9 +722,9 @@ export default function Customize() {
   const [discountTier, setDiscountTier] = useState("");
 
   useEffect(() => {
-    const LS_KEY = "ra_discount_start_v2";
+    const LS_KEY = "ra_discount_start_v3";
     const FIFTEEN_MIN = 15 * 60 * 1000;
-    const TOTAL = FIFTEEN_MIN + 2 * 24 * 60 * 60 * 1000; // 15min + 2 days
+    const TOTAL = FIFTEEN_MIN + 24 * 60 * 60 * 1000; // 15min welcome + 24h extended
     let startTs = parseInt(localStorage.getItem(LS_KEY) || "0");
     if (!startTs) {
       startTs = Date.now();
@@ -925,7 +925,7 @@ export default function Customize() {
     const sizes = fullSizes.length
       ? fullSizes.map(s => ({ id: s.id, pid: s.id, sku: s.sku, price: s.price }))
       : simpleSizes;
-    const defaultSize = bestPid || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
+    const defaultSize = bestPid || sizes.find(s => s.id === "8x10")?.id || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
     const selSize     = cardSize[cardId] || defaultSize;
     const snapshot: any = {
       productType: cardId,
@@ -2029,7 +2029,7 @@ export default function Customize() {
                 sku: s.sku, price: s.price, w: s.w, h: s.h,
                 best: s.id === bestPid,
               })) : simpleSizes;
-              const defaultSize = bestPid || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
+              const defaultSize = bestPid || sizes.find(s => s.id === "8x10")?.id || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
               const selSize  = cardSize[card.id] || defaultSize;
               const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[0];
               const basePrice = card.id === "digital" ? 37 : (cardSizeDef?.price || 0);
