@@ -552,6 +552,7 @@ function RoomViewPanel({
   aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
   dragStart, setDragStart, roomContainerRef, setRoomView,
+  stagedAiCache, setStagedAiCache, stagedAiLoading, setStagedAiLoading,
 }: any) {
   const room     = ROOMS[roomIdx];
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
@@ -564,7 +565,11 @@ function RoomViewPanel({
   };
   const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
 
-  const bgUrl = roomMode === "myroom" && userRoomUrl ? userRoomUrl
+  const stagedKey = `${roomIdx}|${portraitUrl}|${frameColor}`;
+  const stagedAiUrl = stagedAiCache?.[stagedKey] || null;
+
+  const bgUrl = roomMode === "staged" && stagedAiUrl ? stagedAiUrl
+              : roomMode === "myroom" && userRoomUrl ? userRoomUrl
               : roomMode === "ai" && aiRoomUrl       ? aiRoomUrl
               : room.url;
 
@@ -609,8 +614,23 @@ function RoomViewPanel({
     setAiRoomLoading(false);
   };
 
+  const generateStagedAI = async () => {
+    if (!portraitUrl || stagedAiLoading) return;
+    setStagedAiLoading(true);
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
+        body: { roomUrl: room.url, portraitUrl, frameColor },
+      });
+      if (!error && data?.url) {
+        setStagedAiCache((c: any) => ({ ...c, [stagedKey]: data.url }));
+      }
+    } catch { /* silent */ }
+    setStagedAiLoading(false);
+  };
+
   const showPortraitOverlay = portraitUrl && (
-    roomMode === "staged" ||
+    (roomMode === "staged" && !stagedAiUrl && !stagedAiLoading) ||
     (roomMode === "myroom" && userRoomUrl) ||
     (roomMode === "ai" && userRoomUrl && !aiRoomUrl && !aiRoomLoading)
   );
@@ -654,6 +674,44 @@ function RoomViewPanel({
           </button>
         ))}
       </div>
+
+      {/* Realistic on-wall AI button (staged mode) */}
+      {roomMode === "staged" && (
+        <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+          {!stagedAiUrl ? (
+            <button onClick={generateStagedAI} disabled={stagedAiLoading || !portraitUrl}
+              style={{
+                display:"inline-flex", alignItems:"center", gap:6,
+                background: stagedAiLoading ? "rgba(255,255,255,.1)" : RED,
+                border:"none", padding:"6px 14px", borderRadius:8,
+                fontSize:11.5, fontWeight:700, color:"#fff",
+                cursor: stagedAiLoading ? "wait" : "pointer",
+                fontFamily:"'Poppins',sans-serif",
+              }}>
+              {stagedAiLoading ? "Compositing…" : <><Sparkles size={13}/> Generate Realistic View</>}
+            </button>
+          ) : (
+            <>
+              <span style={{ fontSize:11, color:"rgba(255,255,255,.7)",
+                fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:6 }}>
+                <Sparkles size={12} color="#fff"/> AI on-wall view
+              </span>
+              <button onClick={() => setStagedAiCache((c: any) => { const n={...c}; delete n[stagedKey]; return n; })}
+                style={{
+                  background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.15)",
+                  padding:"4px 10px", borderRadius:8, fontSize:10.5, color:"rgba(255,255,255,.7)",
+                  cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+                }}>Show preview overlay</button>
+              <button onClick={generateStagedAI} disabled={stagedAiLoading}
+                style={{
+                  background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.15)",
+                  padding:"4px 10px", borderRadius:8, fontSize:10.5, color:"rgba(255,255,255,.7)",
+                  cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+                }}>Regenerate</button>
+            </>
+          )}
+        </div>
+      )}
 
       {/* Upload strip - My Room + AI */}
       {(roomMode === "myroom" || roomMode === "ai") && (
@@ -757,7 +815,7 @@ function RoomViewPanel({
         )}
 
         {/* AI loading overlay */}
-        {aiRoomLoading && (
+        {(aiRoomLoading || stagedAiLoading) && (
           <div style={{
             position:"absolute", inset:0, background:"rgba(0,0,0,.6)",
             display:"flex", flexDirection:"column", alignItems:"center",
@@ -1003,6 +1061,8 @@ export default function Customize() {
   const [userRoomUrl,     setUserRoomUrl]   = useState<string|null>(null);
   const [aiRoomUrl,       setAiRoomUrl]     = useState<string|null>(null);
   const [aiRoomLoading,   setAiRoomLoading] = useState(false);
+  const [stagedAiCache,   setStagedAiCache] = useState<Record<string,string>>({});
+  const [stagedAiLoading, setStagedAiLoading] = useState(false);
   const [portraitDragPos, setPortraitDragPos] = useState({ x:45, y:12, w:26 });
   const [isDragging,      setIsDragging]    = useState(false);
   const [dragStart,       setDragStart]     = useState({ mx:0, my:0, px:0, py:0 });
@@ -2400,6 +2460,8 @@ export default function Customize() {
                 dragStart={dragStart} setDragStart={setDragStart}
                 roomContainerRef={roomContainerRef}
                 setRoomView={setRoomView}
+                stagedAiCache={stagedAiCache} setStagedAiCache={setStagedAiCache}
+                stagedAiLoading={stagedAiLoading} setStagedAiLoading={setStagedAiLoading}
               />
             </div>
           ) : (
