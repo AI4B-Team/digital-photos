@@ -339,32 +339,30 @@ const GLAZE_OPTIONS = [
 ] as const;
 
 // ── Room View ─────────────────────────────────────────
+// Curated staged rooms — each MUST have a large empty wall area
+// where a single portrait can be placed cleanly. No gallery walls,
+// no existing art, no shelving directly above the placement spot.
 const ROOMS = [
   { label:"Modern Living Room",
     url:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&h=900&fit=crop&q=85",
-    wallX:52, wallY:12, wallW:26 },
-  { label:"Warm Bedroom",
-    url:"https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=1400&h=900&fit=crop&q=85",
-    wallX:50, wallY:10, wallW:24 },
-  { label:"Scandinavian Living Room",
+    wallX:50, wallY:14, wallW:24 },
+  { label:"Warm Neutral Sofa",
+    url:"https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:12, wallW:22 },
+  { label:"Scandinavian Lounge",
     url:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&h=900&fit=crop&q=85",
-    wallX:48, wallY:14, wallW:28 },
-  { label:"Moody Dark Study",
-    url:"https://images.unsplash.com/photo-1597072689227-8882273e8f6a?w=1400&h=900&fit=crop&q=85",
-    wallX:55, wallY:16, wallW:22 },
-  { label:"Gallery Hallway",
-    url:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1400&h=900&fit=crop&q=85",
-    wallX:50, wallY:18, wallW:30 },
-  { label:"Traditional Family Room",
-    url:"https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1400&h=900&fit=crop&q=85",
-    wallX:50, wallY:12, wallW:26 },
-  { label:"Minimalist Home Office",
-    url:"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1400&h=900&fit=crop&q=85",
-    wallX:62, wallY:10, wallW:20 },
-  { label:"Bohemian Sitting Room",
-    url:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1400&h=900&fit=crop&q=85",
-    wallX:45, wallY:15, wallW:25 },
+    wallX:48, wallY:14, wallW:26 },
+  { label:"Minimalist Bedroom",
+    url:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:12, wallW:24 },
+  { label:"Bright Dining Room",
+    url:"https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:14, wallW:24 },
+  { label:"Cozy Reading Nook",
+    url:"https://images.unsplash.com/photo-1616627781809-781c12d0fb88?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:14, wallW:22 },
 ] as const;
+
 
 const FRAME_COLOR_HEX: Record<string,string> = {
   "black":          "#15151a",
