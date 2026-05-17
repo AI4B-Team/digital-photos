@@ -2335,41 +2335,62 @@ export default function Customize() {
             backgroundSize:"3px 3px",
             mixBlendMode:"multiply",
           }}/>
-          <div style={{
-            textAlign:"center", flexShrink:0, padding:"32px 0 8px",
-            position:"sticky", top:0, zIndex:5, width:"100%",
-            
-          }}>
-            <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
-            <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
-              Make It Yours.
-            </h1>
-          </div>
-          <div className="cz-stage-row" style={{
-            display:"flex", alignItems:"center",
-            justifyContent: aiOpen ? "flex-start" : "center",
-            gap:16, width:"100%", maxWidth:"100%", flex:"1 1 auto", minHeight:0,
-            paddingLeft: aiOpen ? 8 : 0,
-          }}>
-            <div className="cz-canvas-scroll" style={{
-              flex:"1 1 auto", width:"100%", minWidth:0, maxHeight:"100%", height:"100%",
-              overflowY:"auto", display:"flex", flexDirection:"column",
-              alignItems:"center", justifyContent:"flex-start", gap:8,
-              padding:"20px 60px 60px 20px",
-              scrollBehavior:"smooth", scrollSnapType:"y proximity",
-              WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
-            }}>
-              {items.map(it => renderItem(it, it.id === selectedId, it.id === selectedId))}
+          {roomView ? (
+            <div style={{ flex:"1 1 auto", width:"100%", minHeight:0,
+              display:"flex", padding:"16px 16px 24px" }}>
+              <RoomViewPanel
+                portraitUrl={(selected as any).photoUrl || ""}
+                frameColor={cardFrame || "black"}
+                productType={activeCard}
+                selected={selected}
+                roomIdx={roomIdx} setRoomIdx={setRoomIdx}
+                roomMode={roomMode} setRoomMode={setRoomMode}
+                userRoomUrl={userRoomUrl} setUserRoomUrl={setUserRoomUrl}
+                aiRoomUrl={aiRoomUrl} setAiRoomUrl={setAiRoomUrl}
+                aiRoomLoading={aiRoomLoading} setAiRoomLoading={setAiRoomLoading}
+                portraitDragPos={portraitDragPos} setPortraitDragPos={setPortraitDragPos}
+                isDragging={isDragging} setIsDragging={setIsDragging}
+                dragStart={dragStart} setDragStart={setDragStart}
+                roomContainerRef={roomContainerRef}
+              />
             </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/png,image/jpeg,image/webp,image/gif"
-              style={{ display:"none" }}
-              onChange={handleFilePicked}
-            />
-          </div>
-
+          ) : (
+            <>
+            <div style={{
+              textAlign:"center", flexShrink:0, padding:"32px 0 8px",
+              position:"sticky", top:0, zIndex:5, width:"100%",
+            }}>
+              <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
+              <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
+                Make It Yours.
+              </h1>
+            </div>
+            <div className="cz-stage-row" style={{
+              display:"flex", alignItems:"center",
+              justifyContent: aiOpen ? "flex-start" : "center",
+              gap:16, width:"100%", maxWidth:"100%", flex:"1 1 auto", minHeight:0,
+              paddingLeft: aiOpen ? 8 : 0,
+            }}>
+              <div className="cz-canvas-scroll" style={{
+                flex:"1 1 auto", width:"100%", minWidth:0, maxHeight:"100%", height:"100%",
+                overflowY:"auto", display:"flex", flexDirection:"column",
+                alignItems:"center", justifyContent:"flex-start", gap:8,
+                padding:"20px 60px 60px 20px",
+                scrollBehavior:"smooth", scrollSnapType:"y proximity",
+                WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
+              }}>
+                {items.map(it => renderItem(it, it.id === selectedId, it.id === selectedId))}
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                style={{ display:"none" }}
+                onChange={handleFilePicked}
+              />
+            </div>
+            </>
+          )}
           {/* Variants moved to left panel */}
         </div>
 
