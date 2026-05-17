@@ -1207,16 +1207,9 @@ export default function Customize() {
             padding: (isFrameless ? 6 : woodPad + 6),
             borderRadius: isFrameless ? 12 : 2,
             boxShadow: isFrameless
-              ? "30px 40px 70px -10px rgba(0,0,0,.35), 10px 16px 30px -4px rgba(0,0,0,.22)"
-              : `
-                /* Outer hairline */
-                0 0 0 1px rgba(0,0,0,.30),
-                /* Cast shadow on the wall — bottom-right */
-                30px 40px 70px -12px rgba(0,0,0,.40),
-                15px 22px 40px -8px rgba(0,0,0,.28),
-                6px 10px 18px -4px rgba(0,0,0,.18)
-              `,
-            filter: "drop-shadow(15px 25px 20px rgba(0,0,0,.15))",
+              ? "none"
+              : "0 0 0 1px rgba(0,0,0,.30)",
+            filter: "none",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
