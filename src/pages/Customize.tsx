@@ -909,17 +909,27 @@ export default function Customize() {
   const itemListPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
   // Cart-derived totals (only what the user actually added to the cart)
-  const cartPrintsSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
-  const cartPrintsListSubtotal = cartItems.reduce((sum, it) => sum + itemListPrice(it), 0);
-  const cartPhotoCount = cartItems.reduce((sum, it) => sum + (it.qty || 1), 0);
+  // VIP & digital are fixed-price — excluded from print subtotals, bundle math, and timer discount.
+  const printItems             = cartItems.filter(it => it.productType !== "vip" && it.productType !== "digital");
+  const cartPrintsSubtotal     = printItems.reduce((sum, it) => sum + itemPrice(it), 0);
+  const cartPrintsListSubtotal = printItems.reduce((sum, it) => sum + itemListPrice(it), 0);
+  // Bundle discount counts only physical print items
+  const cartPhotoCount = printItems.reduce((sum, it) => sum + (it.qty || 1), 0);
+  // Full cart subtotal still includes VIP/digital for the displayed Subtotal line
+  const cartFullSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
   const packsSubtotal  = addedPacks.reduce((sum, p) => sum + p.price * p.qty, 0);
-  const subtotal     = cartPrintsSubtotal + packsSubtotal;
-  const listSubtotal = cartPrintsListSubtotal + packsSubtotal;
-  // Limited-time / welcome discount: $X OFF each print
-  const cartPromoSave = cartItems.reduce(
-    (sum, it) => sum + Math.min(discountAmt, itemUnitPrice(it)) * (it.qty || 1),
-    0
-  );
+  const subtotal     = cartFullSubtotal + packsSubtotal;
+  const listSubtotal = cartPrintsListSubtotal
+    + cartItems.filter(it => it.productType === "vip" || it.productType === "digital")
+        .reduce((sum, it) => sum + itemListPrice(it), 0)
+    + packsSubtotal;
+  // Limited-time / welcome timer discount — applied ONCE per order (not per item),
+  // against the most-expensive eligible print. VIP & digital never discounted.
+  const cartPromoSave = (() => {
+    if (discountAmt <= 0 || printItems.length === 0) return 0;
+    const maxPrice = Math.max(...printItems.map(it => itemUnitPrice(it)));
+    return Math.min(discountAmt, maxPrice);
+  })();
   const cartPrintsAfterPromo = Math.max(0, cartPrintsSubtotal - cartPromoSave);
   const bundlePct    = cartPhotoCount >= 3 ? 0.15 : cartPhotoCount >= 2 ? 0.10 : 0;
   const bundleSave   = Math.round(cartPrintsAfterPromo * bundlePct);
