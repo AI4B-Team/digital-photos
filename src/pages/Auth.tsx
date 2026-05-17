@@ -81,7 +81,7 @@ export default function AuthPage() {
   } as const;
 
   const labelStyle = {
-    fontSize: 10.5, letterSpacing: "0.18em", textTransform: "uppercase" as const,
+    fontSize: 10.5, letterSpacing: "0.18em",
     color: C.muted, marginBottom: 8, display: "block", fontWeight: 600,
   };
 
@@ -112,9 +112,9 @@ export default function AuthPage() {
                     color: mode === m ? C.ink : C.muted, cursor: "pointer",
                     fontFamily: "'Poppins',sans-serif", fontSize: 13,
                     fontWeight: mode === m ? 700 : 500,
-                    letterSpacing: "0.12em", textTransform: "uppercase", transition: "all 0.2s",
+                    letterSpacing: "0.12em", transition: "all 0.2s",
                   }}>
-                  {m === "login" ? "Sign In" : "Sign Up"}
+                  {m === "login" ? "Sign in" : "Sign up"}
                 </button>
               ))}
             </div>
@@ -122,7 +122,7 @@ export default function AuthPage() {
             <form onSubmit={handleSubmit}>
               {mode === "signup" && (
                 <div style={{ marginBottom: 16 }}>
-                  <label style={labelStyle}>Full Name</label>
+                  <label style={labelStyle}>Full name</label>
                   <div style={{ position: "relative" }}>
                     <User size={14} color={C.muted} style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }} />
                     <input className="auth-input" type="text" value={fullName} onChange={e => setFullName(e.target.value)}
@@ -171,12 +171,12 @@ export default function AuthPage() {
                   width: "100%", padding: "15px", background: C.red,
                   color: "#fff", border: "none", cursor: loading ? "not-allowed" : "pointer",
                   fontFamily: "'Poppins',sans-serif", fontWeight: 700, fontSize: 13,
-                  letterSpacing: "0.12em", textTransform: "uppercase",
+                  letterSpacing: "0.12em",
                   opacity: loading ? 0.6 : 1, transition: "all 0.2s",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                   borderRadius: 10,
                 }}>
-                {loading ? "Processing..." : mode === "login" ? "Sign In" : "Create Account"}
+                {loading ? "Processing..." : mode === "login" ? "Sign in" : "Create account"}
                 {!loading && <ArrowRight size={14} />}
               </button>
             </form>
