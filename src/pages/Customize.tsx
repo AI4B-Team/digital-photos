@@ -1678,38 +1678,6 @@ export default function Customize() {
             </button>
           ) : (
           <>
-          {/* ── Other products (non-print) ── */}
-          <div className="cz-section">
-            <div className="cz-label">
-              <span>Other Products</span>
-              <span className="cz-value">{enabledExtras.length ? `${enabledExtras.length} on` : "Portraits"}</span>
-            </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(1, 1fr)", gap:6 }}>
-              {[
-                { id:"digital", label:"Digital",   Icon: ArrowDownToLine },
-              ].map(p => {
-                const on = enabledExtras.includes(p.id);
-                const Icon = p.Icon;
-                return (
-                  <button key={p.id}
-                    onClick={() => toggleExtraProduct(p.id)}
-                    title={on ? `Remove ${p.label} preview` : `Preview ${p.label}`}
-                    style={{
-                      display:"flex", flexDirection:"column", alignItems:"center", gap:4,
-                      padding:"10px 6px", borderRadius:10, cursor:"pointer",
-                      border:`1.5px solid ${on ? RED : BORDER}`,
-                      background: on ? "rgba(230,25,25,.06)" : "#fff",
-                      color: on ? RED : INK,
-                      fontFamily:"'Poppins',sans-serif", fontSize:11, fontWeight:600,
-                    }}>
-                    <Icon size={16}/>
-                    <span>{p.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
           {/* ── Variants ── */}
           {(session.generatedPortraits?.length || 0) > 1 && (
             <div className="cz-section">
@@ -2051,13 +2019,7 @@ export default function Customize() {
                   "Hi-res digital download included",
                 ],
                 delivery:"7–9 Business Days · Global shipping" },
-            ].filter((card:any) => {
-              // Hide non-print products unless the user toggled them on in the left column
-              if (card.id === "digital") {
-                return enabledExtras.includes(card.id);
-              }
-              return true;
-            }).map((card:any) => {
+            ].map((card:any) => {
               const isActive = activeCard === card.id;
               const fullSizes = SIZES_BY_PRODUCT[card.id] || [];
               const simpleSizes = SIMPLE_SIZES[card.id] || [];
