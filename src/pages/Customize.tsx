@@ -1684,11 +1684,9 @@ export default function Customize() {
               <span>Other Products</span>
               <span className="cz-value">{enabledExtras.length ? `${enabledExtras.length} on` : "Portraits"}</span>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:6 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(1, 1fr)", gap:6 }}>
               {[
                 { id:"digital", label:"Digital",   Icon: ArrowDownToLine },
-                { id:"mug",     label:"Mug",       Icon: Coffee },
-                { id:"case",    label:"Phone Case",Icon: Smartphone },
               ].map(p => {
                 const on = enabledExtras.includes(p.id);
                 const Icon = p.Icon;
