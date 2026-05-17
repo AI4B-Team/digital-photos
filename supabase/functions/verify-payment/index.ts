@@ -33,19 +33,32 @@ serve(async (req) => {
       );
     }
 
-    // Determine product from line items
     const lineItem = checkoutSession.line_items?.data?.[0];
     const priceId = lineItem?.price?.id;
-    
-    let orderProduct = "digital";
-    if (priceId === "price_1TB24sGOIj3eWyeWGmDUKN07") orderProduct = "print";
-    if (priceId === "price_1TB257GOIj3eWyeWKYJ7HFpn") orderProduct = "canvas";
 
     // Update the session record in our DB
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
+
+    // Determine product — read from session record first (most reliable),
+    // then fall back to Stripe metadata, then to hardcoded price IDs (legacy).
+    const { data: earlySession } = await supabase
+      .from("sessions")
+      .select("print_product_type, id")
+      .eq("stripe_session_id", stripe_session_id)
+      .maybeSingle();
+
+    let orderProduct: string =
+      earlySession?.print_product_type ||
+      (checkoutSession.metadata as any)?.productType ||
+      "digital";
+
+    if (orderProduct === "digital") {
+      if (priceId === "price_1TB24sGOIj3eWyeWGmDUKN07") orderProduct = "print";
+      if (priceId === "price_1TB257GOIj3eWyeWKYJ7HFpn") orderProduct = "canvas";
+    }
 
     // Find the session by stripe_session_id or update matching records
     const { data: sessions } = await supabase
@@ -88,7 +101,8 @@ serve(async (req) => {
 
     // ── Trigger Prodigi fulfillment for physical orders ──────
     let prodigiOrderId: string | null = sessionRecord?.prodigi_order_id || null;
-    const isPhysical = orderProduct === "print" || orderProduct === "canvas" || orderProduct === "bundle";
+    const NON_PHYSICAL = ["digital", "vip"];
+    const isPhysical = !NON_PHYSICAL.includes(orderProduct);
 
     if (isPhysical && sessionId && !prodigiOrderId) {
       try {

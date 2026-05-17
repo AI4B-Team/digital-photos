@@ -32,6 +32,7 @@ serve(async (req) => {
       printMount = "snow-white",
       printGlaze = "perspex",
       vipPurchased = false,
+      productType = "",
     } = await req.json();
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
