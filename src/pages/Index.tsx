@@ -69,38 +69,41 @@ import stepDelivered from "@/assets/step-delivered.jpg";
 import portraitPetsRen from "@/assets/portrait-pets-renaissance.jpg";
 import portraitPetsStory from "@/assets/portrait-pets-storybook.jpg";
 import portraitPetsFan from "@/assets/portrait-pets-fantasy.jpg";
-import proofPetsRoyal from "@/assets/portrait-pets-renaissance.jpg";
-import proofPetsRen from "@/assets/portrait-pets-renaissance.jpg";
-import proofPetsStory from "@/assets/portrait-pets-storybook.jpg";
-import proofPetsFan from "@/assets/portrait-pets-fantasy.jpg";
-import proofPetsCine from "@/assets/portrait-pets-cinematic.jpg";
-import proofPetsMin from "@/assets/portrait-pets-minimal.jpg";
-import proofBabiesRoyal from "@/assets/portrait-babies-royal.jpg";
-import proofBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
-import proofBabiesFan from "@/assets/portrait-babies-fantasy.jpg";
-import proofBabiesCine from "@/assets/portrait-babies-cinematic.jpg";
-import proofBabiesMin from "@/assets/portrait-babies-minimal.jpg";
-import proofCouplesRoyal from "@/assets/portrait-couples-royal.jpg";
-import proofCouplesRen from "@/assets/portrait-couples-renaissance.jpg";
-import proofCouplesStory from "@/assets/portrait-couples-storybook.jpg";
-import proofCouplesFan from "@/assets/portrait-couples-fantasy.jpg";
-import proofCouplesCine from "@/assets/portrait-couples-cinematic.jpg";
-import proofCouplesMin from "@/assets/portrait-couples-minimal.jpg";
-import proofPeopleRoyal from "@/assets/portrait-people-royal.jpg";
-import proofPeopleRen from "@/assets/portrait-people-renaissance.jpg";
-import proofPeopleStory from "@/assets/portrait-people-storybook.jpg";
-import proofPeopleCine from "@/assets/portrait-people-cinematic.jpg";
-import proofPeopleMin from "@/assets/portrait-people-minimal.jpg";
-import proofMemorialRoyal from "@/assets/portrait-memorial-royal.jpg";
-import proofMemorialRen from "@/assets/portrait-memorial-renaissance.jpg";
-import proofMemorialStory from "@/assets/portrait-memorial-storybook.jpg";
-import proofMemorialFan from "@/assets/portrait-memorial-fantasy.jpg";
-import proofMemorialCine from "@/assets/portrait-memorial-cinematic.jpg";
-import proofGiftsRoyal from "@/assets/portrait-gifts-royal.jpg";
-import proofGiftsStory from "@/assets/portrait-gifts-storybook.jpg";
-import proofGiftsFan from "@/assets/portrait-gifts-fantasy.jpg";
-import proofGiftsCine from "@/assets/portrait-gifts-cinematic.jpg";
-import proofGiftsMin from "@/assets/portrait-gifts-minimal.jpg";
+// Realistic emotional proof photos
+import proofPets1 from "@/assets/scene-pet-bestfriend.jpg";
+import proofPets2 from "@/assets/scene-pets-horse-lavender.jpg";
+import proofPets3 from "@/assets/scene-pet-cat-hug.jpg";
+import proofPets4 from "@/assets/scene-pet-remembrance.jpg";
+import proofPets5 from "@/assets/scene-pets-pitbull.jpg";
+
+import proofBabies1 from "@/assets/scene-babies-family-newborn.jpg";
+import proofBabies2 from "@/assets/scene-babies-love-flowers.jpg";
+import proofBabies3 from "@/assets/scene-babies-surfer.jpg";
+import proofBabies4 from "@/assets/scene-baby-chef.jpg";
+
+import proofCouples1 from "@/assets/scene-couples-cinematic-kiss.jpg";
+import proofCouples2 from "@/assets/scene-couples-beach-tender.jpg";
+import proofCouples3 from "@/assets/scene-couples-editorial-embrace.jpg";
+import proofCouples4 from "@/assets/scene-wedding-kiss.jpg";
+import proofCouples5 from "@/assets/scene-couples-rings.jpg";
+
+import proofPeople1 from "@/assets/scene-family-grandparents-joy.jpg";
+import proofPeople2 from "@/assets/scene-fathers-shoulders.jpg";
+import proofPeople3 from "@/assets/scene-fathers-reading.jpg";
+import proofPeople4 from "@/assets/scene-people-ceo-v5.jpg";
+import proofPeople5 from "@/assets/scene-fathers-family-embrace.jpg";
+
+import proofMemorial1 from "@/assets/scene-memorial-grandmother.jpg";
+import proofMemorial2 from "@/assets/scene-memorial-father.jpg";
+import proofMemorial3 from "@/assets/scene-memorial-vintage-family.jpg";
+import proofMemorial4 from "@/assets/scene-memorial-family.jpg";
+import proofMemorial5 from "@/assets/scene-memorial-pet.jpg";
+
+import proofGifts1 from "@/assets/scene-family-heirloom-v4.jpg";
+import proofGifts2 from "@/assets/scene-wedding-heirloom.jpg";
+import proofGifts3 from "@/assets/scene-vintage-restored.jpg";
+import proofGifts4 from "@/assets/scene-fathers-family-embrace.jpg";
+import proofGifts5 from "@/assets/scene-couples-rings.jpg";
 import portraitPetsCine from "@/assets/portrait-pets-cinematic.jpg";
 import portraitPetsMin from "@/assets/portrait-pets-minimal.jpg";
 import petBathTime from "@/assets/pet-bath-time.jpg";
@@ -1104,48 +1107,45 @@ const GEN_MSGS = [
 // Social proof shown during generation — rotate through customer portraits
 const SOCIAL_PROOF_BY_CAT: Record<string, { img: string; style: string; review: string }[]> = {
   pets: [
-    { img: proofPetsRoyal, style:"Royal", review:'"My golden looks like royalty — I cried." — Jessica T.' },
-    { img: proofPetsStory, style:"Storybook", review:'"My dog passed away last year. This is priceless." — Mark R.' },
-    { img: proofPetsRen, style:"Renaissance", review:'"Everyone at the office asks where I got it." — Sarah M.' },
-    { img: proofPetsFan, style:"Fantasy", review:'"It captured my pup\'s personality perfectly." — David L.' },
-    { img: proofPetsCine, style:"Cinematic", review:'"Hands down the best gift I\'ve ever bought." — Amy K.' },
-    { img: proofPetsMin, style:"Minimal", review:'"Beautiful, modern, and exactly what I wanted." — Tom W.' },
+    { img: proofPets1, style:"Real Photo", review:'"I burst into tears — it looks exactly like my boy." — Jessica T.' },
+    { img: proofPets2, style:"Real Photo", review:'"Captured the bond between us perfectly." — Sarah M.' },
+    { img: proofPets3, style:"Real Photo", review:'"My cat passed last year. This brought her back." — Mark R.' },
+    { img: proofPets4, style:"Real Photo", review:'"The most meaningful thing I own." — David L.' },
+    { img: proofPets5, style:"Real Photo", review:'"Hands down the best gift I\'ve ever bought." — Amy K.' },
   ],
   babies: [
-    { img: proofBabiesRoyal, style:"Royal", review:'"A keepsake we\'ll treasure forever." — Jessica T.' },
-    { img: proofBabiesRen, style:"Renaissance", review:'"Looks like an heirloom painting." — Sarah M.' },
-    { img: proofBabiesFan, style:"Fantasy", review:'"Magical — my baby looks like a little dream." — David L.' },
-    { img: proofBabiesCine, style:"Cinematic", review:'"My mom hasn\'t stopped talking about it." — Amy K.' },
-    { img: proofBabiesMin, style:"Minimal", review:'"Clean, modern, and absolutely beautiful." — Tom W.' },
+    { img: proofBabies1, style:"Real Photo", review:'"A keepsake we\'ll treasure forever." — Jessica T.' },
+    { img: proofBabies2, style:"Real Photo", review:'"I cried the moment I saw it." — Sarah M.' },
+    { img: proofBabies3, style:"Real Photo", review:'"My husband framed it the same day." — Amy K.' },
+    { img: proofBabies4, style:"Real Photo", review:'"Pure magic — it looks so real." — David L.' },
   ],
   couples: [
-    { img: proofCouplesRoyal, style:"Royal", review:'"The perfect anniversary gift." — Jessica T.' },
-    { img: proofCouplesRen, style:"Renaissance", review:'"Looks like a museum piece of us." — Sarah M.' },
-    { img: proofCouplesStory, style:"Storybook", review:'"So sweet — it tells our love story." — Mark R.' },
-    { img: proofCouplesFan, style:"Fantasy", review:'"Otherworldly and romantic." — David L.' },
-    { img: proofCouplesCine, style:"Cinematic", review:'"Looks like a movie poster of us." — Amy K.' },
-    { img: proofCouplesMin, style:"Minimal", review:'"Elegant and timeless." — Tom W.' },
+    { img: proofCouples1, style:"Real Photo", review:'"The perfect anniversary gift — he was speechless." — Jessica T.' },
+    { img: proofCouples2, style:"Real Photo", review:'"It tells our love story in one image." — Mark R.' },
+    { img: proofCouples3, style:"Real Photo", review:'"Looks like a magazine cover of us." — Sarah M.' },
+    { img: proofCouples4, style:"Real Photo", review:'"I cried. He cried. Worth every penny." — Amy K.' },
+    { img: proofCouples5, style:"Real Photo", review:'"Elegant, timeless, and unforgettable." — Tom W.' },
   ],
   people: [
-    { img: proofPeopleRoyal, style:"Royal", review:'"I cried when I saw it — it\'s perfect." — Jessica T.' },
-    { img: proofPeopleRen, style:"Renaissance", review:'"Everyone at the office asks where I got it." — Sarah M.' },
-    { img: proofPeopleStory, style:"Storybook", review:'"Whimsical and so charming." — Mark R.' },
-    { img: proofPeopleCine, style:"Cinematic", review:'"It looks like a movie poster of me." — Amy K.' },
-    { img: proofPeopleMin, style:"Minimal", review:'"Clean and gallery-quality." — Tom W.' },
+    { img: proofPeople1, style:"Real Photo", review:'"My grandparents in one frame. Priceless." — Jessica T.' },
+    { img: proofPeople2, style:"Real Photo", review:'"This is what fatherhood looks like." — Mark R.' },
+    { img: proofPeople3, style:"Real Photo", review:'"Captured a moment I\'ll never forget." — Sarah M.' },
+    { img: proofPeople4, style:"Real Photo", review:'"Stunning — gallery quality." — Tom W.' },
+    { img: proofPeople5, style:"Real Photo", review:'"My whole family cried." — Amy K.' },
   ],
   memorial: [
-    { img: proofMemorialRoyal, style:"Royal", review:'"A beautiful tribute — thank you." — Jessica T.' },
-    { img: proofMemorialRen, style:"Renaissance", review:'"It honors them perfectly." — Sarah M.' },
-    { img: proofMemorialStory, style:"Storybook", review:'"Gentle and heartwarming." — Mark R.' },
-    { img: proofMemorialFan, style:"Fantasy", review:'"It brought tears to my eyes." — David L.' },
-    { img: proofMemorialCine, style:"Cinematic", review:'"A keepsake we\'ll cherish forever." — Amy K.' },
+    { img: proofMemorial1, style:"Real Photo", review:'"My grandmother lives on through this." — Jessica T.' },
+    { img: proofMemorial2, style:"Real Photo", review:'"A tribute to dad that honors him perfectly." — Mark R.' },
+    { img: proofMemorial3, style:"Real Photo", review:'"It brought our whole family to tears." — Sarah M.' },
+    { img: proofMemorial4, style:"Real Photo", review:'"The most meaningful gift I\'ve ever given." — Amy K.' },
+    { img: proofMemorial5, style:"Real Photo", review:'"My heart is whole again." — David L.' },
   ],
   gifts: [
-    { img: proofGiftsRoyal, style:"Royal", review:'"Best birthday gift I\'ve ever given." — Tom W.' },
-    { img: proofGiftsStory, style:"Storybook", review:'"They were speechless." — Mark R.' },
-    { img: proofGiftsFan, style:"Fantasy", review:'"Otherworldly — they loved it." — David L.' },
-    { img: proofGiftsCine, style:"Cinematic", review:'"Movie-quality artwork." — Amy K.' },
-    { img: proofGiftsMin, style:"Minimal", review:'"Tasteful and elegant." — Sarah M.' },
+    { img: proofGifts1, style:"Real Photo", review:'"They cried — best gift I\'ve ever given." — Tom W.' },
+    { img: proofGifts2, style:"Real Photo", review:'"She framed it the moment she opened it." — Mark R.' },
+    { img: proofGifts3, style:"Real Photo", review:'"Restored a memory I thought was lost." — David L.' },
+    { img: proofGifts4, style:"Real Photo", review:'"My dad doesn\'t cry. He cried." — Amy K.' },
+    { img: proofGifts5, style:"Real Photo", review:'"Tasteful, elegant, unforgettable." — Sarah M.' },
   ],
 };
 
