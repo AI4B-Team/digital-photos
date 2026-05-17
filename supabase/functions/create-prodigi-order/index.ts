@@ -60,7 +60,7 @@ serve(async (req) => {
     if (!apiKey) throw new Error("PRODIGI_API_KEY secret not set");
 
     // Build per-product attributes (skip for mug/case which have none)
-    const isPhysicalPrint = ["classic-frame","box-frame","print","canvas"].includes(productType);
+    const isPhysicalPrint = ["classic-frame","box-frame","print","canvas","acrylic"].includes(productType);
     const attributes: Record<string, string> = {};
     if (isPhysicalPrint && (productType === "classic-frame" || productType === "box-frame") && frameColor) {
       attributes.color = FRAME_COLOR_ATTR[frameColor] || frameColor;
@@ -71,8 +71,13 @@ serve(async (req) => {
         "snow-white": "snowWhite", "hayseed": "hayseed", "black": "black",
       };
       attributes.mount = mountAttr[mountColor] || "snowWhite";
-      // Glaze: perspex (standard) or moth-eye (premium anti-reflective)
-      attributes.glaze = glazeType === "moth-eye" ? "mothEye" : "perspex";
+      // Glaze: perspex (standard) / float glass (premium) / moth-eye (anti-reflective)
+      const glazeMap: Record<string,string> = {
+        "perspex": "perspex",
+        "float-glass": "floatGlass",
+        "moth-eye": "mothEye",
+      };
+      attributes.glaze = glazeMap[glazeType] || "perspex";
     }
     if (isPhysicalPrint && productType === "canvas" && canvasEdge) {
       attributes.wrap = CANVAS_EDGE_ATTR[canvasEdge] || canvasEdge;

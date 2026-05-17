@@ -87,6 +87,7 @@ serve(async (req) => {
         printSku,
         printMount,
         printGlaze,
+        productType: productType || primaryProduct || "",
       },
     };
 
@@ -116,6 +117,7 @@ serve(async (req) => {
         .update({
           stripe_session_id: checkoutSession.id,
           order_product: primaryProduct,
+          print_product_type: productType || primaryProduct || null,
           print_size: printSize || null,
           print_frame: printFrame || null,
           print_sku: printSku || null,
