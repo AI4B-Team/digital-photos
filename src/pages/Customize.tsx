@@ -3058,9 +3058,27 @@ export default function Customize() {
               <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:MUTED, marginBottom:4 }}>
                 <span>Subtotal</span><span>${subtotal}</span>
               </div>
-              {(bundleSave + promoSave + discountSave) > 0 && (
+              {discountSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:"#16a34a", marginBottom:4, fontWeight:600 }}>
-                  <span>Discounts</span><span>−${bundleSave + promoSave + discountSave}</span>
+                  <span>{discountTier === "welcome" ? "Welcome Promo" : "Limited-Time Promo"} (${discountAmt}/print × {cartPhotoCount})</span>
+                  <span>−${discountSave}</span>
+                </div>
+              )}
+              {bundleSave > 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:"#16a34a", marginBottom:4, fontWeight:600 }}>
+                  <span>Bundle Discount ({Math.round(bundlePct * 100)}% off {cartPhotoCount}+ prints)</span>
+                  <span>−${bundleSave}</span>
+                </div>
+              )}
+              {promoSave > 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:"#16a34a", marginBottom:4, fontWeight:600 }}>
+                  <span>Promo Code {promoApplied?.code ? `(${promoApplied.code})` : ""}</span>
+                  <span>−${promoSave}</span>
+                </div>
+              )}
+              {(bundleSave + promoSave + discountSave) > 0 && (
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, color:MUTED, marginBottom:6, paddingTop:4, borderTop:`1px dashed ${BORDER}` }}>
+                  <span>Total Savings</span><span style={{ color:"#16a34a", fontWeight:700 }}>−${bundleSave + promoSave + discountSave}</span>
                 </div>
               )}
               <div style={{ display:"flex", justifyContent:"space-between", fontSize:15, color:INK, fontWeight:800, marginBottom:12 }}>
