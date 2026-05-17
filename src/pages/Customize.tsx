@@ -2195,7 +2195,10 @@ export default function Customize() {
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:3 }}>
                                   <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
-                                    <span style={{ fontSize:12, fontWeight:700, color:INK }}>${lineP}</span>
+                                    {itemGetsDiscount && lineP < listP && (
+                                      <span style={{ fontSize:10, color:MUTED, textDecoration:"line-through" }}>${listP}</span>
+                                    )}
+                                    <span style={{ fontSize:12, fontWeight:700, color:RED }}>${lineP}</span>
                                   </div>
                                   <div onClick={(e) => e.stopPropagation()} style={{
                                     display:"inline-flex", alignItems:"center",
