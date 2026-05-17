@@ -2705,44 +2705,54 @@ export default function Customize() {
                         const lineQty = selected.qty || 1;
                         const linePrice = Math.max(0, itemUnitPrice(snapshot) - discountAmt) * lineQty;
                         return (
-                          <button disabled={nameCompositing} onClick={async () => {
-                            let finalPhotoUrl = (snapshot as any).photoUrl;
-                            if (portraitName && namePosition !== "none") {
-                              setNameCompositing(true);
-                              finalPhotoUrl = await composeNameOnImage(
-                                (snapshot as any).photoUrl,
-                                portraitName,
-                                namePosition as "top" | "bottom",
-                                nameFontId,
-                                nameColorId,
-                                nameSizeId,
-                              );
-                              setNameCompositing(false);
-                            }
-                            const namedSnapshot = {
-                              ...snapshot,
-                              photoUrl: finalPhotoUrl,
-                              portraitName: portraitName || null,
-                              namePosition: portraitName ? namePosition : null,
-                              nameFontId:   portraitName ? nameFontId   : null,
-                              nameSizeId:   portraitName ? nameSizeId   : null,
-                              nameColorId:  portraitName ? nameColorId  : null,
-                            };
-                            addToCart(namedSnapshot, lineQty);
-                            setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
-                            setUpsellOpen(true);
-                          }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
-                            borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
-                            justifyContent:"center", gap:8 }}>
-                            {nameCompositing
-                              ? <><div className="cz-spinner" style={{ width:14,height:14 }}/> Adding name…</>
-                              : <><ShoppingCart size={15}/> Add {card.label} To Cart — <span style={{ fontWeight:900 }}>${linePrice}</span></>}
-                          </button>
+                          <>
+                            <div style={{
+                              fontSize:12, color:MUTED, textAlign:"center",
+                              marginBottom:10, fontStyle:"italic",
+                              fontFamily:"'Playfair Display','Poppins',serif",
+                              letterSpacing:".01em",
+                            }}>
+                              A timeless piece made uniquely for you.
+                            </div>
+                            <button disabled={nameCompositing} onClick={async () => {
+                              let finalPhotoUrl = (snapshot as any).photoUrl;
+                              if (portraitName && namePosition !== "none") {
+                                setNameCompositing(true);
+                                finalPhotoUrl = await composeNameOnImage(
+                                  (snapshot as any).photoUrl,
+                                  portraitName,
+                                  namePosition as "top" | "bottom",
+                                  nameFontId,
+                                  nameColorId,
+                                  nameSizeId,
+                                );
+                                setNameCompositing(false);
+                              }
+                              const namedSnapshot = {
+                                ...snapshot,
+                                photoUrl: finalPhotoUrl,
+                                portraitName: portraitName || null,
+                                namePosition: portraitName ? namePosition : null,
+                                nameFontId:   portraitName ? nameFontId   : null,
+                                nameSizeId:   portraitName ? nameSizeId   : null,
+                                nameColorId:  portraitName ? nameColorId  : null,
+                              };
+                              addToCart(namedSnapshot, lineQty);
+                              setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
+                              setUpsellOpen(true);
+                            }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
+                              borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
+                              justifyContent:"center", gap:8 }}>
+                              {nameCompositing
+                                ? <><div className="cz-spinner" style={{ width:14,height:14 }}/> Adding name…</>
+                                : <><ShoppingCart size={15}/> Add {card.label} To Cart — <span style={{ fontWeight:900 }}>${linePrice}</span></>}
+                            </button>
+                          </>
                         );
                       })()}
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
-                        Delivery: {card.delivery} · 100% Money-Back Guarantee · <span style={{ color: RED, fontWeight:700 }}>Cart Has {cartCount} Item{cartCount === 1 ? "" : "s"}</span>
+                        Delivery: {card.delivery} · 100% Money-Back Guarantee{cartCount > 0 ? <> · <span style={{ color: INK, fontWeight:600 }}>{cartCount} Item{cartCount === 1 ? "" : "s"} In Cart</span></> : null}
                       </div>
 
                       {/* Buy Now, Pay Later */}
