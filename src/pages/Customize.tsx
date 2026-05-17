@@ -2116,8 +2116,9 @@ export default function Customize() {
                           const imgH = sd.h >= sd.w ? thumb : thumb * (sd.h / sd.w);
                           const unitPrice = itemUnitPrice(it);
                           const qty = it.qty || 1;
-                          const lineP = unitPrice * qty;
-                          const listP = unitPrice * qty; // retail, used as strikethrough in cart
+                          const listP = unitPrice * qty; // retail (strikethrough)
+                          const unitDisc = Math.max(0, unitPrice - discountAmt);
+                          const lineP = unitDisc * qty; // with welcome/extended discount
                           const isSel = it.id === selectedId;
                           return (
                             <div key={it.id} onClick={() => setSelectedId(it.id)} style={{
@@ -2147,7 +2148,9 @@ export default function Customize() {
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:3 }}>
                                   <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
-                                    <span style={{ fontSize:10, color:MUTED, textDecoration:"line-through" }}>${listP}</span>
+                                    {discountAmt > 0 && lineP < listP && (
+                                      <span style={{ fontSize:10, color:MUTED, textDecoration:"line-through" }}>${listP}</span>
+                                    )}
                                     <span style={{ fontSize:12, fontWeight:700, color:RED }}>${lineP}</span>
                                   </div>
                                   <div onClick={(e) => e.stopPropagation()} style={{
