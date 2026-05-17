@@ -2346,7 +2346,8 @@ export default function Customize() {
                               </button>
                             )}
                           </div>
-                        </>
+                          </div>
+                        </details>
                       )}
 
                       {card.frameColors && (
