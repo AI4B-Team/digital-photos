@@ -1376,6 +1376,18 @@ export default function Customize() {
         }
       }
       if (!urls.length) throw new Error("No images returned. Please try again.");
+
+      // Append the new variations into the Styles panel as additional options
+      const baseStyle = selected.style || styleId || "custom";
+      const baseLabel = extraPrompt ? `${baseStyle} edit` : baseStyle;
+      const newEntries = urls.map((u, i) => ({
+        url: u,
+        style: `${baseLabel} v${(session.generatedPortraits?.length || 0) + i + 1}`,
+      }));
+      setSession({
+        generatedPortraits: [...(session.generatedPortraits || []), ...newEntries],
+      });
+
       setChoices(urls);
       setChoiceOpen(true);
     } catch (e) {
