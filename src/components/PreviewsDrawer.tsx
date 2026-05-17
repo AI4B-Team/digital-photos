@@ -98,6 +98,28 @@ export default function PreviewsDrawer({
     }
   }
 
+  async function handleDeletePortrait(rowId: string, portraitUrl: string) {
+    if (!submittedEmail) return;
+    if (!confirm("Delete this preview image? This cannot be undone.")) return;
+    const prev = rows;
+    setRows(r => r.flatMap(x => {
+      if (x.id !== rowId) return [x];
+      const next = x.portraits.filter(p => p.url !== portraitUrl && p.hd_url !== portraitUrl);
+      if (next.length === 0) return [];
+      return [{ ...x, portraits: next }];
+    }));
+    try {
+      const { error } = await supabase.functions.invoke("delete-client-preview", {
+        body: { id: rowId, email: submittedEmail, portraitUrl },
+      });
+      if (error) throw error;
+    } catch (e) {
+      console.error(e);
+      setRows(prev);
+      alert("Could not delete image. Please try again.");
+    }
+  }
+
   const totalPhotos = useMemo(
     () => rows.reduce((n, r) => n + (r.portraits?.length || 0), 0),
     [rows],
