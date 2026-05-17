@@ -2451,6 +2451,73 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
 }
 
 
+/* ── Curated collections — editorial groupings shown as a Pinterest-style rail ── */
+const COLLECTIONS: { id: string; label: string; match: (c: { id?: string; label?: string; desc?: string }) => boolean }[] = [
+  { id: "all",          label: "All Styles",            match: () => true },
+  { id: "trending",     label: "Trending",              match: c => /royal|watercolor|pop|renaissance|cinema/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "bestsellers",  label: "Best Sellers",          match: c => /royal|renaissance|watercolor|oil|classic/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "royal",        label: "Royal Portrait",        match: c => /royal|king|queen|aristocrat|noble|regal/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "watercolor",   label: "Watercolor",            match: c => /watercolor|aquarelle|paint/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "memorial",     label: "Memorial",              match: c => /memorial|angel|heaven|legacy|memory/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "fathers",      label: "Father's Day Favorites",match: c => /dad|father|hero|legend/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "herodad",      label: "Hero Dad",              match: c => /hero|warrior|sheriff|legend|superman/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "storytime",    label: "Story Time",            match: c => /story|fairy|fantasy|storybook|dragon|knight/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "legacy",       label: "Legacy Portrait",       match: c => /legacy|heritage|classic|renaissance|oil|vintage/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "highsociety",  label: "High Society",          match: c => /aristocrat|noble|society|gala|tuxedo|gentleman/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "guilty",       label: "Guilty As Charged",     match: c => /guilty|mugshot|naughty|trash/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "kitchen",      label: "Kitchen Tails",         match: c => /chef|kitchen|cook|baking|food/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "mugshot",      label: "Mugshot",               match: c => /mugshot|jail|prison|crime/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "office",       label: "Office Life",           match: c => /office|work|business|corporate|laptop/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "sports",       label: "Extreme Sports",        match: c => /sport|skydiv|football|basketball|extreme|action|skate/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "funny",        label: "Funny & Viral",         match: c => /funny|viral|meme|humorous|pop|cartoon/i.test(`${c.label} ${c.desc} ${c.id}`) },
+];
+
+function CollectionsRail({ collection, onChange }: { collection: string; onChange: (id: string) => void }) {
+  return (
+    <div style={{ maxWidth:1280, margin:"0 auto", padding:"4px 12px 18px" }}>
+      <p style={{ fontSize:10.5, letterSpacing:".26em", textTransform:"uppercase",
+        color:T.gold, fontWeight:600, margin:"0 14px 10px", fontFamily:"'Poppins',sans-serif" }}>
+        Curated Collections
+      </p>
+      <div style={{ display:"flex", gap:10, overflowX:"auto", padding:"4px 14px 8px",
+        scrollbarWidth:"none" as any }}>
+        {COLLECTIONS.map(col => {
+          const on = collection === col.id;
+          return (
+            <button key={col.id} onClick={() => onChange(col.id)}
+              style={{
+                flex:"0 0 auto",
+                padding:"10px 18px",
+                borderRadius:999,
+                border: on ? `1px solid ${T.gold}` : `1px solid rgba(255,255,255,.08)`,
+                background: on ? "rgba(230,180,80,.12)" : "rgba(255,255,255,.03)",
+                color: on ? T.gold : T.cream,
+                fontFamily:"'Playfair Display','Poppins',serif",
+                fontSize:13.5,
+                fontWeight: on ? 700 : 500,
+                letterSpacing:".01em",
+                cursor:"pointer",
+                whiteSpace:"nowrap",
+                transition:"all .15s ease",
+                boxShadow: on ? "0 4px 16px rgba(230,180,80,.18)" : "none",
+              }}>
+              {col.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function applyCollection<T extends { id?: string; label?: string; desc?: string }>(items: T[], colId: string): T[] {
+  const col = COLLECTIONS.find(c => c.id === colId);
+  if (!col || colId === "all") return items;
+  const filtered = items.filter(it => col.match(it));
+  return filtered.length ? filtered : items; // graceful fallback
+}
+
+
 /* ═══════════════════════════════════════════════════════════
    STYLE SELECT PAGE — between homepage and generation
 ═══════════════════════════════════════════════════════════ */
