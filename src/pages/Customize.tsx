@@ -620,11 +620,8 @@ export default function Customize() {
   const [choicesLoaded, setChoicesLoaded] = useState(0);
 
   // Promo code, gift note, low-res warnings
-  const PROMOS: Record<string, { pct: number; label: string }> = {
-    MOMGLOW30: { pct: 0.30, label: "Mother's Day 30% off" },
-    WELCOME15: { pct: 0.15, label: "Welcome 15% off" },
-    BUNDLE10:  { pct: 0.10, label: "Bundle 10% off" },
-  };
+  // Promo codes are validated server-side via the `validate-promo` edge function
+  // (never hardcoded in client JS — they would be visible in browser DevTools).
   const [promoCode, setPromoCode]     = useState("");
   const [promoApplied, setPromoApplied] = useState<{ code: string; pct: number; label: string } | null>(null);
   const [promoOpen, setPromoOpen]     = useState(false);
