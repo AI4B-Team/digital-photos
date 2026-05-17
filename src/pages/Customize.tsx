@@ -937,7 +937,8 @@ export default function Customize() {
     };
     const unit = itemUnitPrice(snapshot);
     const addon = hasCanvasAddon && canvasFrame ? 49 : 0;
-    return (unit + addon) * (snapshot.qty || 1);
+    const gross = (unit + addon) * (snapshot.qty || 1);
+    return Math.max(0, gross - (discountAmt || 0));
   })();
   const headerTotal = total > 0 ? total : pendingUnitPrice;
   const totalSavings = listSubtotal - total;
