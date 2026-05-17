@@ -784,6 +784,39 @@ export default function CheckoutPage() {
 
   const orderId = useState(() => "DP-" + Math.random().toString(36).slice(2,8).toUpperCase())[0];
 
+  // ── Limited-time discount countdown (shared with /customize via localStorage) ──
+  const [discountAmt, setDiscountAmt] = useState(0);
+  const [discountSec, setDiscountSec] = useState(0);
+  const [discountTier, setDiscountTier] = useState("");
+  useEffect(() => {
+    const LS_KEY = "ra_discount_start_v3";
+    const FIFTEEN_MIN = 15 * 60 * 1000;
+    const TOTAL = FIFTEEN_MIN + 24 * 60 * 60 * 1000;
+    let startTs = parseInt(localStorage.getItem(LS_KEY) || "0");
+    if (!startTs) { startTs = Date.now(); localStorage.setItem(LS_KEY, String(startTs)); }
+    const tick = () => {
+      const elapsed = Date.now() - startTs;
+      if (elapsed < FIFTEEN_MIN) {
+        setDiscountAmt(20); setDiscountTier("welcome");
+        setDiscountSec(Math.ceil((FIFTEEN_MIN - elapsed) / 1000));
+      } else if (elapsed < TOTAL) {
+        setDiscountAmt(10); setDiscountTier("extended");
+        setDiscountSec(Math.ceil((TOTAL - elapsed) / 1000));
+      } else { setDiscountAmt(0); setDiscountTier(""); setDiscountSec(0); }
+    };
+    tick();
+    const iv = setInterval(tick, 1000);
+    return () => clearInterval(iv);
+  }, []);
+  const fmtCountdown = (s: number) => {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    if (h > 0) return `${h}h ${String(m).padStart(2,"0")}m`;
+    return `${String(m).padStart(2,"0")}m ${String(sec).padStart(2,"0")}s`;
+  };
+  const bannerH = discountAmt > 0 ? 38 : 0;
+
   const goDelivery = () => navigate('/delivery');
   const goBack = () => navigate('/');
 
@@ -810,8 +843,29 @@ export default function CheckoutPage() {
     <>
       <style>{CSS}</style>
       <div style={{ background:C.bg, minHeight:"100vh" }}>
+        {/* Limited-time discount banner */}
+        {discountAmt > 0 && (
+          <div style={{
+            position:"fixed", top:0, left:0, right:0, zIndex:101,
+            background:"#E61919", borderBottom:"1px solid #B91C1C",
+            padding:"8px 22px", textAlign:"center", height:bannerH,
+          }}>
+            <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>
+              {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}: ${discountAmt} OFF
+            </span>
+            <span style={{ fontSize:12, color:"#FFE4E6", marginLeft:6 }}>
+              — Expires When The Timer Hits Zero
+            </span>
+            <span style={{
+              display:"inline-block", marginLeft:10, verticalAlign:"middle",
+              background:"#fff", color:"#E61919", fontSize:12, fontWeight:700,
+              padding:"4px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
+            }}>{fmtCountdown(discountSec)}</span>
+          </div>
+        )}
+
         {/* Top bar */}
-        <div style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, background:"rgba(8,7,5,0.97)", backdropFilter:"blur(18px)", borderBottom:`1px solid ${C.border}`, padding:"0 40px" }}>
+        <div style={{ position:"fixed", top:bannerH, left:0, right:0, zIndex:100, background:"rgba(8,7,5,0.97)", backdropFilter:"blur(18px)", borderBottom:`1px solid ${C.border}`, padding:"0 40px" }}>
           <div style={{ maxWidth:1280, margin:"0 auto", height:64, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
             <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:C.cream }}>
               Real<span style={{ color: C.gold }}> Art</span><span style={{ fontSize:9, verticalAlign:"super", color:C.goldDim }}>™</span>
@@ -834,7 +888,7 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <div style={{ paddingTop:64 }}>
+        <div style={{ paddingTop: 64 + bannerH }}>
           {screen === 1 && (
             <ProductSelectScreen
               selected={product}
