@@ -2300,7 +2300,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
         <div style={{ width:"100%", maxWidth:380, display:"flex", flexDirection:"column", gap:10 }}>
           <input
             type="email"
-            placeholder="Email address"
+            placeholder="Email Address"
             value={email}
             onChange={e => setEmail(e.target.value)}
             disabled={!!user}
