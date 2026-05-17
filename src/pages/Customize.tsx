@@ -1538,6 +1538,8 @@ export default function Customize() {
         const ptLabel =
           it.productType === "vip"           ? "Portrait VIP Package" :
           it.productType === "digital"       ? "Digital Portrait" :
+          it.productType === "print"         ? "Fine Art Print" :
+          it.productType === "acrylic"       ? "Acrylic Glass" :
           it.productType === "canvas"        ? "Canvas Print" :
           it.productType === "box-frame"     ? "Box Frame" :
                                                 "Classic Frame";
