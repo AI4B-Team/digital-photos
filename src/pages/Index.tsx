@@ -2296,7 +2296,10 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailGate, user, donePortraits]);
 
-  // Email gate screen
+  // Email gate screen — hidden for signed-in users (auto-skip handles continue)
+  if (emailGate && user) {
+    return <div style={{ minHeight:"100vh", background:T.bg }} />;
+  }
   if (emailGate) {
     return (
       <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
