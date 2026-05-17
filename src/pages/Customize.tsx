@@ -3026,9 +3026,23 @@ export default function Customize() {
                         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
                           {(() => {
                             const qty = it.qty || 1;
-                            const list = unit * qty;
+                            const listP = unit * qty;
+                            const maxPrintPrice = printItems.length > 0
+                              ? Math.max(...printItems.map(x => itemUnitPrice(x)))
+                              : 0;
+                            const itemGetsDiscount = discountAmt > 0
+                              && it.productType !== "vip"
+                              && it.productType !== "digital"
+                              && unit >= maxPrintPrice;
+                            const unitDisc = itemGetsDiscount ? Math.max(0, unit - discountAmt) : unit;
+                            const lineP = unitDisc * qty;
                             return (
-                              <span style={{ fontSize:13, fontWeight:800, color:INK }}>${list}</span>
+                              <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
+                                {itemGetsDiscount && lineP < listP && (
+                                  <span style={{ fontSize:10, color:MUTED, textDecoration:"line-through" }}>${listP}</span>
+                                )}
+                                <span style={{ fontSize:12, fontWeight:700, color:RED }}>${lineP}</span>
+                              </div>
                             );
                           })()}
                           <button
