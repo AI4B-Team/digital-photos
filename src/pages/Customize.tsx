@@ -2060,7 +2060,10 @@ export default function Customize() {
                 best: s.id === bestPid,
               })) : simpleSizes;
               const defaultSize = bestPid || sizes.find(s => s.id === "8x10")?.id || sizes[Math.floor(sizes.length/2)]?.id || sizes[0]?.id || "md";
-              const selSize  = cardSize[card.id] || defaultSize;
+              const selectedSizeForCard = (selected as any).productType === card.id
+                ? (selected as any).size
+                : undefined;
+              const selSize = cardSize[card.id] || selectedSizeForCard || defaultSize;
               const cardSizeDef = sizes.find(s => s.id === selSize) || sizes[0];
               const basePrice = card.id === "digital" ? 37 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
