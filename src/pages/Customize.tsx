@@ -77,6 +77,7 @@ const G = `
 .cz-busy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,10,.94);backdrop-filter:blur(6px);color:#fff;z-index:10;isolation:isolate;line-height:1.25;text-align:center;padding:18px}
 .cz-spinner{width:46px;height:46px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;animation:czSpin .9s linear infinite}
 @keyframes czSpin{to{transform:rotate(360deg)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .cz-busy-label{font-size:13px;font-weight:600;letter-spacing:.02em;text-align:center;line-height:1.3;max-width:100%;overflow-wrap:break-word;text-wrap:balance}
 .cz-busy-sub{font-size:11.5px;color:rgba(255,255,255,.7);text-align:center;line-height:1.35;max-width:100%;overflow-wrap:break-word}
 .cz-modal-back{position:fixed;inset:0;background:rgba(10,10,10,.55);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:czFade .2s ease}
