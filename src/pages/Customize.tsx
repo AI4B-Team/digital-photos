@@ -2153,9 +2153,8 @@ export default function Customize() {
                           const imgH = sd.h >= sd.w ? thumb : thumb * (sd.h / sd.w);
                           const unitPrice = itemUnitPrice(it);
                           const qty = it.qty || 1;
-                          const listP = unitPrice * qty; // retail (strikethrough)
-                          const unitDisc = Math.max(0, unitPrice - discountAmt);
-                          const lineP = unitDisc * qty; // with welcome/extended discount
+                          const listP = unitPrice * qty;
+                          const lineP = listP; // retail; discount shown once in cart
                           const isSel = it.id === selectedId;
                           return (
                             <div key={it.id} onClick={() => setSelectedId(it.id)} style={{
