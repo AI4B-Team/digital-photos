@@ -2480,7 +2480,7 @@ export default function Customize() {
                    {card.badge && (
                      <span style={{
                        position:"absolute", top:-9, left:12, zIndex:1,
-                       fontSize:9, fontWeight:700, background:INK,
+                       fontSize:9, fontWeight:700, background:RED,
                        color:"#fff", padding:"3px 8px", borderRadius:20,
                        letterSpacing:".08em", textTransform:"uppercase",
                        fontFamily:"'Poppins',sans-serif",
