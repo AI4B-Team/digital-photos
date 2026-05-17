@@ -1382,6 +1382,7 @@ function Step2Slides() {
 }
 
 function HomePage({ onGenerate }) {
+  const { user, signOut } = useAuth();
   const { preview: photo, uploadedUrl, uploading, uploadErr, lowResWarning, loadFile, clearPhoto } = useUpload();
   const [extraLowRes, setExtraLowRes] = useState<boolean[]>([]);
   const [cat,     setCat]     = useState("");
