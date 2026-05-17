@@ -955,7 +955,11 @@ export default function Customize() {
     // TOTAL matches what they see on the live preview / order panel.
     const selectedSizeForCard =
       (selected as any).productType === cardId ? (selected as any).size : undefined;
-    const selSize     = cardSize[cardId] || selectedSizeForCard || defaultSize;
+    const existingItemOfType = items.find(it => (it as any).productType === cardId);
+    const selSize     = cardSize[cardId]
+      || selectedSizeForCard
+      || (existingItemOfType as any)?.size
+      || defaultSize;
     const snapshot: any = {
       productType: cardId,
       size: cardId === "digital" ? (selected as any).size : (sizes.find(s => s.id === selSize)?.pid || selSize),
