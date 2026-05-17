@@ -2148,9 +2148,9 @@ export default function Customize() {
                           </div>
                         </div>
                       )}
-                      <ChevronDown size={15} color={isActive?RED:MUTED}
-                        style={{ transform:isActive?"rotate(180deg)":"rotate(0)",
-                          transition:"transform .2s", flexShrink:0 }}/>
+                       <ChevronDown size={15} color={isActive?INK:MUTED}
+                         style={{ transform:isActive?"rotate(180deg)":"rotate(0)",
+                           transition:"transform .2s", flexShrink:0 }}/>
                     </div>
                   </button>
 
