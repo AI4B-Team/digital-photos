@@ -806,13 +806,24 @@ export default function Customize() {
     }
   };
 
-  const applyPromo = () => {
+  const applyPromo = async () => {
     const code = promoCode.trim().toUpperCase();
-    const p = PROMOS[code];
-    if (!p) { setPromoError("That code isn't valid."); return; }
-    setPromoApplied({ code, ...p });
+    if (!code) return;
     setPromoError("");
-    setPromoOpen(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("validate-promo", {
+        body: { code, subtotal },
+      });
+      if (error || !data?.valid) {
+        setPromoError(data?.error || "That code isn't valid.");
+        return;
+      }
+      setPromoApplied({ code: data.code, pct: data.discountPct, label: data.label });
+      setPromoError("");
+      setPromoOpen(false);
+    } catch {
+      setPromoError("Couldn't validate code. Please try again.");
+    }
   };
   const clearPromo = () => { setPromoApplied(null); setPromoCode(""); };
 
