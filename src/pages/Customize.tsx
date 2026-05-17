@@ -60,6 +60,14 @@ const G = `
 .cz-watermark{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;mix-blend-mode:normal;opacity:.22;display:flex;align-items:center;justify-content:center}
 .cz-watermark-inner{transform:rotate(-22deg);width:200%;font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.32em;color:rgba(255,255,255,.42);line-height:5;font-size:clamp(11px,1.1vw,14px);text-align:center;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.25);animation:czWmScroll 32s linear infinite}
 @keyframes czWmScroll{from{transform:rotate(-22deg) translateX(0)}to{transform:rotate(-22deg) translateX(-12%)}}
+.cz-acc{border-top:1px solid ${BORDER};margin-top:2px}
+.cz-acc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:12px 2px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:${INK};outline:none}
+.cz-acc>summary::-webkit-details-marker{display:none}
+.cz-acc>summary:hover{color:#000}
+.cz-acc>summary .cz-acc-val{font-size:11px;font-weight:500;color:${MUTED};text-transform:none;letter-spacing:.01em;margin-left:auto;margin-right:8px;text-align:right;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cz-acc>summary .cz-acc-chev{transition:transform .2s ease;flex-shrink:0;color:${MUTED}}
+.cz-acc[open]>summary .cz-acc-chev{transform:rotate(180deg);color:${INK}}
+.cz-acc-body{padding:4px 0 14px;animation:czFade .25s ease}
 .cz-img-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,10,.34);opacity:0;transition:opacity .18s ease;pointer-events:none}
 .cz-img-wrap:hover .cz-img-overlay{opacity:1;pointer-events:auto}
 .cz-overlay-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;background:rgba(20,20,20,.82);color:#fff;border:1px solid rgba(255,255,255,.18);font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(6px);transition:all .15s ease}
