@@ -12,7 +12,7 @@ import {
   ArrowRight, Shield, Star, Instagram, Facebook,
   PawPrint, Baby, Users, Flower2, Search, Image as ImageIcon,
   SlidersHorizontal, Package, Globe, Droplets, FileText, Award,
-  CalendarDays
+  CalendarDays, ZoomIn
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import { useAuth } from "@/context/AuthContext";
@@ -2444,6 +2444,16 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const [confirming, setConfirming] = useState(false);
   const [subType, setSubType] = useState<string | null>(null);
   const [stSearch, setStSearch] = useState("");
+  const [zoomImg, setZoomImg] = useState<{ src: string; label: string; desc?: string } | null>(null);
+
+  useEffect(() => {
+    if (!zoomImg) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setZoomImg(null); };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
+  }, [zoomImg]);
 
   const needsSubType = cat === "people" || cat === "occasions";
   const subTypeDefs = SUBTYPES[cat] || [];
@@ -2659,6 +2669,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
             return (
               <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                 confirming={confirming}
+                onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
                 onSelect={() => setSelected(isSelected ? null : { type:"style", id:card.id })}
                 onConfirm={handleConfirm}/>
             );
@@ -2680,6 +2691,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                 return (
                   <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                     confirming={confirming}
+                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
                     onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
                     onConfirm={handleConfirm}/>
                 );
@@ -2709,6 +2721,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                       isSelected={isSelected}
                       originalPhotos={allPhotos}
                       confirming={confirming}
+                      onZoom={() => setZoomImg({ src: t.img, label: t.label, desc: t.desc })}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
                       onConfirm={async () => {
                         setConfirming(true);
@@ -2741,11 +2754,43 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       })}
 
       <div style={{ height:60 }}/>
+
+      {/* Zoom modal */}
+      {zoomImg && (
+        <div onClick={() => setZoomImg(null)}
+          style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.88)",
+            zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center",
+            padding:"40px 20px", cursor:"zoom-out", backdropFilter:"blur(6px)" }}>
+          <button onClick={(e) => { e.stopPropagation(); setZoomImg(null); }}
+            aria-label="Close"
+            style={{ position:"absolute", top:20, right:24, width:42, height:42,
+              borderRadius:"50%", background:"rgba(255,255,255,0.12)", border:"none",
+              color:"#fff", cursor:"pointer", display:"flex", alignItems:"center",
+              justifyContent:"center", fontSize:22, fontFamily:"'Poppins',sans-serif" }}>
+            <X size={22}/>
+          </button>
+          <div onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth:"min(1100px, 95vw)", maxHeight:"90vh", display:"flex",
+              flexDirection:"column", alignItems:"center", gap:14, cursor:"default" }}>
+            <img src={zoomImg.src} alt={zoomImg.label}
+              style={{ maxWidth:"100%", maxHeight:"78vh", objectFit:"contain",
+                borderRadius:12, boxShadow:"0 20px 60px rgba(0,0,0,0.6)" }}/>
+            <div style={{ textAlign:"center", color:"#fff" }}>
+              <h3 style={{ fontSize:20, fontWeight:700, margin:0,
+                fontFamily:"'Poppins',sans-serif" }}>{zoomImg.label}</h3>
+              {zoomImg.desc && (
+                <p style={{ fontSize:13, color:"rgba(255,255,255,0.7)", margin:"4px 0 0",
+                  fontFamily:"'Poppins',sans-serif" }}>{zoomImg.desc}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [], confirming }) {
+function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [], confirming, onZoom }) {
   const photos = (originalPhotos || []).filter(Boolean).slice(0, 2);
   return (
     <div onClick={onSelect}
@@ -2781,6 +2826,22 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [],
               </div>
             ))}
           </div>
+        )}
+
+        {onZoom && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onZoom(); }}
+            aria-label={`Zoom ${card.label}`}
+            style={{ position:"absolute", top:10, right: isSelected ? 44 : 10,
+              width:32, height:32, borderRadius:"50%",
+              background:"rgba(0,0,0,0.55)", border:"1px solid rgba(255,255,255,0.18)",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              cursor:"pointer", color:"#fff", padding:0,
+              backdropFilter:"blur(4px)", transition:"background .15s" }}
+            onMouseOver={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.8)"; }}
+            onMouseOut={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.55)"; }}>
+            <ZoomIn size={16}/>
+          </button>
         )}
 
         {isSelected && (
