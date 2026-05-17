@@ -1983,14 +1983,9 @@ export default function Customize() {
           maxHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
-          background:`
-            radial-gradient(ellipse 80% 55% at 50% 0%, rgba(255,250,240,.55) 0%, rgba(255,250,240,0) 60%),
-            radial-gradient(ellipse 90% 70% at 50% 110%, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 60%),
-            linear-gradient(180deg, #F5EEDF 0%, #EFE6D2 100%)
-          `,
+          background:"#F5EEDF",
           overflow:"hidden",
           position:"relative",
-          boxShadow:"inset 0 0 120px rgba(0,0,0,.06)",
         }}>
           {/* subtle wall noise/texture overlay */}
           <div aria-hidden style={{
