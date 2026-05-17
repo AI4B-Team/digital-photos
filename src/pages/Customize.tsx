@@ -879,19 +879,9 @@ export default function Customize() {
   const isCanvas      = productType === "canvas";
 
   // Per-item price + bundle discount based on number of images
-  const itemUnitPriceMug = (it: any) => {
-    const s = (SIMPLE_SIZES["mug"] || []).find(sz => sz.id === it.size);
-    return s?.price || 37;
-  };
-  const itemUnitPriceCase = (it: any) => {
-    const s = (SIMPLE_SIZES["case"] || []).find(sz => sz.id === it.size);
-    return s?.price || 47;
-  };
   const itemUnitPrice = (it) => {
     if (it.productType === "vip") return 17;
     if (it.productType === "digital") return 37;
-    if (it.productType === "mug") return itemUnitPriceMug(it);
-    if (it.productType === "case") return itemUnitPriceCase(it);
     if (it.productType === "acrylic") {
       const sizes = SIZES_BY_PRODUCT["acrylic"] || [];
       const sd = sizes.find(s => s.id === it.size) || sizes[1];
