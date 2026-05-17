@@ -2756,7 +2756,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       {/* Card grid */}
       <div style={{ margin:"0 auto", padding:"0 24px" }}>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-          {baseCards.map(card => {
+          {applyCollection(baseCards, collection).map(card => {
             const isSelected = selected?.type === "style" && selected?.id === card.id;
             return (
               <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
