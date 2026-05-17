@@ -2657,12 +2657,12 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
             color:T.cream, marginBottom:10, lineHeight:1.15,
             fontFamily:"'Playfair Display', 'Poppins', serif", letterSpacing:".005em" }}>
           {heroName && subType
-            ? `${heroName}'s ${selectedSubDef?.label} Portrait`
+            ? `${heroName}'s ${selectedSubDef?.label} portrait`
             : heroName
-            ? `Choose Your Portrait Style For ${heroName}`
+            ? `Choose your portrait style for ${heroName}`
             : subType
-            ? `Choose Your ${selectedSubDef?.label} Portrait Style`
-            : "Choose Your Portrait Style"}
+            ? `Choose your ${selectedSubDef?.label?.toLowerCase()} portrait style`
+            : "Choose your portrait style"}
         </h1>
         <p style={{ fontSize:16, color:T.muted, fontFamily:"'Poppins',sans-serif",
           maxWidth:680, margin:"0 auto", lineHeight:1.55 }}>
