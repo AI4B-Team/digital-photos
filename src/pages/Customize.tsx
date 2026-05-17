@@ -212,8 +212,6 @@ const PRODUCT_TYPES = [
   { id:"box-frame",     label:"Box Frame",        desc:"Shadow box · premium look",        icon:LayoutPanelTop,  price:null },
   { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang",     icon:Square,          price:null },
   { id:"acrylic",       label:"Acrylic Glass",    desc:"Frameless · luminous · museum-grade", icon:Layers,        price:null },
-  { id:"mug",           label:"Portrait Mug",     desc:"11oz ceramic · dishwasher safe",   icon:Coffee,          price:37   },
-  { id:"case",          label:"Phone Case",       desc:"Tough case · 100+ models",         icon:Smartphone,      price:47   },
 ];
 
 // Simplified S/M/L sizes per product (drives right-panel product cards)
