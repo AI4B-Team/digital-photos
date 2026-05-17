@@ -546,6 +546,288 @@ function FrameSwatch({ frame, on }) {
   );
 }
 
+/* ── Room View Panel ── */
+function RoomViewPanel({
+  portraitUrl, frameColor, productType, selected, roomIdx, setRoomIdx,
+  roomMode, setRoomMode, userRoomUrl, setUserRoomUrl,
+  aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
+  portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
+  dragStart, setDragStart, roomContainerRef,
+}: any) {
+  const room     = ROOMS[roomIdx];
+  const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
+  const isCanvas = productType === "canvas";
+
+  const sizeMap: Record<string, number> = {
+    "8x8":1, "10x10":1, "12x12":1, "16x16":1,
+    "8x10":0.80, "8x11":0.73, "10x8":1.25, "11x14":0.79,
+    "12x16":0.75, "16x20":0.80, "18x24":0.75, "20x24":0.83, "24x36":0.67,
+  };
+  const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
+
+  const bgUrl = roomMode === "myroom" && userRoomUrl ? userRoomUrl
+              : roomMode === "ai" && aiRoomUrl       ? aiRoomUrl
+              : room.url;
+
+  const wallX = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.x : room.wallX;
+  const wallY = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.y : room.wallY;
+  const wallW = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.w : room.wallW;
+
+  const onDragStart = (e: any) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setDragStart({ mx:e.clientX, my:e.clientY, px:portraitDragPos.x, py:portraitDragPos.y });
+  };
+  const onDragMove = (e: any) => {
+    if (!isDragging || !roomContainerRef.current) return;
+    const rect = roomContainerRef.current.getBoundingClientRect();
+    const dx = ((e.clientX - dragStart.mx) / rect.width) * 100;
+    const dy = ((e.clientY - dragStart.my) / rect.height) * 100;
+    setPortraitDragPos((p: any) => ({
+      ...p,
+      x: Math.max(0, Math.min(80 - wallW, dragStart.px + dx)),
+      y: Math.max(0, Math.min(70, dragStart.py + dy)),
+    }));
+  };
+  const onDragEnd = () => setIsDragging(false);
+  const onWheel = (e: any) => {
+    setPortraitDragPos((p: any) => ({
+      ...p, w: Math.max(10, Math.min(60, p.w - e.deltaY * 0.02)),
+    }));
+  };
+
+  const generateAIRoom = async () => {
+    if (!userRoomUrl || !portraitUrl) return;
+    setAiRoomLoading(true);
+    setAiRoomUrl(null);
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
+        body: { roomUrl: userRoomUrl, portraitUrl, frameColor },
+      });
+      if (!error && data?.url) setAiRoomUrl(data.url);
+    } catch { /* silent */ }
+    setAiRoomLoading(false);
+  };
+
+  const showPortraitOverlay = portraitUrl && (
+    roomMode === "staged" ||
+    (roomMode === "myroom" && userRoomUrl) ||
+    (roomMode === "ai" && userRoomUrl && !aiRoomUrl && !aiRoomLoading)
+  );
+
+  const TABS = [
+    { id:"staged", label:"Staged Rooms" },
+    { id:"myroom", label:"My Room"      },
+    { id:"ai",     label:"AI Magic ✦"   },
+  ] as const;
+
+  return (
+    <div style={{
+      width:"100%", height:"100%", display:"flex", flexDirection:"column",
+      gap:10, background:"#111", borderRadius:14, padding:12, color:"#fff",
+    }}>
+      {/* Mode tabs */}
+      <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+        {TABS.map(tab => (
+          <button key={tab.id}
+            onClick={() => { setRoomMode(tab.id); setAiRoomUrl(null); }}
+            style={{
+              padding:"5px 11px", borderRadius:8, fontSize:11, fontWeight:600,
+              cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+              background: roomMode===tab.id ? RED : "rgba(255,255,255,.06)",
+              color:      roomMode===tab.id ? "#fff" : "rgba(255,255,255,.5)",
+              border:     roomMode===tab.id ? "none" : "1px solid rgba(255,255,255,.1)",
+            }}>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Upload strip - My Room + AI */}
+      {(roomMode === "myroom" || roomMode === "ai") && (
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"center" }}>
+          <label style={{
+            display:"inline-flex", alignItems:"center", gap:6,
+            background:"rgba(255,255,255,.1)", border:"1px solid rgba(255,255,255,.15)",
+            padding:"6px 12px", borderRadius:8, cursor:"pointer",
+            fontSize:11.5, color:"rgba(255,255,255,.8)",
+            fontFamily:"'Poppins',sans-serif",
+          }}>
+            <Upload size={13}/>
+            {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
+            <input type="file" accept="image/*" style={{ display:"none" }}
+              onChange={e => {
+                const f = e.target.files?.[0];
+                if (!f) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                  setUserRoomUrl(ev.target?.result as string);
+                  setAiRoomUrl(null);
+                };
+                reader.readAsDataURL(f);
+              }}/>
+          </label>
+          {roomMode === "ai" && userRoomUrl && (
+            <button onClick={generateAIRoom} disabled={aiRoomLoading}
+              style={{
+                display:"inline-flex", alignItems:"center", gap:6,
+                background: aiRoomLoading ? "rgba(255,255,255,.1)" : RED,
+                border:"none", padding:"6px 14px", borderRadius:8,
+                fontSize:11.5, fontWeight:700, color:"#fff",
+                cursor: aiRoomLoading ? "wait" : "pointer",
+                fontFamily:"'Poppins',sans-serif",
+              }}>
+              {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> Generate AI Room</>}
+            </button>
+          )}
+          {roomMode === "myroom" && userRoomUrl && (
+            <span style={{ fontSize:10, color:"rgba(255,255,255,.4)", lineHeight:1.4 }}>
+              Drag portrait to reposition · Scroll to resize
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Main room view */}
+      <div
+        ref={roomContainerRef}
+        onMouseMove={onDragMove}
+        onMouseUp={onDragEnd}
+        onMouseLeave={onDragEnd}
+        style={{
+          position:"relative", flex:"1 1 auto", borderRadius:12,
+          overflow:"hidden", background:"#000", minHeight:0,
+          userSelect: isDragging ? "none" : "auto",
+        }}>
+        <img
+          src={bgUrl}
+          alt="Room preview"
+          style={{
+            width:"100%", height:"100%", objectFit:"cover", display:"block",
+            filter: (!userRoomUrl && (roomMode==="myroom" || roomMode==="ai"))
+              ? "brightness(0.4)" : "none",
+          }}/>
+
+        {/* Empty state for My Room / AI without upload */}
+        {(roomMode==="myroom" || roomMode==="ai") && !userRoomUrl && (
+          <div style={{
+            position:"absolute", inset:0, display:"flex", flexDirection:"column",
+            alignItems:"center", justifyContent:"center", gap:10,
+            color:"rgba(255,255,255,.7)", textAlign:"center", padding:20,
+          }}>
+            <Home size={40} color="rgba(255,255,255,.3)"/>
+            <span style={{ fontSize:13, fontFamily:"'Poppins',sans-serif", maxWidth:260 }}>
+              Upload a photo of your room to see your portrait on your wall
+            </span>
+          </div>
+        )}
+
+        {/* Portrait overlay */}
+        {showPortraitOverlay && (
+          <div
+            onMouseDown={(roomMode==="myroom" || roomMode==="ai") ? onDragStart : undefined}
+            onWheel={(roomMode==="myroom" || roomMode==="ai") ? onWheel : undefined}
+            style={{
+              position:"absolute",
+              left:   `${wallX}%`,
+              top:    `${wallY}%`,
+              width:  `${wallW}%`,
+              aspectRatio: `${1} / ${aspectRatio || 0.75}`,
+              cursor: (roomMode==="myroom" || roomMode==="ai") ? (isDragging ? "grabbing" : "grab") : "default",
+              boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+              border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+              background: framePx,
+              transition: isDragging ? "none" : "left .15s, top .15s, width .15s",
+            }}>
+            <img src={portraitUrl} alt="Your portrait"
+              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          </div>
+        )}
+
+        {/* AI loading overlay */}
+        {aiRoomLoading && (
+          <div style={{
+            position:"absolute", inset:0, background:"rgba(0,0,0,.6)",
+            display:"flex", flexDirection:"column", alignItems:"center",
+            justifyContent:"center", gap:14,
+          }}>
+            <div style={{
+              width:36, height:36, borderRadius:"50%",
+              border:"3px solid rgba(255,255,255,.18)", borderTopColor:"#fff",
+              animation:"spin .9s linear infinite",
+            }}/>
+            <span style={{ color:"rgba(255,255,255,.8)", fontSize:13,
+              fontFamily:"'Poppins',sans-serif" }}>Compositing your portrait…</span>
+          </div>
+        )}
+
+        {/* Room label + navigation (staged only) */}
+        {roomMode === "staged" && (
+          <>
+            <div style={{
+              position:"absolute", bottom:12, left:"50%",
+              transform:"translateX(-50%)",
+              background:"rgba(0,0,0,.55)", backdropFilter:"blur(8px)",
+              padding:"5px 14px", borderRadius:999,
+              fontSize:11, fontWeight:600, color:"rgba(255,255,255,.85)",
+              fontFamily:"'Poppins',sans-serif", letterSpacing:".06em",
+              textTransform:"uppercase", whiteSpace:"nowrap",
+            }}>{room.label}</div>
+            <button onClick={() => setRoomIdx((p: number) => (p - 1 + ROOMS.length) % ROOMS.length)}
+              style={{
+                position:"absolute", left:12, top:"50%", transform:"translateY(-50%)",
+                width:34, height:34, borderRadius:"50%",
+                background:"rgba(0,0,0,.4)", backdropFilter:"blur(6px)",
+                border:"1px solid rgba(255,255,255,.15)",
+                cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+              }}>
+              <ChevronLeft size={17} color="#fff"/>
+            </button>
+            <button onClick={() => setRoomIdx((p: number) => (p + 1) % ROOMS.length)}
+              style={{
+                position:"absolute", right:12, top:"50%", transform:"translateY(-50%)",
+                width:34, height:34, borderRadius:"50%",
+                background:"rgba(0,0,0,.4)", backdropFilter:"blur(6px)",
+                border:"1px solid rgba(255,255,255,.15)",
+                cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+              }}>
+              <ChevronRight size={17} color="#fff"/>
+            </button>
+            <div style={{
+              position:"absolute", bottom:42, left:"50%", transform:"translateX(-50%)",
+              display:"flex", gap:5,
+            }}>
+              {ROOMS.map((_,i) => (
+                <button key={i} onClick={() => setRoomIdx(i)}
+                  style={{
+                    width: i===roomIdx ? 18 : 6, height:6, borderRadius:3,
+                    border:"none", cursor:"pointer", padding:0,
+                    background: i===roomIdx ? "#fff" : "rgba(255,255,255,.35)",
+                    transition:"width .2s, background .2s",
+                  }}/>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Privacy notice */}
+        {(roomMode==="myroom" || roomMode==="ai") && userRoomUrl && (
+          <div style={{
+            position:"absolute", top:8, right:8,
+            background:"rgba(0,0,0,.5)", backdropFilter:"blur(6px)",
+            padding:"4px 10px", borderRadius:999,
+            fontSize:9.5, color:"rgba(255,255,255,.6)",
+            fontFamily:"'Poppins',sans-serif",
+          }}>
+            • Your room photo is never stored or shared
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ── Page ── */
 export default function Customize() {
   const navigate = useNavigate();
