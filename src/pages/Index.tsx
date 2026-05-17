@@ -15,6 +15,7 @@ import {
   CalendarDays
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
+import { useAuth } from "@/context/AuthContext";
 import scenePets from "@/assets/scene-pets.jpg";
 import scenePetsBrutus  from "@/assets/scene-pets-brutus.jpg";
 import scenePetsPitbull from "@/assets/scene-pets-pitbull.jpg";
