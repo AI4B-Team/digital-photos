@@ -12,7 +12,7 @@ import {
   ArrowRight, Shield, Star, Instagram, Facebook,
   PawPrint, Baby, Users, Flower2, Search, Image as ImageIcon,
   SlidersHorizontal, Package, Globe, Droplets, FileText, Award,
-  CalendarDays
+  CalendarDays, ZoomIn
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import { useAuth } from "@/context/AuthContext";
