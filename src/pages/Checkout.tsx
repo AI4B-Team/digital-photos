@@ -889,8 +889,6 @@ export default function CheckoutPage() {
         </div>
 
         <div style={{ paddingTop: 64 + bannerH }}>
-
-        <div style={{ paddingTop:64 }}>
           {screen === 1 && (
             <ProductSelectScreen
               selected={product}
