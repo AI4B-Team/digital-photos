@@ -57,8 +57,8 @@ const G = `
 @keyframes czFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .cz-fade{animation:czFade .35s cubic-bezier(.23,1,.32,1) both}
 .cz-img-wrap{position:relative;display:inline-block;line-height:0;overflow:hidden}
-.cz-watermark{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;mix-blend-mode:normal;opacity:.48;display:flex;align-items:center;justify-content:center}
-.cz-watermark-inner{transform:rotate(-22deg);width:200%;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:.22em;color:rgba(255,255,255,.56);line-height:2.4;font-size:clamp(13px,1.5vw,18px);text-align:center;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.42);animation:czWmScroll 22s linear infinite}
+.cz-watermark{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;mix-blend-mode:normal;opacity:.22;display:flex;align-items:center;justify-content:center}
+.cz-watermark-inner{transform:rotate(-22deg);width:200%;font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.32em;color:rgba(255,255,255,.42);line-height:5;font-size:clamp(11px,1.1vw,14px);text-align:center;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.25);animation:czWmScroll 32s linear infinite}
 @keyframes czWmScroll{from{transform:rotate(-22deg) translateX(0)}to{transform:rotate(-22deg) translateX(-12%)}}
 .cz-img-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,10,.34);opacity:0;transition:opacity .18s ease;pointer-events:none}
 .cz-img-wrap:hover .cz-img-overlay{opacity:1;pointer-events:auto}
@@ -1957,17 +1957,29 @@ export default function Customize() {
           )}
         </aside>
 
-        {/* Preview (middle) */}
+        {/* Preview (middle) — gallery wall ambience */}
         <div className="cz-stage cz-fade" style={{
           padding:"0 24px 24px",
           minHeight:"calc(100vh - 70px)",
           maxHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
-          background:"#F2EBDD",
+          background:`
+            radial-gradient(ellipse 80% 55% at 50% 0%, rgba(255,250,240,.55) 0%, rgba(255,250,240,0) 60%),
+            radial-gradient(ellipse 90% 70% at 50% 110%, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 60%),
+            linear-gradient(180deg, #F5EEDF 0%, #EFE6D2 100%)
+          `,
           overflow:"hidden",
           position:"relative",
+          boxShadow:"inset 0 0 120px rgba(0,0,0,.06)",
         }}>
+          {/* subtle wall noise/texture overlay */}
+          <div aria-hidden style={{
+            position:"absolute", inset:0, pointerEvents:"none", zIndex:0, opacity:.35,
+            backgroundImage:"radial-gradient(rgba(0,0,0,.05) 1px, transparent 1px)",
+            backgroundSize:"3px 3px",
+            mixBlendMode:"multiply",
+          }}/>
           <div style={{
             textAlign:"center", flexShrink:0, padding:"32px 0 8px",
             position:"sticky", top:0, zIndex:5, width:"100%",
@@ -2705,44 +2717,54 @@ export default function Customize() {
                         const lineQty = selected.qty || 1;
                         const linePrice = Math.max(0, itemUnitPrice(snapshot) - discountAmt) * lineQty;
                         return (
-                          <button disabled={nameCompositing} onClick={async () => {
-                            let finalPhotoUrl = (snapshot as any).photoUrl;
-                            if (portraitName && namePosition !== "none") {
-                              setNameCompositing(true);
-                              finalPhotoUrl = await composeNameOnImage(
-                                (snapshot as any).photoUrl,
-                                portraitName,
-                                namePosition as "top" | "bottom",
-                                nameFontId,
-                                nameColorId,
-                                nameSizeId,
-                              );
-                              setNameCompositing(false);
-                            }
-                            const namedSnapshot = {
-                              ...snapshot,
-                              photoUrl: finalPhotoUrl,
-                              portraitName: portraitName || null,
-                              namePosition: portraitName ? namePosition : null,
-                              nameFontId:   portraitName ? nameFontId   : null,
-                              nameSizeId:   portraitName ? nameSizeId   : null,
-                              nameColorId:  portraitName ? nameColorId  : null,
-                            };
-                            addToCart(namedSnapshot, lineQty);
-                            setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
-                            setUpsellOpen(true);
-                          }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
-                            borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
-                            justifyContent:"center", gap:8 }}>
-                            {nameCompositing
-                              ? <><div className="cz-spinner" style={{ width:14,height:14 }}/> Adding name…</>
-                              : <><ShoppingCart size={15}/> Add {card.label} To Cart — <span style={{ fontWeight:900 }}>${linePrice}</span></>}
-                          </button>
+                          <>
+                            <div style={{
+                              fontSize:12, color:MUTED, textAlign:"center",
+                              marginBottom:10, fontStyle:"italic",
+                              fontFamily:"'Playfair Display','Poppins',serif",
+                              letterSpacing:".01em",
+                            }}>
+                              A timeless piece made uniquely for you.
+                            </div>
+                            <button disabled={nameCompositing} onClick={async () => {
+                              let finalPhotoUrl = (snapshot as any).photoUrl;
+                              if (portraitName && namePosition !== "none") {
+                                setNameCompositing(true);
+                                finalPhotoUrl = await composeNameOnImage(
+                                  (snapshot as any).photoUrl,
+                                  portraitName,
+                                  namePosition as "top" | "bottom",
+                                  nameFontId,
+                                  nameColorId,
+                                  nameSizeId,
+                                );
+                                setNameCompositing(false);
+                              }
+                              const namedSnapshot = {
+                                ...snapshot,
+                                photoUrl: finalPhotoUrl,
+                                portraitName: portraitName || null,
+                                namePosition: portraitName ? namePosition : null,
+                                nameFontId:   portraitName ? nameFontId   : null,
+                                nameSizeId:   portraitName ? nameSizeId   : null,
+                                nameColorId:  portraitName ? nameColorId  : null,
+                              };
+                              addToCart(namedSnapshot, lineQty);
+                              setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
+                              setUpsellOpen(true);
+                            }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
+                              borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
+                              justifyContent:"center", gap:8 }}>
+                              {nameCompositing
+                                ? <><div className="cz-spinner" style={{ width:14,height:14 }}/> Adding name…</>
+                                : <><ShoppingCart size={15}/> Add {card.label} To Cart — <span style={{ fontWeight:900 }}>${linePrice}</span></>}
+                            </button>
+                          </>
                         );
                       })()}
 
                       <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
-                        Delivery: {card.delivery} · 100% Money-Back Guarantee · <span style={{ color: RED, fontWeight:700 }}>Cart Has {cartCount} Item{cartCount === 1 ? "" : "s"}</span>
+                        Delivery: {card.delivery} · 100% Money-Back Guarantee{cartCount > 0 ? <> · <span style={{ color: INK, fontWeight:600 }}>{cartCount} Item{cartCount === 1 ? "" : "s"} In Cart</span></> : null}
                       </div>
 
                       {/* Buy Now, Pay Later */}

@@ -2451,6 +2451,73 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
 }
 
 
+/* ── Curated collections — editorial groupings shown as a Pinterest-style rail ── */
+const COLLECTIONS: { id: string; label: string; match: (c: { id?: string; label?: string; desc?: string }) => boolean }[] = [
+  { id: "all",          label: "All Styles",            match: () => true },
+  { id: "trending",     label: "Trending",              match: c => /royal|watercolor|pop|renaissance|cinema/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "bestsellers",  label: "Best Sellers",          match: c => /royal|renaissance|watercolor|oil|classic/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "royal",        label: "Royal Portrait",        match: c => /royal|king|queen|aristocrat|noble|regal/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "watercolor",   label: "Watercolor",            match: c => /watercolor|aquarelle|paint/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "memorial",     label: "Memorial",              match: c => /memorial|angel|heaven|legacy|memory/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "fathers",      label: "Father's Day Favorites",match: c => /dad|father|hero|legend/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "herodad",      label: "Hero Dad",              match: c => /hero|warrior|sheriff|legend|superman/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "storytime",    label: "Story Time",            match: c => /story|fairy|fantasy|storybook|dragon|knight/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "legacy",       label: "Legacy Portrait",       match: c => /legacy|heritage|classic|renaissance|oil|vintage/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "highsociety",  label: "High Society",          match: c => /aristocrat|noble|society|gala|tuxedo|gentleman/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "guilty",       label: "Guilty As Charged",     match: c => /guilty|mugshot|naughty|trash/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "kitchen",      label: "Kitchen Tails",         match: c => /chef|kitchen|cook|baking|food/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "mugshot",      label: "Mugshot",               match: c => /mugshot|jail|prison|crime/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "office",       label: "Office Life",           match: c => /office|work|business|corporate|laptop/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "sports",       label: "Extreme Sports",        match: c => /sport|skydiv|football|basketball|extreme|action|skate/i.test(`${c.label} ${c.desc} ${c.id}`) },
+  { id: "funny",        label: "Funny & Viral",         match: c => /funny|viral|meme|humorous|pop|cartoon/i.test(`${c.label} ${c.desc} ${c.id}`) },
+];
+
+function CollectionsRail({ collection, onChange }: { collection: string; onChange: (id: string) => void }) {
+  return (
+    <div style={{ maxWidth:1280, margin:"0 auto", padding:"4px 12px 18px" }}>
+      <p style={{ fontSize:10.5, letterSpacing:".26em", textTransform:"uppercase",
+        color:T.gold, fontWeight:600, margin:"0 14px 10px", fontFamily:"'Poppins',sans-serif" }}>
+        Curated Collections
+      </p>
+      <div style={{ display:"flex", gap:10, overflowX:"auto", padding:"4px 14px 8px",
+        scrollbarWidth:"none" as any }}>
+        {COLLECTIONS.map(col => {
+          const on = collection === col.id;
+          return (
+            <button key={col.id} onClick={() => onChange(col.id)}
+              style={{
+                flex:"0 0 auto",
+                padding:"10px 18px",
+                borderRadius:999,
+                border: on ? `1px solid ${T.gold}` : `1px solid rgba(255,255,255,.08)`,
+                background: on ? "rgba(230,180,80,.12)" : "rgba(255,255,255,.03)",
+                color: on ? T.gold : T.cream,
+                fontFamily:"'Playfair Display','Poppins',serif",
+                fontSize:13.5,
+                fontWeight: on ? 700 : 500,
+                letterSpacing:".01em",
+                cursor:"pointer",
+                whiteSpace:"nowrap",
+                transition:"all .15s ease",
+                boxShadow: on ? "0 4px 16px rgba(230,180,80,.18)" : "none",
+              }}>
+              {col.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function applyCollection<T extends { id?: string; label?: string; desc?: string }>(items: T[], colId: string): T[] {
+  const col = COLLECTIONS.find(c => c.id === colId);
+  if (!col || colId === "all") return items;
+  const filtered = items.filter(it => col.match(it));
+  return filtered.length ? filtered : items; // graceful fallback
+}
+
+
 /* ═══════════════════════════════════════════════════════════
    STYLE SELECT PAGE — between homepage and generation
 ═══════════════════════════════════════════════════════════ */
@@ -2461,6 +2528,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const [confirming, setConfirming] = useState(false);
   const [subType, setSubType] = useState<string | null>(null);
   const [stSearch, setStSearch] = useState("");
+  const [collection, setCollection] = useState<string>("all");
   const [zoomImg, setZoomImg] = useState<{ src: string; label: string; desc?: string } | null>(null);
 
   useEffect(() => {
@@ -2587,19 +2655,26 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       <div style={{ maxWidth:1200, margin:"0 auto", padding:"40px 6vw 20px", textAlign:"center" }}>
         <h1 style={{ fontSize:"clamp(24px,3.5vw,42px)", fontWeight:800,
             color:T.cream, marginBottom:10, lineHeight:1.15,
-            fontFamily:"'Poppins',sans-serif" }}>
+            fontFamily:"'Playfair Display', 'Poppins', serif", letterSpacing:".005em" }}>
           {heroName && subType
-            ? `Choose A Style For ${heroName}'s ${selectedSubDef?.label} Portrait`
+            ? `${heroName}'s ${selectedSubDef?.label} Portrait`
             : heroName
-            ? `Choose A Style For ${heroName}`
+            ? `Choose Your Portrait Style For ${heroName}`
             : subType
-            ? `Choose A ${selectedSubDef?.label} Style`
-            : "Choose An Art Style"}
+            ? `Choose Your ${selectedSubDef?.label} Portrait Style`
+            : "Choose Your Portrait Style"}
         </h1>
-        <p style={{ fontSize:17, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
-          Select One Style To Generate Your Free Preview — Takes About 30 Seconds.
+        <p style={{ fontSize:16, color:T.muted, fontFamily:"'Poppins',sans-serif",
+          maxWidth:680, margin:"0 auto", lineHeight:1.55 }}>
+          Explore hundreds of curated styles designed for every memory, personality, and occasion.
         </p>
       </div>
+
+      {/* Curated collections rail */}
+      <CollectionsRail
+        collection={collection}
+        onChange={setCollection}
+      />
 
       {/* Sub-type selector (People + Occasions only) */}
       {needsSubType && (
@@ -2674,14 +2749,14 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       {baseCards.length > 0 && (
         <div style={{ padding:"20px 24px 8px" }}>
           <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-            color:T.muted, fontWeight:600, textAlign:"left", margin:0 }}>Art Styles</p>
+            color:T.muted, fontWeight:600, textAlign:"left", margin:0 }}>Signature Styles</p>
         </div>
       )}
 
       {/* Card grid */}
       <div style={{ margin:"0 auto", padding:"0 24px" }}>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-          {baseCards.map(card => {
+          {applyCollection(baseCards, collection).map(card => {
             const isSelected = selected?.type === "style" && selected?.id === card.id;
             return (
               <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
@@ -2699,11 +2774,11 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         <>
           <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
             <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-              color:T.muted, fontWeight:600 }}>Scenes & Costumes</p>
+              color:T.muted, fontWeight:600 }}>Featured Scenes</p>
           </div>
           <div style={{ margin:"0 auto", padding:"0 24px" }}>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-              {tmplCards.map(card => {
+              {applyCollection(tmplCards, collection).map(card => {
                 const isSelected = selected?.type === "template" && selected?.id === card.id;
                 return (
                   <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
@@ -2730,7 +2805,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
             </div>
             <div style={{ margin:"0 auto", padding:"0 24px" }}>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-                {items.map(t => {
+                {applyCollection(items as any, collection).map(t => {
                   const isSelected = selected?.type === "template" && selected?.id === t.id;
                   return (
                     <StyleCard key={`th-${t.id}`}
