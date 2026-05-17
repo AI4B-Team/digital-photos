@@ -2180,13 +2180,12 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
       setMsg(Math.min(Math.floor((fakePct/100) * GEN_MSGS.length), GEN_MSGS.length-1));
     }, 200);
 
+    // Preload all proof images so cross-fade transitions never flash
+    proofDeck.forEach(p => { const im = new Image(); im.src = p.img; });
+
     const spiv = setInterval(() => {
-      setProofFade(false);
-      setTimeout(() => {
-        setProofIdx(p => (p + 1) % proofDeck.length);
-        setProofFade(true);
-      }, 280);
-    }, 3500);
+      setProofIdx(p => (p + 1) % proofDeck.length);
+    }, 4000);
 
     (async () => {
       try {
