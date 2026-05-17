@@ -2285,18 +2285,16 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
     return (
       <div style={{ minHeight:"100vh", background:T.bg, display:"flex", flexDirection:"column",
         alignItems:"center", justifyContent:"center", padding:"40px 20px" }}>
-        <div style={{ width:64, height:64, borderRadius:"50%", background:"#16a34a",
-          display:"flex", alignItems:"center", justifyContent:"center", marginBottom:20 }}>
-          <Check size={28} color="#fff" strokeWidth={3}/>
-        </div>
+        <img src={readyTrio} alt="Portrait examples" width={768} height={512} loading="eager"
+          style={{ width:"100%", maxWidth:300, height:"auto", marginBottom:18, objectFit:"contain" }}/>
         <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:28, fontWeight:700,
           color:T.cream, marginBottom:10, textAlign:"center" }}>
           Your Portrait Is Ready!
         </h2>
         <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center", whiteSpace:"nowrap" }}>
           {user
-            ? "Save it to your gallery and continue to checkout."
-            : "Create a free account to save and order your portrait."}
+            ? "Save It To Your Gallery And Continue To Checkout."
+            : "Create A Free Account To Save And Order Your Portrait."}
         </p>
         <div style={{ width:"100%", maxWidth:380, display:"flex", flexDirection:"column", gap:10 }}>
           <input
@@ -2314,7 +2312,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
           {!user && (
             <input
               type="password"
-              placeholder="Create A Password (min 6 characters)"
+              placeholder="Create A Password (Min 6 Characters)"
               value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleEmailSubmit()}
@@ -2337,17 +2335,17 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
               display:"flex", alignItems:"center", justifyContent:"center", gap:10,
               opacity: (!email.includes("@") || emailBusy || (!user && password.length < 6)) ? .55 : 1 }}>
             {emailBusy
-              ? "Creating account..."
+              ? "Creating Account..."
               : <>{user ? "Save & Continue" : "Create Account & Continue"} <ArrowRight size={17}/></>}
           </button>
           <p style={{ color:T.dim, fontSize:11.5, textAlign:"center", marginTop:6, whiteSpace:"nowrap" }}>
-            Your portrait will be saved to your gallery — no spam, unsubscribe anytime.
+            Your Portrait Will Be Saved To Your Gallery — No Spam, Unsubscribe Anytime.
           </p>
           <button onClick={() => onDone(donePortraits)}
             style={{ marginTop:6, background:"none", border:"none",
               color:T.muted, fontSize:11.5, cursor:"pointer",
               fontFamily:"'Poppins',sans-serif", textDecoration:"underline" }}>
-            Skip, take me to my portrait →
+            Skip, Take Me To My Portrait →
           </button>
         </div>
       </div>
