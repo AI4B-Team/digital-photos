@@ -57,6 +57,11 @@ serve(async (req) => {
             images: li.image && typeof li.image === "string" && li.image.startsWith("http")
               ? [li.image]
               : undefined,
+            // Required by Afterpay/Klarna for product categorisation
+            metadata: {
+              product_type: "art_print",
+              category:   "home_decor",
+            },
           },
         },
         quantity: Math.max(1, Math.min(99, parseInt(li.quantity) || 1)),
