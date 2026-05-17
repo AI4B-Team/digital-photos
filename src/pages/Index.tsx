@@ -2219,8 +2219,8 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
     return () => { clearInterval(iv); clearInterval(spiv); };
   }, []);
 
-  const handleEmailSubmit = async () => {
-    const cleanEmail = email.trim().toLowerCase();
+  const handleEmailSubmit = async (overrideEmail?: string) => {
+    const cleanEmail = (overrideEmail ?? email).trim().toLowerCase();
     if (!cleanEmail.includes("@")) return;
     if (!user && password.length < 6) {
       setAuthError("Password must be at least 6 characters.");
