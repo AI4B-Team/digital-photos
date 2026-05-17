@@ -25,6 +25,9 @@ import sceneBabies from "@/assets/scene-babies.jpg";
 import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
 import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
 import sceneBabiesSoccer from "@/assets/scene-babies-soccer.jpg";
+import sceneBabiesLoveFlowers from "@/assets/scene-babies-love-flowers.jpg";
+import sceneBabiesSurfer from "@/assets/scene-babies-surfer.jpg";
+import sceneBabiesFamilyNewborn from "@/assets/scene-babies-family-newborn.jpg";
 import scenePeople from "@/assets/scene-people-ceo-v5.jpg";
 import sceneMemorial from "@/assets/scene-family-heirloom-v4.jpg";
 import sceneMemorialGrandmother from "@/assets/scene-memorial-grandmother.jpg";
@@ -1914,7 +1917,7 @@ function HomePage({ onGenerate }) {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
               { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsHorseLavender, scenePetsGallery, scenePetKing, scenePetsShepherdFlag], Icon:PawPrint, title:"Pets",     body:"Royal · Viking · Astronaut · Watercolor · +25 more", cta:"Create A Pet Portrait" },
-              { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer], Icon:Baby,     title:"Babies",   body:"Fairy · Cherub · Storybook · Royal · +25 more", cta:"Create A Baby Portrait" },
+              { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer, sceneBabiesLoveFlowers, sceneBabiesSurfer, sceneBabiesFamilyNewborn], Icon:Baby,     title:"Babies",   body:"Fairy · Cherub · Storybook · Royal · +25 more", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesBeachTender, sceneCouplesEditorialEmbrace, sceneCouplesCinematicKiss, sceneCouplesKiss, sceneCouplesBackToBack], Icon:Heart, title:"Couples", body:"Renaissance · Gothic · Gatsby · Royal · +25 more", cta:"Create A Couples Portrait" },
               { cat:"couples",  img:sceneWeddingConfetti, imgs:[sceneWeddingConfetti, sceneWeddingStreet, sceneWeddingBeach, sceneWeddingCar, sceneWeddingKiss], Icon:Sparkles, title:"Weddings", body:"Classic · Vintage · Royal · Watercolor · +25 more", cta:"Create A Wedding Portrait" },
               { cat:"memorial", img:sceneMemorialGrandmother, imgs:[sceneMemorialGrandmother, sceneMemorialVintageFamily, sceneMemorialPet, sceneMemorialFather, sceneMemorialCatAngel], Icon:Flower2, title:"Memorial", body:"Heavenly · Renaissance · Watercolor · Classic · +25 more", cta:"Create A Memorial Portrait" },
