@@ -75,7 +75,7 @@ serve(async (req) => {
           "Authorization": `Bearer ${resendKey}`,
         },
         body: JSON.stringify({
-          from: "REAL ART <hello@realart.com>",
+          from: "REAL ART <hello@realart.ai>",
           to: [session.customer_email],
           subject: `Your ${productLabel} is on its way!`,
           html: buildShipEmail({ productLabel, trackingUrl }),
@@ -132,7 +132,7 @@ function buildShipEmail({ productLabel, trackingUrl }: { productLabel: string; t
             <strong>Portrait Mug</strong> — your art on a ceramic mug
           </td>
           <td style="padding:8px 0;text-align:right;border-bottom:1px solid #F0EDE8">
-            <a href="https://realart.com" style="font-size:12px;color:#E61919;font-weight:600;text-decoration:none">Add $37 →</a>
+            <a href="https://realart.ai" style="font-size:12px;color:#E61919;font-weight:600;text-decoration:none">Add $37 →</a>
           </td>
         </tr>
         <tr>
@@ -140,7 +140,7 @@ function buildShipEmail({ productLabel, trackingUrl }: { productLabel: string; t
             <strong>Phone Case</strong> — carry your portrait everywhere
           </td>
           <td style="padding:8px 0;text-align:right">
-            <a href="https://realart.com" style="font-size:12px;color:#E61919;font-weight:600;text-decoration:none">Add $47 →</a>
+            <a href="https://realart.ai" style="font-size:12px;color:#E61919;font-weight:600;text-decoration:none">Add $47 →</a>
           </td>
         </tr>
       </table>
@@ -148,7 +148,7 @@ function buildShipEmail({ productLabel, trackingUrl }: { productLabel: string; t
     <div style="background:#fff;border-radius:16px;padding:24px 32px;text-align:center;margin-bottom:24px">
       <p style="font-size:15px;color:#0A0A0A;font-weight:600;margin:0 0 6px">Did we exceed your expectations?</p>
       <p style="font-size:13px;color:#8C8C8C;margin:0 0 14px">Your review means the world to us and helps other portrait lovers find REAL ART.</p>
-      <a href="https://realart.com/review" style="display:inline-block;background:#0A0A0A;color:#fff;text-decoration:none;font-weight:700;padding:10px 20px;border-radius:10px;font-size:13px">Leave a Review ★</a>
+      <a href="https://www.trustpilot.com/evaluate/realart.ai" style="display:inline-block;background:#0A0A0A;color:#fff;text-decoration:none;font-weight:700;padding:10px 20px;border-radius:10px;font-size:13px">Leave a Review ★</a>
     </div>
     <p style="text-align:center;font-size:11.5px;color:#BFBFBF;line-height:1.6">
       REAL ART™ · Real Advisors, Inc.

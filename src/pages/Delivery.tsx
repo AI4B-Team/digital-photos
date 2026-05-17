@@ -176,7 +176,7 @@ function ConfirmationHeader({ orderProduct }) {
           [Check,    "Order Confirmed"],
           [Mail,     "Delivery Email Sent"],
           [Package,
-            orderProduct === "canvas"       ? "Canvas in Production"       :
+            orderProduct === "canvas"       ? "Canvas Print in Production" :
             orderProduct === "classic-frame"? "Framed Print in Production"  :
             orderProduct === "box-frame"    ? "Framed Print in Production"  :
             orderProduct === "acrylic"      ? "Acrylic Print in Production" :

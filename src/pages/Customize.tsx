@@ -3042,10 +3042,14 @@ export default function Customize() {
               {/* Print line items */}
               {cartItems.map((it) => {
                 const ptLabel =
-                  it.productType === "digital"   ? "Digital Portrait" :
-                  it.productType === "canvas"    ? "Canvas Print" :
-                  it.productType === "box-frame" ? "Box Frame" :
-                                                   "Classic Frame";
+                  it.productType === "digital"        ? "Digital Portrait"  :
+                  it.productType === "print"          ? "Fine Art Print"    :
+                  it.productType === "acrylic"        ? "Acrylic Glass"     :
+                  it.productType === "canvas"         ? "Canvas Print"      :
+                  it.productType === "box-frame"      ? "Box Frame"         :
+                  it.productType === "classic-frame"  ? "Classic Frame"     :
+                  it.productType === "vip"            ? "VIP Package"       :
+                                                        "Portrait";
                 const sizes = SIZES_BY_PRODUCT[it.productType] || SIZES_BY_PRODUCT["classic-frame"];
                 const sd = sizes.find((s) => s.id === it.size);
                 const unit = itemUnitPrice(it);
