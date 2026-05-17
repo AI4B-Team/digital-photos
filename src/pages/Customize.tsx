@@ -2091,7 +2091,12 @@ export default function Customize() {
           {(session.generatedPortraits?.length || 0) > 1 && (
             <div className="cz-section">
               <div className="cz-label"><span>Styles</span><span className="cz-value">{session.generatedPortraits.length} Styles</span></div>
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:10 }}>
+              <div style={{
+                display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:10,
+                maxHeight: session.generatedPortraits.length > 6 ? 280 : "none",
+                overflowY: session.generatedPortraits.length > 6 ? "auto" : "visible",
+                paddingRight: session.generatedPortraits.length > 6 ? 6 : 0,
+              }}>
                 {session.generatedPortraits.map((p, idx) => {
                   const active = selected.photoUrl === p.url;
                   const inCart = cartItems.some(ci => ci.photoUrl === p.url);
