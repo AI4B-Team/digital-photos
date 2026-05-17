@@ -2254,11 +2254,13 @@ export default function Customize() {
                       </div>
 
                       {card.id !== "digital" && (
-                        <>
-                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            {card.id === "case" ? "Choose Your Phone" : "Choose Size"}
-                          </div>
+                        <details className="cz-acc" open>
+                          <summary>
+                            <span>{card.id === "case" ? "Choose Your Phone" : "Size"}</span>
+                            <span className="cz-acc-val">{cardSizeDef?.dim || cardSizeDef?.label || ""}</span>
+                            <ChevronDown className="cz-acc-chev" size={15}/>
+                          </summary>
+                          <div className="cz-acc-body">
                           <div style={{ position:"relative", marginBottom:12 }}>
                             {sizes.length > 3 && (
                               <button
