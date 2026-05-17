@@ -3085,7 +3085,7 @@ export default function Customize() {
               </div>
               {discountSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:"#16a34a", marginBottom:4, fontWeight:600 }}>
-                  <span>{discountTier === "welcome" ? "Welcome Promo" : "Limited-Time Promo"} (${discountAmt}/print × {cartPhotoCount})</span>
+                  <span>{discountTier === "welcome" ? "Welcome Promo" : "Limited-Time Promo"} (${discountAmt} off order)</span>
                   <span>−${discountSave}</span>
                 </div>
               )}
