@@ -2051,13 +2051,7 @@ export default function Customize() {
                   "Hi-res digital download included",
                 ],
                 delivery:"7–9 Business Days · Global shipping" },
-            ].filter((card:any) => {
-              // Hide non-print products unless the user toggled them on in the left column
-              if (card.id === "digital") {
-                return enabledExtras.includes(card.id);
-              }
-              return true;
-            }).map((card:any) => {
+            ].map((card:any) => {
               const isActive = activeCard === card.id;
               const fullSizes = SIZES_BY_PRODUCT[card.id] || [];
               const simpleSizes = SIMPLE_SIZES[card.id] || [];
