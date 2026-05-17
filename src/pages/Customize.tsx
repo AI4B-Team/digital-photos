@@ -2981,8 +2981,6 @@ export default function Customize() {
               {cartItems.map((it) => {
                 const ptLabel =
                   it.productType === "digital"   ? "Digital Portrait" :
-                  it.productType === "mug"       ? "Portrait Mug" :
-                  it.productType === "case"      ? "Phone Case" :
                   it.productType === "canvas"    ? "Canvas Print" :
                   it.productType === "box-frame" ? "Box Frame" :
                                                    "Classic Frame";
