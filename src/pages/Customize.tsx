@@ -811,6 +811,7 @@ export default function Customize() {
     if (!code) return;
     setPromoError("");
     try {
+      const { supabase } = await import("@/integrations/supabase/client");
       const { data, error } = await supabase.functions.invoke("validate-promo", {
         body: { code, subtotal },
       });
