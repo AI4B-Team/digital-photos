@@ -2304,7 +2304,7 @@ export default function Customize() {
                                 {sz.best && (
                                   <span style={{ position:"absolute", top:-9, left:"50%",
                                     transform:"translateX(-50%)", fontSize:8, fontWeight:700,
-                                    background:RED, color:"#fff", padding:"3px 7px",
+                                    background:"#8B6B3D", color:"#fff", padding:"3px 7px",
                                     borderRadius:10, letterSpacing:".06em", textTransform:"uppercase",
                                     whiteSpace:"nowrap" }}>Best Value</span>
                                 )}
