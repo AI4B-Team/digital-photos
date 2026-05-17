@@ -2774,7 +2774,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         <>
           <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
             <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-              color:T.muted, fontWeight:600 }}>Scenes & Costumes</p>
+              color:T.muted, fontWeight:600 }}>Featured Scenes</p>
           </div>
           <div style={{ margin:"0 auto", padding:"0 24px" }}>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
