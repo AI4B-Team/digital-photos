@@ -3008,13 +3008,7 @@ export default function Customize() {
                           {(() => {
                             const qty = it.qty || 1;
                             const list = unit * qty;
-                            const disc = Math.max(0, unit - (discountAmt || 0)) * qty;
-                            return discountAmt > 0 && disc < list ? (
-                              <>
-                                <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>${list}</span>
-                                <span style={{ fontSize:13, fontWeight:800, color:RED }}>${disc}</span>
-                              </>
-                            ) : (
+                            return (
                               <span style={{ fontSize:13, fontWeight:800, color:INK }}>${list}</span>
                             );
                           })()}
