@@ -2444,6 +2444,16 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const [confirming, setConfirming] = useState(false);
   const [subType, setSubType] = useState<string | null>(null);
   const [stSearch, setStSearch] = useState("");
+  const [zoomImg, setZoomImg] = useState<{ src: string; label: string; desc?: string } | null>(null);
+
+  useEffect(() => {
+    if (!zoomImg) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setZoomImg(null); };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
+  }, [zoomImg]);
 
   const needsSubType = cat === "people" || cat === "occasions";
   const subTypeDefs = SUBTYPES[cat] || [];
