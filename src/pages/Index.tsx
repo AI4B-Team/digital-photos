@@ -2199,21 +2199,49 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
   }, []);
 
   const handleEmailSubmit = async () => {
-    if (!email.includes("@")) return;
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail.includes("@")) return;
+    if (!user && password.length < 6) {
+      setAuthError("Password must be at least 6 characters.");
+      return;
+    }
+    setAuthError(null);
     setEmailBusy(true);
     try {
-      await supabase.from("lead_captures" as any).insert({
-        email: email.trim().toLowerCase(),
-        session_id: sessionId || null,
-        category,
-        source: "portrait_generation",
-      });
-      // Persist this client's preview gallery so they can revisit it from the
-      // "My Previews" drawer and receive 7-day expiry reminders.
+      // Create account (or sign in if it already exists) so the user can
+      // revisit their gallery, place orders, and manage previews.
+      if (!user) {
+        const { error: signUpErr } = await signUp(cleanEmail, password);
+        if (signUpErr) {
+          const msg = String(signUpErr.message || "").toLowerCase();
+          if (msg.includes("already") || msg.includes("registered") || msg.includes("exists")) {
+            const { error: signInErr } = await signIn(cleanEmail, password);
+            if (signInErr) {
+              setAuthError("That email is taken. Please enter the correct password.");
+              setEmailBusy(false);
+              return;
+            }
+          } else {
+            setAuthError(signUpErr.message || "Could not create account.");
+            setEmailBusy(false);
+            return;
+          }
+        }
+      }
+
+      try {
+        await supabase.from("lead_captures" as any).insert({
+          email: cleanEmail,
+          session_id: sessionId || null,
+          category,
+          source: "portrait_generation",
+        });
+      } catch (_) { /* non-blocking */ }
+
       try {
         await supabase.functions.invoke("save-client-previews", {
           body: {
-            email: email.trim().toLowerCase(),
+            email: cleanEmail,
             sessionId: sessionId || null,
             category,
             sourcePhotoUrl: photoUrl || null,
@@ -2224,7 +2252,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
             })),
           },
         });
-        try { localStorage.setItem("dp:previewEmail", email.trim().toLowerCase()); } catch {}
+        try { localStorage.setItem("dp:previewEmail", cleanEmail); } catch {}
       } catch (_) { /* non-blocking */ }
     } catch (_) { /* non-blocking */ }
     setEmailBusy(false);
