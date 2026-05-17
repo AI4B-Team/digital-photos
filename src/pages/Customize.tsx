@@ -2375,60 +2375,66 @@ export default function Customize() {
                       )}
 
                       {card.frameColors && (
-                        <>
-                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            Mount Colour
+                        <details className="cz-acc">
+                          <summary>
+                            <span>Mount Colour</span>
+                            <span className="cz-acc-val">{MOUNT_COLORS.find(mc => mc.id === mountColor)?.label || ""}</span>
+                            <ChevronDown className="cz-acc-chev" size={15}/>
+                          </summary>
+                          <div className="cz-acc-body">
+                            <div style={{ display:"flex", gap:10 }}>
+                              {MOUNT_COLORS.map(mc => (
+                                <button key={mc.id} title={mc.label}
+                                  onClick={() => setMountColor(mc.id)}
+                                  style={{ display:"flex", flexDirection:"column",
+                                    alignItems:"center", gap:4, background:"none",
+                                    border:"none", cursor:"pointer", padding:0 }}>
+                                  <div style={{ width:30, height:30, borderRadius:7,
+                                    background:mc.color,
+                                    border: mountColor===mc.id
+                                      ? `2px solid ${RED}`
+                                      : `1px solid rgba(0,0,0,.15)`,
+                                    boxShadow:"0 1px 3px rgba(0,0,0,.1)" }}/>
+                                  <span style={{ fontSize:9.5, color:mountColor===mc.id?INK:MUTED }}>
+                                    {mc.label}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                          <div style={{ display:"flex", gap:10, marginBottom:14 }}>
-                            {MOUNT_COLORS.map(mc => (
-                              <button key={mc.id} title={mc.label}
-                                onClick={() => setMountColor(mc.id)}
-                                style={{ display:"flex", flexDirection:"column",
-                                  alignItems:"center", gap:4, background:"none",
-                                  border:"none", cursor:"pointer", padding:0 }}>
-                                <div style={{ width:30, height:30, borderRadius:7,
-                                  background:mc.color,
-                                  border: mountColor===mc.id
-                                    ? `2px solid ${RED}`
-                                    : `1px solid rgba(0,0,0,.15)`,
-                                  boxShadow:"0 1px 3px rgba(0,0,0,.1)" }}/>
-                                <span style={{ fontSize:9.5, color:mountColor===mc.id?INK:MUTED }}>
-                                  {mc.label}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
-                        </>
+                        </details>
                       )}
 
                       {card.frameColors && (
-                        <>
-                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            Glaze
+                        <details className="cz-acc">
+                          <summary>
+                            <span>Glaze</span>
+                            <span className="cz-acc-val">{GLAZE_OPTIONS.find(g => g.id === glazeType)?.label || ""}</span>
+                            <ChevronDown className="cz-acc-chev" size={15}/>
+                          </summary>
+                          <div className="cz-acc-body">
+                            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                              {GLAZE_OPTIONS.map(g => (
+                                <button key={g.id}
+                                  onClick={() => setGlazeType(g.id as "perspex" | "moth-eye")}
+                                  style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                                    padding:"10px 12px", borderRadius:10, cursor:"pointer",
+                                    border:`1.5px solid ${glazeType===g.id?RED:BORDER}`,
+                                    background:glazeType===g.id?"rgba(230,25,25,.04)":"#fff",
+                                    transition:"all .15s", textAlign:"left" }}>
+                                  <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+                                    <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>{g.label}</span>
+                                    <span style={{ fontSize:11, color:MUTED }}>{g.desc}</span>
+                                  </div>
+                                  <span style={{ fontSize:12, fontWeight:800,
+                                    color:g.add>0?INK:MUTED, flexShrink:0, marginLeft:12 }}>
+                                    {g.add > 0 ? `+$${g.add}` : "Included"}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                          <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:14 }}>
-                            {GLAZE_OPTIONS.map(g => (
-                              <button key={g.id}
-                                onClick={() => setGlazeType(g.id as "perspex" | "moth-eye")}
-                                style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
-                                  padding:"10px 12px", borderRadius:10, cursor:"pointer",
-                                  border:`1.5px solid ${glazeType===g.id?RED:BORDER}`,
-                                  background:glazeType===g.id?"rgba(230,25,25,.04)":"#fff",
-                                  transition:"all .15s", textAlign:"left" }}>
-                                <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
-                                  <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>{g.label}</span>
-                                  <span style={{ fontSize:11, color:MUTED }}>{g.desc}</span>
-                                </div>
-                                <span style={{ fontSize:12, fontWeight:800,
-                                  color:g.add>0?RED:MUTED, flexShrink:0, marginLeft:12 }}>
-                                  {g.add > 0 ? `+$${g.add}` : "Included"}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
-                        </>
+                        </details>
                       )}
 
                       {card.id !== "digital" && (
