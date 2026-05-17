@@ -2300,7 +2300,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
         <div style={{ width:"100%", maxWidth:380, display:"flex", flexDirection:"column", gap:10 }}>
           <input
             type="email"
-            placeholder="Email address"
+            placeholder="Email Address"
             value={email}
             onChange={e => setEmail(e.target.value)}
             disabled={!!user}
@@ -2313,7 +2313,7 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
           {!user && (
             <input
               type="password"
-              placeholder="Create a password (min 6 characters)"
+              placeholder="Create A Password (min 6 characters)"
               value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleEmailSubmit()}
