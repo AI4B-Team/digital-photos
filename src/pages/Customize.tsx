@@ -2283,8 +2283,13 @@ export default function Customize() {
                                 </div>
                                 <div style={{ fontSize:11.5, fontWeight:700, color:INK, whiteSpace:"nowrap" }}>{sz.dim}</div>
                                 <div style={{ fontSize:10, color:MUTED, marginTop:1, whiteSpace:"nowrap" }}>{sz.label}</div>
-                                <div style={{ fontSize:12.5, fontWeight:800, color: selSize===sz.id ? RED : INK, marginTop:4 }}>
-                                  ${sz.price}
+                                {discountAmt > 0 && (
+                                  <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
+                                    ${sz.price}
+                                  </div>
+                                )}
+                                <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>
+                                  ${Math.max(0, sz.price - discountAmt)}
                                 </div>
                               </button>
                             );})}
