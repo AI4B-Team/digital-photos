@@ -620,11 +620,8 @@ export default function Customize() {
   const [choicesLoaded, setChoicesLoaded] = useState(0);
 
   // Promo code, gift note, low-res warnings
-  const PROMOS: Record<string, { pct: number; label: string }> = {
-    MOMGLOW30: { pct: 0.30, label: "Mother's Day 30% off" },
-    WELCOME15: { pct: 0.15, label: "Welcome 15% off" },
-    BUNDLE10:  { pct: 0.10, label: "Bundle 10% off" },
-  };
+  // Promo codes are validated server-side via the `validate-promo` edge function
+  // (never hardcoded in client JS — they would be visible in browser DevTools).
   const [promoCode, setPromoCode]     = useState("");
   const [promoApplied, setPromoApplied] = useState<{ code: string; pct: number; label: string } | null>(null);
   const [promoOpen, setPromoOpen]     = useState(false);
@@ -809,13 +806,25 @@ export default function Customize() {
     }
   };
 
-  const applyPromo = () => {
+  const applyPromo = async () => {
     const code = promoCode.trim().toUpperCase();
-    const p = PROMOS[code];
-    if (!p) { setPromoError("That code isn't valid."); return; }
-    setPromoApplied({ code, ...p });
+    if (!code) return;
     setPromoError("");
-    setPromoOpen(false);
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("validate-promo", {
+        body: { code, subtotal },
+      });
+      if (error || !data?.valid) {
+        setPromoError(data?.error || "That code isn't valid.");
+        return;
+      }
+      setPromoApplied({ code: data.code, pct: data.discountPct, label: data.label });
+      setPromoError("");
+      setPromoOpen(false);
+    } catch {
+      setPromoError("Couldn't validate code. Please try again.");
+    }
   };
   const clearPromo = () => { setPromoApplied(null); setPromoCode(""); };
 
@@ -900,17 +909,27 @@ export default function Customize() {
   const itemListPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   const totalPhotoCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
   // Cart-derived totals (only what the user actually added to the cart)
-  const cartPrintsSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
-  const cartPrintsListSubtotal = cartItems.reduce((sum, it) => sum + itemListPrice(it), 0);
-  const cartPhotoCount = cartItems.reduce((sum, it) => sum + (it.qty || 1), 0);
+  // VIP & digital are fixed-price — excluded from print subtotals, bundle math, and timer discount.
+  const printItems             = cartItems.filter(it => it.productType !== "vip" && it.productType !== "digital");
+  const cartPrintsSubtotal     = printItems.reduce((sum, it) => sum + itemPrice(it), 0);
+  const cartPrintsListSubtotal = printItems.reduce((sum, it) => sum + itemListPrice(it), 0);
+  // Bundle discount counts only physical print items
+  const cartPhotoCount = printItems.reduce((sum, it) => sum + (it.qty || 1), 0);
+  // Full cart subtotal still includes VIP/digital for the displayed Subtotal line
+  const cartFullSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
   const packsSubtotal  = addedPacks.reduce((sum, p) => sum + p.price * p.qty, 0);
-  const subtotal     = cartPrintsSubtotal + packsSubtotal;
-  const listSubtotal = cartPrintsListSubtotal + packsSubtotal;
-  // Limited-time / welcome discount: $X OFF each print
-  const cartPromoSave = cartItems.reduce(
-    (sum, it) => sum + Math.min(discountAmt, itemUnitPrice(it)) * (it.qty || 1),
-    0
-  );
+  const subtotal     = cartFullSubtotal + packsSubtotal;
+  const listSubtotal = cartPrintsListSubtotal
+    + cartItems.filter(it => it.productType === "vip" || it.productType === "digital")
+        .reduce((sum, it) => sum + itemListPrice(it), 0)
+    + packsSubtotal;
+  // Limited-time / welcome timer discount — applied ONCE per order (not per item),
+  // against the most-expensive eligible print. VIP & digital never discounted.
+  const cartPromoSave = (() => {
+    if (discountAmt <= 0 || printItems.length === 0) return 0;
+    const maxPrice = Math.max(...printItems.map(it => itemUnitPrice(it)));
+    return Math.min(discountAmt, maxPrice);
+  })();
   const cartPrintsAfterPromo = Math.max(0, cartPrintsSubtotal - cartPromoSave);
   const bundlePct    = cartPhotoCount >= 3 ? 0.15 : cartPhotoCount >= 2 ? 0.10 : 0;
   const bundleSave   = Math.round(cartPrintsAfterPromo * bundlePct);
@@ -2713,7 +2732,7 @@ export default function Customize() {
                         border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
                       }}>
                         <div style={{ fontSize:11.5, color:INK, fontWeight:600, marginBottom:8, textAlign:"center" }}>
-                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(headerTotal/4).toFixed(2)}</span>
+                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(headerTotal/4).toFixed(2)}</span> with Afterpay / Klarna
                         </div>
                         <div style={{ display:"grid", gridTemplateColumns:"repeat(4, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
                           {[
@@ -3066,7 +3085,7 @@ export default function Customize() {
               </div>
               {discountSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:"#16a34a", marginBottom:4, fontWeight:600 }}>
-                  <span>{discountTier === "welcome" ? "Welcome Promo" : "Limited-Time Promo"} (${discountAmt}/print × {cartPhotoCount})</span>
+                  <span>{discountTier === "welcome" ? "Welcome Promo" : "Limited-Time Promo"} (${discountAmt} off order)</span>
                   <span>−${discountSave}</span>
                 </div>
               )}

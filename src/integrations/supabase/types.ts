@@ -177,6 +177,39 @@ export type Database = {
         }
         Relationships: []
       }
+      promo_codes: {
+        Row: {
+          code: string
+          created_at: string
+          discount_pct: number
+          expires_at: string | null
+          is_active: boolean
+          label: string
+          max_uses: number | null
+          used_count: number
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          discount_pct: number
+          expires_at?: string | null
+          is_active?: boolean
+          label: string
+          max_uses?: number | null
+          used_count?: number
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          discount_pct?: number
+          expires_at?: string | null
+          is_active?: boolean
+          label?: string
+          max_uses?: number | null
+          used_count?: number
+        }
+        Relationships: []
+      }
       sessions: {
         Row: {
           category: string | null
