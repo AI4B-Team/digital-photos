@@ -2076,11 +2076,10 @@ export default function Customize() {
               const basePrice = card.id === "digital" ? 37 : (cardSizeDef?.price || 0);
               const frameAdd = card.canvasAddon && canvasFrame ? 49 : 0;
               const cardDiscount = Math.min(discountAmt, basePrice + frameAdd);
-              // Show retail on card header — discount shown ONCE in cart summary
-              const price    = basePrice + frameAdd; // retail
+              const price = basePrice + frameAdd - cardDiscount;
               const origPrice = basePrice;
               const digitalOrig = 37;
-              const digitalPrice = 37; // retail
+              const digitalPrice = Math.max(0, 37 - discountAmt);
 
               return (
                 <div key={card.id} style={{
