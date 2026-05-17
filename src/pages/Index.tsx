@@ -2280,6 +2280,22 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
     onDone(donePortraits);
   };
 
+  // Auto-skip the email gate for signed-in users: silently save previews
+  // and continue to the next step without re-asking for email/password.
+  const autoSkipRef = useRef(false);
+  useEffect(() => {
+    if (!emailGate || !user || !donePortraits || autoSkipRef.current) return;
+    autoSkipRef.current = true;
+    const userEmail = (user.email || "").trim().toLowerCase();
+    if (userEmail) {
+      setEmail(userEmail);
+      handleEmailSubmit(userEmail);
+    } else {
+      onDone(donePortraits);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [emailGate, user, donePortraits]);
+
   // Email gate screen
   if (emailGate) {
     return (
