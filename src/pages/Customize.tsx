@@ -60,6 +60,14 @@ const G = `
 .cz-watermark{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;mix-blend-mode:normal;opacity:.22;display:flex;align-items:center;justify-content:center}
 .cz-watermark-inner{transform:rotate(-22deg);width:200%;font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.32em;color:rgba(255,255,255,.42);line-height:5;font-size:clamp(11px,1.1vw,14px);text-align:center;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.25);animation:czWmScroll 32s linear infinite}
 @keyframes czWmScroll{from{transform:rotate(-22deg) translateX(0)}to{transform:rotate(-22deg) translateX(-12%)}}
+.cz-acc{border-top:1px solid ${BORDER};margin-top:2px}
+.cz-acc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:12px 2px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:${INK};outline:none}
+.cz-acc>summary::-webkit-details-marker{display:none}
+.cz-acc>summary:hover{color:#000}
+.cz-acc>summary .cz-acc-val{font-size:11px;font-weight:500;color:${MUTED};text-transform:none;letter-spacing:.01em;margin-left:auto;margin-right:8px;text-align:right;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cz-acc>summary .cz-acc-chev{transition:transform .2s ease;flex-shrink:0;color:${MUTED}}
+.cz-acc[open]>summary .cz-acc-chev{transform:rotate(180deg);color:${INK}}
+.cz-acc-body{padding:4px 0 14px;animation:czFade .25s ease}
 .cz-img-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,10,.34);opacity:0;transition:opacity .18s ease;pointer-events:none}
 .cz-img-wrap:hover .cz-img-overlay{opacity:1;pointer-events:auto}
 .cz-overlay-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;background:rgba(20,20,20,.82);color:#fff;border:1px solid rgba(255,255,255,.18);font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(6px);transition:all .15s ease}
@@ -2246,11 +2254,13 @@ export default function Customize() {
                       </div>
 
                       {card.id !== "digital" && (
-                        <>
-                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            {card.id === "case" ? "Choose Your Phone" : "Choose Size"}
-                          </div>
+                        <details className="cz-acc" open>
+                          <summary>
+                            <span>{card.id === "case" ? "Choose Your Phone" : "Size"}</span>
+                            <span className="cz-acc-val">{cardSizeDef?.dim || cardSizeDef?.label || ""}</span>
+                            <ChevronDown className="cz-acc-chev" size={15}/>
+                          </summary>
+                          <div className="cz-acc-body">
                           <div style={{ position:"relative", marginBottom:12 }}>
                             {sizes.length > 3 && (
                               <button
@@ -2336,85 +2346,95 @@ export default function Customize() {
                               </button>
                             )}
                           </div>
-                        </>
+                          </div>
+                        </details>
                       )}
 
                       {card.frameColors && (
-                        <>
-                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            Frame Color
+                        <details className="cz-acc">
+                          <summary>
+                            <span>Frame Color</span>
+                            <span className="cz-acc-val">{(FRAME_COLORS["classic-frame"]||[]).find(fc => fc.id === cardFrame)?.label || ""}</span>
+                            <ChevronDown className="cz-acc-chev" size={15}/>
+                          </summary>
+                          <div className="cz-acc-body">
+                            <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+                              {(FRAME_COLORS["classic-frame"]||[]).map(fc => (
+                                <button key={fc.id} title={fc.label}
+                                  onClick={() => { setCardFrame(fc.id);
+                                    updateSelected({ frameColor:fc.id, frame:toFrameId("classic-frame",fc.id) }); }}
+                                  style={{ width:30, height:30, borderRadius:7,
+                                    background:fc.color, padding:0,
+                                    border:`2px solid ${cardFrame===fc.id?RED:(fc.id==="white"?"#ccc":"transparent")}`,
+                                    boxShadow:"0 1px 4px rgba(0,0,0,.15)",
+                                    cursor:"pointer", outline:"none" }}/>
+                              ))}
+                            </div>
                           </div>
-                          <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:12 }}>
-                            {(FRAME_COLORS["classic-frame"]||[]).map(fc => (
-                              <button key={fc.id} title={fc.label}
-                                onClick={() => { setCardFrame(fc.id);
-                                  updateSelected({ frameColor:fc.id, frame:toFrameId("classic-frame",fc.id) }); }}
-                                style={{ width:30, height:30, borderRadius:7,
-                                  background:fc.color, padding:0,
-                                  border:`2px solid ${cardFrame===fc.id?RED:(fc.id==="white"?"#ccc":"transparent")}`,
-                                  boxShadow:"0 1px 4px rgba(0,0,0,.15)",
-                                  cursor:"pointer", outline:"none" }}/>
-                            ))}
-                          </div>
-                        </>
+                        </details>
                       )}
 
                       {card.frameColors && (
-                        <>
-                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            Mount Colour
+                        <details className="cz-acc">
+                          <summary>
+                            <span>Mount Colour</span>
+                            <span className="cz-acc-val">{MOUNT_COLORS.find(mc => mc.id === mountColor)?.label || ""}</span>
+                            <ChevronDown className="cz-acc-chev" size={15}/>
+                          </summary>
+                          <div className="cz-acc-body">
+                            <div style={{ display:"flex", gap:10 }}>
+                              {MOUNT_COLORS.map(mc => (
+                                <button key={mc.id} title={mc.label}
+                                  onClick={() => setMountColor(mc.id)}
+                                  style={{ display:"flex", flexDirection:"column",
+                                    alignItems:"center", gap:4, background:"none",
+                                    border:"none", cursor:"pointer", padding:0 }}>
+                                  <div style={{ width:30, height:30, borderRadius:7,
+                                    background:mc.color,
+                                    border: mountColor===mc.id
+                                      ? `2px solid ${RED}`
+                                      : `1px solid rgba(0,0,0,.15)`,
+                                    boxShadow:"0 1px 3px rgba(0,0,0,.1)" }}/>
+                                  <span style={{ fontSize:9.5, color:mountColor===mc.id?INK:MUTED }}>
+                                    {mc.label}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                          <div style={{ display:"flex", gap:10, marginBottom:14 }}>
-                            {MOUNT_COLORS.map(mc => (
-                              <button key={mc.id} title={mc.label}
-                                onClick={() => setMountColor(mc.id)}
-                                style={{ display:"flex", flexDirection:"column",
-                                  alignItems:"center", gap:4, background:"none",
-                                  border:"none", cursor:"pointer", padding:0 }}>
-                                <div style={{ width:30, height:30, borderRadius:7,
-                                  background:mc.color,
-                                  border: mountColor===mc.id
-                                    ? `2px solid ${RED}`
-                                    : `1px solid rgba(0,0,0,.15)`,
-                                  boxShadow:"0 1px 3px rgba(0,0,0,.1)" }}/>
-                                <span style={{ fontSize:9.5, color:mountColor===mc.id?INK:MUTED }}>
-                                  {mc.label}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
-                        </>
+                        </details>
                       )}
 
                       {card.frameColors && (
-                        <>
-                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            Glaze
+                        <details className="cz-acc">
+                          <summary>
+                            <span>Glaze</span>
+                            <span className="cz-acc-val">{GLAZE_OPTIONS.find(g => g.id === glazeType)?.label || ""}</span>
+                            <ChevronDown className="cz-acc-chev" size={15}/>
+                          </summary>
+                          <div className="cz-acc-body">
+                            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                              {GLAZE_OPTIONS.map(g => (
+                                <button key={g.id}
+                                  onClick={() => setGlazeType(g.id as "perspex" | "moth-eye")}
+                                  style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                                    padding:"10px 12px", borderRadius:10, cursor:"pointer",
+                                    border:`1.5px solid ${glazeType===g.id?RED:BORDER}`,
+                                    background:glazeType===g.id?"rgba(230,25,25,.04)":"#fff",
+                                    transition:"all .15s", textAlign:"left" }}>
+                                  <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+                                    <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>{g.label}</span>
+                                    <span style={{ fontSize:11, color:MUTED }}>{g.desc}</span>
+                                  </div>
+                                  <span style={{ fontSize:12, fontWeight:800,
+                                    color:g.add>0?INK:MUTED, flexShrink:0, marginLeft:12 }}>
+                                    {g.add > 0 ? `+$${g.add}` : "Included"}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                          <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:14 }}>
-                            {GLAZE_OPTIONS.map(g => (
-                              <button key={g.id}
-                                onClick={() => setGlazeType(g.id as "perspex" | "moth-eye")}
-                                style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
-                                  padding:"10px 12px", borderRadius:10, cursor:"pointer",
-                                  border:`1.5px solid ${glazeType===g.id?RED:BORDER}`,
-                                  background:glazeType===g.id?"rgba(230,25,25,.04)":"#fff",
-                                  transition:"all .15s", textAlign:"left" }}>
-                                <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
-                                  <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>{g.label}</span>
-                                  <span style={{ fontSize:11, color:MUTED }}>{g.desc}</span>
-                                </div>
-                                <span style={{ fontSize:12, fontWeight:800,
-                                  color:g.add>0?RED:MUTED, flexShrink:0, marginLeft:12 }}>
-                                  {g.add > 0 ? `+$${g.add}` : "Included"}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
-                        </>
+                        </details>
                       )}
 
                       {card.id !== "digital" && (
@@ -2424,17 +2444,24 @@ export default function Customize() {
                         </div>
                       )}
 
-                      <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                        letterSpacing:".06em", textTransform:"uppercase", marginBottom:6 }}>Included</div>
-                      <ul style={{ listStyle:"none", padding:0, margin:"0 0 12px",
-                        display:"flex", flexDirection:"column", gap:5 }}>
-                        {card.features.map((f:string, i:number) => (
-                          <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
-                            fontSize:12, color:INK, lineHeight:1.5 }}>
-                            <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
-                          </li>
-                        ))}
-                      </ul>
+                      <details className="cz-acc">
+                        <summary>
+                          <span>What's Included</span>
+                          <span className="cz-acc-val">{card.features.length} items</span>
+                          <ChevronDown className="cz-acc-chev" size={15}/>
+                        </summary>
+                        <div className="cz-acc-body">
+                          <ul style={{ listStyle:"none", padding:0, margin:0,
+                            display:"flex", flexDirection:"column", gap:5 }}>
+                            {card.features.map((f:string, i:number) => (
+                              <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
+                                fontSize:12, color:INK, lineHeight:1.5 }}>
+                                <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </details>
 
                       {cardDiscount > 0 && (
                         <div style={{ fontSize:12, color:"#16a34a", fontWeight:700, marginBottom:10 }}>
