@@ -675,6 +675,44 @@ function RoomViewPanel({
         ))}
       </div>
 
+      {/* Realistic on-wall AI button (staged mode) */}
+      {roomMode === "staged" && (
+        <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+          {!stagedAiUrl ? (
+            <button onClick={generateStagedAI} disabled={stagedAiLoading || !portraitUrl}
+              style={{
+                display:"inline-flex", alignItems:"center", gap:6,
+                background: stagedAiLoading ? "rgba(255,255,255,.1)" : RED,
+                border:"none", padding:"6px 14px", borderRadius:8,
+                fontSize:11.5, fontWeight:700, color:"#fff",
+                cursor: stagedAiLoading ? "wait" : "pointer",
+                fontFamily:"'Poppins',sans-serif",
+              }}>
+              {stagedAiLoading ? "Compositing…" : <><Sparkles size={13}/> Generate Realistic View</>}
+            </button>
+          ) : (
+            <>
+              <span style={{ fontSize:11, color:"rgba(255,255,255,.7)",
+                fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:6 }}>
+                <Sparkles size={12} color="#fff"/> AI on-wall view
+              </span>
+              <button onClick={() => setStagedAiCache((c: any) => { const n={...c}; delete n[stagedKey]; return n; })}
+                style={{
+                  background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.15)",
+                  padding:"4px 10px", borderRadius:8, fontSize:10.5, color:"rgba(255,255,255,.7)",
+                  cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+                }}>Show preview overlay</button>
+              <button onClick={generateStagedAI} disabled={stagedAiLoading}
+                style={{
+                  background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.15)",
+                  padding:"4px 10px", borderRadius:8, fontSize:10.5, color:"rgba(255,255,255,.7)",
+                  cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+                }}>Regenerate</button>
+            </>
+          )}
+        </div>
+      )}
+
       {/* Upload strip - My Room + AI */}
       {(roomMode === "myroom" || roomMode === "ai") && (
         <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"center" }}>
