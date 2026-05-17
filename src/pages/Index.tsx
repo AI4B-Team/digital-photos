@@ -2409,11 +2409,6 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
                   opacity: i === (proofIdx % proofDeck.length) ? 1 : 0,
                   transition:"opacity 1s ease-in-out" }}/>
             ))}
-            <div style={{ position:"absolute", bottom:12, left:12, fontSize:10,
-              letterSpacing:".16em", textTransform:"uppercase", color:"#fff",
-              background:"rgba(0,0,0,.55)", padding:"5px 10px", borderRadius:6, fontWeight:600, zIndex:2 }}>
-              {proofDeck[proofIdx % proofDeck.length].style}
-            </div>
           </div>
 
           {/* Reviews below photo */}
