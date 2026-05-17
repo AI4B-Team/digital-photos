@@ -2649,7 +2649,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     <div style={{ background:T.bg, minHeight:"100vh", color:T.cream }}>
       <style>{G}</style>
 
-      <SiteHeader current="upload" onBack={onBack} total={0}/>
+      <SiteHeader current="upload" onBack={onBack}/>
 
       {/* Headline */}
       <div style={{ maxWidth:1200, margin:"0 auto", padding:"40px 6vw 20px", textAlign:"center" }}>
