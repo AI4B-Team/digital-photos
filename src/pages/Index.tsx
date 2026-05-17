@@ -2272,8 +2272,10 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
           color:T.cream, marginBottom:10, textAlign:"center" }}>
           Your Portrait Is Ready!
         </h2>
-        <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center" }}>
-          Where Should We Send It?
+        <p style={{ color:T.muted, fontSize:14, marginBottom:24, textAlign:"center", maxWidth:420 }}>
+          {user
+            ? "Save it to your gallery and continue to checkout."
+            : "Create a free account to save your portrait, revisit your gallery, and place orders."}
         </p>
         <div style={{ width:"100%", maxWidth:380, display:"flex", flexDirection:"column", gap:10 }}>
           <input
@@ -2281,21 +2283,43 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
             placeholder="Email address"
             value={email}
             onChange={e => setEmail(e.target.value)}
+            disabled={!!user}
             onKeyDown={e => e.key === "Enter" && handleEmailSubmit()}
             style={{ padding:"14px 16px", fontSize:14, borderRadius:10,
               border:`1px solid ${T.border}`, outline:"none",
-              fontFamily:"'Poppins',sans-serif", background:"#fff", color:"#1a1a1a" }}
+              fontFamily:"'Poppins',sans-serif", background:"#fff", color:"#1a1a1a",
+              opacity: user ? .7 : 1 }}
           />
+          {!user && (
+            <input
+              type="password"
+              placeholder="Create a password (min 6 characters)"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && handleEmailSubmit()}
+              autoComplete="new-password"
+              style={{ padding:"14px 16px", fontSize:14, borderRadius:10,
+                border:`1px solid ${T.border}`, outline:"none",
+                fontFamily:"'Poppins',sans-serif", background:"#fff", color:"#1a1a1a" }}
+            />
+          )}
+          {authError && (
+            <p style={{ color:"#E06060", fontSize:12, margin:"2px 2px 0", textAlign:"center" }}>
+              {authError}
+            </p>
+          )}
           <button
             onClick={handleEmailSubmit}
-            disabled={emailBusy || !email.includes("@")}
+            disabled={emailBusy || !email.includes("@") || (!user && password.length < 6)}
             className="btn-gold"
             style={{ padding:"15px 0", borderRadius:10, fontSize:14,
               display:"flex", alignItems:"center", justifyContent:"center", gap:10,
-              opacity: (!email.includes("@") || emailBusy) ? .55 : 1 }}>
-            {emailBusy ? "Saving..." : <>Send Me My Portrait <ArrowRight size={17}/></>}
+              opacity: (!email.includes("@") || emailBusy || (!user && password.length < 6)) ? .55 : 1 }}>
+            {emailBusy
+              ? "Creating account..."
+              : <>{user ? "Save & Continue" : "Create Account & Continue"} <ArrowRight size={17}/></>}
           </button>
-          <p style={{ color:T.dim, fontSize:11.5, textAlign:"center", marginTop:6, whiteSpace:"nowrap" }}>
+          <p style={{ color:T.dim, fontSize:11.5, textAlign:"center", marginTop:6 }}>
             Your portrait will be saved to your gallery — no spam, unsubscribe anytime.
           </p>
           <button onClick={() => onDone(donePortraits)}
