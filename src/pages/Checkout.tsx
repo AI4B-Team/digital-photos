@@ -784,6 +784,39 @@ export default function CheckoutPage() {
 
   const orderId = useState(() => "DP-" + Math.random().toString(36).slice(2,8).toUpperCase())[0];
 
+  // ── Limited-time discount countdown (shared with /customize via localStorage) ──
+  const [discountAmt, setDiscountAmt] = useState(0);
+  const [discountSec, setDiscountSec] = useState(0);
+  const [discountTier, setDiscountTier] = useState("");
+  useEffect(() => {
+    const LS_KEY = "ra_discount_start_v3";
+    const FIFTEEN_MIN = 15 * 60 * 1000;
+    const TOTAL = FIFTEEN_MIN + 24 * 60 * 60 * 1000;
+    let startTs = parseInt(localStorage.getItem(LS_KEY) || "0");
+    if (!startTs) { startTs = Date.now(); localStorage.setItem(LS_KEY, String(startTs)); }
+    const tick = () => {
+      const elapsed = Date.now() - startTs;
+      if (elapsed < FIFTEEN_MIN) {
+        setDiscountAmt(20); setDiscountTier("welcome");
+        setDiscountSec(Math.ceil((FIFTEEN_MIN - elapsed) / 1000));
+      } else if (elapsed < TOTAL) {
+        setDiscountAmt(10); setDiscountTier("extended");
+        setDiscountSec(Math.ceil((TOTAL - elapsed) / 1000));
+      } else { setDiscountAmt(0); setDiscountTier(""); setDiscountSec(0); }
+    };
+    tick();
+    const iv = setInterval(tick, 1000);
+    return () => clearInterval(iv);
+  }, []);
+  const fmtCountdown = (s: number) => {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    if (h > 0) return `${h}h ${String(m).padStart(2,"0")}m`;
+    return `${String(m).padStart(2,"0")}m ${String(sec).padStart(2,"0")}s`;
+  };
+  const bannerH = discountAmt > 0 ? 38 : 0;
+
   const goDelivery = () => navigate('/delivery');
   const goBack = () => navigate('/');
 
