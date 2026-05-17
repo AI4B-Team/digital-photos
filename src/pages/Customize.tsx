@@ -984,6 +984,18 @@ export default function Customize() {
   const [selectedPackId, setSelectedPackId]     = useState<string | null>(null);
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
+
+  // ── Room View state ──
+  const [roomView,        setRoomView]      = useState(false);
+  const [roomMode,        setRoomMode]      = useState<"staged"|"myroom"|"ai">("staged");
+  const [roomIdx,         setRoomIdx]       = useState(0);
+  const [userRoomUrl,     setUserRoomUrl]   = useState<string|null>(null);
+  const [aiRoomUrl,       setAiRoomUrl]     = useState<string|null>(null);
+  const [aiRoomLoading,   setAiRoomLoading] = useState(false);
+  const [portraitDragPos, setPortraitDragPos] = useState({ x:45, y:12, w:26 });
+  const [isDragging,      setIsDragging]    = useState(false);
+  const [dragStart,       setDragStart]     = useState({ mx:0, my:0, px:0, py:0 });
+  const roomContainerRef = useRef<HTMLDivElement>(null);
   const [mountColor, setMountColor]             = useState("snow-white");
   const [glazeType,  setGlazeType]              = useState<"perspex"|"moth-eye">("perspex");
   // Name overlay — pre-fill from homepage `heroName`, default to "top" when present
