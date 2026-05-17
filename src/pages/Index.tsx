@@ -425,7 +425,10 @@ export const TEMPLATES: Record<string, { id:string; label:string; desc:string; i
      { id:"pet-royal-regalia", label:"Royal Regalia", desc:"Golden Crown Portrait",
        img: new URL("@/assets/templates/pets/pet-royal-dog.jpg", import.meta.url).href,
        prompt:"regal renaissance oil painting of the pet wearing a golden jeweled crown, ornate royal blue velvet robe trimmed with gold embroidery and a gemstone medallion necklace, dramatic dark teal and gold textured background with painterly gold-leaf accents, classical court portrait composition, rich oil painting brushstrokes, gallery-quality fine art. Output ONLY the painting content at full bleed (no frame, no wall, no mockup chrome)." },
-   ],
+     { id:"pet-dreamer", label:"Be A Dreamer", desc:"Street Art Icon",
+       img: new URL("@/assets/templates/pets/pet-graffiti-dreamer.jpg", import.meta.url).href,
+       prompt:"bold street-art / pop-art mixed-media canvas portrait of the pet rendered in dramatic black-and-white photo-realism for the face and fur, head-and-shoulders centered composition with intense expressive eyes (subtle orange/amber tint in the irises). Background is a chaotic urban graffiti collage: dripping spray-paint in turquoise, hot pink, black and white running down from the top, designer-monogram patterns in brown and white on the upper sides, scattered pop-culture stickers and comic-style cartoon characters, vintage soup-can labels, retro celebrity cutouts, and splashes of red, blue, green and yellow paint along the bottom. A bright pink hand-sprayed phrase 'BE A DREAMER' is scrawled prominently across the lower-center in dripping graffiti script, with a small turquoise spray-painted crown floating above the pet's head. Thick textured canvas finish, gallery-quality urban contemporary art. Output ONLY the artwork content at full bleed (no frame, no wall, no mockup chrome)." },
+    ],
   babies: [
     { id:"baby-skateboard", label:"Little Skater", desc:"Mom & Baby Skate",
       img: babySkateboard,
