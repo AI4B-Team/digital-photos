@@ -2180,13 +2180,12 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
       setMsg(Math.min(Math.floor((fakePct/100) * GEN_MSGS.length), GEN_MSGS.length-1));
     }, 200);
 
+    // Preload all proof images so cross-fade transitions never flash
+    proofDeck.forEach(p => { const im = new Image(); im.src = p.img; });
+
     const spiv = setInterval(() => {
-      setProofFade(false);
-      setTimeout(() => {
-        setProofIdx(p => (p + 1) % proofDeck.length);
-        setProofFade(true);
-      }, 280);
-    }, 3500);
+      setProofIdx(p => (p + 1) % proofDeck.length);
+    }, 4000);
 
     (async () => {
       try {
@@ -2401,16 +2400,18 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
           <p style={{ fontSize:12.5, color:T.gold, marginBottom:20, fontWeight:600 }}>{Math.round(pct)}% complete</p>
           <p style={{ color:T.muted, fontSize:13, marginBottom:28, textAlign:"center", minHeight:18 }}>{GEN_MSGS[msg]}</p>
 
-          {/* Social proof photo */}
+          {/* Social proof photo — cross-fade stack to avoid flashing */}
           <div style={{ width:"100%", maxWidth:460, borderRadius:16, overflow:"hidden",
-            border:"1px solid rgba(255,255,255,.08)", background:"#fff", position:"relative",
-            opacity: proofFade ? 1 : 0, transition:"opacity .28s" }}>
-            <img src={proofDeck[proofIdx % proofDeck.length].img}
-              alt="Customer portrait example"
-              style={{ width:"100%", height:340, objectFit:"cover", display:"block" }}/>
+            border:"1px solid rgba(255,255,255,.08)", background:"#000", position:"relative", height:340 }}>
+            {proofDeck.map((p, i) => (
+              <img key={p.img} src={p.img} alt="Customer portrait example" loading="eager"
+                style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
+                  opacity: i === (proofIdx % proofDeck.length) ? 1 : 0,
+                  transition:"opacity 1s ease-in-out" }}/>
+            ))}
             <div style={{ position:"absolute", bottom:12, left:12, fontSize:10,
               letterSpacing:".16em", textTransform:"uppercase", color:"#fff",
-              background:"rgba(0,0,0,.55)", padding:"5px 10px", borderRadius:6, fontWeight:600 }}>
+              background:"rgba(0,0,0,.55)", padding:"5px 10px", borderRadius:6, fontWeight:600, zIndex:2 }}>
               {proofDeck[proofIdx % proofDeck.length].style}
             </div>
           </div>
@@ -2423,8 +2424,8 @@ function GenScreen({ selectedStyles, sessionId, photoUrl, extraPhotoUrls = [], c
               proofDeck[(proofIdx+1) % proofDeck.length],
               proofDeck[(proofIdx+2) % proofDeck.length],
             ].slice(0, pct > 20 ? (pct > 50 ? 3 : 2) : 1).map((p, i) => (
-              <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:8,
-                opacity: proofFade ? 1 : 0, transition:"opacity .28s" }}>
+              <div key={p.review} style={{ display:"flex", alignItems:"flex-start", gap:8,
+                transition:"opacity .6s ease-in-out" }}>
                 <span style={{ color:"#F5A623", fontSize:12, flexShrink:0 }}>★★★★★</span>
                 <p style={{ fontSize:12.5, color:T.cream, lineHeight:1.5, fontStyle:"italic", margin:0 }}>{p.review}</p>
               </div>
