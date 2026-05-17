@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw, Home, Upload } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import PreviewsDrawer from "@/components/PreviewsDrawer";
 import SiteHeader from "@/components/SiteHeader";
@@ -77,6 +77,7 @@ const G = `
 .cz-busy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,10,.94);backdrop-filter:blur(6px);color:#fff;z-index:10;isolation:isolate;line-height:1.25;text-align:center;padding:18px}
 .cz-spinner{width:46px;height:46px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;animation:czSpin .9s linear infinite}
 @keyframes czSpin{to{transform:rotate(360deg)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .cz-busy-label{font-size:13px;font-weight:600;letter-spacing:.02em;text-align:center;line-height:1.3;max-width:100%;overflow-wrap:break-word;text-wrap:balance}
 .cz-busy-sub{font-size:11.5px;color:rgba(255,255,255,.7);text-align:center;line-height:1.35;max-width:100%;overflow-wrap:break-word}
 .cz-modal-back{position:fixed;inset:0;background:rgba(10,10,10,.55);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:czFade .2s ease}
@@ -337,6 +338,45 @@ const GLAZE_OPTIONS = [
   { id:"moth-eye",    label:"Moth-Eye ✦",   desc:"Anti-reflective, no-glare museum-grade glass",    add:17 },
 ] as const;
 
+// ── Room View ─────────────────────────────────────────
+const ROOMS = [
+  { label:"Modern Living Room",
+    url:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&h=900&fit=crop&q=85",
+    wallX:52, wallY:12, wallW:26 },
+  { label:"Warm Bedroom",
+    url:"https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:10, wallW:24 },
+  { label:"Scandinavian Living Room",
+    url:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&h=900&fit=crop&q=85",
+    wallX:48, wallY:14, wallW:28 },
+  { label:"Moody Dark Study",
+    url:"https://images.unsplash.com/photo-1597072689227-8882273e8f6a?w=1400&h=900&fit=crop&q=85",
+    wallX:55, wallY:16, wallW:22 },
+  { label:"Gallery Hallway",
+    url:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:18, wallW:30 },
+  { label:"Traditional Family Room",
+    url:"https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1400&h=900&fit=crop&q=85",
+    wallX:50, wallY:12, wallW:26 },
+  { label:"Minimalist Home Office",
+    url:"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1400&h=900&fit=crop&q=85",
+    wallX:62, wallY:10, wallW:20 },
+  { label:"Bohemian Sitting Room",
+    url:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1400&h=900&fit=crop&q=85",
+    wallX:45, wallY:15, wallW:25 },
+] as const;
+
+const FRAME_COLOR_HEX: Record<string,string> = {
+  "black":          "#15151a",
+  "white":          "#efece6",
+  "natural":        "#c89968",
+  "antique-silver": "#9a9a9a",
+  "antique-gold":   "#c4963a",
+  "dark-grey":      "#3d3d42",
+  "light-grey":     "#c2c0bb",
+  "brown":          "#6b4a30",
+};
+
 const CANVAS_EDGES = [
   { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
   { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",  color:"#1a1a1a" },
@@ -507,6 +547,288 @@ function FrameSwatch({ frame, on }) {
   );
 }
 
+/* ── Room View Panel ── */
+function RoomViewPanel({
+  portraitUrl, frameColor, productType, selected, roomIdx, setRoomIdx,
+  roomMode, setRoomMode, userRoomUrl, setUserRoomUrl,
+  aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
+  portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
+  dragStart, setDragStart, roomContainerRef,
+}: any) {
+  const room     = ROOMS[roomIdx];
+  const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
+  const isCanvas = productType === "canvas";
+
+  const sizeMap: Record<string, number> = {
+    "8x8":1, "10x10":1, "12x12":1, "16x16":1,
+    "8x10":0.80, "8x11":0.73, "10x8":1.25, "11x14":0.79,
+    "12x16":0.75, "16x20":0.80, "18x24":0.75, "20x24":0.83, "24x36":0.67,
+  };
+  const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
+
+  const bgUrl = roomMode === "myroom" && userRoomUrl ? userRoomUrl
+              : roomMode === "ai" && aiRoomUrl       ? aiRoomUrl
+              : room.url;
+
+  const wallX = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.x : room.wallX;
+  const wallY = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.y : room.wallY;
+  const wallW = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.w : room.wallW;
+
+  const onDragStart = (e: any) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setDragStart({ mx:e.clientX, my:e.clientY, px:portraitDragPos.x, py:portraitDragPos.y });
+  };
+  const onDragMove = (e: any) => {
+    if (!isDragging || !roomContainerRef.current) return;
+    const rect = roomContainerRef.current.getBoundingClientRect();
+    const dx = ((e.clientX - dragStart.mx) / rect.width) * 100;
+    const dy = ((e.clientY - dragStart.my) / rect.height) * 100;
+    setPortraitDragPos((p: any) => ({
+      ...p,
+      x: Math.max(0, Math.min(80 - wallW, dragStart.px + dx)),
+      y: Math.max(0, Math.min(70, dragStart.py + dy)),
+    }));
+  };
+  const onDragEnd = () => setIsDragging(false);
+  const onWheel = (e: any) => {
+    setPortraitDragPos((p: any) => ({
+      ...p, w: Math.max(10, Math.min(60, p.w - e.deltaY * 0.02)),
+    }));
+  };
+
+  const generateAIRoom = async () => {
+    if (!userRoomUrl || !portraitUrl) return;
+    setAiRoomLoading(true);
+    setAiRoomUrl(null);
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
+        body: { roomUrl: userRoomUrl, portraitUrl, frameColor },
+      });
+      if (!error && data?.url) setAiRoomUrl(data.url);
+    } catch { /* silent */ }
+    setAiRoomLoading(false);
+  };
+
+  const showPortraitOverlay = portraitUrl && (
+    roomMode === "staged" ||
+    (roomMode === "myroom" && userRoomUrl) ||
+    (roomMode === "ai" && userRoomUrl && !aiRoomUrl && !aiRoomLoading)
+  );
+
+  const TABS = [
+    { id:"staged", label:"Staged Rooms" },
+    { id:"myroom", label:"My Room"      },
+    { id:"ai",     label:"AI Magic ✦"   },
+  ] as const;
+
+  return (
+    <div style={{
+      width:"100%", height:"100%", display:"flex", flexDirection:"column",
+      gap:10, background:"#111", borderRadius:14, padding:12, color:"#fff",
+    }}>
+      {/* Mode tabs */}
+      <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+        {TABS.map(tab => (
+          <button key={tab.id}
+            onClick={() => { setRoomMode(tab.id); setAiRoomUrl(null); }}
+            style={{
+              padding:"5px 11px", borderRadius:8, fontSize:11, fontWeight:600,
+              cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+              background: roomMode===tab.id ? RED : "rgba(255,255,255,.06)",
+              color:      roomMode===tab.id ? "#fff" : "rgba(255,255,255,.5)",
+              border:     roomMode===tab.id ? "none" : "1px solid rgba(255,255,255,.1)",
+            }}>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Upload strip - My Room + AI */}
+      {(roomMode === "myroom" || roomMode === "ai") && (
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"center" }}>
+          <label style={{
+            display:"inline-flex", alignItems:"center", gap:6,
+            background:"rgba(255,255,255,.1)", border:"1px solid rgba(255,255,255,.15)",
+            padding:"6px 12px", borderRadius:8, cursor:"pointer",
+            fontSize:11.5, color:"rgba(255,255,255,.8)",
+            fontFamily:"'Poppins',sans-serif",
+          }}>
+            <Upload size={13}/>
+            {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
+            <input type="file" accept="image/*" style={{ display:"none" }}
+              onChange={e => {
+                const f = e.target.files?.[0];
+                if (!f) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                  setUserRoomUrl(ev.target?.result as string);
+                  setAiRoomUrl(null);
+                };
+                reader.readAsDataURL(f);
+              }}/>
+          </label>
+          {roomMode === "ai" && userRoomUrl && (
+            <button onClick={generateAIRoom} disabled={aiRoomLoading}
+              style={{
+                display:"inline-flex", alignItems:"center", gap:6,
+                background: aiRoomLoading ? "rgba(255,255,255,.1)" : RED,
+                border:"none", padding:"6px 14px", borderRadius:8,
+                fontSize:11.5, fontWeight:700, color:"#fff",
+                cursor: aiRoomLoading ? "wait" : "pointer",
+                fontFamily:"'Poppins',sans-serif",
+              }}>
+              {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> Generate AI Room</>}
+            </button>
+          )}
+          {roomMode === "myroom" && userRoomUrl && (
+            <span style={{ fontSize:10, color:"rgba(255,255,255,.4)", lineHeight:1.4 }}>
+              Drag portrait to reposition · Scroll to resize
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Main room view */}
+      <div
+        ref={roomContainerRef}
+        onMouseMove={onDragMove}
+        onMouseUp={onDragEnd}
+        onMouseLeave={onDragEnd}
+        style={{
+          position:"relative", flex:"1 1 auto", borderRadius:12,
+          overflow:"hidden", background:"#000", minHeight:0,
+          userSelect: isDragging ? "none" : "auto",
+        }}>
+        <img
+          src={bgUrl}
+          alt="Room preview"
+          style={{
+            width:"100%", height:"100%", objectFit:"cover", display:"block",
+            filter: (!userRoomUrl && (roomMode==="myroom" || roomMode==="ai"))
+              ? "brightness(0.4)" : "none",
+          }}/>
+
+        {/* Empty state for My Room / AI without upload */}
+        {(roomMode==="myroom" || roomMode==="ai") && !userRoomUrl && (
+          <div style={{
+            position:"absolute", inset:0, display:"flex", flexDirection:"column",
+            alignItems:"center", justifyContent:"center", gap:10,
+            color:"rgba(255,255,255,.7)", textAlign:"center", padding:20,
+          }}>
+            <Home size={40} color="rgba(255,255,255,.3)"/>
+            <span style={{ fontSize:13, fontFamily:"'Poppins',sans-serif", maxWidth:260 }}>
+              Upload a photo of your room to see your portrait on your wall
+            </span>
+          </div>
+        )}
+
+        {/* Portrait overlay */}
+        {showPortraitOverlay && (
+          <div
+            onMouseDown={(roomMode==="myroom" || roomMode==="ai") ? onDragStart : undefined}
+            onWheel={(roomMode==="myroom" || roomMode==="ai") ? onWheel : undefined}
+            style={{
+              position:"absolute",
+              left:   `${wallX}%`,
+              top:    `${wallY}%`,
+              width:  `${wallW}%`,
+              aspectRatio: `${1} / ${aspectRatio || 0.75}`,
+              cursor: (roomMode==="myroom" || roomMode==="ai") ? (isDragging ? "grabbing" : "grab") : "default",
+              boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+              border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+              background: framePx,
+              transition: isDragging ? "none" : "left .15s, top .15s, width .15s",
+            }}>
+            <img src={portraitUrl} alt="Your portrait"
+              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          </div>
+        )}
+
+        {/* AI loading overlay */}
+        {aiRoomLoading && (
+          <div style={{
+            position:"absolute", inset:0, background:"rgba(0,0,0,.6)",
+            display:"flex", flexDirection:"column", alignItems:"center",
+            justifyContent:"center", gap:14,
+          }}>
+            <div style={{
+              width:36, height:36, borderRadius:"50%",
+              border:"3px solid rgba(255,255,255,.18)", borderTopColor:"#fff",
+              animation:"spin .9s linear infinite",
+            }}/>
+            <span style={{ color:"rgba(255,255,255,.8)", fontSize:13,
+              fontFamily:"'Poppins',sans-serif" }}>Compositing your portrait…</span>
+          </div>
+        )}
+
+        {/* Room label + navigation (staged only) */}
+        {roomMode === "staged" && (
+          <>
+            <div style={{
+              position:"absolute", bottom:12, left:"50%",
+              transform:"translateX(-50%)",
+              background:"rgba(0,0,0,.55)", backdropFilter:"blur(8px)",
+              padding:"5px 14px", borderRadius:999,
+              fontSize:11, fontWeight:600, color:"rgba(255,255,255,.85)",
+              fontFamily:"'Poppins',sans-serif", letterSpacing:".06em",
+              textTransform:"uppercase", whiteSpace:"nowrap",
+            }}>{room.label}</div>
+            <button onClick={() => setRoomIdx((p: number) => (p - 1 + ROOMS.length) % ROOMS.length)}
+              style={{
+                position:"absolute", left:12, top:"50%", transform:"translateY(-50%)",
+                width:34, height:34, borderRadius:"50%",
+                background:"rgba(0,0,0,.4)", backdropFilter:"blur(6px)",
+                border:"1px solid rgba(255,255,255,.15)",
+                cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+              }}>
+              <ChevronLeft size={17} color="#fff"/>
+            </button>
+            <button onClick={() => setRoomIdx((p: number) => (p + 1) % ROOMS.length)}
+              style={{
+                position:"absolute", right:12, top:"50%", transform:"translateY(-50%)",
+                width:34, height:34, borderRadius:"50%",
+                background:"rgba(0,0,0,.4)", backdropFilter:"blur(6px)",
+                border:"1px solid rgba(255,255,255,.15)",
+                cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+              }}>
+              <ChevronRight size={17} color="#fff"/>
+            </button>
+            <div style={{
+              position:"absolute", bottom:42, left:"50%", transform:"translateX(-50%)",
+              display:"flex", gap:5,
+            }}>
+              {ROOMS.map((_,i) => (
+                <button key={i} onClick={() => setRoomIdx(i)}
+                  style={{
+                    width: i===roomIdx ? 18 : 6, height:6, borderRadius:3,
+                    border:"none", cursor:"pointer", padding:0,
+                    background: i===roomIdx ? "#fff" : "rgba(255,255,255,.35)",
+                    transition:"width .2s, background .2s",
+                  }}/>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Privacy notice */}
+        {(roomMode==="myroom" || roomMode==="ai") && userRoomUrl && (
+          <div style={{
+            position:"absolute", top:8, right:8,
+            background:"rgba(0,0,0,.5)", backdropFilter:"blur(6px)",
+            padding:"4px 10px", borderRadius:999,
+            fontSize:9.5, color:"rgba(255,255,255,.6)",
+            fontFamily:"'Poppins',sans-serif",
+          }}>
+            • Your room photo is never stored or shared
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ── Page ── */
 export default function Customize() {
   const navigate = useNavigate();
@@ -663,6 +985,18 @@ export default function Customize() {
   const [selectedPackId, setSelectedPackId]     = useState<string | null>(null);
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
   const [cardFrame, setCardFrame]               = useState("black");
+
+  // ── Room View state ──
+  const [roomView,        setRoomView]      = useState(false);
+  const [roomMode,        setRoomMode]      = useState<"staged"|"myroom"|"ai">("staged");
+  const [roomIdx,         setRoomIdx]       = useState(0);
+  const [userRoomUrl,     setUserRoomUrl]   = useState<string|null>(null);
+  const [aiRoomUrl,       setAiRoomUrl]     = useState<string|null>(null);
+  const [aiRoomLoading,   setAiRoomLoading] = useState(false);
+  const [portraitDragPos, setPortraitDragPos] = useState({ x:45, y:12, w:26 });
+  const [isDragging,      setIsDragging]    = useState(false);
+  const [dragStart,       setDragStart]     = useState({ mx:0, my:0, px:0, py:0 });
+  const roomContainerRef = useRef<HTMLDivElement>(null);
   const [mountColor, setMountColor]             = useState("snow-white");
   const [glazeType,  setGlazeType]              = useState<"perspex"|"moth-eye">("perspex");
   // Name overlay — pre-fill from homepage `heroName`, default to "top" when present
@@ -1354,6 +1688,14 @@ export default function Customize() {
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
               onClick={(e) => e.stopPropagation()}
               style={{ flexShrink:0 }}>
+              <button
+                className={`cz-tool ${roomView ? "on" : ""}`}
+                onClick={() => { setRoomView(v => !v); setAiRoomUrl(null); }}
+                data-tip={roomView ? "Live Preview" : "See In A Room"}
+                aria-label="Toggle room view">
+                <Home size={17}/>
+              </button>
+              <div className="cz-tool-divider"/>
               <span style={{ position:"relative", display:"inline-flex" }}>
                 <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("ai"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
                   <Sparkles size={18}/>
@@ -1994,41 +2336,62 @@ export default function Customize() {
             backgroundSize:"3px 3px",
             mixBlendMode:"multiply",
           }}/>
-          <div style={{
-            textAlign:"center", flexShrink:0, padding:"32px 0 8px",
-            position:"sticky", top:0, zIndex:5, width:"100%",
-            
-          }}>
-            <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
-            <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
-              Make It Yours.
-            </h1>
-          </div>
-          <div className="cz-stage-row" style={{
-            display:"flex", alignItems:"center",
-            justifyContent: aiOpen ? "flex-start" : "center",
-            gap:16, width:"100%", maxWidth:"100%", flex:"1 1 auto", minHeight:0,
-            paddingLeft: aiOpen ? 8 : 0,
-          }}>
-            <div className="cz-canvas-scroll" style={{
-              flex:"1 1 auto", width:"100%", minWidth:0, maxHeight:"100%", height:"100%",
-              overflowY:"auto", display:"flex", flexDirection:"column",
-              alignItems:"center", justifyContent:"flex-start", gap:8,
-              padding:"20px 60px 60px 20px",
-              scrollBehavior:"smooth", scrollSnapType:"y proximity",
-              WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
-            }}>
-              {items.map(it => renderItem(it, it.id === selectedId, it.id === selectedId))}
+          {roomView ? (
+            <div style={{ flex:"1 1 auto", width:"100%", minHeight:0,
+              display:"flex", padding:"16px 16px 24px" }}>
+              <RoomViewPanel
+                portraitUrl={(selected as any).photoUrl || ""}
+                frameColor={cardFrame || "black"}
+                productType={activeCard}
+                selected={selected}
+                roomIdx={roomIdx} setRoomIdx={setRoomIdx}
+                roomMode={roomMode} setRoomMode={setRoomMode}
+                userRoomUrl={userRoomUrl} setUserRoomUrl={setUserRoomUrl}
+                aiRoomUrl={aiRoomUrl} setAiRoomUrl={setAiRoomUrl}
+                aiRoomLoading={aiRoomLoading} setAiRoomLoading={setAiRoomLoading}
+                portraitDragPos={portraitDragPos} setPortraitDragPos={setPortraitDragPos}
+                isDragging={isDragging} setIsDragging={setIsDragging}
+                dragStart={dragStart} setDragStart={setDragStart}
+                roomContainerRef={roomContainerRef}
+              />
             </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/png,image/jpeg,image/webp,image/gif"
-              style={{ display:"none" }}
-              onChange={handleFilePicked}
-            />
-          </div>
-
+          ) : (
+            <>
+            <div style={{
+              textAlign:"center", flexShrink:0, padding:"32px 0 8px",
+              position:"sticky", top:0, zIndex:5, width:"100%",
+            }}>
+              <div style={{ fontSize:11, letterSpacing:".24em", color:MUTED, fontWeight:600 }}>YOUR PORTRAIT · LIVE PREVIEW</div>
+              <h1 className="cz-serif" style={{ fontSize:28, margin:"6px 0 0", color:INK, fontWeight:600 }}>
+                Make It Yours.
+              </h1>
+            </div>
+            <div className="cz-stage-row" style={{
+              display:"flex", alignItems:"center",
+              justifyContent: aiOpen ? "flex-start" : "center",
+              gap:16, width:"100%", maxWidth:"100%", flex:"1 1 auto", minHeight:0,
+              paddingLeft: aiOpen ? 8 : 0,
+            }}>
+              <div className="cz-canvas-scroll" style={{
+                flex:"1 1 auto", width:"100%", minWidth:0, maxHeight:"100%", height:"100%",
+                overflowY:"auto", display:"flex", flexDirection:"column",
+                alignItems:"center", justifyContent:"flex-start", gap:8,
+                padding:"20px 60px 60px 20px",
+                scrollBehavior:"smooth", scrollSnapType:"y proximity",
+                WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
+              }}>
+                {items.map(it => renderItem(it, it.id === selectedId, it.id === selectedId))}
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                style={{ display:"none" }}
+                onChange={handleFilePicked}
+              />
+            </div>
+            </>
+          )}
           {/* Variants moved to left panel */}
         </div>
 
