@@ -541,6 +541,24 @@ export default function Customize() {
 
 
   const [items, setItems] = useState(() => {
+    // Load portraits passed from the My Previews drawer
+    try {
+      const stored = localStorage.getItem("dp:pendingPortraits");
+      if (stored) {
+        const portraits: { url: string; style: string }[] = JSON.parse(stored);
+        localStorage.removeItem("dp:pendingPortraits");
+        localStorage.removeItem("dp:pendingCategory");
+        if (portraits.length > 0) {
+          return portraits.map(p =>
+            makeItem({
+              photoUrl: p.url,
+              style:    p.style || "royal",
+            })
+          );
+        }
+      }
+    } catch {}
+
     const saved = (session as any).customizationItems;
     if (saved?.length) return saved;
     return [makeItem({

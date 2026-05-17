@@ -230,18 +230,34 @@ export default function PreviewsDrawer({
                 </div>
                 {!expired && (
                   <div style={{ padding: "8px 12px 12px" }}>
-                    <a
-                      href={`/customize?session=${row.session_id || ""}`}
+                    <button
+                      onClick={() => {
+                        try {
+                          localStorage.setItem(
+                            "dp:pendingPortraits",
+                            JSON.stringify(
+                              row.portraits.map(p => ({
+                                url: p.hd_url || p.url,
+                                style: p.style || "",
+                              }))
+                            )
+                          );
+                          localStorage.setItem("dp:pendingCategory", row.category || "");
+                        } catch {}
+                        window.location.href = "/customize";
+                      }}
                       style={{
-                        display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7,
-                        width: "100%", background: RED, color: "#fff", textDecoration: "none",
+                        display: "inline-flex", alignItems: "center",
+                        justifyContent: "center", gap: 7,
+                        width: "100%", background: RED, color: "#fff",
+                        border: "none",
                         padding: "10px 0", borderRadius: 8, fontSize: 12, fontWeight: 700,
                         fontFamily: "'Poppins',sans-serif", letterSpacing: ".04em",
-                        textTransform: "uppercase",
+                        textTransform: "uppercase", cursor: "pointer",
                       }}
                     >
                       <ShoppingBag size={13} /> Order Prints
-                    </a>
+                    </button>
                   </div>
                 )}
               </section>
