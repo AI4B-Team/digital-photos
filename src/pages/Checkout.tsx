@@ -843,8 +843,29 @@ export default function CheckoutPage() {
     <>
       <style>{CSS}</style>
       <div style={{ background:C.bg, minHeight:"100vh" }}>
+        {/* Limited-time discount banner */}
+        {discountAmt > 0 && (
+          <div style={{
+            position:"fixed", top:0, left:0, right:0, zIndex:101,
+            background:"#E61919", borderBottom:"1px solid #B91C1C",
+            padding:"8px 22px", textAlign:"center", height:bannerH,
+          }}>
+            <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>
+              {discountTier === "welcome" ? "Welcome Discount" : "Limited Discount"}: ${discountAmt} OFF
+            </span>
+            <span style={{ fontSize:12, color:"#FFE4E6", marginLeft:6 }}>
+              — Expires When The Timer Hits Zero
+            </span>
+            <span style={{
+              display:"inline-block", marginLeft:10, verticalAlign:"middle",
+              background:"#fff", color:"#E61919", fontSize:12, fontWeight:700,
+              padding:"4px 10px", borderRadius:6, fontFamily:"'Courier New',monospace",
+            }}>{fmtCountdown(discountSec)}</span>
+          </div>
+        )}
+
         {/* Top bar */}
-        <div style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, background:"rgba(8,7,5,0.97)", backdropFilter:"blur(18px)", borderBottom:`1px solid ${C.border}`, padding:"0 40px" }}>
+        <div style={{ position:"fixed", top:bannerH, left:0, right:0, zIndex:100, background:"rgba(8,7,5,0.97)", backdropFilter:"blur(18px)", borderBottom:`1px solid ${C.border}`, padding:"0 40px" }}>
           <div style={{ maxWidth:1280, margin:"0 auto", height:64, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
             <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:C.cream }}>
               Real<span style={{ color: C.gold }}> Art</span><span style={{ fontSize:9, verticalAlign:"super", color:C.goldDim }}>™</span>
@@ -866,6 +887,8 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
+
+        <div style={{ paddingTop: 64 + bannerH }}>
 
         <div style={{ paddingTop:64 }}>
           {screen === 1 && (
