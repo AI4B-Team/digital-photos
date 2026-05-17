@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useEffect, useMemo, useState } from "react";
-import { X, Clock, ImageIcon, Mail, ShoppingBag } from "lucide-react";
+import { X, Clock, ImageIcon, Mail, ShoppingBag, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface PreviewRow {
@@ -77,6 +77,24 @@ export default function PreviewsDrawer({
       }
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!submittedEmail) return;
+    if (!confirm("Delete this preview gallery? This cannot be undone.")) return;
+    // Optimistic remove
+    const prev = rows;
+    setRows(r => r.filter(x => x.id !== id));
+    try {
+      const { error } = await supabase.functions.invoke("delete-client-preview", {
+        body: { id, email: submittedEmail },
+      });
+      if (error) throw error;
+    } catch (e) {
+      console.error(e);
+      setRows(prev);
+      alert("Could not delete preview. Please try again.");
     }
   }
 
@@ -195,15 +213,31 @@ export default function PreviewsDrawer({
                     letterSpacing: ".06em", textTransform: "uppercase" }}>
                     {row.category || "Portraits"} · {row.portraits.length} {row.portraits.length === 1 ? "image" : "images"}
                   </div>
-                  <div style={{
-                    display: "inline-flex", alignItems: "center", gap: 5,
-                    fontSize: 11, fontWeight: 700,
-                    color: expired ? MUTED : urgent ? RED : "#16a34a",
-                    background: expired ? "#f3f1ec" : urgent ? "#FDECEC" : "#ECFDF3",
-                    padding: "3px 9px", borderRadius: 999,
-                  }}>
-                    <Clock size={12} />
-                    {formatCountdown(expiresMs)}
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                    <div style={{
+                      display: "inline-flex", alignItems: "center", gap: 5,
+                      fontSize: 11, fontWeight: 700,
+                      color: expired ? MUTED : urgent ? RED : "#16a34a",
+                      background: expired ? "#f3f1ec" : urgent ? "#FDECEC" : "#ECFDF3",
+                      padding: "3px 9px", borderRadius: 999,
+                    }}>
+                      <Clock size={12} />
+                      {formatCountdown(expiresMs)}
+                    </div>
+                    <button
+                      onClick={() => handleDelete(row.id)}
+                      aria-label="Delete preview"
+                      title="Delete preview"
+                      style={{
+                        background: "none", border: "none", cursor: "pointer",
+                        color: MUTED, padding: 4, display: "inline-flex",
+                        alignItems: "center", justifyContent: "center", borderRadius: 6,
+                      }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = RED; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = MUTED; }}
+                    >
+                      <Trash2 size={14} />
+                    </button>
                   </div>
                 </div>
                 <div style={{
