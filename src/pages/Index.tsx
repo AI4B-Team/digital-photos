@@ -2805,7 +2805,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
             </div>
             <div style={{ margin:"0 auto", padding:"0 24px" }}>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-                {items.map(t => {
+                {applyCollection(items as any, collection).map(t => {
                   const isSelected = selected?.type === "template" && selected?.id === t.id;
                   return (
                     <StyleCard key={`th-${t.id}`}
