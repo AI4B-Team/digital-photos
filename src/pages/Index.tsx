@@ -2721,6 +2721,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                       isSelected={isSelected}
                       originalPhotos={allPhotos}
                       confirming={confirming}
+                      onZoom={() => setZoomImg({ src: t.img, label: t.label, desc: t.desc })}
                       onSelect={() => setSelected(isSelected ? null : { type:"template", id:t.id })}
                       onConfirm={async () => {
                         setConfirming(true);
