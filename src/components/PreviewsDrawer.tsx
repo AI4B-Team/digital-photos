@@ -98,6 +98,28 @@ export default function PreviewsDrawer({
     }
   }
 
+  async function handleDeletePortrait(rowId: string, portraitUrl: string) {
+    if (!submittedEmail) return;
+    if (!confirm("Delete this preview image? This cannot be undone.")) return;
+    const prev = rows;
+    setRows(r => r.flatMap(x => {
+      if (x.id !== rowId) return [x];
+      const next = x.portraits.filter(p => p.url !== portraitUrl && p.hd_url !== portraitUrl);
+      if (next.length === 0) return [];
+      return [{ ...x, portraits: next }];
+    }));
+    try {
+      const { error } = await supabase.functions.invoke("delete-client-preview", {
+        body: { id: rowId, email: submittedEmail, portraitUrl },
+      });
+      if (error) throw error;
+    } catch (e) {
+      console.error(e);
+      setRows(prev);
+      alert("Could not delete image. Please try again.");
+    }
+  }
+
   const totalPhotos = useMemo(
     () => rows.reduce((n, r) => n + (r.portraits?.length || 0), 0),
     [rows],
@@ -251,6 +273,23 @@ export default function PreviewsDrawer({
                     }}>
                       <img src={p.url} alt={p.style || "preview"}
                         style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <button
+                        onClick={() => handleDeletePortrait(row.id, p.url)}
+                        aria-label="Delete image"
+                        title="Delete image"
+                        style={{
+                          position: "absolute", top: 4, right: 4,
+                          width: 22, height: 22, borderRadius: "50%",
+                          background: "rgba(0,0,0,.55)", border: "none",
+                          color: "#fff", cursor: "pointer", padding: 0,
+                          display: "inline-flex", alignItems: "center", justifyContent: "center",
+                          backdropFilter: "blur(4px)",
+                        }}
+                        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = RED; }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,.55)"; }}
+                      >
+                        <Trash2 size={11} />
+                      </button>
                       {p.style && (
                         <div style={{
                           position: "absolute", bottom: 0, left: 0, right: 0,
