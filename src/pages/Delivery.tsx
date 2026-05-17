@@ -175,7 +175,15 @@ function ConfirmationHeader({ orderProduct }) {
         {[
           [Check,    "Order Confirmed"],
           [Mail,     "Delivery Email Sent"],
-          [Package,  orderProduct === "canvas" ? "Canvas in Production" : orderProduct === "print" ? "Print in Production" : "Files Ready to Download"],
+          [Package,
+            orderProduct === "canvas"       ? "Canvas in Production"       :
+            orderProduct === "classic-frame"? "Framed Print in Production"  :
+            orderProduct === "box-frame"    ? "Framed Print in Production"  :
+            orderProduct === "acrylic"      ? "Acrylic Print in Production" :
+            orderProduct === "print"        ? "Art Print in Production"     :
+            orderProduct === "digital"      ? "Files Ready to Download"     :
+                                              "Order in Production"
+          ],
         ].map(([Icon,label]) => (
           <div key={label} style={{ display:"flex", alignItems:"center", gap:8, fontSize:12, color:C.creamMuted, background:C.bgCard, border:`1px solid ${C.border}`, padding:"8px 16px" }}>
             <Icon size={12} color={C.gold}/>{label}
@@ -531,7 +539,8 @@ export default function DeliveryPage() {
           if (result.sessionId) setOrderNumber(result.sessionId);
           setSession({ orderProduct: result.orderProduct, orderId: result.sessionId });
 
-          const physical = result.orderProduct === "print" || result.orderProduct === "canvas" || result.orderProduct === "bundle";
+          const NON_PHYSICAL = ["digital", "vip"];
+          const physical = !NON_PHYSICAL.includes(result.orderProduct || "digital");
           if (physical) setIsPrint(true);
           if (result.prodigiOrderId) setProdigiOrderId(result.prodigiOrderId);
 
