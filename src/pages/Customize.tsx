@@ -2103,7 +2103,13 @@ export default function Customize() {
                   "Hi-res digital download included",
                 ],
                 delivery:"5–8 Business Days", deviceSelector:true },
-            ].map((card:any) => {
+            ].filter((card:any) => {
+              // Hide non-print products unless the user toggled them on in the left column
+              if (card.id === "digital" || card.id === "mug" || card.id === "case") {
+                return enabledExtras.includes(card.id);
+              }
+              return true;
+            }).map((card:any) => {
               const isActive = activeCard === card.id;
               const fullSizes = SIZES_BY_PRODUCT[card.id] || [];
               const simpleSizes = SIMPLE_SIZES[card.id] || [];
