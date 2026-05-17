@@ -3693,6 +3693,24 @@ export default function Customize() {
               >
                 Continue Shopping
               </button>
+              {cartCount > 0 && (
+                <button
+                  onClick={() => {
+                    if (window.confirm("Remove all items from your cart?")) {
+                      setCartItems([]);
+                      setAddedPacks([]);
+                    }
+                  }}
+                  style={{
+                    width:"100%", marginTop:6, padding:"8px 0", borderRadius:10,
+                    background:"transparent", border:"none",
+                    fontSize:11.5, fontWeight:600, color:MUTED, cursor:"pointer",
+                    fontFamily:"'Poppins',sans-serif", textDecoration:"underline",
+                  }}
+                >
+                  Clear cart
+                </button>
+              )}
               <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:8 }}>
                 100% Money-Back Guarantee · Secure Stripe Checkout
               </div>
