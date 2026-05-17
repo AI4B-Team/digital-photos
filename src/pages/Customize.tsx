@@ -211,6 +211,7 @@ const PRODUCT_TYPES = [
   { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",        icon:Frame,           price:null },
   { id:"box-frame",     label:"Box Frame",        desc:"Shadow box · premium look",        icon:LayoutPanelTop,  price:null },
   { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang",     icon:Square,          price:null },
+  { id:"acrylic",       label:"Acrylic Glass",    desc:"Frameless · luminous · museum-grade", icon:Layers,        price:null },
   { id:"mug",           label:"Portrait Mug",     desc:"11oz ceramic · dishwasher safe",   icon:Coffee,          price:37   },
   { id:"case",          label:"Phone Case",       desc:"Tough case · 100+ models",         icon:Smartphone,      price:47   },
 ];
@@ -257,6 +258,12 @@ const SIMPLE_SIZES: Record<string, { id:string; pid:string; label:string; dim:st
     { id:"samsung-s24",   pid:"samsung-s24",   label:"Samsung S24",
       dim:"Tough Case", sku:"GLOBAL-TPC-SS24",  price:47, w:1, h:1 },
   ],
+  "acrylic": [
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-MOU-ACRY-8x10",  price:147, w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-MOU-ACRY-12x16", price:187, w:0.75, h:1, best:true },
+    { id:"lg", pid:"16x20", label:"Large",  dim:'16 × 20"', sku:"GLOBAL-MOU-ACRY-16x20", price:207, w:0.80, h:1 },
+    { id:"xl", pid:"20x24", label:"XL",     dim:'20 × 24"', sku:"GLOBAL-MOU-ACRY-20x24", price:247, w:0.83, h:1 },
+  ],
 };
 
 const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sku:string; price:number; w:number; h:number }[]> = {
@@ -300,26 +307,27 @@ const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sk
     { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:177, w:0.83, h:1 },
     { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:227, w:0.67, h:1 },
   ],
+  "acrylic": [
+    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-MOU-ACRY-8x8",   price:127, w:1,    h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-MOU-ACRY-8x10",  price:147, w:0.80, h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-MOU-ACRY-12x16", price:187, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-MOU-ACRY-16x20", price:207, w:0.80, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-MOU-ACRY-20x24", price:247, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-MOU-ACRY-24x36", price:297, w:0.67, h:1 },
+  ],
 };
 
 const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> = {
   // Classic frames — premium matte palette
   "classic-frame": [
-    { id:"black",          label:"Matte Black",     color:"#15151a" },
-    { id:"white",          label:"Matte White",     color:"#efece6" },
-    { id:"natural",        label:"Natural Oak",     color:"#c89968" },
-    { id:"walnut",         label:"Walnut",          color:"#5a3a25" },
-    { id:"espresso",       label:"Espresso",        color:"#2a1d15" },
+    { id:"black",          label:"Black",           color:"#15151a" },
+    { id:"white",          label:"White",           color:"#efece6" },
+    { id:"natural",        label:"Natural",         color:"#c89968" },
     { id:"antique-silver", label:"Antique Silver",  color:"#9a9a9a" },
     { id:"antique-gold",   label:"Antique Gold",    color:"#c4963a" },
-    { id:"champagne",      label:"Champagne",       color:"#d8c39a" },
-    { id:"dark-grey",      label:"Charcoal",        color:"#3d3d42" },
-    { id:"light-grey",     label:"Stone Grey",      color:"#c2c0bb" },
-    { id:"sage",           label:"Matte Sage",      color:"#7a8a72" },
-    { id:"navy",           label:"Matte Navy",      color:"#1f2a3a" },
-    { id:"bone",           label:"Bone",            color:"#e8e1d0" },
-    { id:"terracotta",     label:"Terracotta",      color:"#a0533a" },
-    { id:"brown",          label:"Cocoa",           color:"#6b4a30" },
+    { id:"dark-grey",      label:"Dark Grey",       color:"#3d3d42" },
+    { id:"light-grey",     label:"Light Grey",      color:"#c2c0bb" },
+    { id:"brown",          label:"Brown",           color:"#6b4a30" },
   ],
   // Box frames: 3 Prodigi colours ONLY (black, white, natural — no brown)
   "box-frame": [
@@ -338,8 +346,9 @@ const MOUNT_COLORS = [
 
 // Prodigi glaze options — confirmed for GLOBAL-CFP/CFPM and GLOBAL-BOX/BOXM
 const GLAZE_OPTIONS = [
-  { id:"perspex",  label:"Standard",     desc:"Durable Perspex — clear & protective",          add:0  },
-  { id:"moth-eye", label:"Moth-Eye ✦",   desc:"Anti-reflective, no-glare museum-grade glass",   add:17 },
+  { id:"perspex",     label:"Standard",     desc:"Durable Perspex — clear & protective",            add:0  },
+  { id:"float-glass", label:"Float Glass",  desc:"Premium float glass — enhanced clarity & depth",  add:9  },
+  { id:"moth-eye",    label:"Moth-Eye ✦",   desc:"Anti-reflective, no-glare museum-grade glass",    add:17 },
 ] as const;
 
 const CANVAS_EDGES = [
@@ -877,6 +886,11 @@ export default function Customize() {
     if (it.productType === "digital") return 37;
     if (it.productType === "mug") return itemUnitPriceMug(it);
     if (it.productType === "case") return itemUnitPriceCase(it);
+    if (it.productType === "acrylic") {
+      const sizes = SIZES_BY_PRODUCT["acrylic"] || [];
+      const sd = sizes.find(s => s.id === it.size) || sizes[1];
+      return sd?.price || 147;
+    }
     const pt = it.productType || "classic-frame";
     const sizes = SIZES_BY_PRODUCT[pt] || SIZES_BY_PRODUCT["classic-frame"];
     const sd = sizes.find(s => s.id === it.size) || sizes[1];
@@ -2001,6 +2015,16 @@ export default function Customize() {
               { id:"canvas", label:"Canvas Print", sub:"Ready to hang.", badge:null,
                 features:["Fine-textured canvas, vivid detail & color","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included","Hi-res digital download included"],
                 delivery:"4–7 Business Days", canvasAddon:true },
+              { id:"acrylic", label:"Acrylic Glass", sub:"Frameless · face-mounted · luminous.", badge:"Premium",
+                features:[
+                  "12-colour Giclée print on 10mm high-gloss acrylic",
+                  "Crystal clear diamond-polished edges",
+                  "Shatter, scratch and fade resistant",
+                  "100+ year colour guarantee",
+                  "Invisible floating subframe — arrives ready to hang",
+                  "Hi-res digital download included",
+                ],
+                delivery:"7–9 Business Days · Global shipping" },
               { id:"mug", label:"Portrait Mug", sub:"11oz ceramic · dishwasher safe.", badge:null,
                 features:[
                   "Your portrait printed on a premium 11oz ceramic mug",
