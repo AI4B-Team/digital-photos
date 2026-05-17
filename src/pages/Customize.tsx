@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw, Coffee, Smartphone } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import PreviewsDrawer from "@/components/PreviewsDrawer";
 import SiteHeader from "@/components/SiteHeader";
@@ -212,8 +212,6 @@ const PRODUCT_TYPES = [
   { id:"box-frame",     label:"Box Frame",        desc:"Shadow box · premium look",        icon:LayoutPanelTop,  price:null },
   { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang",     icon:Square,          price:null },
   { id:"acrylic",       label:"Acrylic Glass",    desc:"Frameless · luminous · museum-grade", icon:Layers,        price:null },
-  { id:"mug",           label:"Portrait Mug",     desc:"11oz ceramic · dishwasher safe",   icon:Coffee,          price:37   },
-  { id:"case",          label:"Phone Case",       desc:"Tough case · 100+ models",         icon:Smartphone,      price:47   },
 ];
 
 // Simplified S/M/L sizes per product (drives right-panel product cards)
@@ -237,26 +235,6 @@ const SIMPLE_SIZES: Record<string, { id:string; pid:string; label:string; dim:st
     { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-BOXM-8x10",  price:107, w:0.80, h:1 },
     { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-BOXM-12x16", price:147, w:0.75, h:1, best:true },
     { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
-  ],
-  "mug": [
-    { id:"11oz", pid:"11oz", label:"Classic", dim:'11oz Mug',
-      sku:"GLOBAL-MUG-11OZ", price:37, w:1, h:1 },
-    { id:"15oz", pid:"15oz", label:"Large",   dim:'15oz Mug',
-      sku:"GLOBAL-MUG-15OZ", price:47, w:1, h:1, best:true },
-  ],
-  "case": [
-    { id:"iphone-16-pro", pid:"iphone-16-pro", label:"iPhone 16 Pro",
-      dim:"Tough Case", sku:"GLOBAL-TPC-IP16P", price:47, w:1, h:1, best:true },
-    { id:"iphone-16",     pid:"iphone-16",     label:"iPhone 16",
-      dim:"Tough Case", sku:"GLOBAL-TPC-IP16",  price:47, w:1, h:1 },
-    { id:"iphone-15-pro", pid:"iphone-15-pro", label:"iPhone 15 Pro",
-      dim:"Tough Case", sku:"GLOBAL-TPC-IP15P", price:47, w:1, h:1 },
-    { id:"iphone-15",     pid:"iphone-15",     label:"iPhone 15",
-      dim:"Tough Case", sku:"GLOBAL-TPC-IP15",  price:47, w:1, h:1 },
-    { id:"samsung-s25",   pid:"samsung-s25",   label:"Samsung S25",
-      dim:"Tough Case", sku:"GLOBAL-TPC-SS25",  price:47, w:1, h:1 },
-    { id:"samsung-s24",   pid:"samsung-s24",   label:"Samsung S24",
-      dim:"Tough Case", sku:"GLOBAL-TPC-SS24",  price:47, w:1, h:1 },
   ],
   "acrylic": [
     { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-MOU-ACRY-8x10",  price:147, w:0.80, h:1 },
@@ -901,19 +879,9 @@ export default function Customize() {
   const isCanvas      = productType === "canvas";
 
   // Per-item price + bundle discount based on number of images
-  const itemUnitPriceMug = (it: any) => {
-    const s = (SIMPLE_SIZES["mug"] || []).find(sz => sz.id === it.size);
-    return s?.price || 37;
-  };
-  const itemUnitPriceCase = (it: any) => {
-    const s = (SIMPLE_SIZES["case"] || []).find(sz => sz.id === it.size);
-    return s?.price || 47;
-  };
   const itemUnitPrice = (it) => {
     if (it.productType === "vip") return 17;
     if (it.productType === "digital") return 37;
-    if (it.productType === "mug") return itemUnitPriceMug(it);
-    if (it.productType === "case") return itemUnitPriceCase(it);
     if (it.productType === "acrylic") {
       const sizes = SIZES_BY_PRODUCT["acrylic"] || [];
       const sd = sizes.find(s => s.id === it.size) || sizes[1];
@@ -1563,8 +1531,6 @@ export default function Customize() {
         const ptLabel =
           it.productType === "vip"           ? "Portrait VIP Package" :
           it.productType === "digital"       ? "Digital Portrait" :
-          it.productType === "mug"           ? "Portrait Mug" :
-          it.productType === "case"          ? "Phone Case" :
           it.productType === "canvas"        ? "Canvas Print" :
           it.productType === "box-frame"     ? "Box Frame" :
                                                 "Classic Frame";
@@ -1718,11 +1684,9 @@ export default function Customize() {
               <span>Other Products</span>
               <span className="cz-value">{enabledExtras.length ? `${enabledExtras.length} on` : "Portraits"}</span>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:6 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(1, 1fr)", gap:6 }}>
               {[
                 { id:"digital", label:"Digital",   Icon: ArrowDownToLine },
-                { id:"mug",     label:"Mug",       Icon: Coffee },
-                { id:"case",    label:"Phone Case",Icon: Smartphone },
               ].map(p => {
                 const on = enabledExtras.includes(p.id);
                 const Icon = p.Icon;
@@ -2087,25 +2051,9 @@ export default function Customize() {
                   "Hi-res digital download included",
                 ],
                 delivery:"7–9 Business Days · Global shipping" },
-              { id:"mug", label:"Portrait Mug", sub:"11oz ceramic · dishwasher safe.", badge:null,
-                features:[
-                  "Your portrait printed on a premium 11oz ceramic mug",
-                  "Dye sublimation — vivid, fade-resistant colour",
-                  "Dishwasher safe · scratch and chip resistant",
-                  "Hi-res digital download included",
-                ],
-                delivery:"5–8 Business Days" },
-              { id:"case", label:"Phone Case", sub:"Tough case · your device, your portrait.", badge:null,
-                features:[
-                  "Your portrait on a premium tough phone case",
-                  "Dual-layer protection · raised camera bezel",
-                  "Available for iPhone 15/16 + Samsung S24/S25",
-                  "Hi-res digital download included",
-                ],
-                delivery:"5–8 Business Days", deviceSelector:true },
             ].filter((card:any) => {
               // Hide non-print products unless the user toggled them on in the left column
-              if (card.id === "digital" || card.id === "mug" || card.id === "case") {
+              if (card.id === "digital") {
                 return enabledExtras.includes(card.id);
               }
               return true;
@@ -3015,8 +2963,6 @@ export default function Customize() {
               {cartItems.map((it) => {
                 const ptLabel =
                   it.productType === "digital"   ? "Digital Portrait" :
-                  it.productType === "mug"       ? "Portrait Mug" :
-                  it.productType === "case"      ? "Phone Case" :
                   it.productType === "canvas"    ? "Canvas Print" :
                   it.productType === "box-frame" ? "Box Frame" :
                                                    "Classic Frame";
