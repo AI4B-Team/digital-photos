@@ -53,10 +53,10 @@ serve(async (req) => {
     const categoryContext =
       category === "pets"      ? "The subject is a pet or animal — preserve fur, eyes, and distinctive animal features exactly." :
       category === "people"    ? "The subject is a person or group of people — preserve facial features, likeness, and identity exactly." :
-      category === "occasions" ? "This is a special occasion portrait — treat with care, warmth, and emotional significance." :
+      category === "occasions" ? "This is a special occasion portrait — treat with emotional significance, care, and warmth appropriate to the event." :
       category === "babies"    ? "The subject is a baby or infant — soft, gentle, and whimsical treatment." :
-      category === "memorial"  ? "This is a memorial portrait — treat with dignity, warmth, and timeless reverence." :
-      category === "couples"   ? "The subjects are a couple — preserve both faces and their connection." :
+      category === "memorial"  ? "This is a memorial portrait — treat with deep dignity, warmth, and timeless reverence." :
+      category === "couples"   ? "The subjects are a couple — preserve both faces and their emotional connection." :
                                  "The subject is a person — preserve facial features and likeness exactly.";
 
     // Pre-fetch style reference image and convert to base64 data URL
