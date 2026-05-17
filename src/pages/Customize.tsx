@@ -2053,25 +2053,9 @@ export default function Customize() {
                   "Hi-res digital download included",
                 ],
                 delivery:"7–9 Business Days · Global shipping" },
-              { id:"mug", label:"Portrait Mug", sub:"11oz ceramic · dishwasher safe.", badge:null,
-                features:[
-                  "Your portrait printed on a premium 11oz ceramic mug",
-                  "Dye sublimation — vivid, fade-resistant colour",
-                  "Dishwasher safe · scratch and chip resistant",
-                  "Hi-res digital download included",
-                ],
-                delivery:"5–8 Business Days" },
-              { id:"case", label:"Phone Case", sub:"Tough case · your device, your portrait.", badge:null,
-                features:[
-                  "Your portrait on a premium tough phone case",
-                  "Dual-layer protection · raised camera bezel",
-                  "Available for iPhone 15/16 + Samsung S24/S25",
-                  "Hi-res digital download included",
-                ],
-                delivery:"5–8 Business Days", deviceSelector:true },
             ].filter((card:any) => {
               // Hide non-print products unless the user toggled them on in the left column
-              if (card.id === "digital" || card.id === "mug" || card.id === "case") {
+              if (card.id === "digital") {
                 return enabledExtras.includes(card.id);
               }
               return true;
