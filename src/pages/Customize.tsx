@@ -2402,6 +2402,8 @@ export default function Customize() {
                 dragStart={dragStart} setDragStart={setDragStart}
                 roomContainerRef={roomContainerRef}
                 setRoomView={setRoomView}
+                stagedAiCache={stagedAiCache} setStagedAiCache={setStagedAiCache}
+                stagedAiLoading={stagedAiLoading} setStagedAiLoading={setStagedAiLoading}
               />
             </div>
           ) : (
