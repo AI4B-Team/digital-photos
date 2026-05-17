@@ -656,6 +656,8 @@ export default function Customize() {
 
   // Right-panel accordion state
   const [activeCard, setActiveCard]             = useState("classic-frame");
+  // Non-print products shown in the right panel only when toggled from the left column
+  const [enabledExtras, setEnabledExtras]       = useState<string[]>([]);
   const [packsOpen, setPacksOpen]               = useState(false);
   const [selectedPackId, setSelectedPackId]     = useState<string | null>(null);
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
@@ -856,6 +858,32 @@ export default function Customize() {
   const setEffect = (v) => updateSelected({ effect: v });
   const setBorder = (v) => updateSelected({ border: v });
   const setBorderColor = (v) => updateSelected({ borderColor: v });
+
+  // ── Extra (non-print) product toggle: shows the card in the right panel AND
+  // swaps the canvas live preview to that product.
+  const EXTRA_PRODUCTS: Record<string, { size: string; sku: string }> = {
+    digital: { size: "11x14", sku: "DIGITAL" },
+    mug:     { size: "11oz",  sku: "GLOBAL-MUG-11OZ" },
+    case:    { size: "iphone-16-pro", sku: "GLOBAL-TPC-IP16P" },
+  };
+  const PORTRAIT_DEFAULT = { productType: "classic-frame", size: "11x14", sku: "GLOBAL-CFPM-11x14", frameColor: "black" };
+  const toggleExtraProduct = (id: string) => {
+    setEnabledExtras(prev => {
+      const on = prev.includes(id);
+      if (on) {
+        // Turning off — revert canvas to portraits
+        updateSelected({ ...PORTRAIT_DEFAULT, offsetX: 0, offsetY: 0 });
+        setActiveCard("classic-frame");
+        return prev.filter(x => x !== id);
+      }
+      const cfg = EXTRA_PRODUCTS[id];
+      if (cfg) {
+        updateSelected({ productType: id, size: cfg.size, sku: cfg.sku, offsetX: 0, offsetY: 0 });
+        setActiveCard(id);
+      }
+      return [...prev, id];
+    });
+  };
   const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
   const productType   = selected.productType || "classic-frame";
@@ -1684,6 +1712,40 @@ export default function Customize() {
             </button>
           ) : (
           <>
+          {/* ── Other products (non-print) ── */}
+          <div className="cz-section">
+            <div className="cz-label">
+              <span>Other Products</span>
+              <span className="cz-value">{enabledExtras.length ? `${enabledExtras.length} on` : "Portraits"}</span>
+            </div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:6 }}>
+              {[
+                { id:"digital", label:"Digital",   Icon: ArrowDownToLine },
+                { id:"mug",     label:"Mug",       Icon: Coffee },
+                { id:"case",    label:"Phone Case",Icon: Smartphone },
+              ].map(p => {
+                const on = enabledExtras.includes(p.id);
+                const Icon = p.Icon;
+                return (
+                  <button key={p.id}
+                    onClick={() => toggleExtraProduct(p.id)}
+                    title={on ? `Remove ${p.label} preview` : `Preview ${p.label}`}
+                    style={{
+                      display:"flex", flexDirection:"column", alignItems:"center", gap:4,
+                      padding:"10px 6px", borderRadius:10, cursor:"pointer",
+                      border:`1.5px solid ${on ? RED : BORDER}`,
+                      background: on ? "rgba(230,25,25,.06)" : "#fff",
+                      color: on ? RED : INK,
+                      fontFamily:"'Poppins',sans-serif", fontSize:11, fontWeight:600,
+                    }}>
+                    <Icon size={16}/>
+                    <span>{p.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* ── Variants ── */}
           {(session.generatedPortraits?.length || 0) > 1 && (
             <div className="cz-section">
@@ -2041,7 +2103,13 @@ export default function Customize() {
                   "Hi-res digital download included",
                 ],
                 delivery:"5–8 Business Days", deviceSelector:true },
-            ].map((card:any) => {
+            ].filter((card:any) => {
+              // Hide non-print products unless the user toggled them on in the left column
+              if (card.id === "digital" || card.id === "mug" || card.id === "case") {
+                return enabledExtras.includes(card.id);
+              }
+              return true;
+            }).map((card:any) => {
               const isActive = activeCard === card.id;
               const fullSizes = SIZES_BY_PRODUCT[card.id] || [];
               const simpleSizes = SIMPLE_SIZES[card.id] || [];
