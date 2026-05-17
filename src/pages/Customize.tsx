@@ -1929,9 +1929,7 @@ export default function Customize() {
           maxHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center",
           gap:16,
-          background:`
-            linear-gradient(135deg, #F2EBDD 0%, #EADFC8 60%, #DCCEB1 100%)
-          `,
+          background:"#F2EBDD",
           overflow:"hidden",
           position:"relative",
         }}>
