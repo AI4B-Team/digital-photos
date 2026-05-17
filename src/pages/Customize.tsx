@@ -614,8 +614,23 @@ function RoomViewPanel({
     setAiRoomLoading(false);
   };
 
+  const generateStagedAI = async () => {
+    if (!portraitUrl || stagedAiLoading) return;
+    setStagedAiLoading(true);
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
+        body: { roomUrl: room.url, portraitUrl, frameColor },
+      });
+      if (!error && data?.url) {
+        setStagedAiCache((c: any) => ({ ...c, [stagedKey]: data.url }));
+      }
+    } catch { /* silent */ }
+    setStagedAiLoading(false);
+  };
+
   const showPortraitOverlay = portraitUrl && (
-    roomMode === "staged" ||
+    (roomMode === "staged" && !stagedAiUrl && !stagedAiLoading) ||
     (roomMode === "myroom" && userRoomUrl) ||
     (roomMode === "ai" && userRoomUrl && !aiRoomUrl && !aiRoomLoading)
   );
