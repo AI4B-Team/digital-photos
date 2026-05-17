@@ -274,7 +274,7 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 .szoff:hover{border-color:rgba(0,0,0,.25);color:#0A0A0A}
 
 /* Teaser */
-.teaser-img{width:100%;height:100%;object-fit:cover;transition:opacity .5s ease}
+.teaser-img{width:100%;height:100%;object-fit:contain;background:#f4f4f4;transition:opacity .5s ease}
 
 /* Template strip */
 .tmpl-wrap{position:relative}
