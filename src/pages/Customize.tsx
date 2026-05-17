@@ -2351,24 +2351,27 @@ export default function Customize() {
                       )}
 
                       {card.frameColors && (
-                        <>
-                          <div style={{ fontSize:11, color:MUTED, fontWeight:600,
-                            letterSpacing:".06em", textTransform:"uppercase", margin:"6px 0 8px" }}>
-                            Frame Color
+                        <details className="cz-acc">
+                          <summary>
+                            <span>Frame Color</span>
+                            <span className="cz-acc-val">{(FRAME_COLORS["classic-frame"]||[]).find(fc => fc.id === cardFrame)?.label || ""}</span>
+                            <ChevronDown className="cz-acc-chev" size={15}/>
+                          </summary>
+                          <div className="cz-acc-body">
+                            <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+                              {(FRAME_COLORS["classic-frame"]||[]).map(fc => (
+                                <button key={fc.id} title={fc.label}
+                                  onClick={() => { setCardFrame(fc.id);
+                                    updateSelected({ frameColor:fc.id, frame:toFrameId("classic-frame",fc.id) }); }}
+                                  style={{ width:30, height:30, borderRadius:7,
+                                    background:fc.color, padding:0,
+                                    border:`2px solid ${cardFrame===fc.id?RED:(fc.id==="white"?"#ccc":"transparent")}`,
+                                    boxShadow:"0 1px 4px rgba(0,0,0,.15)",
+                                    cursor:"pointer", outline:"none" }}/>
+                              ))}
+                            </div>
                           </div>
-                          <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:12 }}>
-                            {(FRAME_COLORS["classic-frame"]||[]).map(fc => (
-                              <button key={fc.id} title={fc.label}
-                                onClick={() => { setCardFrame(fc.id);
-                                  updateSelected({ frameColor:fc.id, frame:toFrameId("classic-frame",fc.id) }); }}
-                                style={{ width:30, height:30, borderRadius:7,
-                                  background:fc.color, padding:0,
-                                  border:`2px solid ${cardFrame===fc.id?RED:(fc.id==="white"?"#ccc":"transparent")}`,
-                                  boxShadow:"0 1px 4px rgba(0,0,0,.15)",
-                                  cursor:"pointer", outline:"none" }}/>
-                            ))}
-                          </div>
-                        </>
+                        </details>
                       )}
 
                       {card.frameColors && (
