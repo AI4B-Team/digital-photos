@@ -1956,7 +1956,7 @@ export default function Customize() {
             paddingLeft: aiOpen ? 8 : 0,
           }}>
             <div className="cz-canvas-scroll" style={{
-              flex:"0 1 auto", minWidth:0, maxHeight:"100%", height:"100%",
+              flex:"1 1 auto", width:"100%", minWidth:0, maxHeight:"100%", height:"100%",
               overflowY:"auto", display:"flex", flexDirection:"column",
               alignItems:"center", justifyContent:"flex-start", gap:8,
               padding:"20px 60px 60px 20px",
