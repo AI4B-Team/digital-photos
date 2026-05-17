@@ -531,7 +531,8 @@ export default function DeliveryPage() {
           if (result.sessionId) setOrderNumber(result.sessionId);
           setSession({ orderProduct: result.orderProduct, orderId: result.sessionId });
 
-          const physical = result.orderProduct === "print" || result.orderProduct === "canvas" || result.orderProduct === "bundle";
+          const NON_PHYSICAL = ["digital", "vip"];
+          const physical = !NON_PHYSICAL.includes(result.orderProduct || "digital");
           if (physical) setIsPrint(true);
           if (result.prodigiOrderId) setProdigiOrderId(result.prodigiOrderId);
 
