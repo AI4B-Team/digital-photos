@@ -2790,7 +2790,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   );
 }
 
-function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [], confirming }) {
+function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [], confirming, onZoom }) {
   const photos = (originalPhotos || []).filter(Boolean).slice(0, 2);
   return (
     <div onClick={onSelect}
