@@ -2981,7 +2981,19 @@ export default function Customize() {
                           ><Plus size={12}/></button>
                         </div>
                         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                          <span style={{ fontSize:13, fontWeight:800, color:INK }}>${unit * (it.qty || 1)}</span>
+                          {(() => {
+                            const qty = it.qty || 1;
+                            const list = unit * qty;
+                            const disc = Math.max(0, unit - (discountAmt || 0)) * qty;
+                            return discountAmt > 0 && disc < list ? (
+                              <>
+                                <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>${list}</span>
+                                <span style={{ fontSize:13, fontWeight:800, color:RED }}>${disc}</span>
+                              </>
+                            ) : (
+                              <span style={{ fontSize:13, fontWeight:800, color:INK }}>${list}</span>
+                            );
+                          })()}
                           <button
                             onClick={() => removeCartItem(it.id)}
                             disabled={false}
