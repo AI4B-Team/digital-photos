@@ -626,8 +626,20 @@ function RoomViewPanel({
       width:"100%", height:"100%", display:"flex", flexDirection:"column",
       gap:10, background:"#111", borderRadius:14, padding:12, color:"#fff",
     }}>
-      {/* Mode tabs */}
-      <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+      {/* Mode tabs + Back to portrait */}
+      <div style={{ display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
+        <button
+          onClick={() => setRoomView(false)}
+          style={{
+            padding:"5px 11px", borderRadius:8, fontSize:11, fontWeight:600,
+            cursor:"pointer", fontFamily:"'Poppins',sans-serif",
+            background:"rgba(255,255,255,.1)", color:"#fff",
+            border:"1px solid rgba(255,255,255,.18)",
+            display:"inline-flex", alignItems:"center", gap:5,
+          }}>
+          <ChevronLeft size={13}/> Back to portrait
+        </button>
+        <div style={{ width:1, height:18, background:"rgba(255,255,255,.12)", margin:"0 4px" }}/>
         {TABS.map(tab => (
           <button key={tab.id}
             onClick={() => { setRoomMode(tab.id); setAiRoomUrl(null); }}
