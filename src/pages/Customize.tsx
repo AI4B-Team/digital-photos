@@ -656,6 +656,8 @@ export default function Customize() {
 
   // Right-panel accordion state
   const [activeCard, setActiveCard]             = useState("classic-frame");
+  // Non-print products shown in the right panel only when toggled from the left column
+  const [enabledExtras, setEnabledExtras]       = useState<string[]>([]);
   const [packsOpen, setPacksOpen]               = useState(false);
   const [selectedPackId, setSelectedPackId]     = useState<string | null>(null);
   const [cardSize, setCardSize]                 = useState<Record<string,string>>({});
