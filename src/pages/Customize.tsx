@@ -858,6 +858,32 @@ export default function Customize() {
   const setEffect = (v) => updateSelected({ effect: v });
   const setBorder = (v) => updateSelected({ border: v });
   const setBorderColor = (v) => updateSelected({ borderColor: v });
+
+  // ── Extra (non-print) product toggle: shows the card in the right panel AND
+  // swaps the canvas live preview to that product.
+  const EXTRA_PRODUCTS: Record<string, { size: string; sku: string }> = {
+    digital: { size: "11x14", sku: "DIGITAL" },
+    mug:     { size: "11oz",  sku: "GLOBAL-MUG-11OZ" },
+    case:    { size: "iphone-16-pro", sku: "GLOBAL-TPC-IP16P" },
+  };
+  const PORTRAIT_DEFAULT = { productType: "classic-frame", size: "11x14", sku: "GLOBAL-CFPM-11x14", frameColor: "black" };
+  const toggleExtraProduct = (id: string) => {
+    setEnabledExtras(prev => {
+      const on = prev.includes(id);
+      if (on) {
+        // Turning off — revert canvas to portraits
+        updateSelected({ ...PORTRAIT_DEFAULT, offsetX: 0, offsetY: 0 });
+        setActiveCard("classic-frame");
+        return prev.filter(x => x !== id);
+      }
+      const cfg = EXTRA_PRODUCTS[id];
+      if (cfg) {
+        updateSelected({ productType: id, size: cfg.size, sku: cfg.sku, offsetX: 0, offsetY: 0 });
+        setActiveCard(id);
+      }
+      return [...prev, id];
+    });
+  };
   const borderColorDef = BORDER_COLORS.find(c => c.id === borderColor) || BORDER_COLORS[0];
 
   const productType   = selected.productType || "classic-frame";
