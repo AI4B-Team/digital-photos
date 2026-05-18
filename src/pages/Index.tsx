@@ -178,6 +178,14 @@ import beforePetViral from "@/assets/before-pet-viral.jpg";
 import scenePetKing from "@/assets/scene-pet-king.jpg";
 import beforePetCat from "@/assets/before-pet-cat.jpg";
 import scenePetCatReader from "@/assets/scene-pet-cat-reader.jpg";
+import heroBeforeAngelHug from "@/assets/hero/before-angel-hug.jpg";
+import heroAfterAngelHug from "@/assets/hero/after-angel-hug.jpg";
+import heroBeforeFamilyTrio from "@/assets/hero/before-family-trio.jpg";
+import heroAfterFamilyTrio from "@/assets/hero/after-family-trio.jpg";
+import heroBeforeHeartCouple from "@/assets/hero/before-heart-couple.jpg";
+import heroAfterHeartCouple from "@/assets/hero/after-heart-couple.jpg";
+import heroBeforeThreeCats from "@/assets/hero/before-three-cats.jpg";
+import heroAfterThreeCats from "@/assets/hero/after-three-cats.jpg";
 import scenePetBestfriend from "@/assets/scene-pet-bestfriend.jpg";
 import beforeFamilyGrandparents from "@/assets/before-family-grandparents.jpg";
 import sceneFamilyGrandparentsJoy from "@/assets/scene-family-grandparents-joy.jpg";
@@ -1121,6 +1129,14 @@ const TEASERS = [
       ] },
       { cat:"Grandparents", catId:"occasions", style:"Editorial", before:beforeFamilyGrandparents, after:sceneFamilyGrandparentsJoy, portrait:sceneFamilyGrandparentsJoy,
         portraits:[ { url:sceneFamilyGrandparentsJoy, style:"Editorial" } ] },
+    { cat:"Guardian Angel", catId:"memorial", style:"Ethereal", before:heroBeforeAngelHug, after:heroAfterAngelHug, portrait:heroAfterAngelHug,
+      portraits:[ { url:heroAfterAngelHug, style:"Ethereal" } ] },
+    { cat:"Family Forever", catId:"people", style:"Editorial", before:heroBeforeFamilyTrio, after:heroAfterFamilyTrio, portrait:heroAfterFamilyTrio,
+      portraits:[ { url:heroAfterFamilyTrio, style:"Editorial" } ] },
+    { cat:"Love Framed", catId:"couples", style:"Romantic", before:heroBeforeHeartCouple, after:heroAfterHeartCouple, portrait:heroAfterHeartCouple,
+      portraits:[ { url:heroAfterHeartCouple, style:"Romantic" } ] },
+    { cat:"Cat Crew", catId:"pets", style:"Studio", before:heroBeforeThreeCats, after:heroAfterThreeCats, portrait:heroAfterThreeCats,
+      portraits:[ { url:heroAfterThreeCats, style:"Studio" } ] },
 ];
 
 const PLANS = [
