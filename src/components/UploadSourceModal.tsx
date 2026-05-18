@@ -12,38 +12,41 @@ import {
 } from "react-icons/si";
 import { Cloud as OneDriveIcon } from "lucide-react";
 
+// Site brand palette: white surfaces, red accent, gray text/borders.
 const T = {
-  bg:        "#0B0B0F",
-  panel:     "#13131A",
-  panelAlt:  "#17171F",
-  border:    "rgba(212,175,55,.18)",
-  borderSoft:"rgba(255,255,255,.06)",
-  gold:      "#D4AF37",
-  goldSoft:  "rgba(212,175,55,.10)",
-  cream:     "#F5EFE0",
-  muted:     "#8A8579",
-  dim:       "#5C5A52",
+  bg:        "#FFFFFF",
+  panel:     "#FFFFFF",
+  panelAlt:  "#FAFAFA",
+  border:    "rgba(0,0,0,.10)",
+  borderSoft:"rgba(0,0,0,.06)",
+  red:       "#E61919",
+  redSoft:   "rgba(230,25,25,.08)",
+  ink:       "#0A0A0A",
+  muted:     "#8C8C8C",
+  dim:       "#B5B5B5",
 };
 
 type SourceId =
   | "local" | "camera" | "link" | "clipboard"
   | "facebook" | "instagram" | "gdrive" | "gphotos" | "dropbox" | "onedrive";
 
-// Brand colors for each provider (used only when active, otherwise gold/muted)
+// `brand` is set ONLY for real third-party providers. Native sources use red.
 const SOURCES: { id: SourceId; label: string; Icon: any; brand?: string; soon?: boolean }[] = [
   { id: "local",     label: "Local Files",   Icon: HardDrive },
   { id: "camera",    label: "Camera",        Icon: Camera },
   { id: "link",      label: "Direct Link",   Icon: Link2 },
   { id: "clipboard", label: "Clipboard",     Icon: Clipboard },
-  { id: "facebook",  label: "Facebook",      Icon: FaFacebook,           brand: "#1877F2", soon: true },
-  { id: "instagram", label: "Instagram",     Icon: FaInstagram,          brand: "#E4405F", soon: true },
-  { id: "gdrive",    label: "Google Drive",  Icon: SiGoogledrive,        brand: "#1FA463", soon: true },
-  { id: "gphotos",   label: "Google Photos", Icon: SiGooglephotos,       brand: "#4285F4", soon: true },
-  { id: "dropbox",   label: "Dropbox",       Icon: FaDropbox,            brand: "#0061FF", soon: true },
-  { id: "onedrive",  label: "OneDrive",      Icon: OneDriveIcon,  brand: "#0078D4", soon: true },
+  { id: "facebook",  label: "Facebook",      Icon: FaFacebook,     brand: "#1877F2", soon: true },
+  { id: "instagram", label: "Instagram",     Icon: FaInstagram,    brand: "#E4405F", soon: true },
+  { id: "gdrive",    label: "Google Drive",  Icon: SiGoogledrive,  brand: "#1FA463", soon: true },
+  { id: "gphotos",   label: "Google Photos", Icon: SiGooglephotos, brand: "#4285F4", soon: true },
+  { id: "dropbox",   label: "Dropbox",       Icon: FaDropbox,      brand: "#0061FF", soon: true },
+  { id: "onedrive",  label: "OneDrive",      Icon: OneDriveIcon,   brand: "#0078D4", soon: true },
 ];
 
 const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
+
+const HEADING_FONT = "'Poppins',sans-serif";
 
 export default function UploadSourceModal({
   open,
@@ -74,7 +77,6 @@ export default function UploadSourceModal({
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
-    // Lock body scroll while modal open
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
@@ -88,7 +90,7 @@ export default function UploadSourceModal({
   const handleFile = (f?: File | null) => {
     if (!f) return;
     if (!ALLOWED.includes(f.type)) {
-      alert("Please upload a PNG, JPEG, WebP, or GIF image.");
+      alert("Please Upload A PNG, JPEG, WebP, Or GIF Image.");
       return;
     }
     onFile(f);
@@ -98,20 +100,20 @@ export default function UploadSourceModal({
   const fetchFromUrl = async () => {
     setLinkErr("");
     if (!/^https?:\/\//i.test(link.trim())) {
-      setLinkErr("Please paste a valid http(s) image URL.");
+      setLinkErr("Please Paste A Valid HTTP(S) Image URL.");
       return;
     }
     setLinkBusy(true);
     try {
       const res = await fetch(link.trim(), { mode: "cors" });
-      if (!res.ok) throw new Error("Unable to fetch image (server blocked the request).");
+      if (!res.ok) throw new Error("Unable To Fetch Image (Server Blocked The Request).");
       const blob = await res.blob();
-      if (!ALLOWED.includes(blob.type)) throw new Error("URL is not a PNG, JPEG, WebP, or GIF image.");
+      if (!ALLOWED.includes(blob.type)) throw new Error("URL Is Not A PNG, JPEG, WebP, Or GIF Image.");
       const name = (link.split("/").pop() || "image").split("?")[0] || "image.jpg";
       const file = new File([blob], name, { type: blob.type });
       handleFile(file);
     } catch (err: any) {
-      setLinkErr(err?.message || "Couldn't load that image. Try downloading it and uploading from your device.");
+      setLinkErr(err?.message || "Couldn't Load That Image. Try Downloading It And Uploading From Your Device.");
     } finally {
       setLinkBusy(false);
     }
@@ -129,10 +131,25 @@ export default function UploadSourceModal({
           return;
         }
       }
-      alert("No image found on your clipboard. Copy an image first, then try again.");
+      alert("No Image Found On Your Clipboard. Copy An Image First, Then Try Again.");
     } catch {
-      alert("Clipboard access denied. Use Local Files instead.");
+      alert("Clipboard Access Denied. Use Local Files Instead.");
     }
+  };
+
+  // Shared primary button (red, white text)
+  const primaryBtnStyle: React.CSSProperties = {
+    background: T.red, color: "#fff", border: "none", padding: "12px 28px",
+    borderRadius: 10, fontSize: 13, fontWeight: 700, letterSpacing: ".04em",
+    cursor: "pointer", fontFamily: HEADING_FONT,
+    boxShadow: "0 6px 18px rgba(230,25,25,.22)",
+  };
+
+  // Shared icon bubble (light red tint)
+  const iconBubble: React.CSSProperties = {
+    width: 56, height: 56, borderRadius: 14, background: T.redSoft,
+    border: `1px solid ${T.border}`, display: "flex", alignItems: "center",
+    justifyContent: "center", marginBottom: 16,
   };
 
   const dropZone = (
@@ -145,39 +162,27 @@ export default function UploadSourceModal({
         handleFile(e.dataTransfer.files?.[0]);
       }}
       style={{
-        border: `1.5px dashed ${drag ? T.gold : T.border}`,
-        background: drag ? T.goldSoft : "rgba(255,255,255,.02)",
+        border: `1.5px dashed ${drag ? T.red : T.border}`,
+        background: drag ? T.redSoft : T.panelAlt,
         borderRadius: 12, padding: "44px 24px",
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         textAlign: "center", minHeight: 280, transition: "all .2s",
       }}
     >
-      <div style={{
-        width: 56, height: 56, borderRadius: 14, background: T.goldSoft,
-        border: `1px solid ${T.border}`, display: "flex", alignItems: "center",
-        justifyContent: "center", marginBottom: 16,
-      }}>
-        <Upload size={22} color={T.gold} />
+      <div style={iconBubble}>
+        <Upload size={22} color={T.red} />
       </div>
-      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, color: T.cream, marginBottom: 6, letterSpacing: ".01em" }}>
-        Drag &amp; drop your photo
+      <div style={{ fontFamily: HEADING_FONT, fontSize: 22, fontWeight: 700, color: T.ink, marginBottom: 6 }}>
+        Drag &amp; Drop Your Photo
       </div>
       <div style={{ fontSize: 12, color: T.muted, marginBottom: 18, letterSpacing: ".04em" }}>
-        or
+        Or
       </div>
-      <button
-        onClick={() => fileInput.current?.click()}
-        style={{
-          background: T.gold, color: T.bg, border: "none", padding: "12px 28px",
-          borderRadius: 8, fontSize: 13, fontWeight: 700, letterSpacing: ".08em",
-          textTransform:"none", cursor: "pointer",
-          boxShadow: "0 6px 18px rgba(212,175,55,.22)",
-        }}
-      >
-        Choose a local file
+      <button onClick={() => fileInput.current?.click()} style={primaryBtnStyle}>
+        Choose A Local File
       </button>
-      <p style={{ fontSize: 11, color: T.dim, marginTop: 16, lineHeight: 1.6, maxWidth: 360 }}>
-        PNG, JPEG, WebP or GIF · up to 20MB · Best results above 1000×1000px
+      <p style={{ fontSize: 11, color: T.muted, marginTop: 16, lineHeight: 1.6, maxWidth: 360 }}>
+        PNG, JPEG, WebP Or GIF · Up To 20MB · Best Results Above 1000×1000px
       </p>
     </div>
   );
@@ -185,21 +190,16 @@ export default function UploadSourceModal({
   const cameraPanel = (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
       textAlign:"center", padding:"40px 24px", minHeight: 280 }}>
-      <div style={{ width:56, height:56, borderRadius:14, background:T.goldSoft,
-        border:`1px solid ${T.border}`, display:"flex", alignItems:"center",
-        justifyContent:"center", marginBottom:16 }}>
-        <Camera size={22} color={T.gold}/>
+      <div style={iconBubble}>
+        <Camera size={22} color={T.red}/>
       </div>
-      <div style={{ fontFamily:"'Playfair Display', serif", fontSize:24, color:T.cream, marginBottom:8 }}>
-        Take a photo
+      <div style={{ fontFamily: HEADING_FONT, fontSize:22, fontWeight:700, color:T.ink, marginBottom:8 }}>
+        Take A Photo
       </div>
       <p style={{ fontSize:12, color:T.muted, marginBottom:18, maxWidth:340, lineHeight:1.6 }}>
-        Use your device camera. Hold steady, fill the frame with the face, and use good light.
+        Use Your Device Camera. Hold Steady, Fill The Frame With The Face, And Use Good Light.
       </p>
-      <button onClick={() => cameraInput.current?.click()}
-        style={{ background:T.gold, color:T.bg, border:"none", padding:"12px 28px",
-          borderRadius:8, fontSize:13, fontWeight:700, letterSpacing:".08em",
-          textTransform:"none", cursor:"pointer" }}>
+      <button onClick={() => cameraInput.current?.click()} style={primaryBtnStyle}>
         Open Camera
       </button>
     </div>
@@ -208,11 +208,11 @@ export default function UploadSourceModal({
   const linkPanel = (
     <div style={{ display:"flex", flexDirection:"column", justifyContent:"center",
       padding:"40px 24px", minHeight:280, maxWidth:520, margin:"0 auto", width:"100%" }}>
-      <div style={{ fontFamily:"'Playfair Display', serif", fontSize:24, color:T.cream, marginBottom:6 }}>
-        Paste a direct image link
+      <div style={{ fontFamily: HEADING_FONT, fontSize:22, fontWeight:700, color:T.ink, marginBottom:6 }}>
+        Paste A Direct Image Link
       </div>
       <p style={{ fontSize:12, color:T.muted, marginBottom:18, lineHeight:1.6 }}>
-        The URL must end in .jpg, .png, .webp or .gif and be publicly accessible.
+        The URL Must End In .jpg, .png, .webp Or .gif And Be Publicly Accessible.
       </p>
       <div style={{ display:"flex", gap:8 }}>
         <input
@@ -220,19 +220,18 @@ export default function UploadSourceModal({
           value={link}
           onChange={e => setLink(e.target.value)}
           placeholder="https://example.com/photo.jpg"
-          style={{ flex:1, padding:"12px 14px", borderRadius:8, border:`1px solid ${T.border}`,
-            background:"rgba(255,255,255,.03)", color:T.cream, fontSize:13, outline:"none" }}
+          style={{ flex:1, padding:"12px 14px", borderRadius:10, border:`1px solid ${T.border}`,
+            background:"#fff", color:T.ink, fontSize:13, outline:"none" }}
         />
         <button onClick={fetchFromUrl} disabled={linkBusy || !link}
-          style={{ background:T.gold, color:T.bg, border:"none", padding:"0 22px",
-            borderRadius:8, fontSize:12, fontWeight:700, letterSpacing:".08em",
-            textTransform:"none", cursor: linkBusy ? "wait" : "pointer",
-            opacity: (!link || linkBusy) ? .55 : 1 }}>
+          style={{ ...primaryBtnStyle, padding:"0 22px",
+            opacity: (!link || linkBusy) ? .55 : 1,
+            cursor: linkBusy ? "wait" : "pointer" }}>
           {linkBusy ? "Loading…" : "Import"}
         </button>
       </div>
       {linkErr && (
-        <div style={{ marginTop:12, color:"#E06060", fontSize:12 }}>{linkErr}</div>
+        <div style={{ marginTop:12, color:T.red, fontSize:12 }}>{linkErr}</div>
       )}
     </div>
   );
@@ -240,22 +239,17 @@ export default function UploadSourceModal({
   const clipboardPanel = (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
       textAlign:"center", padding:"40px 24px", minHeight:280 }}>
-      <div style={{ width:56, height:56, borderRadius:14, background:T.goldSoft,
-        border:`1px solid ${T.border}`, display:"flex", alignItems:"center",
-        justifyContent:"center", marginBottom:16 }}>
-        <Clipboard size={22} color={T.gold}/>
+      <div style={iconBubble}>
+        <Clipboard size={22} color={T.red}/>
       </div>
-      <div style={{ fontFamily:"'Playfair Display', serif", fontSize:24, color:T.cream, marginBottom:8 }}>
-        Paste from clipboard
+      <div style={{ fontFamily: HEADING_FONT, fontSize:22, fontWeight:700, color:T.ink, marginBottom:8 }}>
+        Paste From Clipboard
       </div>
       <p style={{ fontSize:12, color:T.muted, marginBottom:18, maxWidth:340, lineHeight:1.6 }}>
-        Copy an image (⌘/Ctrl + C) then click the button below. We'll read it directly from your clipboard.
+        Copy An Image (⌘/Ctrl + C) Then Click The Button Below. We'll Read It Directly From Your Clipboard.
       </p>
-      <button onClick={fromClipboard}
-        style={{ background:T.gold, color:T.bg, border:"none", padding:"12px 28px",
-          borderRadius:8, fontSize:13, fontWeight:700, letterSpacing:".08em",
-          textTransform:"none", cursor:"pointer" }}>
-        Paste image
+      <button onClick={fromClipboard} style={primaryBtnStyle}>
+        Paste Image
       </button>
     </div>
   );
@@ -263,21 +257,21 @@ export default function UploadSourceModal({
   const soonPanel = (label: string, BrandIcon: any, brandColor?: string) => (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
       textAlign:"center", padding:"40px 24px", minHeight:280 }}>
-      <div style={{ width:64, height:64, borderRadius:16, background:T.goldSoft,
+      <div style={{ width:64, height:64, borderRadius:16, background:"#fff",
         border:`1px solid ${T.border}`, display:"flex", alignItems:"center",
         justifyContent:"center", marginBottom:16 }}>
-        <BrandIcon size={28} color={brandColor || T.gold}/>
+        <BrandIcon size={28} color={brandColor || T.red}/>
       </div>
-      <div style={{ fontFamily:"'Playfair Display', serif", fontSize:24, color:T.cream, marginBottom:8 }}>
-        {label} import — coming soon
+      <div style={{ fontFamily: HEADING_FONT, fontSize:22, fontWeight:700, color:T.ink, marginBottom:8 }}>
+        {label} Import — Coming Soon
       </div>
       <p style={{ fontSize:12, color:T.muted, marginBottom:18, maxWidth:380, lineHeight:1.6 }}>
-        We're polishing the {label} integration. In the meantime, download the photo to your device and upload it from <b style={{ color:T.cream }}>Local Files</b>.
+        We're Polishing The {label} Integration. In The Meantime, Download The Photo To Your Device And Upload It From <b style={{ color:T.ink }}>Local Files</b>.
       </p>
       <button onClick={() => setActive("local")}
-        style={{ background:"transparent", color:T.gold, border:`1px solid ${T.gold}`,
-          padding:"10px 22px", borderRadius:8, fontSize:12, fontWeight:700, letterSpacing:".08em",
-          textTransform:"none", cursor:"pointer" }}>
+        style={{ background:"transparent", color:T.red, border:`1px solid ${T.red}`,
+          padding:"10px 22px", borderRadius:10, fontSize:12, fontWeight:700, letterSpacing:".04em",
+          cursor:"pointer", fontFamily: HEADING_FONT }}>
         Use Local Files
       </button>
     </div>
@@ -300,7 +294,7 @@ export default function UploadSourceModal({
       style={{
         position:"fixed", top:0, left:0, right:0, bottom:0, width:"100vw", height:"100vh",
         zIndex:2147483600,
-        background:"rgba(5,5,9,.78)", backdropFilter:"blur(6px)",
+        background:"rgba(10,10,10,.55)", backdropFilter:"blur(6px)",
         display:"flex", alignItems:"center", justifyContent:"center", padding:16,
       }}
     >
@@ -309,7 +303,7 @@ export default function UploadSourceModal({
         style={{
           width:"100%", maxWidth:920, maxHeight:"90vh",
           background:T.panel, border:`1px solid ${T.border}`, borderRadius:16,
-          boxShadow:"0 24px 60px rgba(0,0,0,.55)", overflow:"hidden",
+          boxShadow:"0 24px 60px rgba(0,0,0,.25)", overflow:"hidden",
           display:"flex", flexDirection:"column",
         }}
       >
@@ -317,17 +311,17 @@ export default function UploadSourceModal({
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
           padding:"16px 20px", borderBottom:`1px solid ${T.borderSoft}` }}>
           <div>
-            <div style={{ fontSize:10, letterSpacing:".24em", color:T.gold,
-              textTransform:"none", fontWeight:600, marginBottom:4 }}>
-              Add your photo
+            <div style={{ fontSize:10, letterSpacing:".24em", color:T.red,
+              fontWeight:700, marginBottom:4, fontFamily: HEADING_FONT, textTransform:"uppercase" }}>
+              Add Your Photo
             </div>
-            <div style={{ fontFamily:"'Playfair Display', serif", fontSize:18, color:T.cream }}>
-              {forCouplesPartner2 ? "Upload the second partner's photo" : "Choose how to add your photo"}
+            <div style={{ fontFamily: HEADING_FONT, fontSize:18, fontWeight:700, color:T.ink }}>
+              {forCouplesPartner2 ? "Upload The Second Partner's Photo" : "Choose How To Add Your Photo"}
             </div>
           </div>
           <button onClick={onClose} aria-label="Close"
-            style={{ width:34, height:34, borderRadius:10, background:"rgba(255,255,255,.04)",
-              border:`1px solid ${T.borderSoft}`, color:T.cream, display:"flex",
+            style={{ width:34, height:34, borderRadius:10, background:"#fff",
+              border:`1px solid ${T.border}`, color:T.muted, display:"flex",
               alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
             <X size={16}/>
           </button>
@@ -341,24 +335,24 @@ export default function UploadSourceModal({
             {SOURCES.map(s => {
               const I = s.Icon;
               const isActive = active === s.id;
-              const iconColor = isActive
-                ? (s.brand || T.gold)
-                : (s.brand ? s.brand : T.muted);
+              // Real company colored icons for branded providers; red for native sources.
+              const iconColor = s.brand ? s.brand : T.red;
               return (
                 <button key={s.id} onClick={() => setActive(s.id)}
                   style={{
                     width:"100%", display:"flex", alignItems:"center", gap:12,
                     padding:"10px 12px", borderRadius:8, border:"none",
-                    background: isActive ? T.goldSoft : "transparent",
-                    color: isActive ? T.cream : T.muted,
+                    background: isActive ? T.redSoft : "transparent",
+                    color: isActive ? T.ink : T.muted,
                     cursor:"pointer", textAlign:"left", marginBottom:2,
+                    fontFamily: HEADING_FONT,
                     transition:"background .15s, color .15s",
                   }}>
                   <I size={16} color={iconColor} style={{ flexShrink:0 }}/>
-                  <span style={{ fontSize:13, fontWeight: isActive ? 600 : 500, flex:1 }}>{s.label}</span>
+                  <span style={{ fontSize:13, fontWeight: isActive ? 700 : 500, flex:1 }}>{s.label}</span>
                   {s.soon && (
-                    <span style={{ fontSize:8, letterSpacing:".12em", color:T.dim,
-                      textTransform:"none" }}>Soon</span>
+                    <span style={{ fontSize:9, letterSpacing:".10em", color:T.muted,
+                      textTransform:"uppercase", fontWeight:600 }}>Soon</span>
                   )}
                 </button>
               );
@@ -376,14 +370,14 @@ export default function UploadSourceModal({
           padding:"12px 20px", borderTop:`1px solid ${T.borderSoft}`,
           background:T.panelAlt, color:T.muted, fontSize:11, letterSpacing:".04em", flexWrap:"wrap" }}>
           <span style={{ display:"flex", alignItems:"center", gap:6 }}>
-            <Shield size={12} color={T.gold}/> Encrypted upload
+            <Shield size={12} color={T.red}/> Encrypted Upload
           </span>
           <span style={{ color:T.dim }}>·</span>
           <span style={{ display:"flex", alignItems:"center", gap:6 }}>
-            <Lock size={12} color={T.gold}/> Never shared or used for training
+            <Lock size={12} color={T.red}/> Never Shared Or Used For Training
           </span>
           <span style={{ color:T.dim }}>·</span>
-          <span>Auto-deleted after 30 days</span>
+          <span>Auto-Deleted After 30 Days</span>
         </div>
 
         {/* Hidden inputs */}
@@ -397,7 +391,5 @@ export default function UploadSourceModal({
     </div>
   );
 
-  // Render via portal to <body> so the modal escapes any transformed/positioned
-  // ancestor and is always centered on the viewport.
   return createPortal(modal, document.body);
 }
