@@ -3283,21 +3283,26 @@ export default function Customize() {
                           <div className="cz-acc-body">
                             <div style={{ display:"flex", gap:10 }}>
                               {MOUNT_COLORS.map(mc => (
-                                <button key={mc.id} title={mc.label}
-                                  onClick={() => setMountColor(mc.id)}
-                                  style={{ display:"flex", flexDirection:"column",
-                                    alignItems:"center", gap:4, background:"none",
-                                    border:"none", cursor:"pointer", padding:0 }}>
-                                  <div style={{ width:30, height:30, borderRadius:7,
-                                    background:mc.color,
-                                    border: mountColor===mc.id
-                                      ? `2px solid ${RED}`
-                                      : `1px solid rgba(0,0,0,.15)`,
-                                    boxShadow:"0 1px 3px rgba(0,0,0,.1)" }}/>
-                                  <span style={{ fontSize:9.5, color:mountColor===mc.id?INK:MUTED }}>
-                                    {mc.label}
-                                  </span>
-                                </button>
+                                <Tooltip key={mc.id} delayDuration={150}>
+                                  <TooltipTrigger asChild>
+                                    <button
+                                      onClick={() => setMountColor(mc.id)}
+                                      style={{ display:"flex", flexDirection:"column",
+                                        alignItems:"center", gap:4, background:"none",
+                                        border:"none", cursor:"pointer", padding:0 }}>
+                                      <div style={{ width:30, height:30, borderRadius:7,
+                                        background:mc.color,
+                                        border: mountColor===mc.id
+                                          ? `2px solid ${RED}`
+                                          : `1px solid rgba(0,0,0,.15)`,
+                                        boxShadow:"0 1px 3px rgba(0,0,0,.1)" }}/>
+                                      <span style={{ fontSize:9.5, color:mountColor===mc.id?INK:MUTED }}>
+                                        {mc.label}
+                                      </span>
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top">{mc.label}</TooltipContent>
+                                </Tooltip>
                               ))}
                             </div>
                           </div>
