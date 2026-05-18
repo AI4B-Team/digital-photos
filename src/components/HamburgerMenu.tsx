@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import {
   Menu, X, ChevronRight, Palette, MapPin, HelpCircle, Mail,
@@ -59,7 +60,7 @@ export default function HamburgerMenu() {
         <Menu size={18} />
       </button>
 
-      {open && (
+      {open && createPortal(
         <div
           onClick={() => setOpen(false)}
           style={{
@@ -149,7 +150,8 @@ export default function HamburgerMenu() {
               </div>
             </div>
           </aside>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
