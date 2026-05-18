@@ -12,6 +12,13 @@ import Delivery                from "./pages/Delivery";
 import Auth                    from "./pages/Auth";
 import ResetPassword           from "./pages/ResetPassword";
 import Admin                   from "./pages/Admin";
+import Styles                  from "./pages/Styles";
+import Tracking                from "./pages/Tracking";
+import Contact                 from "./pages/Contact";
+import Legal                   from "./pages/Legal";
+import FAQ                     from "./pages/FAQ";
+import GiftCards               from "./pages/GiftCards";
+import Reviews                 from "./pages/Reviews";
 import NotFound                from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +40,15 @@ const App = () => (
               <Route path="/auth"           element={<Auth />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/admin"          element={<Admin />} />
+              <Route path="/styles"         element={<Styles />} />
+              <Route path="/tracking"       element={<Tracking />} />
+              <Route path="/contact"        element={<Contact />} />
+              <Route path="/faq"            element={<FAQ />} />
+              <Route path="/gift-cards"     element={<GiftCards />} />
+              <Route path="/reviews"        element={<Reviews />} />
+              <Route path="/privacy"        element={<Legal />} />
+              <Route path="/terms"          element={<Legal />} />
+              <Route path="/refund"         element={<Legal />} />
               <Route path="/styles-:cat"   element={<Index />} />
               <Route path="*"              element={<NotFound />} />
             </Routes>
