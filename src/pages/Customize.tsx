@@ -596,6 +596,21 @@ function RoomViewPanel({
   };
   const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
 
+  // ── Dynamic size scaling: drive wall % from the actual print dimensions ──
+  // Larger prints visibly appear larger on the wall (perceived realism + upsell).
+  const selectedSizeId: string = (selected as any)?.size || "12x16";
+  const longestInches = (() => {
+    const m = /(\d+)\s*x\s*(\d+)/i.exec(selectedSizeId);
+    if (!m) return 16;
+    return Math.max(parseInt(m[1], 10), parseInt(m[2], 10));
+  })();
+  // Map 8" → 26%, 36" → 48% of wall width — smooth, realistic curve.
+  const targetWallW = Math.round(Math.max(24, Math.min(50, 22 + longestInches * 0.78)));
+  useEffect(() => {
+    setPortraitDragPos((p: any) => (p.w === targetWallW ? p : { ...p, w: targetWallW }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetWallW]);
+
   // ── Tab mode: "staged" | "user" | "ai" ──
   const mode: "staged" | "user" | "ai" =
     selectedRoomKey === "user" ? "user"
