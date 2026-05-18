@@ -660,84 +660,47 @@ function RoomViewPanel({
   return (
     <div style={{
       width:"100%", height:"100%", display:"flex", flexDirection:"column",
-      gap:14, background:"#FAF7F2", borderRadius:16, padding:18, color: INK,
-      border:`1px solid ${BORDER}`,
+      gap:14, background:"#0A0A0A", borderRadius:16, padding:18, color:"#fff",
+      border:"1px solid rgba(255,255,255,.08)",
     }}>
-      {/* Header: Back + Title */}
+      {/* Header */}
       <div style={{ display:"flex", gap:12, alignItems:"center", flexWrap:"wrap" }}>
         <button
           onClick={() => setRoomView(false)}
           style={{
             padding:"7px 13px", borderRadius:999, fontSize:12, fontWeight:600,
             cursor:"pointer", fontFamily:"'Poppins',sans-serif",
-            background:"#fff", color: INK,
-            border:`1px solid ${BORDER}`,
+            background:"rgba(255,255,255,.08)", color:"#fff",
+            border:"1px solid rgba(255,255,255,.14)",
             display:"inline-flex", alignItems:"center", gap:6,
-            transition:"background .15s",
-          }}
-          onMouseEnter={e => (e.currentTarget.style.background = "#F4EFE7")}
-          onMouseLeave={e => (e.currentTarget.style.background = "#fff")}>
+          }}>
           <ChevronLeft size={14}/> Back to portrait
         </button>
         <div style={{ flex:1, minWidth:0 }}>
           <div style={{
-            fontSize:9.5, letterSpacing:".22em", color: MUTED, fontWeight:700,
+            fontSize:9.5, letterSpacing:".22em", color:"rgba(255,255,255,.55)", fontWeight:700,
             textTransform:"uppercase",
           }}>Wall Preview</div>
           <div style={{
-            fontSize:17, fontWeight:700, color: INK,
+            fontSize:17, fontWeight:700, color:"#fff",
             fontFamily:"'Poppins',sans-serif", lineHeight:1.2, marginTop:2,
           }}>See it on your wall</div>
         </div>
-      </div>
 
-      {/* Upload + Generate strip (only shown once a room is uploaded) */}
-      {userRoomUrl && (
-        <div style={{
-          display:"flex", gap:8, flexWrap:"wrap", alignItems:"center",
-          padding:"10px 12px", background:"#fff", borderRadius:10,
-          border:`1px solid ${BORDER}`,
-        }}>
-          <label style={{
-            display:"inline-flex", alignItems:"center", gap:6,
-            background:"#F4EFE7", border:`1px solid ${BORDER}`,
-            padding:"7px 12px", borderRadius:8, cursor:"pointer",
-            fontSize:11.5, color: INK, fontWeight:600,
-            fontFamily:"'Poppins',sans-serif",
-          }}>
-            <Upload size={13}/>
-            Change Room Photo
-            <input type="file" accept="image/*" style={{ display:"none" }}
-              onChange={e => {
-                const f = e.target.files?.[0];
-                if (!f) return;
-                const reader = new FileReader();
-                reader.onload = ev => {
-                  setUserRoomUrl(ev.target?.result as string);
-                  setAiRoomUrl(null);
-                };
-                reader.readAsDataURL(f);
-              }}/>
-          </label>
+        {isUserRoom && userRoomUrl && (
           <button onClick={generateAIRoom} disabled={aiRoomLoading}
             style={{
               display:"inline-flex", alignItems:"center", gap:6,
-              background: aiRoomLoading ? "#E5DED2" : RED,
-              border:"none", padding:"7px 14px", borderRadius:8,
+              background: aiRoomLoading ? "rgba(255,255,255,.12)" : RED,
+              border:"none", padding:"8px 14px", borderRadius:8,
               fontSize:11.5, fontWeight:700, color:"#fff",
               cursor: aiRoomLoading ? "wait" : "pointer",
               fontFamily:"'Poppins',sans-serif",
-              boxShadow: aiRoomLoading ? "none" : "0 2px 8px rgba(212,38,46,.25)",
             }}>
             {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> {aiRoomUrl ? "Regenerate" : "Generate Realistic View"}</>}
           </button>
-          {!aiRoomUrl && !aiRoomLoading && (
-            <span style={{ fontSize:10.5, color: MUTED, lineHeight:1.4, marginLeft:"auto" }}>
-              Drag portrait to reposition · Scroll to resize
-            </span>
-          )}
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Main room view */}
       <div
@@ -747,8 +710,8 @@ function RoomViewPanel({
         onMouseLeave={onDragEnd}
         style={{
           position:"relative", flex:"1 1 auto", borderRadius:14,
-          overflow:"hidden", background:"#fff", minHeight:0,
-          border:`1px solid ${BORDER}`,
+          overflow:"hidden", background:"#151515", minHeight:0,
+          border:"1px solid rgba(255,255,255,.08)",
           userSelect: isDragging ? "none" : "auto",
         }}>
         {bgUrl && (
@@ -758,53 +721,34 @@ function RoomViewPanel({
             style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
         )}
 
-        {/* Empty state — elegant drop zone */}
-        {!userRoomUrl && (
+        {/* Empty state when user-room tab selected and no upload */}
+        {isUserRoom && !userRoomUrl && (
           <label style={{
             position:"absolute", inset:0, display:"flex", flexDirection:"column",
             alignItems:"center", justifyContent:"center", gap:18,
             textAlign:"center", padding:32, cursor:"pointer",
-            background:"linear-gradient(180deg, #FBF7EF 0%, #F4EDDF 100%)",
-            transition:"background .2s",
-          }}
-          onMouseEnter={e => (e.currentTarget.style.background = "linear-gradient(180deg, #F8F1E2 0%, #EFE6D2 100%)")}
-          onMouseLeave={e => (e.currentTarget.style.background = "linear-gradient(180deg, #FBF7EF 0%, #F4EDDF 100%)")}>
-            {/* Decorative frame mockup */}
+            background:"linear-gradient(180deg,#1a1a1a 0%,#0d0d0d 100%)",
+          }}>
             <div style={{
               position:"relative", width:120, height:150,
               background:"#fff",
-              border:`10px solid ${INK}`,
-              boxShadow:"0 18px 40px rgba(0,0,0,.18), 0 4px 12px rgba(0,0,0,.08)",
+              border:"10px solid #fff",
+              boxShadow:"0 18px 40px rgba(0,0,0,.55)",
               borderRadius:2,
               display:"flex", alignItems:"center", justifyContent:"center",
             }}>
               <Home size={32} color="#C9BFA9" strokeWidth={1.5}/>
-              {/* hanging cord */}
-              <div style={{
-                position:"absolute", top:-26, left:"50%", width:1,
-                height:18, background:"rgba(0,0,0,.35)", transform:"translateX(-50%)",
-              }}/>
-              <div style={{
-                position:"absolute", top:-30, left:"50%", width:6, height:6,
-                background:"#8B7E63", borderRadius:"50%", transform:"translateX(-50%)",
-              }}/>
             </div>
-
             <div style={{ maxWidth:340 }}>
               <div style={{
-                fontSize:18, fontWeight:700, color: INK,
+                fontSize:18, fontWeight:700, color:"#fff",
                 fontFamily:"'Poppins',sans-serif", marginBottom:6,
-              }}>
-                Upload a photo of your wall
-              </div>
+              }}>Upload a photo of your wall</div>
               <div style={{
-                fontSize:13, color: MUTED, lineHeight:1.55,
+                fontSize:13, color:"rgba(255,255,255,.65)", lineHeight:1.55,
                 fontFamily:"'Poppins',sans-serif",
-              }}>
-                We'll show you exactly how your portrait will look in your space — with realistic lighting, shadows, and scale.
-              </div>
+              }}>See exactly how your portrait will look in your space — with realistic lighting, shadows, and scale.</div>
             </div>
-
             <span style={{
               display:"inline-flex", alignItems:"center", gap:8,
               background: RED, color:"#fff",
@@ -814,22 +758,6 @@ function RoomViewPanel({
             }}>
               <Upload size={15}/> Upload Your Room
             </span>
-
-            {/* Trust row */}
-            <div style={{
-              display:"flex", gap:18, alignItems:"center",
-              fontSize:10.5, color: MUTED, fontFamily:"'Poppins',sans-serif",
-              marginTop:4,
-            }}>
-              <span style={{ display:"inline-flex", alignItems:"center", gap:5 }}>
-                <Sparkles size={11} color={RED}/> AI-powered realism
-              </span>
-              <span style={{ width:3, height:3, borderRadius:"50%", background:"#C9BFA9" }}/>
-              <span style={{ display:"inline-flex", alignItems:"center", gap:5 }}>
-                <Shield size={11} color="#6B6357"/> Never stored or shared
-              </span>
-            </div>
-
             <input type="file" accept="image/*" style={{ display:"none" }}
               onChange={e => {
                 const f = e.target.files?.[0];
@@ -844,7 +772,7 @@ function RoomViewPanel({
           </label>
         )}
 
-        {/* Portrait overlay (preview before AI generation) */}
+        {/* Portrait overlay — when staged is still loading or user uploaded but hasn't generated */}
         {showPortraitOverlay && (
           <div
             onMouseDown={onDragStart}
@@ -867,7 +795,7 @@ function RoomViewPanel({
         )}
 
         {/* AI loading overlay */}
-        {aiRoomLoading && (
+        {(aiRoomLoading || stagedLoading) && (
           <div style={{
             position:"absolute", inset:0, background:"rgba(0,0,0,.55)",
             backdropFilter:"blur(2px)",
@@ -883,20 +811,121 @@ function RoomViewPanel({
               fontFamily:"'Poppins',sans-serif" }}>Compositing your portrait…</span>
           </div>
         )}
+      </div>
 
-        {/* Privacy notice */}
-        {userRoomUrl && (
+      {/* Footer thumbnail strip: 5 staged + size guide + your space */}
+      <div style={{
+        display:"flex", gap:10, alignItems:"stretch",
+        overflowX:"auto", paddingBottom:2,
+      }}>
+        {STAGED_ROOMS.map(room => {
+          const entry = stagedComposites[room.id];
+          const thumb = entry?.url || room.bg;
+          const on = !isUserRoom && selectedRoomKey === room.id;
+          const loading = entry?.loading;
+          return (
+            <button key={room.id}
+              onClick={() => setSelectedRoomKey(room.id)}
+              style={{
+                flex:"0 0 110px", height:90, position:"relative",
+                borderRadius:10, overflow:"hidden", cursor:"pointer",
+                border: on ? `2px solid ${RED}` : "2px solid rgba(255,255,255,.12)",
+                padding:0, background:"#222",
+                boxShadow: on ? "0 4px 14px rgba(230,25,25,.35)" : "none",
+              }}>
+              <img src={thumb} alt={room.vibe}
+                style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
+                  opacity: loading ? .5 : 1 }}/>
+              {loading && (
+                <div style={{
+                  position:"absolute", inset:0, display:"flex",
+                  alignItems:"center", justifyContent:"center",
+                  background:"rgba(0,0,0,.4)",
+                }}>
+                  <div style={{
+                    width:18, height:18, borderRadius:"50%",
+                    border:"2px solid rgba(255,255,255,.3)", borderTopColor:"#fff",
+                    animation:"spin .9s linear infinite",
+                  }}/>
+                </div>
+              )}
+              <div style={{
+                position:"absolute", left:0, right:0, bottom:0,
+                background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
+                color:"#fff", fontSize:9.5, fontWeight:600,
+                fontFamily:"'Poppins',sans-serif",
+                padding:"10px 6px 5px", textAlign:"left",
+                letterSpacing:".04em",
+              }}>{room.vibe}</div>
+            </button>
+          );
+        })}
+
+        {/* Size guide — always visible info tile */}
+        <div style={{
+          flex:"0 0 110px", height:90, position:"relative",
+          borderRadius:10, overflow:"hidden",
+          border:"2px solid rgba(255,255,255,.12)",
+          background:"#fff",
+        }}>
+          <img src={sizeGuideImg} alt="Size guide"
+            style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
           <div style={{
-            position:"absolute", top:10, right:10,
-            background:"rgba(0,0,0,.55)", backdropFilter:"blur(6px)",
-            padding:"5px 11px", borderRadius:999,
-            fontSize:10, color:"rgba(255,255,255,.85)", fontWeight:500,
+            position:"absolute", left:0, right:0, bottom:0,
+            background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
+            color:"#fff", fontSize:9.5, fontWeight:600,
             fontFamily:"'Poppins',sans-serif",
-            display:"inline-flex", alignItems:"center", gap:5,
-          }}>
-            <Shield size={10}/> Your room photo is never stored
-          </div>
-        )}
+            padding:"10px 6px 5px", textAlign:"left",
+            letterSpacing:".04em",
+          }}>Size Guide</div>
+        </div>
+
+        {/* Your space — upload */}
+        <label style={{
+          flex:"0 0 110px", height:90, position:"relative",
+          borderRadius:10, overflow:"hidden", cursor:"pointer",
+          border: isUserRoom ? `2px solid ${RED}` : "2px dashed rgba(255,255,255,.25)",
+          background:"#1a1a1a",
+          display:"flex", flexDirection:"column", alignItems:"center",
+          justifyContent:"center", gap:4,
+          color:"rgba(255,255,255,.85)",
+        }}
+        onClick={() => setSelectedRoomKey("user")}>
+          {userRoomUrl ? (
+            <>
+              <img src={aiRoomUrl || userRoomUrl} alt="Your space"
+                style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
+                  position:"absolute", inset:0 }}/>
+              <div style={{
+                position:"absolute", left:0, right:0, bottom:0,
+                background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
+                color:"#fff", fontSize:9.5, fontWeight:600,
+                fontFamily:"'Poppins',sans-serif",
+                padding:"10px 6px 5px", textAlign:"left",
+                letterSpacing:".04em",
+              }}>Your Space</div>
+            </>
+          ) : (
+            <>
+              <Upload size={18}/>
+              <div style={{ fontSize:10, fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>
+                Your Space
+              </div>
+            </>
+          )}
+          <input type="file" accept="image/*" style={{ display:"none" }}
+            onChange={e => {
+              const f = e.target.files?.[0];
+              if (!f) return;
+              const reader = new FileReader();
+              reader.onload = ev => {
+                setUserRoomUrl(ev.target?.result as string);
+                setAiRoomUrl(null);
+                setSelectedRoomKey("user");
+              };
+              reader.readAsDataURL(f);
+            }}/>
+        </label>
       </div>
     </div>
   );
