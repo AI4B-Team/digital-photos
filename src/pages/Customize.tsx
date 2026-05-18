@@ -3245,6 +3245,7 @@ export default function Customize() {
                           const bcd = BORDER_COLORS.find(c => c.id === it.borderColor) || BORDER_COLORS[0];
                           const isFrameless = fd.id === "frameless" || fd.id === "digital";
                           const isCanvasItem = fd.id === "canvas";
+                          const isAcrylicItem = it.productType === "acrylic";
                           const woodPad = (fd.w || 0) * 0.3;
                           const thumb = 44;
                           const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
@@ -3272,21 +3273,39 @@ export default function Customize() {
                                 width:62, minWidth:62, display:"flex", alignItems:"center", justifyContent:"center",
                                 background:BG, borderRadius:5, padding:5,
                               }}>
-                                <div style={{
-                                  background: isCanvasItem ? "#fff" : (isFrameless ? "transparent" : fd.wood),
-                                  padding: isFrameless ? 0 : woodPad, display:"inline-block",
-                                }}>
-                                  <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
+                                {isAcrylicItem ? (
+                                  <div style={{
+                                    position:"relative", display:"inline-block", borderRadius:2,
+                                    boxShadow:"0 4px 12px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.18)",
+                                    borderTop:"1px solid rgba(255,255,255,0.25)",
+                                    borderLeft:"1px solid rgba(255,255,255,0.2)",
+                                    overflow:"hidden",
+                                  }}>
                                     <img src={it.photoUrl} alt="" style={{
                                       width: imgW, height: imgH, objectFit:"cover", display:"block", filter: ed.filter,
                                     }}/>
+                                    <div aria-hidden="true" style={{
+                                      position:"absolute", inset:0, pointerEvents:"none",
+                                      background:"linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%)",
+                                    }}/>
                                   </div>
-                                </div>
+                                ) : (
+                                  <div style={{
+                                    background: isCanvasItem ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+                                    padding: isFrameless ? 0 : woodPad, display:"inline-block",
+                                  }}>
+                                    <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
+                                      <img src={it.photoUrl} alt="" style={{
+                                        width: imgW, height: imgH, objectFit:"cover", display:"block", filter: ed.filter,
+                                      }}/>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                               <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
                                 <div style={{ fontSize:12, fontWeight:600, color:INK }}>Portrait #{idx + 1}</div>
                                 <div style={{ fontSize:10.5, color:MUTED, lineHeight:1.4 }}>
-                                  {sd.label}″ · {fd.label}
+                                  {sd.label}″ · {isAcrylicItem ? "Acrylic" : fd.label}
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:3 }}>
                                   <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
