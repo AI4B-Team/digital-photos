@@ -616,6 +616,8 @@ function RoomViewPanel({
   useEffect(() => {
     if (!portraitUrl) return;
     let cancelled = false;
+    // Reset all composites when portrait or frame changes
+    setStagedComposites({});
     (async () => {
       const { supabase } = await import("@/integrations/supabase/client");
       for (const room of STAGED_ROOMS) {
