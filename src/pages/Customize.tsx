@@ -1012,31 +1012,6 @@ function RoomViewPanel({
           </div>
         )}
 
-        {/* Elegant first-time helper — shown once, then dismissed via localStorage */}
-        {showPortraitOverlay && !isDragging && (() => {
-          const dismissed = typeof window !== "undefined" && localStorage.getItem("rv_helper_seen") === "1";
-          if (dismissed) return null;
-          return (
-            <div
-              onClick={() => { try { localStorage.setItem("rv_helper_seen","1"); } catch {} ; setIsDragging(false); }}
-              style={{
-                position:"absolute", left:"50%", bottom:18, transform:"translateX(-50%)",
-                zIndex:4, display:"inline-flex", alignItems:"center", gap:14,
-                padding:"9px 16px", borderRadius:999,
-                background:"rgba(20,20,20,.55)", backdropFilter:"blur(10px)",
-                border:"1px solid rgba(255,255,255,.14)",
-                color:"rgba(255,255,255,.92)", fontFamily:"'Poppins',sans-serif",
-                fontSize:11.5, fontWeight:500, letterSpacing:".04em",
-                pointerEvents:"auto", cursor:"pointer",
-                boxShadow:"0 10px 30px -10px rgba(0,0,0,.5)",
-              }}>
-              <span>Drag artwork to reposition</span>
-              <span style={{ opacity:.35 }}>·</span>
-              <span>Resize using the size selector</span>
-              <X size={12} style={{ opacity:.55, marginLeft:2 }}/>
-            </div>
-          );
-        })()}
       </div>
 
       {/* Footer thumbnail strip — only on Styled Spaces tab */}
