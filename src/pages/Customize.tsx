@@ -4788,11 +4788,6 @@ export default function Customize() {
           }}>Close</button>
         </div>
       )}
-      <PreviewsDrawer
-        open={previewsOpen}
-        onClose={() => setPreviewsOpen(false)}
-        defaultEmail={(session as any)?.email || ""}
-      />
 
       {showAdminPanel && (
         <div style={{
