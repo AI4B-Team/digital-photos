@@ -2060,9 +2060,10 @@ export default function Customize() {
       : isFramedItem
         ? { id:"mount", label: mountDef.label, bg: mountDef.color }
         : (BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0]);
-    const isFrameless = fd.id === "frameless" || fd.id === "digital";
-    const isCanvas    = fd.id === "canvas" || item.productType === "canvas";
     const isAcrylic   = item.productType === "acrylic";
+    const isCanvas    = fd.id === "canvas" || item.productType === "canvas";
+    // BUG-01: acrylic must be treated as frameless so no frame background bleeds
+    const isFrameless = fd.id === "frameless" || fd.id === "digital" || isAcrylic;
     const woodPad     = fd.w || 0;
     // Resolve actual selected frame color (so all 8 swatches render distinctly)
     const itemFrameColorDef = (FRAME_COLORS[item.productType] || []).find(c => c.id === item.frameColor);
