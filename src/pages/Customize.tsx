@@ -2125,8 +2125,9 @@ export default function Customize() {
                   ? "none"
                   : "0 0 0 1px rgba(0,0,0,.30)",
             border: isAcrylic ? "none" : undefined,
-            borderTop: undefined,
-            borderLeft: undefined,
+            // BUG-02: subtle polished-edge highlights on acrylic (match RoomViewPanel)
+            borderTop:  isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
+            borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
             filter: "none",
             display: "inline-block",
             flex:"0 1 auto",
