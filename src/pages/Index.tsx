@@ -1597,11 +1597,11 @@ function HomePage({ onGenerate }) {
         backdropFilter:scrolled?"blur(22px)":"none",
         borderBottom:scrolled?`1px solid ${T.border}`:"none",
         transition:"all .4s" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+        <div style={{ display:"flex", alignItems:"flex-start", gap:16, alignSelf:"flex-start", paddingTop:8 }}>
           <a href="/" aria-label="Real Art home" style={{
             display:"block", textDecoration:"none", flexShrink:0,
             background:"#E61919", padding:7, width:140,
-            position:"relative", top:8, alignSelf:"flex-start",
+
           }}>
             <div style={{ border:"2.5px solid #fff", padding:"6px 18px",
               display:"flex", flexDirection:"column", alignItems:"center" }}>
