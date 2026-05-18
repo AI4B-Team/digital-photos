@@ -2021,10 +2021,12 @@ export default function Customize() {
                     ${actualWood}
                   `,
             padding: (isFrameless ? 6 : woodPad + 6),
-            borderRadius: isFrameless ? 12 : 2,
-            boxShadow: isFrameless
-              ? "none"
-              : "0 0 0 1px rgba(0,0,0,.30)",
+            borderRadius: isFrameless ? (isAcrylic ? 4 : 12) : 2,
+            boxShadow: isAcrylic
+              ? "0 18px 48px rgba(0,0,0,.45), 0 6px 16px rgba(0,0,0,.30), inset 0 0 0 1px rgba(255,255,255,.20), inset 0 1px 0 rgba(255,255,255,.35)"
+              : isFrameless
+                ? "none"
+                : "0 0 0 1px rgba(0,0,0,.30)",
             filter: "none",
             display: "inline-block",
             flex:"0 1 auto",
