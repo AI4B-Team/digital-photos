@@ -33,6 +33,7 @@ export default function SiteHeader({
   cartCount = 0,
   sticky = true,
   topOffset = 0,
+  navCenterOffset = 0,
 }: {
   current?: "upload" | "customize" | "print";
   onBack?: () => void;
@@ -44,6 +45,7 @@ export default function SiteHeader({
   cartCount?: number;
   sticky?: boolean;
   topOffset?: number;
+  navCenterOffset?: number;
 }) {
   const navigate = useNavigate();
   const back = onBack || (() => navigate(-1));
