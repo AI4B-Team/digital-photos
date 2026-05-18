@@ -23,16 +23,19 @@ import roomBedroomLux   from "@/assets/rooms/lux-bedroom.jpg";
 import roomCoastal      from "@/assets/rooms/lux-coastal.jpg";
 import roomCatalog      from "@/assets/rooms/lux-catalog-clean.jpg";
 
+// STYLED SPACES — each room carries an emotional subtitle + a
+// "recommendedFor" list of portrait style ids so the system can later
+// surface curated, personalized room matches per artwork.
 const STAGED_ROOMS = [
-  { id: "dark-moody",     vibe: "Dark Lounge",      bg: roomDarkMoody },
-  { id: "bright-edit",    vibe: "Parisian",         bg: roomBrightEdit },
-  { id: "warm-organic",   vibe: "Warm Organic",     bg: roomWarmOrganic },
-  { id: "modern-minimal", vibe: "Modern Minimal",   bg: roomModernMin },
-  { id: "library-study",  vibe: "Library Study",    bg: roomLibrary },
-  { id: "entryway",       vibe: "Entryway",         bg: roomEntryway },
-  { id: "bedroom-lux",    vibe: "Serene Bedroom",   bg: roomBedroomLux },
-  { id: "coastal",        vibe: "Coastal Airy",     bg: roomCoastal },
-  { id: "catalog-clean",  vibe: "Clean Catalog",    bg: roomCatalog },
+  { id: "dark-moody",     vibe: "Dark Lounge",      subtitle: "Best for dramatic portraits",      bg: roomDarkMoody,    recommendedFor: ["royal","cinematic","fantasy"] },
+  { id: "bright-edit",    vibe: "Parisian",         subtitle: "Perfect for elegant interiors",    bg: roomBrightEdit,   recommendedFor: ["renaissance","minimal"] },
+  { id: "warm-organic",   vibe: "Warm Organic",     subtitle: "Ideal for family portraits",       bg: roomWarmOrganic,  recommendedFor: ["storybook","minimal"] },
+  { id: "modern-minimal", vibe: "Modern Minimal",   subtitle: "Clean contemporary aesthetic",     bg: roomModernMin,    recommendedFor: ["minimal","cinematic"] },
+  { id: "library-study",  vibe: "Library Study",    subtitle: "Luxury masculine atmosphere",      bg: roomLibrary,      recommendedFor: ["royal","renaissance"] },
+  { id: "entryway",       vibe: "Entryway",         subtitle: "A welcoming first impression",     bg: roomEntryway,     recommendedFor: ["minimal","storybook"] },
+  { id: "bedroom-lux",    vibe: "Serene Bedroom",   subtitle: "Soft, intimate, romantic",         bg: roomBedroomLux,   recommendedFor: ["storybook","minimal"] },
+  { id: "coastal",        vibe: "Coastal Airy",     subtitle: "Bright, breezy, refined",          bg: roomCoastal,      recommendedFor: ["minimal","storybook"] },
+  { id: "catalog-clean",  vibe: "Clean Catalog",    subtitle: "Editorial gallery feel",           bg: roomCatalog,      recommendedFor: ["minimal","renaissance"] },
 ];
 
 /* ── Tokens ── */
@@ -593,6 +596,21 @@ function RoomViewPanel({
   };
   const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
 
+  // ── Dynamic size scaling: drive wall % from the actual print dimensions ──
+  // Larger prints visibly appear larger on the wall (perceived realism + upsell).
+  const selectedSizeId: string = (selected as any)?.size || "12x16";
+  const longestInches = (() => {
+    const m = /(\d+)\s*x\s*(\d+)/i.exec(selectedSizeId);
+    if (!m) return 16;
+    return Math.max(parseInt(m[1], 10), parseInt(m[2], 10));
+  })();
+  // Map 8" → 26%, 36" → 48% of wall width — smooth, realistic curve.
+  const targetWallW = Math.round(Math.max(24, Math.min(50, 22 + longestInches * 0.78)));
+  useEffect(() => {
+    setPortraitDragPos((p: any) => (p.w === targetWallW ? p : { ...p, w: targetWallW }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetWallW]);
+
   // ── Tab mode: "staged" | "user" | "ai" ──
   const mode: "staged" | "user" | "ai" =
     selectedRoomKey === "user" ? "user"
@@ -692,7 +710,7 @@ function RoomViewPanel({
           <ChevronLeft size={14}/> Back
         </button>
         {([
-          { k:"staged", label:"Staged Rooms" },
+          { k:"staged", label:"Styled Spaces" },
           { k:"user",   label:"My Room" },
           { k:"ai",     label:"AI Magic", icon:<Sparkles size={13}/> },
         ] as const).map(t => {
@@ -910,42 +928,34 @@ function RoomViewPanel({
           </div>
         )}
 
-        {/* Doodle instruction overlays */}
-        {showPortraitOverlay && !isDragging && (
-          <>
-            {/* Drag/scroll hint — top-left, near the portrait */}
-            <div style={{
-              position:"absolute", top:12, left:14, zIndex:4,
-              display:"flex", flexDirection:"column", gap:4,
-              color:"#fff", pointerEvents:"none",
-              fontFamily:"'Caveat','Comic Sans MS',cursive",
-              textShadow:"0 2px 6px rgba(0,0,0,.6)",
-              transform:"rotate(-3deg)",
-            }}>
-              <span style={{ fontSize:20, fontWeight:700, lineHeight:1 }}>
-                ✦ Drag to move
-              </span>
+        {/* Elegant first-time helper — shown once, then dismissed via localStorage */}
+        {showPortraitOverlay && !isDragging && (() => {
+          const dismissed = typeof window !== "undefined" && localStorage.getItem("rv_helper_seen") === "1";
+          if (dismissed) return null;
+          return (
+            <div
+              onClick={() => { try { localStorage.setItem("rv_helper_seen","1"); } catch {} ; setIsDragging(false); }}
+              style={{
+                position:"absolute", left:"50%", bottom:18, transform:"translateX(-50%)",
+                zIndex:4, display:"inline-flex", alignItems:"center", gap:14,
+                padding:"9px 16px", borderRadius:999,
+                background:"rgba(20,20,20,.55)", backdropFilter:"blur(10px)",
+                border:"1px solid rgba(255,255,255,.14)",
+                color:"rgba(255,255,255,.92)", fontFamily:"'Poppins',sans-serif",
+                fontSize:11.5, fontWeight:500, letterSpacing:".04em",
+                pointerEvents:"auto", cursor:"pointer",
+                boxShadow:"0 10px 30px -10px rgba(0,0,0,.5)",
+              }}>
+              <span>Drag artwork to reposition</span>
+              <span style={{ opacity:.35 }}>·</span>
+              <span>Resize using the size selector</span>
+              <X size={12} style={{ opacity:.55, marginLeft:2 }}/>
             </div>
-
-            {/* Size hint — top-right, points to right panel */}
-            <div style={{
-              position:"absolute", top:12, right:14, zIndex:4,
-              display:"flex", alignItems:"center", gap:6,
-              color:"#fff", pointerEvents:"none",
-              fontFamily:"'Caveat','Comic Sans MS',cursive",
-              textShadow:"0 2px 6px rgba(0,0,0,.6)",
-              transform:"rotate(2deg)",
-            }}>
-              <span style={{ fontSize:18, fontWeight:700, lineHeight:1 }}>
-                Pick a size in the panel
-              </span>
-              <span style={{ fontSize:22, lineHeight:1 }}>→</span>
-            </div>
-          </>
-        )}
+          );
+        })()}
       </div>
 
-      {/* Footer thumbnail strip — only on Staged Rooms tab */}
+      {/* Footer thumbnail strip — only on Styled Spaces tab */}
       {mode === "staged" && (
         <div style={{
           display:"flex", gap:10, alignItems:"stretch",
@@ -960,11 +970,13 @@ function RoomViewPanel({
               <button key={room.id}
                 onClick={() => setSelectedRoomKey(room.id)}
                 style={{
-                  flex:"0 0 130px", height:92, position:"relative",
-                  borderRadius:10, overflow:"hidden", cursor:"pointer",
-                  border: on ? `2px solid ${RED}` : "2px solid rgba(255,255,255,.12)",
+                  flex:"0 0 158px", height:108, position:"relative",
+                  borderRadius:12, overflow:"hidden", cursor:"pointer",
+                  border: on ? `2px solid ${RED}` : "2px solid rgba(255,255,255,.10)",
                   padding:0, background:"#1a1a1a",
-                  boxShadow: on ? "0 4px 14px rgba(230,25,25,.35)" : "none",
+                  boxShadow: on ? "0 6px 18px rgba(230,25,25,.32)" : "0 2px 6px rgba(0,0,0,.25)",
+                  transition:"transform .2s ease, border-color .2s ease",
+                  transform: on ? "translateY(-1px)" : "none",
                 }}>
                 <img src={thumb} alt={room.vibe}
                   style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center", display:"block",
@@ -984,12 +996,19 @@ function RoomViewPanel({
                 )}
                 <div style={{
                   position:"absolute", left:0, right:0, bottom:0,
-                  background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
-                  color:"#fff", fontSize:9.5, fontWeight:600,
+                  background:"linear-gradient(180deg,transparent 0%,rgba(0,0,0,.55) 45%,rgba(0,0,0,.92) 100%)",
+                  color:"#fff",
                   fontFamily:"'Poppins',sans-serif",
-                  padding:"10px 6px 5px", textAlign:"left",
-                  letterSpacing:".04em",
-                }}>{room.vibe}</div>
+                  padding:"18px 9px 7px", textAlign:"left",
+                }}>
+                  <div style={{
+                    fontSize:11, fontWeight:700, letterSpacing:".06em", lineHeight:1.15,
+                  }}>{room.vibe}</div>
+                  <div style={{
+                    fontSize:9.5, fontWeight:400, opacity:.78, marginTop:2,
+                    fontStyle:"italic", letterSpacing:".01em", lineHeight:1.2,
+                  }}>{(room as any).subtitle}</div>
+                </div>
               </button>
             );
           })}
