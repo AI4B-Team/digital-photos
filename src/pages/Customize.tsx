@@ -710,7 +710,7 @@ function RoomViewPanel({
               }}
               style={{
                 display:"inline-flex", alignItems:"center", gap:6,
-                padding:"8px 14px", borderRadius:999,
+                padding:"8px 14px", borderRadius:8,
                 fontSize:12, fontWeight:700, fontFamily:"'Poppins',sans-serif",
                 cursor:"pointer",
                 background: on ? (isAi ? RED : "rgba(255,255,255,.14)") : "transparent",
