@@ -574,6 +574,7 @@ function RoomViewPanel({
 }: any) {
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
   const isCanvas = productType === "canvas";
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
   const sizeMap: Record<string, number> = {
     "8x8":1, "10x10":1, "12x12":1, "16x16":1,
@@ -927,9 +928,9 @@ function RoomViewPanel({
           })}
 
           {/* Size guide — always visible info tile */}
-          <div style={{
+          <button onClick={() => setSizeGuideOpen(true)} style={{
             flex:"0 0 110px", height:90, position:"relative",
-            borderRadius:10, overflow:"hidden",
+            borderRadius:10, overflow:"hidden", padding:0, cursor:"pointer",
             border:"2px solid rgba(255,255,255,.12)",
             background:"#fff",
           }}>
@@ -943,7 +944,30 @@ function RoomViewPanel({
               padding:"10px 6px 5px", textAlign:"left",
               letterSpacing:".04em",
             }}>Size Guide</div>
-          </div>
+          </button>
+        </div>
+      )}
+
+      {sizeGuideOpen && (
+        <div onClick={() => setSizeGuideOpen(false)} style={{
+          position:"fixed", inset:0, zIndex:1000,
+          background:"rgba(0,0,0,.85)", display:"flex",
+          alignItems:"center", justifyContent:"center", padding:24, cursor:"zoom-out",
+        }}>
+          <img src={sizeGuideImg} alt="Size guide"
+            onClick={e => e.stopPropagation()}
+            style={{
+              maxWidth:"min(900px, 95vw)", maxHeight:"90vh",
+              objectFit:"contain", borderRadius:8,
+              boxShadow:"0 20px 60px rgba(0,0,0,.6)", background:"#fff",
+            }}/>
+          <button onClick={() => setSizeGuideOpen(false)} style={{
+            position:"absolute", top:18, right:18,
+            background:"rgba(255,255,255,.12)", border:"1px solid rgba(255,255,255,.25)",
+            color:"#fff", borderRadius:8, padding:"8px 14px",
+            fontSize:13, fontWeight:600, cursor:"pointer",
+            fontFamily:"'Poppins',sans-serif",
+          }}>Close</button>
         </div>
       )}
     </div>
