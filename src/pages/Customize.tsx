@@ -751,6 +751,7 @@ function RoomViewPanel({
   const mountPx  = (MOUNT_COLORS.find((m:any) => m.id === mountColor) || MOUNT_COLORS[0]).color;
   const effectDef = EFFECTS.find((e:any) => e.id === (selected as any)?.effect) || EFFECTS[0];
   const isCanvas = productType === "canvas";
+  const isAcrylic = productType === "acrylic";
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const [hintDismissed, setHintDismissed] = useState(() => {
     try { return localStorage.getItem("cz-room-hint-dismissed") === "1"; } catch { return false; }
