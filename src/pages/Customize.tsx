@@ -956,7 +956,7 @@ function RoomViewPanel({
                 width:  `${wallW}%`,
                 height: scaledH ? `${scaledH}%` : undefined,
                 aspectRatio: !scaledH ? `${1} / ${aspectRatio || 0.75}` : undefined,
-                cursor: !isStaged ? (isDragging ? "grabbing" : "grab") : "default",
+                cursor: isDragging ? "grabbing" : "grab",
                 overflow:"hidden",
                 boxShadow: isStaged
                   ? "4px 8px 24px rgba(0,0,0,0.45)"
