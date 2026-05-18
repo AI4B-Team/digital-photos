@@ -857,7 +857,6 @@ function RoomViewPanel({
         {showPortraitOverlay && (
           <div
             onMouseDown={onDragStart}
-            onWheel={onWheel}
             style={{
               position:"absolute",
               left:   `${wallX}%`,
