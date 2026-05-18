@@ -1990,8 +1990,9 @@ export default function Customize() {
     const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
     const isDigitalItem = item.productType === "digital";
     const isFramedItem = item.productType === "classic-frame" || item.productType === "box-frame";
+    const isCanvasItem = item.productType === "canvas";
     const mountDef = MOUNT_COLORS.find(m => m.id === mountColor) || MOUNT_COLORS[0];
-    const bd = isDigitalItem
+    const bd = (isDigitalItem || isCanvasItem)
       ? (BORDERS.find(b => b.id === "none") || { id:"none", label:"None", px:0 })
       : isFramedItem
         ? { id:"mount", label:"Mount", px: 22 }
