@@ -515,6 +515,7 @@ const NAME_COLORS = [
 
 const toFrameId = (productType:string, frameColor:string): string => {
   if (productType === "digital" || productType === "print") return "frameless";
+  if (productType === "acrylic") return "frameless"; // Acrylic panels are frameless by design
   if (productType === "canvas") return "canvas";
   if (productType === "box-frame") return frameColor === "white" ? "wide-white" : "wide-black";
   const map: Record<string,string> = {
