@@ -2119,18 +2119,20 @@ export default function Customize() {
                   ? "0 4px 20px rgba(0,0,0,0.35)"
                   : "0 14px 28px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.18)")
               : isAcrylic
-                ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
+                ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.10)"
                 : isFrameless
                   ? "none"
                   : "0 0 0 1px rgba(0,0,0,.30)",
-            borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
-            borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
+            border: isAcrylic ? "none" : undefined,
+            borderTop: undefined,
+            borderLeft: undefined,
             filter: "none",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
             maxWidth: "100%",
             outline: "none",
+            overflow: isAcrylic ? "hidden" : undefined,
             transition: "box-shadow .3s ease, background .25s ease, padding .25s ease",
           }}>
             {isAcrylic && (
@@ -2141,13 +2143,15 @@ export default function Customize() {
               }}/>
             )}
             <div style={{
-              background: isCanvas
-                ? (liveCanvasFloat ? "#1a1a1a" : "transparent")
+              background: (isCanvas || isAcrylic)
+                ? (isCanvas && liveCanvasFloat ? "#1a1a1a" : "transparent")
                 : (bd.px === 0 ? "transparent" : bcd.bg),
-              padding: isCanvas ? (liveCanvasFloat ? 5 : 0) : bd.px,
+              padding: (isCanvas || isAcrylic) ? (isCanvas && liveCanvasFloat ? 5 : 0) : bd.px,
+              margin: 0,
+              border: "none",
               display: "flex", alignItems: "center", justifyContent: "center",
               // Sharp inner rabbet — the picture sits recessed INSIDE the frame
-              boxShadow: (isFrameless || isCanvas) ? "none" : `
+              boxShadow: (isFrameless || isCanvas || isAcrylic) ? "none" : `
                 0 0 0 1px rgba(0,0,0,.55),
                 inset 0 2px 6px rgba(0,0,0,.45),
                 inset 2px 0 4px rgba(0,0,0,.30),
