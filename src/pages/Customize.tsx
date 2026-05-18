@@ -980,24 +980,6 @@ function RoomViewPanel({
             );
           })}
 
-          {/* Size guide — always visible info tile */}
-          <button onClick={() => setSizeGuideOpen(true)} style={{
-            flex:"0 0 130px", height:92, position:"relative",
-            borderRadius:10, overflow:"hidden", padding:0, cursor:"pointer",
-            border:"2px solid rgba(255,255,255,.12)",
-            background:"#fff",
-          }}>
-            <img src={sizeGuideImg} alt="Size guide"
-              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-            <div style={{
-              position:"absolute", left:0, right:0, bottom:0,
-              background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
-              color:"#fff", fontSize:9.5, fontWeight:600,
-              fontFamily:"'Poppins',sans-serif",
-              padding:"10px 6px 5px", textAlign:"left",
-              letterSpacing:".04em",
-            }}>Size Guide</div>
-          </button>
         </div>
       )}
 
