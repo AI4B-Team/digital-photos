@@ -2908,8 +2908,8 @@ export default function Customize() {
             </div>
           </div>
 
-          {/* Mat / Border — only for unframed products */}
-          {(productType === "print" || productType === "canvas") && (
+          {/* Mat / Border — only for unframed fine art prints (NEVER canvas) */}
+          {productType === "print" && (
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(2, minmax(0, 1fr))", gap:6, marginBottom:14 }}>
