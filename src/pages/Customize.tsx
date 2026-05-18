@@ -14,12 +14,18 @@ import sizeGuideImg from "@/assets/size-guide.png";
 
 /* ── Staged Room Presets (5 vibes) ── */
 // Simple, clean wall scenes — minimal clutter, mostly empty walls so any portrait looks great
+import roomLivingImg  from "@/assets/room-living.jpg";
+import roomBedroomImg from "@/assets/room-bedroom.jpg";
+import roomOfficeImg  from "@/assets/room-office.jpg";
+import roomDiningImg  from "@/assets/room-dining.jpg";
+import roomEntryImg   from "@/assets/room-entry.jpg";
+
 const STAGED_ROOMS = [
-  { id: "living-sofa",   vibe: "Living Room",    bg: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1200&q=80" },
-  { id: "bedroom-calm",  vibe: "Bedroom",        bg: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=80" },
-  { id: "office-clean",  vibe: "Home Office",    bg: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=1200&q=80" },
-  { id: "dining-simple", vibe: "Dining Nook",    bg: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=1200&q=80" },
-  { id: "entry-minimal", vibe: "Minimal Entry",  bg: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80" },
+  { id: "living-sofa",   vibe: "Living Room",   bg: roomLivingImg },
+  { id: "bedroom-calm",  vibe: "Bedroom",       bg: roomBedroomImg },
+  { id: "office-clean",  vibe: "Home Office",   bg: roomOfficeImg },
+  { id: "dining-simple", vibe: "Dining Nook",   bg: roomDiningImg },
+  { id: "entry-minimal", vibe: "Minimal Entry", bg: roomEntryImg },
 ];
 
 /* ── Tokens ── */
@@ -685,16 +691,6 @@ function RoomViewPanel({
           }}>
           <ChevronLeft size={14}/> Back to portrait
         </button>
-        <div style={{ flex:1, minWidth:0 }}>
-          <div style={{
-            fontSize:9.5, letterSpacing:".22em", color:"rgba(255,255,255,.55)", fontWeight:700,
-            textTransform:"uppercase",
-          }}>Wall Preview</div>
-          <div style={{
-            fontSize:17, fontWeight:700, color:"#fff",
-            fontFamily:"'Poppins',sans-serif", lineHeight:1.2, marginTop:2,
-          }}>See it on your wall</div>
-        </div>
       </div>
 
       {/* Tab bar + upload (top-right) */}
