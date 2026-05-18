@@ -1093,6 +1093,8 @@ export default function Customize() {
   const [userRoomUrl,     setUserRoomUrl]   = useState<string|null>(null);
   const [aiRoomUrl,       setAiRoomUrl]     = useState<string|null>(null);
   const [aiRoomLoading,   setAiRoomLoading] = useState(false);
+  const [stagedComposites, setStagedComposites] = useState<Record<string,{url?:string;loading?:boolean}>>({});
+  const [selectedRoomKey, setSelectedRoomKey] = useState<string>(STAGED_ROOMS[0].id);
   const [portraitDragPos, setPortraitDragPos] = useState({ x:45, y:12, w:26 });
   const [isDragging,      setIsDragging]    = useState(false);
   const [dragStart,       setDragStart]     = useState({ mx:0, my:0, px:0, py:0 });
