@@ -4168,7 +4168,11 @@ export default function Customize() {
                       <div style={{ fontSize:13.5, fontWeight:700, color:INK, lineHeight:1.3 }}>{ptLabel}</div>
                       <div style={{ fontSize:11.5, color:MUTED, marginTop:2 }}>
                         {it.productType !== "digital" && (sd?.label || it.size)}
-                        {it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : ""}
+                        {it.productType === "canvas"
+                          ? (it.canvasFloatFrame
+                              ? ` · Float Frame${(CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor)?.label) ? " (" + CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor)!.label + ")" : ""}`
+                              : ` · ${CANVAS_EDGES.find(e => e.id === (it.canvasEdge || "gallery"))?.label || "Gallery Wrap"}`)
+                          : (it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : "")}
                       </div>
                       {it.portraitName && (
                         <div style={{ display:"inline-flex", alignItems:"center", gap:4,
