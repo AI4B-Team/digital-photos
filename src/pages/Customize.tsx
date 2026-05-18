@@ -676,8 +676,8 @@ function RoomViewPanel({
   return (
     <div style={{
       width:"100%", height:"100%", display:"flex", flexDirection:"column",
-      gap:10, background:"#0A0A0A", borderRadius:16, padding:12, color:"#fff",
-      border:"1px solid rgba(255,255,255,.08)",
+      gap:8, background:"#0A0A0A", borderRadius:14, padding:10, color:"#fff",
+      border:"1px solid rgba(255,255,255,.08)", minHeight:0, overflow:"hidden",
     }}>
       {/* Toolbar: Back + tabs + upload (single row) */}
       <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
