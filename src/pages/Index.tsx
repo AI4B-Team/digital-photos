@@ -1422,6 +1422,27 @@ function HomePage({ onGenerate }) {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [heroNames, setHeroNames] = useState<string[]>([""]);
   const totalPhotos = (photo ? 1 : 0) + extraPhotos.length;
+
+  const handleSelectedFile = useCallback((f: File) => {
+    const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
+    if (!ALLOWED.includes(f.type)) {
+      alert("Please upload a PNG, JPEG, WebP, or GIF image.");
+      return;
+    }
+    if (addSlot === "extra") {
+      const reader = new FileReader();
+      reader.onload = async ev => {
+        const dataUrl = ev.target?.result as string;
+        setExtraPhotos(p => [...p, dataUrl]);
+        let low = false;
+        try { const { w, h } = await getImageDimensions(dataUrl); low = isLowRes(w, h); } catch {}
+        setExtraLowRes(p => [...p, low]);
+      };
+      reader.readAsDataURL(f);
+    } else {
+      loadFile(f);
+    }
+  }, [addSlot, loadFile]);
   useEffect(() => {
     setHeroNames(prev => {
       const n = Math.max(1, totalPhotos, reqFor(cat).minPhotos);
