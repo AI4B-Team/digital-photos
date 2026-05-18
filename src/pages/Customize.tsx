@@ -3302,8 +3302,16 @@ export default function Customize() {
                           const bd = BORDERS.find(b => b.id === it.border) || BORDERS[1];
                           const bcd = BORDER_COLORS.find(c => c.id === it.borderColor) || BORDER_COLORS[0];
                           const isFrameless = fd.id === "frameless" || fd.id === "digital";
-                          const isCanvasItem = fd.id === "canvas";
+                          const isCanvasItem = fd.id === "canvas" || it.productType === "canvas";
                           const isAcrylicItem = it.productType === "acrylic";
+                          // Live canvas state for the selected item
+                          const liveFloat = isCanvasItem && (it.id === selectedId ? canvasFrame : !!it.canvasFloatFrame);
+                          const liveFcId = isCanvasItem
+                            ? (it.id === selectedId ? canvasFrameColor : (it.frameColor || "black"))
+                            : "black";
+                          const liveFcHex = (CANVAS_FRAME_COLORS.find(c => c.id === liveFcId)?.color) || "#1a1a1a";
+                          const liveEdgeId = isCanvasItem ? (it.canvasEdge || "gallery") : "gallery";
+                          const liveEdgeLabel = (CANVAS_EDGES.find(e => e.id === liveEdgeId)?.label) || "Gallery Wrap";
                           const woodPad = (fd.w || 0) * 0.3;
                           const thumb = 44;
                           const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
@@ -3347,9 +3355,34 @@ export default function Customize() {
                                       background:"linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%)",
                                     }}/>
                                   </div>
+                                ) : isCanvasItem ? (
+                                  <div style={{
+                                    position:"relative", display:"inline-block",
+                                    background: liveFloat ? liveFcHex : "transparent",
+                                    padding: liveFloat ? 4 : 0,
+                                    boxShadow: liveFloat
+                                      ? "0 3px 8px rgba(0,0,0,0.3)"
+                                      : "0 3px 8px rgba(0,0,0,0.22)",
+                                  }}>
+                                    <div style={{
+                                      position:"relative",
+                                      background: liveFloat ? "#1a1a1a" : "transparent",
+                                      padding: liveFloat ? 2 : 0,
+                                    }}>
+                                      <div style={{ position:"relative", overflow:"hidden", display:"block" }}>
+                                        <img src={it.photoUrl} alt="" style={{
+                                          width: imgW, height: imgH, objectFit:"cover", display:"block", filter: ed.filter,
+                                        }}/>
+                                        <div aria-hidden="true" style={{
+                                          position:"absolute", inset:0, pointerEvents:"none",
+                                          boxShadow:"inset -3px 0 6px rgba(0,0,0,0.28), inset 0 -3px 6px rgba(0,0,0,0.28)",
+                                        }}/>
+                                      </div>
+                                    </div>
+                                  </div>
                                 ) : (
                                   <div style={{
-                                    background: isCanvasItem ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+                                    background: isFrameless ? "transparent" : fd.wood,
                                     padding: isFrameless ? 0 : woodPad, display:"inline-block",
                                   }}>
                                     <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
@@ -3363,8 +3396,16 @@ export default function Customize() {
                               <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
                                 <div style={{ fontSize:12, fontWeight:600, color:INK }}>Portrait #{idx + 1}</div>
                                 <div style={{ fontSize:10.5, color:MUTED, lineHeight:1.4 }}>
-                                  {sd.label}″ · {isAcrylicItem ? "Acrylic" : fd.label}
+                                  {sd.label}″ · {
+                                    isAcrylicItem ? "Acrylic"
+                                    : isCanvasItem
+                                      ? (liveFloat
+                                          ? `Float Frame (${CANVAS_FRAME_COLORS.find(c => c.id === liveFcId)?.label || "Black"})`
+                                          : liveEdgeLabel)
+                                      : fd.label
+                                  }
                                 </div>
+
                                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:3 }}>
                                   <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
                                     {itemGetsDiscount && lineP < listP && (
