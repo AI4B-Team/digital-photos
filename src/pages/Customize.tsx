@@ -745,6 +745,7 @@ function RoomViewPanel({
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
   dragStart, setDragStart, roomContainerRef, setRoomView,
   roomImageOverrides,
+  canvasFloatFrame, canvasFloatFrameColor, canvasEdge,
 }: any) {
   const { session } = useSession();
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
@@ -1044,6 +1045,10 @@ function RoomViewPanel({
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
           const nameFontDef  = NAME_FONTS.find(f => f.id === nameFontId) || NAME_FONTS[0];
           const nameFontFam  = nameFontDef.family;
+          const cFloatColor  = (CANVAS_FRAME_COLORS.find((c:any) => c.id === canvasFloatFrameColor)?.color) || "#1a1a1a";
+          const cEdge        = canvasEdge || "gallery";
+          const cMuseumColor = cEdge === "museum-white" ? "#f4f4f4" : cEdge === "museum-black" ? "#1a1a1a" : null;
+          const cFramePadPct = isCanvas && canvasFloatFrame ? 2 : 0;
           return (
             <div
               onMouseDown={onDragStart}
@@ -1059,14 +1064,26 @@ function RoomViewPanel({
                 borderRadius: isAcrylic ? 2 : 0,
                 boxShadow: isAcrylic
                   ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
-                  : isStaged
-                    ? "4px 8px 24px rgba(0,0,0,0.45)"
-                    : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                  : isCanvas
+                    ? (canvasFloatFrame
+                        ? "0 14px 30px rgba(0,0,0,0.45), 0 4px 10px rgba(0,0,0,0.3)"
+                        : "4px 8px 24px rgba(0,0,0,0.45)")
+                    : isStaged
+                      ? "4px 8px 24px rgba(0,0,0,0.45)"
+                      : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
                 borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
                 borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
-                border: isAcrylic ? undefined : (isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`),
-                background: isAcrylic ? "transparent" : (isCanvas ? framePx : mountPx),
-                padding: `${mountPad}px`,
+                border: isAcrylic
+                  ? undefined
+                  : isCanvas
+                    ? (canvasFloatFrame ? `${Math.max(4, wallW*0.4)}px solid ${cFloatColor}` : "none")
+                    : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+                background: isAcrylic
+                  ? "transparent"
+                  : isCanvas
+                    ? (canvasFloatFrame ? "#1a1a1a" : "transparent")
+                    : mountPx,
+                padding: isCanvas && canvasFloatFrame ? `${cFramePadPct}%` : `${mountPad}px`,
                 boxSizing: "border-box",
                 transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
                 containerType: "inline-size",
@@ -1082,6 +1099,35 @@ function RoomViewPanel({
                     position:"absolute", inset:0, pointerEvents:"none",
                     background:"linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%)",
                   }}/>
+                )}
+                {isCanvas && (
+                  <>
+                    <div aria-hidden="true" style={{
+                      position:"absolute", inset:0, pointerEvents:"none",
+                      backgroundImage:
+                        "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px), " +
+                        "repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px)",
+                    }}/>
+                    {cMuseumColor ? (
+                      <>
+                        <div aria-hidden="true" style={{
+                          position:"absolute", left:0, top:0, bottom:0, width:"3%",
+                          background: cMuseumColor, pointerEvents:"none",
+                          boxShadow:"inset -2px 0 4px rgba(0,0,0,0.25)",
+                        }}/>
+                        <div aria-hidden="true" style={{
+                          position:"absolute", left:0, right:0, bottom:0, height:"3%",
+                          background: cMuseumColor, pointerEvents:"none",
+                          boxShadow:"inset 0 -2px 4px rgba(0,0,0,0.25)",
+                        }}/>
+                      </>
+                    ) : (
+                      <div aria-hidden="true" style={{
+                        position:"absolute", inset:0, pointerEvents:"none",
+                        boxShadow:"inset -8px 0 14px rgba(0,0,0,0.3), inset 0 -8px 14px rgba(0,0,0,0.3)",
+                      }}/>
+                    )}
+                  </>
                 )}
                 {!isStaged && namePosition !== "none" && (portraitName || portraitNameLine2) && (
                   <div style={{
@@ -2015,12 +2061,24 @@ export default function Customize() {
         ? { id:"mount", label: mountDef.label, bg: mountDef.color }
         : (BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0]);
     const isFrameless = fd.id === "frameless" || fd.id === "digital";
-    const isCanvas    = fd.id === "canvas";
+    const isCanvas    = fd.id === "canvas" || item.productType === "canvas";
     const isAcrylic   = item.productType === "acrylic";
     const woodPad     = fd.w || 0;
     // Resolve actual selected frame color (so all 8 swatches render distinctly)
     const itemFrameColorDef = (FRAME_COLORS[item.productType] || []).find(c => c.id === item.frameColor);
     const actualWood = itemFrameColorDef?.color || fd.wood;
+    // ── Live canvas customization state (the selected item reflects live controls) ──
+    const liveCanvasFloat = isCanvas && (item.id === selectedId ? canvasFrame : !!item.canvasFloatFrame);
+    const liveCanvasFrameColorId = isCanvas
+      ? (item.id === selectedId ? canvasFrameColor : (item.frameColor || "black"))
+      : "black";
+    const liveCanvasFrameHex = (CANVAS_FRAME_COLORS.find(c => c.id === liveCanvasFrameColorId)?.color) || "#1a1a1a";
+    const liveCanvasEdge = isCanvas ? (item.canvasEdge || "gallery") : "gallery";
+    const liveCanvasEdgeDef = CANVAS_EDGES.find(e => e.id === liveCanvasEdge) || CANVAS_EDGES[0];
+    const museumEdgeColor =
+      liveCanvasEdge === "museum-white" ? "#f4f4f4"
+      : liveCanvasEdge === "museum-black" ? "#1a1a1a"
+      : null;
     const frameAspect = sd.w / sd.h;
     const photoAspect = item.photoAspect || frameAspect;
     const coverByHeight = photoAspect > frameAspect;
@@ -2044,7 +2102,7 @@ export default function Customize() {
           <div style={{
             position: "relative",
             background: isCanvas
-              ? "#fff"
+              ? (liveCanvasFloat ? liveCanvasFrameHex : "transparent")
               : isFrameless
                 ? "transparent"
                 // Solid frame face with subtle edge vignette (frame moulding, not gradient bg)
@@ -2052,13 +2110,19 @@ export default function Customize() {
                     radial-gradient(ellipse at center, ${actualWood} 60%, color-mix(in srgb, ${actualWood} 85%, black) 100%),
                     ${actualWood}
                   `,
-            padding: isAcrylic ? 0 : (isFrameless ? 6 : woodPad + 6),
-            borderRadius: isAcrylic ? 2 : (isFrameless ? 12 : 2),
-            boxShadow: isAcrylic
-              ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
-              : isFrameless
-                ? "none"
-                : "0 0 0 1px rgba(0,0,0,.30)",
+            padding: isCanvas
+              ? (liveCanvasFloat ? 12 : 0)
+              : (isAcrylic ? 0 : (isFrameless ? 6 : woodPad + 6)),
+            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? 12 : 2)),
+            boxShadow: isCanvas
+              ? (liveCanvasFloat
+                  ? "0 4px 20px rgba(0,0,0,0.35)"
+                  : "0 14px 28px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.18)")
+              : isAcrylic
+                ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
+                : isFrameless
+                  ? "none"
+                  : "0 0 0 1px rgba(0,0,0,.30)",
             borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
             borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
             filter: "none",
@@ -2067,7 +2131,7 @@ export default function Customize() {
             minWidth:0,
             maxWidth: "100%",
             outline: "none",
-            transition: "box-shadow .3s ease",
+            transition: "box-shadow .3s ease, background .25s ease, padding .25s ease",
           }}>
             {isAcrylic && (
               <div aria-hidden="true" style={{
@@ -2077,11 +2141,13 @@ export default function Customize() {
               }}/>
             )}
             <div style={{
-              background: bd.px === 0 ? "transparent" : bcd.bg,
-              padding: bd.px,
+              background: isCanvas
+                ? (liveCanvasFloat ? "#1a1a1a" : "transparent")
+                : (bd.px === 0 ? "transparent" : bcd.bg),
+              padding: isCanvas ? (liveCanvasFloat ? 5 : 0) : bd.px,
               display: "flex", alignItems: "center", justifyContent: "center",
               // Sharp inner rabbet — the picture sits recessed INSIDE the frame
-              boxShadow: isFrameless ? "none" : `
+              boxShadow: (isFrameless || isCanvas) ? "none" : `
                 0 0 0 1px rgba(0,0,0,.55),
                 inset 0 2px 6px rgba(0,0,0,.45),
                 inset 2px 0 4px rgba(0,0,0,.30),
@@ -2193,6 +2259,36 @@ export default function Customize() {
                         );
                       })()}
                     </div>
+                    {/* Canvas: subtle texture + 3D depth strips simulating stretcher bar */}
+                    {isCanvas && (
+                      <>
+                        <div aria-hidden="true" style={{
+                          position:"absolute", inset:0, zIndex:3, pointerEvents:"none",
+                          backgroundImage:
+                            "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px), " +
+                            "repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px)",
+                        }}/>
+                        {museumEdgeColor ? (
+                          <>
+                            <div aria-hidden="true" style={{
+                              position:"absolute", left:0, top:0, bottom:0, width:8, zIndex:4,
+                              background: museumEdgeColor, pointerEvents:"none",
+                              boxShadow:"inset -2px 0 4px rgba(0,0,0,0.25)",
+                            }}/>
+                            <div aria-hidden="true" style={{
+                              position:"absolute", left:0, right:0, bottom:0, height:8, zIndex:4,
+                              background: museumEdgeColor, pointerEvents:"none",
+                              boxShadow:"inset 0 -2px 4px rgba(0,0,0,0.25)",
+                            }}/>
+                          </>
+                        ) : (
+                          <div aria-hidden="true" style={{
+                            position:"absolute", inset:0, zIndex:4, pointerEvents:"none",
+                            boxShadow:"inset -6px 0 12px rgba(0,0,0,0.30), inset 0 -6px 12px rgba(0,0,0,0.30)",
+                          }}/>
+                        )}
+                      </>
+                    )}
                     {/* Glaze sheen — visible on Standard Perspex, removed on Moth-Eye */}
                     {isFramedItem && glazeType === "perspex" && (
                       <div aria-hidden="true" style={{
@@ -2220,10 +2316,18 @@ export default function Customize() {
           <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
             <span>{sd.label}″</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-            <span>{isAcrylic ? "Acrylic" : fd.label}</span>
+            <span>{
+              isAcrylic ? "Acrylic"
+              : isCanvas
+                ? (liveCanvasFloat
+                    ? `Float Frame (${CANVAS_FRAME_COLORS.find(c => c.id === liveCanvasFrameColorId)?.label || "Black"})`
+                    : liveCanvasEdgeDef.label)
+                : fd.label
+            }</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
             <span>{ed.label}</span>
           </div>
+
           </div>
           {isSelected ? (
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
@@ -3059,6 +3163,9 @@ export default function Customize() {
                 roomContainerRef={roomContainerRef}
                 setRoomView={setRoomView}
                 roomImageOverrides={roomImageOverrides}
+                canvasFloatFrame={canvasFrame}
+                canvasFloatFrameColor={canvasFrameColor}
+                canvasEdge={(selected as any).canvasEdge || "gallery"}
               />
             </div>
           ) : (
@@ -3244,8 +3351,16 @@ export default function Customize() {
                           const bd = BORDERS.find(b => b.id === it.border) || BORDERS[1];
                           const bcd = BORDER_COLORS.find(c => c.id === it.borderColor) || BORDER_COLORS[0];
                           const isFrameless = fd.id === "frameless" || fd.id === "digital";
-                          const isCanvasItem = fd.id === "canvas";
+                          const isCanvasItem = fd.id === "canvas" || it.productType === "canvas";
                           const isAcrylicItem = it.productType === "acrylic";
+                          // Live canvas state for the selected item
+                          const liveFloat = isCanvasItem && (it.id === selectedId ? canvasFrame : !!it.canvasFloatFrame);
+                          const liveFcId = isCanvasItem
+                            ? (it.id === selectedId ? canvasFrameColor : (it.frameColor || "black"))
+                            : "black";
+                          const liveFcHex = (CANVAS_FRAME_COLORS.find(c => c.id === liveFcId)?.color) || "#1a1a1a";
+                          const liveEdgeId = isCanvasItem ? (it.canvasEdge || "gallery") : "gallery";
+                          const liveEdgeLabel = (CANVAS_EDGES.find(e => e.id === liveEdgeId)?.label) || "Gallery Wrap";
                           const woodPad = (fd.w || 0) * 0.3;
                           const thumb = 44;
                           const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
@@ -3289,9 +3404,34 @@ export default function Customize() {
                                       background:"linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%)",
                                     }}/>
                                   </div>
+                                ) : isCanvasItem ? (
+                                  <div style={{
+                                    position:"relative", display:"inline-block",
+                                    background: liveFloat ? liveFcHex : "transparent",
+                                    padding: liveFloat ? 4 : 0,
+                                    boxShadow: liveFloat
+                                      ? "0 3px 8px rgba(0,0,0,0.3)"
+                                      : "0 3px 8px rgba(0,0,0,0.22)",
+                                  }}>
+                                    <div style={{
+                                      position:"relative",
+                                      background: liveFloat ? "#1a1a1a" : "transparent",
+                                      padding: liveFloat ? 2 : 0,
+                                    }}>
+                                      <div style={{ position:"relative", overflow:"hidden", display:"block" }}>
+                                        <img src={it.photoUrl} alt="" style={{
+                                          width: imgW, height: imgH, objectFit:"cover", display:"block", filter: ed.filter,
+                                        }}/>
+                                        <div aria-hidden="true" style={{
+                                          position:"absolute", inset:0, pointerEvents:"none",
+                                          boxShadow:"inset -3px 0 6px rgba(0,0,0,0.28), inset 0 -3px 6px rgba(0,0,0,0.28)",
+                                        }}/>
+                                      </div>
+                                    </div>
+                                  </div>
                                 ) : (
                                   <div style={{
-                                    background: isCanvasItem ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+                                    background: isFrameless ? "transparent" : fd.wood,
                                     padding: isFrameless ? 0 : woodPad, display:"inline-block",
                                   }}>
                                     <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
@@ -3305,8 +3445,16 @@ export default function Customize() {
                               <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
                                 <div style={{ fontSize:12, fontWeight:600, color:INK }}>Portrait #{idx + 1}</div>
                                 <div style={{ fontSize:10.5, color:MUTED, lineHeight:1.4 }}>
-                                  {sd.label}″ · {isAcrylicItem ? "Acrylic" : fd.label}
+                                  {sd.label}″ · {
+                                    isAcrylicItem ? "Acrylic"
+                                    : isCanvasItem
+                                      ? (liveFloat
+                                          ? `Float Frame (${CANVAS_FRAME_COLORS.find(c => c.id === liveFcId)?.label || "Black"})`
+                                          : liveEdgeLabel)
+                                      : fd.label
+                                  }
                                 </div>
+
                                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:3 }}>
                                   <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
                                     {itemGetsDiscount && lineP < listP && (
