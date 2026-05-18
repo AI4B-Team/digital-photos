@@ -133,7 +133,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
           {LANGS.map(l => (
             <button
               key={l.code}
-              onClick={() => setLang(l.code)}
+              onClick={() => { setCurrent(l.code); setOpen(false); setLang(l.code); }}
               style={{
                 display:"flex", alignItems:"center", gap:10, width:"100%",
                 background: l.code === current ? "#FDECEC" : "transparent",
