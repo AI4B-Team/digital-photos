@@ -576,15 +576,21 @@ function RoomViewPanel({
   };
   const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
 
+  // ── Tab mode: "staged" | "user" | "ai" ──
+  const mode: "staged" | "user" | "ai" =
+    selectedRoomKey === "user" ? "user"
+    : selectedRoomKey === "ai" ? "ai"
+    : "staged";
+
   // ── Resolve background based on selected room ──
-  const isUserRoom = selectedRoomKey === "user";
-  const stagedEntry = !isUserRoom ? stagedComposites[selectedRoomKey] : null;
+  const stagedEntry = mode === "staged" ? stagedComposites[selectedRoomKey] : null;
   const stagedRoomDef = STAGED_ROOMS.find(r => r.id === selectedRoomKey);
-  const bgUrl = isUserRoom
-    ? (aiRoomUrl || userRoomUrl)
+  const bgUrl =
+    mode === "ai"   ? (aiRoomUrl || userRoomUrl)
+    : mode === "user" ? userRoomUrl
     : (stagedEntry?.url || stagedRoomDef?.bg);
-  const bgIsComposite = isUserRoom ? !!aiRoomUrl : !!stagedEntry?.url;
-  const stagedLoading = !isUserRoom && stagedEntry?.loading;
+  const bgIsComposite = mode === "ai" ? !!aiRoomUrl : mode === "staged" ? !!stagedEntry?.url : false;
+  const stagedLoading = mode === "staged" && stagedEntry?.loading;
 
   const wallX = portraitDragPos.x;
   const wallY = portraitDragPos.y;
