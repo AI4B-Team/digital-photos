@@ -572,6 +572,7 @@ function FrameSwatch({ frame, on }) {
 /* ── Room View Panel (staged + upload) ── */
 function RoomViewPanel({
   portraitUrl, frameColor, productType, selected,
+  mountColor, portraitName, namePosition, nameFontId, nameSizeId, nameColorId,
   userRoomUrl, setUserRoomUrl,
   aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
   stagedComposites, setStagedComposites,
@@ -580,6 +581,8 @@ function RoomViewPanel({
   dragStart, setDragStart, roomContainerRef, setRoomView,
 }: any) {
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
+  const mountPx  = (MOUNT_COLORS.find((m:any) => m.id === mountColor) || MOUNT_COLORS[0]).color;
+  const effectDef = EFFECTS.find((e:any) => e.id === (selected as any)?.effect) || EFFECTS[0];
   const isCanvas = productType === "canvas";
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
@@ -596,15 +599,15 @@ function RoomViewPanel({
     : selectedRoomKey === "ai" ? "ai"
     : "staged";
 
-  // ── Resolve background based on selected room ──
-  const stagedEntry = mode === "staged" ? stagedComposites[selectedRoomKey] : null;
+  // ── Resolve background: staged & user always raw (so right-panel changes show live).
+  // AI mode keeps the realistic composite since the user explicitly generates it. ──
   const stagedRoomDef = STAGED_ROOMS.find(r => r.id === selectedRoomKey);
   const bgUrl =
     mode === "ai"   ? (aiRoomUrl || userRoomUrl)
     : mode === "user" ? userRoomUrl
-    : (stagedEntry?.url || stagedRoomDef?.bg);
-  const bgIsComposite = mode === "ai" ? !!aiRoomUrl : mode === "staged" ? !!stagedEntry?.url : false;
-  const stagedLoading = mode === "staged" && stagedEntry?.loading;
+    : stagedRoomDef?.bg;
+  const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
+  const stagedLoading = false;
 
   const wallX = portraitDragPos.x;
   const wallY = portraitDragPos.y;
@@ -646,39 +649,8 @@ function RoomViewPanel({
     });
   };
 
-  // ── Auto-generate composites for all 5 staged rooms when portrait changes ──
-  useEffect(() => {
-    if (!portraitUrl) return;
-    let cancelled = false;
-    // Reset all composites when portrait or frame changes
-    setStagedComposites({});
-    (async () => {
-      const { supabase } = await import("@/integrations/supabase/client");
-      const portraitData = await toDataUrl(portraitUrl).catch(() => null);
-      if (!portraitData || cancelled) return;
-      for (const room of STAGED_ROOMS) {
-        const existing = stagedComposites[room.id];
-        if (existing?.url || existing?.loading) continue;
-        setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: true } }));
-        try {
-          const roomData = await toDataUrl(room.bg);
-          const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
-            body: { roomUrl: roomData, portraitUrl: portraitData, frameColor },
-          });
-          if (cancelled) return;
-          if (!error && data?.url) {
-            setStagedComposites((prev: any) => ({ ...prev, [room.id]: { url: data.url, loading: false } }));
-          } else {
-            setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: false } }));
-          }
-        } catch {
-          if (!cancelled) setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: false } }));
-        }
-      }
-    })();
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [portraitUrl, frameColor]);
+  // Staged rooms now use live overlay rendering (instant updates from the right panel),
+  // so we no longer pre-bake composites for them. AI Magic still composites on demand.
 
   const generateAIRoom = async () => {
     if (!userRoomUrl || !portraitUrl) return;
@@ -860,26 +832,65 @@ function RoomViewPanel({
           </label>
         )}
 
-        {/* Portrait overlay — when staged is still loading or user uploaded but hasn't generated */}
-        {showPortraitOverlay && (
-          <div
-            onMouseDown={onDragStart}
-            style={{
-              position:"absolute",
-              left:   `${wallX}%`,
-              top:    `${wallY}%`,
-              width:  `${wallW}%`,
-              aspectRatio: `${1} / ${aspectRatio || 0.75}`,
-              cursor: isDragging ? "grabbing" : "grab",
-              boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
-              border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
-              background: framePx,
-              transition: isDragging ? "none" : "left .15s, top .15s, width .15s",
-            }}>
-            <img src={portraitUrl} alt="Your portrait"
-              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-          </div>
-        )}
+        {/* Portrait overlay — live mirror of right-panel choices (size, frame, mount, effect, name) */}
+        {showPortraitOverlay && (() => {
+          const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
+          const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
+          const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
+          const nameFontFam  = nameFontId === "serif"
+            ? "Georgia,'Times New Roman',serif"
+            : "'Poppins',sans-serif";
+          return (
+            <div
+              onMouseDown={onDragStart}
+              style={{
+                position:"absolute",
+                left:   `${wallX}%`,
+                top:    `${wallY}%`,
+                width:  `${wallW}%`,
+                aspectRatio: `${1} / ${aspectRatio || 0.75}`,
+                cursor: isDragging ? "grabbing" : "grab",
+                boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+                background: isCanvas ? framePx : mountPx,
+                padding: `${mountPad}px`,
+                boxSizing: "border-box",
+                transition: isDragging ? "none" : "left .15s, top .15s, width .15s",
+                containerType: "inline-size",
+              }}>
+              <div style={{ position:"relative", width:"100%", height:"100%" }}>
+                <img src={portraitUrl} alt="Your portrait"
+                  style={{
+                    width:"100%", height:"100%", objectFit:"cover", display:"block",
+                    filter: effectDef.filter,
+                  }}/>
+                {namePosition !== "none" && portraitName && (
+                  <div style={{
+                    position:"absolute", left:0, right:0, zIndex:3,
+                    top:    namePosition === "top"    ? "10%" : "auto",
+                    bottom: namePosition === "bottom" ? "10%" : "auto",
+                    textAlign:"center", pointerEvents:"none",
+                  }}>
+                    <span style={{
+                      display:"inline-block",
+                      color: nameColorHex,
+                      fontSize: `clamp(10px, ${nameSizeCss}, 80px)`,
+                      fontFamily: nameFontFam,
+                      fontWeight: nameFontId === "italic" ? 600 : 700,
+                      fontStyle:  nameFontId === "italic" ? "italic" : "normal",
+                      letterSpacing: ".18em",
+                      textShadow: (nameColorId === "white" || nameColorId === "cream")
+                        ? "0 2px 8px rgba(0,0,0,0.55)"
+                        : "0 2px 8px rgba(255,255,255,0.35)",
+                    }}>
+                      {portraitName.toUpperCase()}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* AI loading overlay */}
         {(aiRoomLoading || stagedLoading) && (
@@ -2612,6 +2623,12 @@ export default function Customize() {
                 frameColor={cardFrame || "black"}
                 productType={activeCard}
                 selected={selected}
+                mountColor={mountColor}
+                portraitName={portraitName}
+                namePosition={namePosition}
+                nameFontId={nameFontId}
+                nameSizeId={nameSizeId}
+                nameColorId={nameColorId}
                 userRoomUrl={userRoomUrl} setUserRoomUrl={setUserRoomUrl}
                 aiRoomUrl={aiRoomUrl} setAiRoomUrl={setAiRoomUrl}
                 aiRoomLoading={aiRoomLoading} setAiRoomLoading={setAiRoomLoading}
