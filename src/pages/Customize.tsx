@@ -2213,6 +2213,36 @@ export default function Customize() {
                         );
                       })()}
                     </div>
+                    {/* Canvas: subtle texture + 3D depth strips simulating stretcher bar */}
+                    {isCanvas && (
+                      <>
+                        <div aria-hidden="true" style={{
+                          position:"absolute", inset:0, zIndex:3, pointerEvents:"none",
+                          backgroundImage:
+                            "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px), " +
+                            "repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px)",
+                        }}/>
+                        {museumEdgeColor ? (
+                          <>
+                            <div aria-hidden="true" style={{
+                              position:"absolute", left:0, top:0, bottom:0, width:8, zIndex:4,
+                              background: museumEdgeColor, pointerEvents:"none",
+                              boxShadow:"inset -2px 0 4px rgba(0,0,0,0.25)",
+                            }}/>
+                            <div aria-hidden="true" style={{
+                              position:"absolute", left:0, right:0, bottom:0, height:8, zIndex:4,
+                              background: museumEdgeColor, pointerEvents:"none",
+                              boxShadow:"inset 0 -2px 4px rgba(0,0,0,0.25)",
+                            }}/>
+                          </>
+                        ) : (
+                          <div aria-hidden="true" style={{
+                            position:"absolute", inset:0, zIndex:4, pointerEvents:"none",
+                            boxShadow:"inset -6px 0 12px rgba(0,0,0,0.30), inset 0 -6px 12px rgba(0,0,0,0.30)",
+                          }}/>
+                        )}
+                      </>
+                    )}
                     {/* Glaze sheen — visible on Standard Perspex, removed on Moth-Eye */}
                     {isFramedItem && glazeType === "perspex" && (
                       <div aria-hidden="true" style={{
@@ -2240,10 +2270,18 @@ export default function Customize() {
           <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
             <span>{sd.label}″</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-            <span>{isAcrylic ? "Acrylic" : fd.label}</span>
+            <span>{
+              isAcrylic ? "Acrylic"
+              : isCanvas
+                ? (liveCanvasFloat
+                    ? `Float Frame (${CANVAS_FRAME_COLORS.find(c => c.id === liveCanvasFrameColorId)?.label || "Black"})`
+                    : liveCanvasEdgeDef.label)
+                : fd.label
+            }</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
             <span>{ed.label}</span>
           </div>
+
           </div>
           {isSelected ? (
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
