@@ -2015,12 +2015,24 @@ export default function Customize() {
         ? { id:"mount", label: mountDef.label, bg: mountDef.color }
         : (BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0]);
     const isFrameless = fd.id === "frameless" || fd.id === "digital";
-    const isCanvas    = fd.id === "canvas";
+    const isCanvas    = fd.id === "canvas" || item.productType === "canvas";
     const isAcrylic   = item.productType === "acrylic";
     const woodPad     = fd.w || 0;
     // Resolve actual selected frame color (so all 8 swatches render distinctly)
     const itemFrameColorDef = (FRAME_COLORS[item.productType] || []).find(c => c.id === item.frameColor);
     const actualWood = itemFrameColorDef?.color || fd.wood;
+    // ── Live canvas customization state (the selected item reflects live controls) ──
+    const liveCanvasFloat = isCanvas && (item.id === selectedId ? canvasFrame : !!item.canvasFloatFrame);
+    const liveCanvasFrameColorId = isCanvas
+      ? (item.id === selectedId ? canvasFrameColor : (item.frameColor || "black"))
+      : "black";
+    const liveCanvasFrameHex = (CANVAS_FRAME_COLORS.find(c => c.id === liveCanvasFrameColorId)?.color) || "#1a1a1a";
+    const liveCanvasEdge = isCanvas ? (item.canvasEdge || "gallery") : "gallery";
+    const liveCanvasEdgeDef = CANVAS_EDGES.find(e => e.id === liveCanvasEdge) || CANVAS_EDGES[0];
+    const museumEdgeColor =
+      liveCanvasEdge === "museum-white" ? "#f4f4f4"
+      : liveCanvasEdge === "museum-black" ? "#1a1a1a"
+      : null;
     const frameAspect = sd.w / sd.h;
     const photoAspect = item.photoAspect || frameAspect;
     const coverByHeight = photoAspect > frameAspect;
@@ -2044,7 +2056,7 @@ export default function Customize() {
           <div style={{
             position: "relative",
             background: isCanvas
-              ? "#fff"
+              ? (liveCanvasFloat ? liveCanvasFrameHex : "transparent")
               : isFrameless
                 ? "transparent"
                 // Solid frame face with subtle edge vignette (frame moulding, not gradient bg)
@@ -2052,13 +2064,19 @@ export default function Customize() {
                     radial-gradient(ellipse at center, ${actualWood} 60%, color-mix(in srgb, ${actualWood} 85%, black) 100%),
                     ${actualWood}
                   `,
-            padding: isAcrylic ? 0 : (isFrameless ? 6 : woodPad + 6),
-            borderRadius: isAcrylic ? 2 : (isFrameless ? 12 : 2),
-            boxShadow: isAcrylic
-              ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
-              : isFrameless
-                ? "none"
-                : "0 0 0 1px rgba(0,0,0,.30)",
+            padding: isCanvas
+              ? (liveCanvasFloat ? 12 : 0)
+              : (isAcrylic ? 0 : (isFrameless ? 6 : woodPad + 6)),
+            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? 12 : 2)),
+            boxShadow: isCanvas
+              ? (liveCanvasFloat
+                  ? "0 4px 20px rgba(0,0,0,0.35)"
+                  : "0 14px 28px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.18)")
+              : isAcrylic
+                ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
+                : isFrameless
+                  ? "none"
+                  : "0 0 0 1px rgba(0,0,0,.30)",
             borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
             borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
             filter: "none",
@@ -2067,7 +2085,7 @@ export default function Customize() {
             minWidth:0,
             maxWidth: "100%",
             outline: "none",
-            transition: "box-shadow .3s ease",
+            transition: "box-shadow .3s ease, background .25s ease, padding .25s ease",
           }}>
             {isAcrylic && (
               <div aria-hidden="true" style={{
@@ -2077,11 +2095,13 @@ export default function Customize() {
               }}/>
             )}
             <div style={{
-              background: bd.px === 0 ? "transparent" : bcd.bg,
-              padding: bd.px,
+              background: isCanvas
+                ? (liveCanvasFloat ? "#1a1a1a" : "transparent")
+                : (bd.px === 0 ? "transparent" : bcd.bg),
+              padding: isCanvas ? (liveCanvasFloat ? 5 : 0) : bd.px,
               display: "flex", alignItems: "center", justifyContent: "center",
               // Sharp inner rabbet — the picture sits recessed INSIDE the frame
-              boxShadow: isFrameless ? "none" : `
+              boxShadow: (isFrameless || isCanvas) ? "none" : `
                 0 0 0 1px rgba(0,0,0,.55),
                 inset 0 2px 6px rgba(0,0,0,.45),
                 inset 2px 0 4px rgba(0,0,0,.30),
