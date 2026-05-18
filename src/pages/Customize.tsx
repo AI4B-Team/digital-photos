@@ -789,8 +789,8 @@ function RoomViewPanel({
             style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
         )}
 
-        {/* Empty state when user-room tab selected and no upload */}
-        {isUserRoom && !userRoomUrl && (
+        {/* Empty state when user/ai tab selected and no upload */}
+        {(mode === "user" || mode === "ai") && !userRoomUrl && (
           <label style={{
             position:"absolute", inset:0, display:"flex", flexDirection:"column",
             alignItems:"center", justifyContent:"center", gap:18,
