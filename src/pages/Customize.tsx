@@ -120,12 +120,12 @@ const G = `
 .cz-suggest{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .cz-suggest button{font-size:12.5px;padding:10px 12px;border-radius:8px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif;text-align:left;width:100%}
 .cz-suggest button:hover{border-color:${INK}}
-.cz-toolbar{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid ${BORDER};border-radius:14px;padding:6px;box-shadow:none}
-.cz-tool{width:38px;height:38px;border-radius:10px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
+.cz-toolbar{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid ${BORDER};border-radius:12px;padding:4px;box-shadow:none}
+.cz-tool{width:32px;height:32px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
 .cz-tool:hover{background:#F4F1EC;color:${INK}}
 .cz-tool.on{background:rgba(230,25,25,.10);color:${RED}}
 .cz-tool:disabled{opacity:.45;cursor:not-allowed}
-.cz-tool-divider{height:1px;background:${BORDER};margin:4px 6px}
+.cz-tool-divider{height:1px;background:${BORDER};margin:2px 4px}
 .cz-tool[data-tip]::after{content:attr(data-tip);position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%) translateX(4px);background:#fff;color:${INK};font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;padding:6px 10px;border-radius:8px;border:1px solid ${BORDER};box-shadow:0 6px 18px -6px rgba(0,0,0,.18);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s ease,transform .15s ease;z-index:50}
 .cz-tool[data-tip]::before{content:"";position:absolute;right:calc(100% + 4px);top:50%;transform:translateY(-50%) translateX(4px) rotate(45deg);width:8px;height:8px;background:#fff;border-right:1px solid ${BORDER};border-top:1px solid ${BORDER};pointer-events:none;opacity:0;transition:opacity .15s ease,transform .15s ease;z-index:50}
 .cz-tool[data-tip]:hover::after{opacity:1;transform:translateY(-50%) translateX(0)}
