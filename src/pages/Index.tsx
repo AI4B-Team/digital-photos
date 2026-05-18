@@ -1137,9 +1137,8 @@ const TEASERS = [
       portraits:[ { url:heroAfterFamilyTrio, style:"Editorial" } ] },
     { cat:"Love Framed", catId:"couples", style:"Romantic", before:heroBeforeHeartCouple, after:heroAfterHeartCouple, portrait:heroAfterHeartCouple,
       portraits:[ { url:heroAfterHeartCouple, style:"Romantic" } ] },
-    { cat:"Cat Crew", catId:"pets", style:"Studio", before:heroBeforeThreeCats, after:heroAfterThreeCats, portrait:heroAfterThreeCats,
-      portraits:[ { url:heroAfterThreeCats, style:"Studio" } ] },
 ];
+
 
 const PLANS = [
   {
