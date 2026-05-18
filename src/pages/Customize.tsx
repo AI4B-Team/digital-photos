@@ -6,6 +6,7 @@ import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkle
 import { TEMPLATES } from "./Index";
 import PreviewsDrawer from "@/components/PreviewsDrawer";
 import SiteHeader from "@/components/SiteHeader";
+import { supabase } from "@/integrations/supabase/client";
 
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
 import klarnaLogo from "@/assets/payment-logos/klarna.svg";
@@ -645,6 +646,7 @@ function RoomViewPanel({
   selectedRoomKey, setSelectedRoomKey,
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
   dragStart, setDragStart, roomContainerRef, setRoomView,
+  roomImageOverrides,
 }: any) {
   const { session } = useSession();
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
@@ -684,10 +686,11 @@ function RoomViewPanel({
   // ── Resolve background: staged & user always raw (so right-panel changes show live).
   // AI mode keeps the realistic composite since the user explicitly generates it. ──
   const stagedRoomDef = STAGED_ROOMS.find(r => r.id === selectedRoomKey);
+  const stagedBg = (roomImageOverrides && stagedRoomDef && roomImageOverrides[stagedRoomDef.id]) || stagedRoomDef?.bg;
   const bgUrl =
     mode === "ai"   ? (aiRoomUrl || userRoomUrl)
     : mode === "user" ? userRoomUrl
-    : stagedRoomDef?.bg;
+    : stagedBg;
   const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
   const stagedLoading = false;
 
@@ -1023,7 +1026,7 @@ function RoomViewPanel({
         }}>
           {STAGED_ROOMS.map(room => {
             const entry = stagedComposites[room.id];
-            const thumb = entry?.url || room.bg;
+            const thumb = entry?.url || (roomImageOverrides && roomImageOverrides[room.id]) || room.bg;
             const on = selectedRoomKey === room.id;
             const loading = entry?.loading;
             return (
@@ -1279,6 +1282,61 @@ export default function Customize() {
   const [aiRoomUrl,       setAiRoomUrl]     = useState<string|null>(null);
   const [aiRoomLoading,   setAiRoomLoading] = useState(false);
   const [stagedComposites, setStagedComposites] = useState<Record<string,{url?:string;loading?:boolean}>>({});
+  const [roomImageOverrides, setRoomImageOverrides] = useState<Record<string,string>>({});
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [adminProgress,  setAdminProgress]  = useState<Record<string,string>>({});
+  const [adminRunning,   setAdminRunning]   = useState(false);
+
+  useEffect(() => {
+    (supabase.from("room_images" as any).select("room_id, url") as any).then(({ data }: any) => {
+      if (data?.length) {
+        const map: Record<string,string> = {};
+        data.forEach((row: any) => { map[row.room_id] = row.url; });
+        setRoomImageOverrides(map);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
+        setShowAdminPanel(v => !v);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  const regenerateRoomImages = async () => {
+    if (adminRunning) return;
+    setAdminRunning(true);
+    setAdminProgress({});
+
+    for (const room of STAGED_ROOMS) {
+      setAdminProgress(p => ({ ...p, [room.id]: "loading…" }));
+      try {
+        const res  = await fetch(room.bg);
+        const blob = await res.blob();
+        const dataUrl: string = await new Promise(resolve => {
+          const r = new FileReader();
+          r.onload = () => resolve(r.result as string);
+          r.readAsDataURL(blob);
+        });
+
+        const { data, error } = await supabase.functions.invoke("regenerate-room-image", {
+          body: { roomId: room.id, roomImageUrl: dataUrl },
+        });
+
+        if (error || !data?.url) throw new Error(error?.message || "No URL returned");
+
+        setAdminProgress(p => ({ ...p, [room.id]: "✓ " + String(data.url).slice(-30) }));
+        setRoomImageOverrides(p => ({ ...p, [room.id]: data.url }));
+      } catch (err: any) {
+        setAdminProgress(p => ({ ...p, [room.id]: "✗ " + (err.message || "failed") }));
+      }
+    }
+    setAdminRunning(false);
+  };
   const [selectedRoomKey, setSelectedRoomKey] = useState<string>(() => {
     const style = (session as any)?.selectedStyle || "";
     if (style) {
@@ -2738,6 +2796,7 @@ export default function Customize() {
                 dragStart={dragStart} setDragStart={setDragStart}
                 roomContainerRef={roomContainerRef}
                 setRoomView={setRoomView}
+                roomImageOverrides={roomImageOverrides}
               />
             </div>
           ) : (
@@ -4225,6 +4284,58 @@ export default function Customize() {
         onClose={() => setPreviewsOpen(false)}
         defaultEmail={(session as any)?.email || ""}
       />
+
+      {showAdminPanel && (
+        <div style={{
+          position:"fixed", top:80, right:20, width:380, maxHeight:"80vh",
+          background:"#fff", border:"1px solid #ddd", borderRadius:12,
+          boxShadow:"0 20px 60px rgba(0,0,0,.25)", zIndex:9999,
+          padding:18, overflowY:"auto", fontFamily:"'Poppins',sans-serif",
+        }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
+            <div style={{ fontSize:14, fontWeight:700, color:"#111" }}>
+              ⚙ Admin — Regenerate Room Images
+            </div>
+            <button onClick={() => setShowAdminPanel(false)}
+              style={{ background:"none", border:"none", color:"#666", cursor:"pointer", fontSize:18 }}>
+              ×
+            </button>
+          </div>
+
+          <div style={{ fontSize:12, color:"#555", lineHeight:1.5, marginBottom:14 }}>
+            Removes placeholder frames from all room images using Gemini AI.
+            Results are saved to the backend and used immediately. Run once, then close this panel.
+          </div>
+
+          <div style={{ display:"flex", flexDirection:"column", gap:6, marginBottom:14 }}>
+            {STAGED_ROOMS.map(room => (
+              <div key={room.id} style={{
+                display:"flex", justifyContent:"space-between", gap:8,
+                fontSize:12, padding:"6px 8px", background:"#f7f7f7", borderRadius:6,
+              }}>
+                <span style={{ fontWeight:600, color:"#222" }}>{room.vibe}</span>
+                <span style={{ color:"#555", maxWidth:200, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                  {adminProgress[room.id] || (roomImageOverrides[room.id] ? "✓ saved" : "—")}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <button onClick={regenerateRoomImages} disabled={adminRunning}
+            style={{
+              width:"100%", padding:"12px 16px", borderRadius:8,
+              background: adminRunning ? "#999" : "#111", color:"#fff",
+              border:"none", fontWeight:700, fontSize:13,
+              cursor: adminRunning ? "not-allowed" : "pointer",
+            }}>
+            {adminRunning ? "⏳ Regenerating… (may take 2–3 min)" : `▶ Regenerate All ${STAGED_ROOMS.length} Rooms`}
+          </button>
+
+          <div style={{ marginTop:10, fontSize:11, color:"#888", textAlign:"center" }}>
+            Press Ctrl+Shift+A to toggle this panel
+          </div>
+        </div>
+      )}
     </div>
   );
 }
