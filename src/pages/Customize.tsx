@@ -649,39 +649,8 @@ function RoomViewPanel({
     });
   };
 
-  // ── Auto-generate composites for all 5 staged rooms when portrait changes ──
-  useEffect(() => {
-    if (!portraitUrl) return;
-    let cancelled = false;
-    // Reset all composites when portrait or frame changes
-    setStagedComposites({});
-    (async () => {
-      const { supabase } = await import("@/integrations/supabase/client");
-      const portraitData = await toDataUrl(portraitUrl).catch(() => null);
-      if (!portraitData || cancelled) return;
-      for (const room of STAGED_ROOMS) {
-        const existing = stagedComposites[room.id];
-        if (existing?.url || existing?.loading) continue;
-        setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: true } }));
-        try {
-          const roomData = await toDataUrl(room.bg);
-          const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
-            body: { roomUrl: roomData, portraitUrl: portraitData, frameColor },
-          });
-          if (cancelled) return;
-          if (!error && data?.url) {
-            setStagedComposites((prev: any) => ({ ...prev, [room.id]: { url: data.url, loading: false } }));
-          } else {
-            setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: false } }));
-          }
-        } catch {
-          if (!cancelled) setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: false } }));
-        }
-      }
-    })();
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [portraitUrl, frameColor]);
+  // Staged rooms now use live overlay rendering (instant updates from the right panel),
+  // so we no longer pre-bake composites for them. AI Magic still composites on demand.
 
   const generateAIRoom = async () => {
     if (!userRoomUrl || !portraitUrl) return;
