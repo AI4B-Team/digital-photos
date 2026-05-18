@@ -77,9 +77,9 @@ export default function Contact() {
         {/* Stats */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(200px,1fr))", gap:14, marginBottom:32 }}>
           {[
-            [Clock, "Response Time", "2–4 hours"],
-            [Mail, "Email Support", "Mon–Fri 9am–6pm EST"],
-            [MessageCircle, "Live Chat", "Coming soon"],
+            [Clock, "Response time", "2–4 hours"],
+            [Mail, "Email support", "Mon–Fri 9am–6pm EST"],
+            [MessageCircle, "Live chat", "Coming soon"],
             [Heart, "Satisfaction", "100% guaranteed"],
           ].map(([Icon, l, v], i)=>(
             <div key={i} style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14, padding:18, textAlign:"center" }}>
