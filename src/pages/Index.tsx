@@ -23,6 +23,8 @@ import scenePetsPitbull from "@/assets/scene-pets-pitbull.jpg";
 import scenePetsGallery from "@/assets/scene-pets-gallery.jpg";
 import scenePetsShepherdFlag from "@/assets/scene-pets-shepherd-flag.jpg";
 import scenePetsHorseLavender from "@/assets/scene-pets-horse-lavender.jpg";
+import scenePetsDogCoverEyes from "@/assets/scene-pets-dog-cover-eyes-color.jpg";
+import scenePetsCatShoulder from "@/assets/scene-pets-cat-shoulder-color.jpg";
 import sceneBabies from "@/assets/scene-babies.jpg";
 import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
 import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
@@ -1939,7 +1941,7 @@ function HomePage({ onGenerate }) {
           <p style={{ fontSize:22, color:T.muted, textAlign:"center", marginBottom:48, lineHeight:1.65, fontFamily:"'Poppins',sans-serif", whiteSpace:"nowrap" }}>Choose From 30+ Styles — Royal, Renaissance, Watercolor, Storybook And More For Every Moment.</p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
-              { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsHorseLavender, scenePetsGallery, scenePetKing, scenePetsShepherdFlag], Icon:PawPrint, title:"Pets",     body:"Royal · Viking · Astronaut · Watercolor · +25 more", cta:"Create A Pet Portrait" },
+              { cat:"pets",     img:scenePetsBrutus, imgs:[scenePetsBrutus, scenePetsPitbull, scenePetsHorseLavender, scenePetsGallery, scenePetKing, scenePetsShepherdFlag, scenePetsDogCoverEyes, scenePetsCatShoulder], Icon:PawPrint, title:"Pets",     body:"Royal · Viking · Astronaut · Watercolor · +25 more", cta:"Create A Pet Portrait" },
               { cat:"babies",   img:sceneBabiesSkateboard, imgs:[sceneBabiesSkateboard, sceneBabiesSuperman, sceneBabiesSoccer, sceneBabiesLoveFlowers, sceneBabiesSurfer, sceneBabiesFamilyNewborn], Icon:Baby,     title:"Babies",   body:"Fairy · Cherub · Storybook · Royal · +25 more", cta:"Create A Baby Portrait" },
               { cat:"couples",  img:sceneCouplesRings, imgs:[sceneCouplesRings, sceneCouplesBeachTender, sceneCouplesEditorialEmbrace, sceneCouplesCinematicKiss, sceneCouplesKiss, sceneCouplesBackToBack], Icon:Heart, title:"Couples", body:"Renaissance · Gothic · Gatsby · Royal · +25 more", cta:"Create A Couples Portrait" },
               { cat:"couples",  img:sceneWeddingConfetti, imgs:[sceneWeddingConfetti, sceneWeddingStreet, sceneWeddingBeach, sceneWeddingCar, sceneWeddingKiss], Icon:Sparkles, title:"Weddings", body:"Classic · Vintage · Royal · Watercolor · +25 more", cta:"Create A Wedding Portrait" },
