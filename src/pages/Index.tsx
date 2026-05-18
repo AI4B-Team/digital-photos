@@ -1129,6 +1129,14 @@ const TEASERS = [
       ] },
       { cat:"Grandparents", catId:"occasions", style:"Editorial", before:beforeFamilyGrandparents, after:sceneFamilyGrandparentsJoy, portrait:sceneFamilyGrandparentsJoy,
         portraits:[ { url:sceneFamilyGrandparentsJoy, style:"Editorial" } ] },
+    { cat:"Guardian Angel", catId:"memorial", style:"Ethereal", before:heroBeforeAngelHug, after:heroAfterAngelHug, portrait:heroAfterAngelHug,
+      portraits:[ { url:heroAfterAngelHug, style:"Ethereal" } ] },
+    { cat:"Family Forever", catId:"people", style:"Editorial", before:heroBeforeFamilyTrio, after:heroAfterFamilyTrio, portrait:heroAfterFamilyTrio,
+      portraits:[ { url:heroAfterFamilyTrio, style:"Editorial" } ] },
+    { cat:"Love Framed", catId:"couples", style:"Romantic", before:heroBeforeHeartCouple, after:heroAfterHeartCouple, portrait:heroAfterHeartCouple,
+      portraits:[ { url:heroAfterHeartCouple, style:"Romantic" } ] },
+    { cat:"Cat Crew", catId:"pets", style:"Studio", before:heroBeforeThreeCats, after:heroAfterThreeCats, portrait:heroAfterThreeCats,
+      portraits:[ { url:heroAfterThreeCats, style:"Studio" } ] },
 ];
 
 const PLANS = [
