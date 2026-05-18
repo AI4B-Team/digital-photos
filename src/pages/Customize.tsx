@@ -1068,6 +1068,19 @@ function RoomViewPanel({
                     fontStyle:"italic", letterSpacing:".01em", lineHeight:1.2,
                   }}>{(room as any).subtitle}</div>
                 </div>
+                {(session as any)?.selectedStyle &&
+                  room.recommendedFor.includes((session as any).selectedStyle) && (
+                  <div style={{
+                    position:"absolute", top:5, right:5,
+                    background: RED, color:"#fff",
+                    fontSize:8, fontWeight:700,
+                    padding:"2px 5px", borderRadius:4,
+                    fontFamily:"'Poppins',sans-serif",
+                    letterSpacing:".06em", textTransform:"uppercase",
+                  }}>
+                    ✦ Perfect Match
+                  </div>
+                )}
               </button>
             );
           })}
