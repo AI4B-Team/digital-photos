@@ -821,7 +821,7 @@ function RoomViewPanel({
               <div style={{
                 fontSize:18, fontWeight:700, color:"#fff",
                 fontFamily:"'Poppins',sans-serif", marginBottom:6,
-              }}>Upload a photo of your wall</div>
+              }}>Upload A Photo Of Your Wall</div>
               <div style={{
                 fontSize:13, color:"rgba(255,255,255,.65)", lineHeight:1.55,
                 fontFamily:"'Poppins',sans-serif",
