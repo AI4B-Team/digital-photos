@@ -3171,7 +3171,7 @@ export default function Customize() {
 
         {/* Preview (middle) — gallery wall ambience */}
         <div className="cz-stage cz-fade" style={{
-          padding:"0 24px 24px",
+          padding:"0 24px 4px",
           minHeight:"calc(100vh - 70px)",
           maxHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center",
