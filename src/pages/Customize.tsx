@@ -3337,7 +3337,7 @@ export default function Customize() {
                       )}
 
                       {/* ── Complete Your Order section ── */}
-                      <div style={{ marginTop:22, paddingTop:18, borderTop:`1px solid ${BORDER}` }}>
+                      <div style={{ marginTop:2, paddingTop:18, borderTop:`1px solid ${BORDER}` }}>
                         <div style={{
                           fontSize:10.5, fontWeight:700, color:MUTED,
                           letterSpacing:".14em", textTransform:"uppercase",
