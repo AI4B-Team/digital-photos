@@ -676,7 +676,7 @@ function RoomViewPanel({
   return (
     <div style={{
       width:"100%", height:"100%", display:"flex", flexDirection:"column",
-      gap:14, background:"#0A0A0A", borderRadius:16, padding:18, color:"#fff",
+      gap:10, background:"#0A0A0A", borderRadius:16, padding:12, color:"#fff",
       border:"1px solid rgba(255,255,255,.08)",
     }}>
       {/* Toolbar: Back + tabs + upload (single row) */}
@@ -2562,8 +2562,8 @@ export default function Customize() {
             mixBlendMode:"multiply",
           }}/>
           {roomView ? (
-            <div style={{ flex:"1 1 auto", width:"100%", minHeight:0,
-              display:"flex", padding:"16px 16px 24px" }}>
+            <div style={{ flex:"1 1 auto", width:"100%", minHeight:0, maxHeight:"calc(100vh - 220px)",
+              display:"flex", padding:"10px 12px 14px" }}>
               <RoomViewPanel
                 portraitUrl={(selected as any).photoUrl || ""}
                 frameColor={cardFrame || "black"}
