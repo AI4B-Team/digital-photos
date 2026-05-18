@@ -417,7 +417,7 @@ const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> 
 
 // Mount/mat colours for framed prints (CFPM / BOXM) — Prodigi confirmed
 const MOUNT_COLORS = [
-  { id:"snow-white", label:"Snow White", color:"#f9f9f7" },
+  { id:"snow-white", label:"White", color:"#f9f9f7" },
   { id:"hayseed",    label:"Hayseed",    color:"#e8dfc8" },
   { id:"black",      label:"Black",      color:"#1a1a1a" },
 ];
