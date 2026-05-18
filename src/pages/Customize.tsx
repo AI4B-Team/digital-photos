@@ -486,23 +486,31 @@ const NAME_POSITIONS = [
 ] as const;
 
 const NAME_FONTS = [
-  { id:"bold",   label:"Bold Sans",     css:(fs:number)=>`700 ${fs}px 'Poppins',sans-serif` },
-  { id:"serif",  label:"Classic Serif", css:(fs:number)=>`700 ${fs}px Georgia,'Times New Roman',serif` },
-  { id:"italic", label:"Italic",        css:(fs:number)=>`600 italic ${fs}px 'Poppins',sans-serif` },
+  { id:"bold",       label:"Bold Sans",     family:"'Poppins',sans-serif",                weight:700, italic:false, css:(fs:number)=>`700 ${fs}px 'Poppins',sans-serif` },
+  { id:"serif",      label:"Classic Serif", family:"Georgia,'Times New Roman',serif",     weight:700, italic:false, css:(fs:number)=>`700 ${fs}px Georgia,'Times New Roman',serif` },
+  { id:"italic",     label:"Italic",        family:"'Poppins',sans-serif",                weight:600, italic:true,  css:(fs:number)=>`600 italic ${fs}px 'Poppins',sans-serif` },
+  { id:"cormorant",  label:"Cormorant",     family:"'Cormorant Garamond',serif",          weight:400, italic:false, css:(fs:number)=>`400 ${fs}px 'Cormorant Garamond',serif` },
+  { id:"playfair",   label:"Playfair",      family:"'Playfair Display',serif",            weight:700, italic:false, css:(fs:number)=>`700 ${fs}px 'Playfair Display',serif` },
+  { id:"montserrat", label:"Montserrat",    family:"'Montserrat',sans-serif",             weight:400, italic:false, css:(fs:number)=>`400 ${fs}px 'Montserrat',sans-serif` },
+  { id:"script",     label:"Script",        family:"'Dancing Script',cursive",            weight:700, italic:false, css:(fs:number)=>`700 ${fs}px 'Dancing Script',cursive` },
+  { id:"vibes",      label:"Vibes",         family:"'Great Vibes',cursive",               weight:400, italic:false, css:(fs:number)=>`400 ${fs}px 'Great Vibes',cursive` },
+  { id:"josefin",    label:"Josefin",       family:"'Josefin Sans',sans-serif",           weight:300, italic:false, css:(fs:number)=>`300 ${fs}px 'Josefin Sans',sans-serif` },
 ] as const;
 
 const NAME_SIZES = [
-  { id:"sm", label:"S", mult:0.045, css:"3.5cqw" },
-  { id:"md", label:"M", mult:0.065, css:"5cqw" },
-  { id:"lg", label:"L", mult:0.085, css:"6.8cqw" },
-  { id:"xl", label:"XL", mult:0.105, css:"8.5cqw" },
+  { id:"sm", label:"S", mult:0.045, css:"3.5cqw", px:13 },
+  { id:"md", label:"M", mult:0.065, css:"5cqw",   px:17 },
+  { id:"lg", label:"L", mult:0.085, css:"6.8cqw", px:22 },
+  { id:"xl", label:"XL", mult:0.105, css:"8.5cqw", px:28 },
 ] as const;
 
 const NAME_COLORS = [
-  { id:"white", label:"White", hex:"#FFFFFF" },
-  { id:"cream", label:"Cream", hex:"#EDE6D9" },
-  { id:"black", label:"Black", hex:"#0A0A0A" },
-  { id:"gold",  label:"Gold",  hex:"#C4963A" },
+  { id:"white",     label:"White",     hex:"#FFFFFF" },
+  { id:"cream",     label:"Cream",     hex:"#F5F0E8" },
+  { id:"black",     label:"Black",     hex:"#0A0A0A" },
+  { id:"gold",      label:"Gold",      hex:"#C4963A" },
+  { id:"rose-gold", label:"Rose Gold", hex:"#B76E79" },
+  { id:"slate",     label:"Slate",     hex:"#64748B" },
 ] as const;
 
 const toFrameId = (productType:string, frameColor:string): string => {
