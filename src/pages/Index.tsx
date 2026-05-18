@@ -1694,7 +1694,7 @@ function HomePage({ onGenerate }) {
                 </div>
                 {!photo ? (
                   <div className={`dz ${drag?"drag":""}`} style={{ borderRadius:6, padding:"20px 16px" }}
-                    onClick={() => { setAddSlot("primary"); fileRef.current?.click(); }}
+                    onClick={() => { setAddSlot("primary"); setUploadModalOpen(true); }}
                     onDragOver={e => { e.preventDefault(); setDrag(true); }}
                     onDragLeave={() => setDrag(false)}
                     onDrop={e => { e.preventDefault(); setDrag(false); setAddSlot("primary"); loadFile(e.dataTransfer.files[0]); }}>
