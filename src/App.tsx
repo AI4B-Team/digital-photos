@@ -12,6 +12,13 @@ import Delivery                from "./pages/Delivery";
 import Auth                    from "./pages/Auth";
 import ResetPassword           from "./pages/ResetPassword";
 import Admin                   from "./pages/Admin";
+import Styles                  from "./pages/Styles";
+import Tracking                from "./pages/Tracking";
+import Contact                 from "./pages/Contact";
+import Legal                   from "./pages/Legal";
+import FAQ                     from "./pages/FAQ";
+import GiftCards               from "./pages/GiftCards";
+import Reviews                 from "./pages/Reviews";
 import NotFound                from "./pages/NotFound";
 
 const queryClient = new QueryClient();
