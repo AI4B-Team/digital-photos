@@ -113,7 +113,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
         aria-label="Change language"
         style={{
           display:"flex", alignItems:"center", gap:6,
-          background:"#fff", border:"1px solid #8C8C8C",
+          background:"transparent", border:"1px solid #8C8C8C",
           color:"#8C8C8C", cursor:"pointer", padding:"6px 10px", borderRadius:8,
           fontFamily:"'Poppins',sans-serif", fontSize:12, letterSpacing:".06em",
           fontWeight:600,
@@ -126,7 +126,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
       {open && (
         <div style={{
           position:"absolute", top:"calc(100% + 6px)", left:0, zIndex:1000,
-          background:"#fff", border:"1px solid #8C8C8C", borderRadius:8,
+          background:"transparent", border:"1px solid #8C8C8C", borderRadius:8,
           minWidth:220, maxHeight:340, overflowY:"auto", padding:6,
           boxShadow:"0 16px 40px rgba(0,0,0,.18)",
         }}>

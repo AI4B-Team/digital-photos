@@ -23,7 +23,7 @@ export default function HamburgerMenu({
         aria-label="Open menu"
         style={{
           display:"flex", alignItems:"center", justifyContent:"center",
-          background:"#fff", border:"1px solid #8C8C8C",
+          background:"transparent", border:"1px solid #8C8C8C",
           color:"#8C8C8C", cursor:"pointer", width:38, height:34, borderRadius:8,
         }}
       >
