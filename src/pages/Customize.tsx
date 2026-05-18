@@ -672,8 +672,8 @@ function RoomViewPanel({
       gap:14, background:"#0A0A0A", borderRadius:16, padding:18, color:"#fff",
       border:"1px solid rgba(255,255,255,.08)",
     }}>
-      {/* Header */}
-      <div style={{ display:"flex", gap:12, alignItems:"center", flexWrap:"wrap" }}>
+      {/* Header: Back + Title */}
+      <div style={{ display:"flex", gap:12, alignItems:"center" }}>
         <button
           onClick={() => setRoomView(false)}
           style={{
@@ -695,21 +695,80 @@ function RoomViewPanel({
             fontFamily:"'Poppins',sans-serif", lineHeight:1.2, marginTop:2,
           }}>See it on your wall</div>
         </div>
-
-        {isUserRoom && userRoomUrl && (
-          <button onClick={generateAIRoom} disabled={aiRoomLoading}
-            style={{
-              display:"inline-flex", alignItems:"center", gap:6,
-              background: aiRoomLoading ? "rgba(255,255,255,.12)" : RED,
-              border:"none", padding:"8px 14px", borderRadius:8,
-              fontSize:11.5, fontWeight:700, color:"#fff",
-              cursor: aiRoomLoading ? "wait" : "pointer",
-              fontFamily:"'Poppins',sans-serif",
-            }}>
-            {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> {aiRoomUrl ? "Regenerate" : "Generate Realistic View"}</>}
-          </button>
-        )}
       </div>
+
+      {/* Tab bar */}
+      <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+        {([
+          { k:"staged", label:"Staged Rooms" },
+          { k:"user",   label:"My Room" },
+          { k:"ai",     label:"AI Magic", icon:<Sparkles size={13}/> },
+        ] as const).map(t => {
+          const on = mode === t.k;
+          const isAi = t.k === "ai";
+          return (
+            <button key={t.k}
+              onClick={() => {
+                if (t.k === "staged") setSelectedRoomKey(STAGED_ROOMS[0].id);
+                else setSelectedRoomKey(t.k);
+              }}
+              style={{
+                display:"inline-flex", alignItems:"center", gap:6,
+                padding:"8px 14px", borderRadius:999,
+                fontSize:12, fontWeight:700, fontFamily:"'Poppins',sans-serif",
+                cursor:"pointer",
+                background: on ? (isAi ? RED : "rgba(255,255,255,.14)") : "transparent",
+                color: "#fff",
+                border: on
+                  ? `1px solid ${isAi ? RED : "rgba(255,255,255,.22)"}`
+                  : "1px solid rgba(255,255,255,.18)",
+              }}>
+              {t.label}{t.icon ? <span style={{ marginLeft:2 }}>{t.icon}</span> : null}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Contextual action row (Upload / Generate) */}
+      {(mode === "user" || mode === "ai") && (
+        <div>
+          <label style={{
+            display:"inline-flex", alignItems:"center", gap:8,
+            padding:"8px 14px", borderRadius:8,
+            background:"rgba(255,255,255,.08)", color:"#fff",
+            border:"1px solid rgba(255,255,255,.14)",
+            fontSize:12, fontWeight:600, fontFamily:"'Poppins',sans-serif",
+            cursor:"pointer",
+          }}>
+            <Upload size={14}/> {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
+            <input type="file" accept="image/*" style={{ display:"none" }}
+              onChange={e => {
+                const f = e.target.files?.[0];
+                if (!f) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                  setUserRoomUrl(ev.target?.result as string);
+                  setAiRoomUrl(null);
+                };
+                reader.readAsDataURL(f);
+              }}/>
+          </label>
+          {mode === "ai" && userRoomUrl && (
+            <button onClick={generateAIRoom} disabled={aiRoomLoading}
+              style={{
+                marginLeft:8,
+                display:"inline-flex", alignItems:"center", gap:6,
+                background: aiRoomLoading ? "rgba(255,255,255,.12)" : RED,
+                border:"none", padding:"9px 14px", borderRadius:8,
+                fontSize:12, fontWeight:700, color:"#fff",
+                cursor: aiRoomLoading ? "wait" : "pointer",
+                fontFamily:"'Poppins',sans-serif",
+              }}>
+              {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> {aiRoomUrl ? "Regenerate" : "Generate Realistic View"}</>}
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Main room view */}
       <div
