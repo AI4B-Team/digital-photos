@@ -709,6 +709,13 @@ function RoomViewPanel({
   const effectDef = EFFECTS.find((e:any) => e.id === (selected as any)?.effect) || EFFECTS[0];
   const isCanvas = productType === "canvas";
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+  const [hintDismissed, setHintDismissed] = useState(() => {
+    try { return localStorage.getItem("cz-room-hint-dismissed") === "1"; } catch { return false; }
+  });
+  const dismissHint = () => {
+    setHintDismissed(true);
+    try { localStorage.setItem("cz-room-hint-dismissed", "1"); } catch {}
+  };
 
   const sizeMap: Record<string, number> = {
     "8x8":1, "10x10":1, "12x12":1, "16x16":1,
