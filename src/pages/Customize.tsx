@@ -1045,6 +1045,10 @@ function RoomViewPanel({
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
           const nameFontDef  = NAME_FONTS.find(f => f.id === nameFontId) || NAME_FONTS[0];
           const nameFontFam  = nameFontDef.family;
+          const cFloatColor  = (CANVAS_FRAME_COLORS.find((c:any) => c.id === canvasFloatFrameColor)?.color) || "#1a1a1a";
+          const cEdge        = canvasEdge || "gallery";
+          const cMuseumColor = cEdge === "museum-white" ? "#f4f4f4" : cEdge === "museum-black" ? "#1a1a1a" : null;
+          const cFramePadPct = isCanvas && canvasFloatFrame ? 2 : 0;
           return (
             <div
               onMouseDown={onDragStart}
@@ -1060,14 +1064,26 @@ function RoomViewPanel({
                 borderRadius: isAcrylic ? 2 : 0,
                 boxShadow: isAcrylic
                   ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
-                  : isStaged
-                    ? "4px 8px 24px rgba(0,0,0,0.45)"
-                    : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                  : isCanvas
+                    ? (canvasFloatFrame
+                        ? "0 14px 30px rgba(0,0,0,0.45), 0 4px 10px rgba(0,0,0,0.3)"
+                        : "4px 8px 24px rgba(0,0,0,0.45)")
+                    : isStaged
+                      ? "4px 8px 24px rgba(0,0,0,0.45)"
+                      : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
                 borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
                 borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
-                border: isAcrylic ? undefined : (isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`),
-                background: isAcrylic ? "transparent" : (isCanvas ? framePx : mountPx),
-                padding: `${mountPad}px`,
+                border: isAcrylic
+                  ? undefined
+                  : isCanvas
+                    ? (canvasFloatFrame ? `${Math.max(4, wallW*0.4)}px solid ${cFloatColor}` : "none")
+                    : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+                background: isAcrylic
+                  ? "transparent"
+                  : isCanvas
+                    ? (canvasFloatFrame ? "#1a1a1a" : "transparent")
+                    : mountPx,
+                padding: isCanvas && canvasFloatFrame ? `${cFramePadPct}%` : `${mountPad}px`,
                 boxSizing: "border-box",
                 transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
                 containerType: "inline-size",
@@ -1083,6 +1099,35 @@ function RoomViewPanel({
                     position:"absolute", inset:0, pointerEvents:"none",
                     background:"linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%)",
                   }}/>
+                )}
+                {isCanvas && (
+                  <>
+                    <div aria-hidden="true" style={{
+                      position:"absolute", inset:0, pointerEvents:"none",
+                      backgroundImage:
+                        "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px), " +
+                        "repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px)",
+                    }}/>
+                    {cMuseumColor ? (
+                      <>
+                        <div aria-hidden="true" style={{
+                          position:"absolute", left:0, top:0, bottom:0, width:"3%",
+                          background: cMuseumColor, pointerEvents:"none",
+                          boxShadow:"inset -2px 0 4px rgba(0,0,0,0.25)",
+                        }}/>
+                        <div aria-hidden="true" style={{
+                          position:"absolute", left:0, right:0, bottom:0, height:"3%",
+                          background: cMuseumColor, pointerEvents:"none",
+                          boxShadow:"inset 0 -2px 4px rgba(0,0,0,0.25)",
+                        }}/>
+                      </>
+                    ) : (
+                      <div aria-hidden="true" style={{
+                        position:"absolute", inset:0, pointerEvents:"none",
+                        boxShadow:"inset -8px 0 14px rgba(0,0,0,0.3), inset 0 -8px 14px rgba(0,0,0,0.3)",
+                      }}/>
+                    )}
+                  </>
                 )}
                 {!isStaged && namePosition !== "none" && (portraitName || portraitNameLine2) && (
                   <div style={{
