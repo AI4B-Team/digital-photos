@@ -957,7 +957,7 @@ function RoomViewPanel({
 
         {/* Portrait overlay — snaps into staged room frames; draggable in My Room / AI */}
         {showPortraitOverlay && (() => {
-          const mountPad = isStaged || isCanvas ? 0 : Math.max(4, wallW * 0.35);
+          const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
           const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
           const nameFontFam  = nameFontId === "serif"
@@ -979,10 +979,8 @@ function RoomViewPanel({
                 boxShadow: isStaged
                   ? "4px 8px 24px rgba(0,0,0,0.45)"
                   : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
-                border: isStaged
-                  ? "none"
-                  : (isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`),
-                background: isStaged ? "transparent" : (isCanvas ? framePx : mountPx),
+                border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+                background: isCanvas ? framePx : mountPx,
                 padding: `${mountPad}px`,
                 boxSizing: "border-box",
                 transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
