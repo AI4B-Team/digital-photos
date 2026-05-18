@@ -572,6 +572,7 @@ function FrameSwatch({ frame, on }) {
 /* ── Room View Panel (staged + upload) ── */
 function RoomViewPanel({
   portraitUrl, frameColor, productType, selected,
+  mountColor, portraitName, namePosition, nameFontId, nameSizeId, nameColorId,
   userRoomUrl, setUserRoomUrl,
   aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
   stagedComposites, setStagedComposites,
@@ -580,6 +581,8 @@ function RoomViewPanel({
   dragStart, setDragStart, roomContainerRef, setRoomView,
 }: any) {
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
+  const mountPx  = (MOUNT_COLORS.find((m:any) => m.id === mountColor) || MOUNT_COLORS[0]).color;
+  const effectDef = EFFECTS.find((e:any) => e.id === (selected as any)?.effect) || EFFECTS[0];
   const isCanvas = productType === "canvas";
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
@@ -596,15 +599,15 @@ function RoomViewPanel({
     : selectedRoomKey === "ai" ? "ai"
     : "staged";
 
-  // ── Resolve background based on selected room ──
-  const stagedEntry = mode === "staged" ? stagedComposites[selectedRoomKey] : null;
+  // ── Resolve background: staged & user always raw (so right-panel changes show live).
+  // AI mode keeps the realistic composite since the user explicitly generates it. ──
   const stagedRoomDef = STAGED_ROOMS.find(r => r.id === selectedRoomKey);
   const bgUrl =
     mode === "ai"   ? (aiRoomUrl || userRoomUrl)
     : mode === "user" ? userRoomUrl
-    : (stagedEntry?.url || stagedRoomDef?.bg);
-  const bgIsComposite = mode === "ai" ? !!aiRoomUrl : mode === "staged" ? !!stagedEntry?.url : false;
-  const stagedLoading = mode === "staged" && stagedEntry?.loading;
+    : stagedRoomDef?.bg;
+  const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
+  const stagedLoading = false;
 
   const wallX = portraitDragPos.x;
   const wallY = portraitDragPos.y;
