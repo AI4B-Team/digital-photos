@@ -8,8 +8,9 @@ import {
   FaFacebook, FaInstagram, FaDropbox,
 } from "react-icons/fa";
 import {
-  SiGoogledrive, SiGooglephotos, SiMicrosoftonedrive,
+  SiGoogledrive, SiGooglephotos,
 } from "react-icons/si";
+import { Cloud as OneDriveIcon } from "lucide-react";
 
 const T = {
   bg:        "#0B0B0F",
