@@ -1249,7 +1249,7 @@ export default function Customize() {
     style: styleId,
     productType: "classic-frame",
     frameColor:  "black",
-    canvasEdge:  "mirror",
+    canvasEdge:  "gallery",
     sku:         "GLOBAL-CFPM-8x10",
     frame:       "black",      // legacy — derived, drives visual preview
     size:        "8x10",       // new id format
