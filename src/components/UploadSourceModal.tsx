@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
-  X, Upload, Camera, Link2, HardDrive, Clipboard, Shield, Lock
+  X, Upload, Camera, Link2, HardDrive, Clipboard, Shield, Lock, Clock
 } from "lucide-react";
 import {
   FaFacebook, FaInstagram, FaDropbox,
@@ -377,7 +377,9 @@ export default function UploadSourceModal({
             <Lock size={12} color={T.red}/> Never Shared Or Used For Training
           </span>
           <span style={{ color:T.dim }}>·</span>
-          <span>Auto-Deleted After 30 Days</span>
+          <span style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <Clock size={12} color={T.red}/> Auto-Deleted After 30 Days
+          </span>
         </div>
 
         {/* Hidden inputs */}
