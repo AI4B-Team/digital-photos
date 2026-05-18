@@ -7,6 +7,7 @@ import { TEMPLATES } from "./Index";
 import PreviewsDrawer from "@/components/PreviewsDrawer";
 import SiteHeader from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
 import klarnaLogo from "@/assets/payment-logos/klarna.svg";
@@ -3279,14 +3280,19 @@ export default function Customize() {
                           <div className="cz-acc-body">
                             <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
                               {(FRAME_COLORS["classic-frame"]||[]).map(fc => (
-                                <button key={fc.id} title={fc.label}
-                                  onClick={() => { setCardFrame(fc.id);
-                                    updateSelected({ frameColor:fc.id, frame:toFrameId("classic-frame",fc.id) }); }}
-                                  style={{ width:30, height:30, borderRadius:7,
-                                    background:fc.color, padding:0,
-                                    border:`2px solid ${cardFrame===fc.id?RED:(fc.id==="white"?"#ccc":"transparent")}`,
-                                    boxShadow:"0 1px 4px rgba(0,0,0,.15)",
-                                    cursor:"pointer", outline:"none" }}/>
+                                <Tooltip key={fc.id} delayDuration={150}>
+                                  <TooltipTrigger asChild>
+                                    <button title={fc.label}
+                                      onClick={() => { setCardFrame(fc.id);
+                                        updateSelected({ frameColor:fc.id, frame:toFrameId("classic-frame",fc.id) }); }}
+                                      style={{ width:30, height:30, borderRadius:7,
+                                        background:fc.color, padding:0,
+                                        border:`2px solid ${cardFrame===fc.id?RED:(fc.id==="white"?"#ccc":"transparent")}`,
+                                        boxShadow:"0 1px 4px rgba(0,0,0,.15)",
+                                        cursor:"pointer", outline:"none" }}/>
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top">{fc.label}</TooltipContent>
+                                </Tooltip>
                               ))}
                             </div>
                           </div>
