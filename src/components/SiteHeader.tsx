@@ -33,6 +33,7 @@ export default function SiteHeader({
   cartCount = 0,
   sticky = true,
   topOffset = 0,
+  navCenterOffset = 0,
 }: {
   current?: "upload" | "customize" | "print";
   onBack?: () => void;
@@ -44,6 +45,7 @@ export default function SiteHeader({
   cartCount?: number;
   sticky?: boolean;
   topOffset?: number;
+  navCenterOffset?: number;
 }) {
   const navigate = useNavigate();
   const back = onBack || (() => navigate(-1));
@@ -67,7 +69,7 @@ export default function SiteHeader({
 
         <nav style={{
           display: "flex", alignItems: "center", gap: 2,
-          position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)",
+          position: "absolute", left: "50%", top: "50%", transform: `translate(calc(-50% + ${navCenterOffset}px), -50%)`,
         }}>
           {STEPS.map((s, i) => (
             <div key={s.id} style={{ display: "flex", alignItems: "center", gap: 2 }}>

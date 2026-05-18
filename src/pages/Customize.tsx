@@ -2783,6 +2783,7 @@ export default function Customize() {
         onCart={() => setCartOpen(true)}
         cartCount={cartCount}
         topOffset={discountAmt > 0 ? 38 : 0}
+        navCenterOffset={-40}
       />
 
       {/* Three-column layout */}
