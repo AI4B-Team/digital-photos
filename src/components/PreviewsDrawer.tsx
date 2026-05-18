@@ -167,7 +167,13 @@ export default function PreviewsDrawer({
 
         {/* Body */}
         <div style={{ flex: 1, overflowY: "auto", padding: "14px 18px" }}>
-          {!submittedEmail && (
+          {!submittedEmail && defaultEmail && (
+            <div style={{ textAlign: "center", color: MUTED, fontSize: 13, padding: "40px 10px" }}>
+              {loading ? "Loading your previews…" : "Preparing your previews…"}
+            </div>
+          )}
+
+          {!submittedEmail && !defaultEmail && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               <div style={{ fontSize: 12.5, color: MUTED, lineHeight: 1.55 }}>
                 Enter the email you used when generating previews — we'll pull up
