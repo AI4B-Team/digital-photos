@@ -137,7 +137,7 @@ export default function Contact() {
           {/* Sidebar */}
           <div>
             <div style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14, padding:20, marginBottom:14 }}>
-              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>Before You Write</h3>
+              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>Before you write</h3>
               {[
                 ["Need tracking?", "/tracking"],
                 ["Want a refund?", "/refund"],
