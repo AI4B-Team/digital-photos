@@ -2208,7 +2208,7 @@ export default function Customize() {
           <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
             <span>{sd.label}″</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-            <span>{fd.label}</span>
+            <span>{isAcrylic ? "Acrylic" : fd.label}</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
             <span>{ed.label}</span>
           </div>
