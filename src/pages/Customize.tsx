@@ -928,23 +928,6 @@ function RoomViewPanel({
           </div>
         )}
 
-        {/* Doodle instruction overlays */}
-        {showPortraitOverlay && !isDragging && (
-          <>
-            {/* Drag/scroll hint — top-left, near the portrait */}
-            <div style={{
-              position:"absolute", top:12, left:14, zIndex:4,
-              display:"flex", flexDirection:"column", gap:4,
-              color:"#fff", pointerEvents:"none",
-              fontFamily:"'Caveat','Comic Sans MS',cursive",
-              textShadow:"0 2px 6px rgba(0,0,0,.6)",
-              transform:"rotate(-3deg)",
-            }}>
-              <span style={{ fontSize:20, fontWeight:700, lineHeight:1 }}>
-                ✦ Drag to move
-              </span>
-            </div>
-
         {/* Elegant first-time helper — shown once, then dismissed via localStorage */}
         {showPortraitOverlay && !isDragging && (() => {
           const dismissed = typeof window !== "undefined" && localStorage.getItem("rv_helper_seen") === "1";
