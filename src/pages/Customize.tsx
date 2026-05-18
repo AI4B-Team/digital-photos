@@ -1562,6 +1562,8 @@ export default function Customize() {
     fontId: string,
     colorId: string,
     sizeId: string = "md",
+    line2: string = "",
+    upper: boolean = true,
   ): Promise<string> => {
     try {
       const fontDef  = NAME_FONTS.find(f => f.id === fontId)   || NAME_FONTS[0];
@@ -1580,7 +1582,7 @@ export default function Customize() {
       ctx.drawImage(img, 0, 0);
       const sizeMult = (NAME_SIZES.find(s => s.id === sizeId)?.mult) ?? 0.065;
       const fontSize = Math.round(img.naturalHeight * sizeMult);
-      ctx.font      = fontDef.css(fontSize);
+      const fontSize2 = Math.round(fontSize * 0.72);
       ctx.fillStyle = colorDef.hex;
       ctx.textAlign = "center";
       ctx.shadowColor   = colorId === "white" || colorId === "cream"
@@ -1590,8 +1592,22 @@ export default function Customize() {
       ctx.shadowOffsetY = fontSize * 0.04;
       const x = img.naturalWidth / 2;
       const padding = img.naturalHeight * 0.055;
-      const y = position === "top" ? padding + fontSize : img.naturalHeight - padding;
-      ctx.fillText(name.toUpperCase(), x, y);
+      const lineGap = Math.round(fontSize * 0.25);
+      const text1 = upper ? (name || "").toUpperCase() : (name || "");
+      const text2 = upper ? (line2 || "").toUpperCase() : (line2 || "");
+      const totalH = (text1 ? fontSize : 0) + (text2 ? fontSize2 + lineGap : 0);
+      let y1 = position === "top"
+        ? padding + fontSize
+        : img.naturalHeight - padding - (text2 ? fontSize2 + lineGap : 0);
+      if (text1) {
+        ctx.font = fontDef.css(fontSize);
+        ctx.fillText(text1, x, y1);
+      }
+      if (text2) {
+        ctx.font = fontDef.css(fontSize2);
+        const y2 = text1 ? y1 + fontSize2 + lineGap : (position === "top" ? padding + fontSize2 : img.naturalHeight - padding);
+        ctx.fillText(text2, x, y2);
+      }
       const blob = await new Promise<Blob>((res, rej) =>
         canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas export failed")), "image/jpeg", 0.95)
       );
