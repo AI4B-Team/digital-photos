@@ -626,6 +626,19 @@ function RoomViewPanel({
     }));
   };
 
+  // Convert a (possibly relative) asset URL to a data URL the edge function can read
+  const toDataUrl = async (url: string): Promise<string> => {
+    if (url.startsWith("data:")) return url;
+    const res = await fetch(url);
+    const blob = await res.blob();
+    return await new Promise<string>((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result as string);
+      r.onerror = reject;
+      r.readAsDataURL(blob);
+    });
+  };
+
   // ── Auto-generate composites for all 5 staged rooms when portrait changes ──
   useEffect(() => {
     if (!portraitUrl) return;
@@ -634,13 +647,16 @@ function RoomViewPanel({
     setStagedComposites({});
     (async () => {
       const { supabase } = await import("@/integrations/supabase/client");
+      const portraitData = await toDataUrl(portraitUrl).catch(() => null);
+      if (!portraitData || cancelled) return;
       for (const room of STAGED_ROOMS) {
         const existing = stagedComposites[room.id];
         if (existing?.url || existing?.loading) continue;
         setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: true } }));
         try {
+          const roomData = await toDataUrl(room.bg);
           const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
-            body: { roomUrl: room.bg, portraitUrl, frameColor },
+            body: { roomUrl: roomData, portraitUrl: portraitData, frameColor },
           });
           if (cancelled) return;
           if (!error && data?.url) {
@@ -663,8 +679,12 @@ function RoomViewPanel({
     setAiRoomUrl(null);
     try {
       const { supabase } = await import("@/integrations/supabase/client");
+      const [roomData, portraitData] = await Promise.all([
+        toDataUrl(userRoomUrl),
+        toDataUrl(portraitUrl),
+      ]);
       const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
-        body: { roomUrl: userRoomUrl, portraitUrl, frameColor },
+        body: { roomUrl: roomData, portraitUrl: portraitData, frameColor },
       });
       if (!error && data?.url) setAiRoomUrl(data.url);
     } catch { /* silent */ }
