@@ -1715,7 +1715,7 @@ export default function Customize() {
 
   const productType   = selected.productType || "classic-frame";
   const frameColor    = selected.frameColor  || "black";
-  const canvasEdge    = selected.canvasEdge  || "mirror";
+  const canvasEdge    = selected.canvasEdge  || "gallery";
   const currentSizes  = SIZES_BY_PRODUCT[productType] || SIZES_BY_PRODUCT["classic-frame"];
   const sizeDef       = currentSizes.find(s => s.id === selected.size) || currentSizes[1];
   const frameColorDef = (FRAME_COLORS[productType] || []).find(c => c.id === frameColor) || (FRAME_COLORS[productType] || [])[0];
