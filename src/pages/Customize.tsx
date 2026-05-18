@@ -3567,7 +3567,26 @@ export default function Customize() {
                               <button key={sz.id}
                                 onClick={() => {
                                   setCardSize(prev => ({ ...prev, [card.id]: sz.id }));
-                                  updateSelected({ size: sz.pid, sku: sz.sku, productType: card.id });
+                                  // BUG-11: derive the legacy `frame` so the preview reacts to productType.
+                                  // BUG-12: persist canvas float-frame + edge so they survive size changes.
+                                  const isCanvasCard = card.id === "canvas";
+                                  const wantsFloat = isCanvasCard && canvasFrame;
+                                  const baseSku = sz.sku || "";
+                                  const finalSku = wantsFloat && baseSku.startsWith("GLOBAL-CAN-")
+                                    ? baseSku.replace("GLOBAL-CAN-", "GLOBAL-FRA-CAN-")
+                                    : baseSku;
+                                  const derivedFrameColor = card.frameColors
+                                    ? cardFrame
+                                    : (wantsFloat ? canvasFrameColor : (selected as any).frameColor);
+                                  updateSelected({
+                                    size: sz.pid,
+                                    sku: finalSku,
+                                    productType: card.id,
+                                    frame: toFrameId(card.id, derivedFrameColor || "black"),
+                                    frameColor: derivedFrameColor,
+                                    canvasFloatFrame: wantsFloat || undefined,
+                                    canvasEdge: isCanvasCard ? ((selected as any).canvasEdge || "gallery") : undefined,
+                                  });
                                 }}
                                 style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
                                   borderRadius:10, padding:"10px 10px 10px",
