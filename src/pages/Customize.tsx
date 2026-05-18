@@ -927,9 +927,9 @@ function RoomViewPanel({
           </label>
         )}
 
-        {/* Portrait overlay — live mirror of right-panel choices (size, frame, mount, effect, name) */}
+        {/* Portrait overlay — snaps into staged room frames; draggable in My Room / AI */}
         {showPortraitOverlay && (() => {
-          const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
+          const mountPad = isStaged || isCanvas ? 0 : Math.max(4, wallW * 0.35);
           const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
           const nameFontFam  = nameFontId === "serif"
@@ -937,20 +937,27 @@ function RoomViewPanel({
             : "'Poppins',sans-serif";
           return (
             <div
-              onMouseDown={onDragStart}
+              onMouseDown={!isStaged ? onDragStart : undefined}
+              onWheel={!isStaged ? onWheel : undefined}
               style={{
                 position:"absolute",
                 left:   `${wallX}%`,
                 top:    `${wallY}%`,
                 width:  `${wallW}%`,
-                aspectRatio: `${1} / ${aspectRatio || 0.75}`,
-                cursor: isDragging ? "grabbing" : "grab",
-                boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
-                border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
-                background: isCanvas ? framePx : mountPx,
+                height: scaledH ? `${scaledH}%` : undefined,
+                aspectRatio: !scaledH ? `${1} / ${aspectRatio || 0.75}` : undefined,
+                cursor: !isStaged ? (isDragging ? "grabbing" : "grab") : "default",
+                overflow:"hidden",
+                boxShadow: isStaged
+                  ? "4px 8px 24px rgba(0,0,0,0.45)"
+                  : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                border: isStaged
+                  ? "none"
+                  : (isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`),
+                background: isStaged ? "transparent" : (isCanvas ? framePx : mountPx),
                 padding: `${mountPad}px`,
                 boxSizing: "border-box",
-                transition: isDragging ? "none" : "left .15s, top .15s, width .15s",
+                transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
                 containerType: "inline-size",
               }}>
               <div style={{ position:"relative", width:"100%", height:"100%" }}>
@@ -959,7 +966,7 @@ function RoomViewPanel({
                     width:"100%", height:"100%", objectFit:"cover", display:"block",
                     filter: effectDef.filter,
                   }}/>
-                {namePosition !== "none" && portraitName && (
+                {!isStaged && namePosition !== "none" && portraitName && (
                   <div style={{
                     position:"absolute", left:0, right:0, zIndex:3,
                     top:    namePosition === "top"    ? "10%" : "auto",
