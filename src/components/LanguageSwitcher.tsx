@@ -21,27 +21,29 @@ const LANGS = [
   { code: "tr", label: "Türkçe",     flag: "🇹🇷" },
 ];
 
-function readCookieLang() {
-  const m = document.cookie.match(/googtrans=\/[^/]+\/([^;]+)/);
-  return m ? decodeURIComponent(m[1]) : "en";
+const LS_KEY = "site_lang";
+
+function readSavedLang() {
+  try { return localStorage.getItem(LS_KEY) || "en"; } catch { return "en"; }
 }
 
-function setLang(code: string) {
-  // clear existing googtrans cookies on this domain + parent domain
-  const host = window.location.hostname;
-  const domains = [host, "." + host, "." + host.split(".").slice(-2).join(".")];
-  domains.forEach(d => {
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${d}`;
-  });
-  document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-
-  if (code !== "en") {
-    const value = `/en/${code}`;
-    document.cookie = `googtrans=${value}; path=/`;
-    document.cookie = `googtrans=${value}; path=/; domain=${host}`;
-    document.cookie = `googtrans=${value}; path=/; domain=.${host}`;
+async function waitForCombo(timeoutMs = 8000): Promise<HTMLSelectElement | null> {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    const el = document.querySelector<HTMLSelectElement>("select.goog-te-combo");
+    if (el && el.options.length > 1) return el;
+    await new Promise(r => setTimeout(r, 100));
   }
-  window.location.reload();
+  return null;
+}
+
+async function setLang(code: string) {
+  try { localStorage.setItem(LS_KEY, code); } catch {}
+  const combo = await waitForCombo();
+  if (!combo) { window.location.reload(); return; }
+  combo.value = code === "en" ? "" : code;
+  combo.dispatchEvent(new Event("change", { bubbles: true }));
+  // small refresh of any cached translations is automatic
 }
 
 let scriptInjected = false;
@@ -49,13 +51,14 @@ function injectGoogleTranslate() {
   if (scriptInjected) return;
   scriptInjected = true;
 
-  // Hide the default banner / styling artifacts
   const style = document.createElement("style");
   style.innerHTML = `
-    .goog-te-banner-frame, .skiptranslate { display:none !important; }
-    body { top: 0 !important; }
-    #google_translate_element { display:none !important; }
+    .goog-te-banner-frame, .skiptranslate iframe { display:none !important; visibility:hidden !important; }
+    body { top: 0 !important; position: static !important; }
+    #google_translate_element { position:absolute !important; left:-9999px !important; top:-9999px !important; height:0 !important; overflow:hidden !important; }
     font[style*="background-color"] { background:transparent !important; box-shadow:none !important; }
+    .goog-tooltip, .goog-tooltip:hover { display:none !important; }
+    .goog-text-highlight { background:transparent !important; box-shadow:none !important; }
   `;
   document.head.appendChild(style);
 
@@ -65,16 +68,26 @@ function injectGoogleTranslate() {
 
   (window as any).googleTranslateElementInit = function () {
     new (window as any).google.translate.TranslateElement(
-      { pageLanguage: "en", autoDisplay: false },
+      {
+        pageLanguage: "en",
+        autoDisplay: false,
+        layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
+      },
       "google_translate_element"
     );
+    // Apply saved language after init
+    const saved = readSavedLang();
+    if (saved && saved !== "en") {
+      setTimeout(() => setLang(saved), 400);
+    }
   };
 
   const s = document.createElement("script");
-  s.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  s.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
   s.async = true;
   document.body.appendChild(s);
 }
+
 
 export default function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false);
