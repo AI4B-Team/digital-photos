@@ -2931,6 +2931,54 @@ export default function Customize() {
             </div>
           </div>
           )}
+
+          {/* Edge Wrap — canvas only (canvas has no mat/glazing) */}
+          {productType === "canvas" && (() => {
+            const isMuseum = canvasEdge === "museum-black" || canvasEdge === "museum-white";
+            const edgeBase = isMuseum ? "museum" : canvasEdge;
+            const setEdge = (id: string) => updateSelected({ canvasEdge: id });
+            return (
+              <div className="cz-section">
+                <div className="cz-label"><span>Edge wrap</span><span className="cz-value">{canvasEdgeDef.label}</span></div>
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0, 1fr))", gap:6, marginBottom: isMuseum ? 14 : 0 }}>
+                  {[
+                    { id:"gallery", label:"Gallery" },
+                    { id:"mirror",  label:"Mirror"  },
+                    { id:"museum",  label:"Museum"  },
+                  ].map(opt => (
+                    <button key={opt.id}
+                      className={`cz-chip ${edgeBase===opt.id?"on":""}`}
+                      style={{ width:"100%", minWidth:0, justifyContent:"center", padding:"9px 8px", whiteSpace:"nowrap" }}
+                      onClick={() => setEdge(opt.id === "museum" ? "museum-black" : opt.id)}>
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+                {isMuseum && (
+                  <>
+                    <div className="cz-label" style={{ marginBottom:8 }}>
+                      <span>Edge color</span>
+                      <span className="cz-value">{canvasEdge === "museum-white" ? "White" : "Black"}</span>
+                    </div>
+                    <div style={{ display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:8 }}>
+                      {[
+                        { id:"museum-black", label:"Black", bg:"#1a1a1a" },
+                        { id:"museum-white", label:"White", bg:"#f4f4f4" },
+                      ].map(c => (
+                        <button key={c.id}
+                          className={`cz-chip ${canvasEdge===c.id?"on":""}`}
+                          onClick={() => setEdge(c.id)}
+                          style={{ width:"100%", justifyContent:"flex-start", gap:8, padding:"9px 12px" }}>
+                          <span style={{ width:18, height:18, borderRadius:5, background:c.bg, border:"1px solid rgba(0,0,0,.18)" }}/>
+                          {c.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })()}
           </>
           )}
         </aside>
