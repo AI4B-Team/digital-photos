@@ -23,8 +23,8 @@ export default function HamburgerMenu({
         aria-label="Open menu"
         style={{
           display:"flex", alignItems:"center", justifyContent:"center",
-          background:"rgba(255,255,255,.06)", border:"1px solid rgba(196,150,58,.35)",
-          color:"#F5EFE0", cursor:"pointer", width:36, height:32, borderRadius:6,
+          background:"#fff", border:"1.5px solid #0A0A0A",
+          color:"#0A0A0A", cursor:"pointer", width:38, height:34, borderRadius:6,
         }}
       >
         <Menu size={18} />
