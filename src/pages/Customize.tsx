@@ -881,120 +881,75 @@ function RoomViewPanel({
         )}
       </div>
 
-      {/* Footer thumbnail strip: 5 staged + size guide + your space */}
-      <div style={{
-        display:"flex", gap:10, alignItems:"stretch",
-        overflowX:"auto", paddingBottom:2,
-      }}>
-        {STAGED_ROOMS.map(room => {
-          const entry = stagedComposites[room.id];
-          const thumb = entry?.url || room.bg;
-          const on = !isUserRoom && selectedRoomKey === room.id;
-          const loading = entry?.loading;
-          return (
-            <button key={room.id}
-              onClick={() => setSelectedRoomKey(room.id)}
-              style={{
-                flex:"0 0 110px", height:90, position:"relative",
-                borderRadius:10, overflow:"hidden", cursor:"pointer",
-                border: on ? `2px solid ${RED}` : "2px solid rgba(255,255,255,.12)",
-                padding:0, background:"#222",
-                boxShadow: on ? "0 4px 14px rgba(230,25,25,.35)" : "none",
-              }}>
-              <img src={thumb} alt={room.vibe}
-                style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
-                  opacity: loading ? .5 : 1 }}/>
-              {loading && (
-                <div style={{
-                  position:"absolute", inset:0, display:"flex",
-                  alignItems:"center", justifyContent:"center",
-                  background:"rgba(0,0,0,.4)",
-                }}>
-                  <div style={{
-                    width:18, height:18, borderRadius:"50%",
-                    border:"2px solid rgba(255,255,255,.3)", borderTopColor:"#fff",
-                    animation:"spin .9s linear infinite",
-                  }}/>
-                </div>
-              )}
-              <div style={{
-                position:"absolute", left:0, right:0, bottom:0,
-                background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
-                color:"#fff", fontSize:9.5, fontWeight:600,
-                fontFamily:"'Poppins',sans-serif",
-                padding:"10px 6px 5px", textAlign:"left",
-                letterSpacing:".04em",
-              }}>{room.vibe}</div>
-            </button>
-          );
-        })}
-
-        {/* Size guide — always visible info tile */}
+      {/* Footer thumbnail strip — only on Staged Rooms tab */}
+      {mode === "staged" && (
         <div style={{
-          flex:"0 0 110px", height:90, position:"relative",
-          borderRadius:10, overflow:"hidden",
-          border:"2px solid rgba(255,255,255,.12)",
-          background:"#fff",
+          display:"flex", gap:10, alignItems:"stretch",
+          overflowX:"auto", paddingBottom:2,
         }}>
-          <img src={sizeGuideImg} alt="Size guide"
-            style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-          <div style={{
-            position:"absolute", left:0, right:0, bottom:0,
-            background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
-            color:"#fff", fontSize:9.5, fontWeight:600,
-            fontFamily:"'Poppins',sans-serif",
-            padding:"10px 6px 5px", textAlign:"left",
-            letterSpacing:".04em",
-          }}>Size Guide</div>
-        </div>
+          {STAGED_ROOMS.map(room => {
+            const entry = stagedComposites[room.id];
+            const thumb = entry?.url || room.bg;
+            const on = selectedRoomKey === room.id;
+            const loading = entry?.loading;
+            return (
+              <button key={room.id}
+                onClick={() => setSelectedRoomKey(room.id)}
+                style={{
+                  flex:"0 0 110px", height:90, position:"relative",
+                  borderRadius:10, overflow:"hidden", cursor:"pointer",
+                  border: on ? `2px solid ${RED}` : "2px solid rgba(255,255,255,.12)",
+                  padding:0, background:"#222",
+                  boxShadow: on ? "0 4px 14px rgba(230,25,25,.35)" : "none",
+                }}>
+                <img src={thumb} alt={room.vibe}
+                  style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
+                    opacity: loading ? .5 : 1 }}/>
+                {loading && (
+                  <div style={{
+                    position:"absolute", inset:0, display:"flex",
+                    alignItems:"center", justifyContent:"center",
+                    background:"rgba(0,0,0,.4)",
+                  }}>
+                    <div style={{
+                      width:18, height:18, borderRadius:"50%",
+                      border:"2px solid rgba(255,255,255,.3)", borderTopColor:"#fff",
+                      animation:"spin .9s linear infinite",
+                    }}/>
+                  </div>
+                )}
+                <div style={{
+                  position:"absolute", left:0, right:0, bottom:0,
+                  background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
+                  color:"#fff", fontSize:9.5, fontWeight:600,
+                  fontFamily:"'Poppins',sans-serif",
+                  padding:"10px 6px 5px", textAlign:"left",
+                  letterSpacing:".04em",
+                }}>{room.vibe}</div>
+              </button>
+            );
+          })}
 
-        {/* Your space — upload */}
-        <label style={{
-          flex:"0 0 110px", height:90, position:"relative",
-          borderRadius:10, overflow:"hidden", cursor:"pointer",
-          border: isUserRoom ? `2px solid ${RED}` : "2px dashed rgba(255,255,255,.25)",
-          background:"#1a1a1a",
-          display:"flex", flexDirection:"column", alignItems:"center",
-          justifyContent:"center", gap:4,
-          color:"rgba(255,255,255,.85)",
-        }}
-        onClick={() => setSelectedRoomKey("user")}>
-          {userRoomUrl ? (
-            <>
-              <img src={aiRoomUrl || userRoomUrl} alt="Your space"
-                style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
-                  position:"absolute", inset:0 }}/>
-              <div style={{
-                position:"absolute", left:0, right:0, bottom:0,
-                background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
-                color:"#fff", fontSize:9.5, fontWeight:600,
-                fontFamily:"'Poppins',sans-serif",
-                padding:"10px 6px 5px", textAlign:"left",
-                letterSpacing:".04em",
-              }}>Your Space</div>
-            </>
-          ) : (
-            <>
-              <Upload size={18}/>
-              <div style={{ fontSize:10, fontWeight:600, fontFamily:"'Poppins',sans-serif" }}>
-                Your Space
-              </div>
-            </>
-          )}
-          <input type="file" accept="image/*" style={{ display:"none" }}
-            onChange={e => {
-              const f = e.target.files?.[0];
-              if (!f) return;
-              const reader = new FileReader();
-              reader.onload = ev => {
-                setUserRoomUrl(ev.target?.result as string);
-                setAiRoomUrl(null);
-                setSelectedRoomKey("user");
-              };
-              reader.readAsDataURL(f);
-            }}/>
-        </label>
-      </div>
+          {/* Size guide — always visible info tile */}
+          <div style={{
+            flex:"0 0 110px", height:90, position:"relative",
+            borderRadius:10, overflow:"hidden",
+            border:"2px solid rgba(255,255,255,.12)",
+            background:"#fff",
+          }}>
+            <img src={sizeGuideImg} alt="Size guide"
+              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+            <div style={{
+              position:"absolute", left:0, right:0, bottom:0,
+              background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
+              color:"#fff", fontSize:9.5, fontWeight:600,
+              fontFamily:"'Poppins',sans-serif",
+              padding:"10px 6px 5px", textAlign:"left",
+              letterSpacing:".04em",
+            }}>Size Guide</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
