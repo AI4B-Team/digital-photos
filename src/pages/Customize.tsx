@@ -1282,6 +1282,61 @@ export default function Customize() {
   const [aiRoomUrl,       setAiRoomUrl]     = useState<string|null>(null);
   const [aiRoomLoading,   setAiRoomLoading] = useState(false);
   const [stagedComposites, setStagedComposites] = useState<Record<string,{url?:string;loading?:boolean}>>({});
+  const [roomImageOverrides, setRoomImageOverrides] = useState<Record<string,string>>({});
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [adminProgress,  setAdminProgress]  = useState<Record<string,string>>({});
+  const [adminRunning,   setAdminRunning]   = useState(false);
+
+  useEffect(() => {
+    (supabase.from("room_images" as any).select("room_id, url") as any).then(({ data }: any) => {
+      if (data?.length) {
+        const map: Record<string,string> = {};
+        data.forEach((row: any) => { map[row.room_id] = row.url; });
+        setRoomImageOverrides(map);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
+        setShowAdminPanel(v => !v);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  const regenerateRoomImages = async () => {
+    if (adminRunning) return;
+    setAdminRunning(true);
+    setAdminProgress({});
+
+    for (const room of STAGED_ROOMS) {
+      setAdminProgress(p => ({ ...p, [room.id]: "loading…" }));
+      try {
+        const res  = await fetch(room.bg);
+        const blob = await res.blob();
+        const dataUrl: string = await new Promise(resolve => {
+          const r = new FileReader();
+          r.onload = () => resolve(r.result as string);
+          r.readAsDataURL(blob);
+        });
+
+        const { data, error } = await supabase.functions.invoke("regenerate-room-image", {
+          body: { roomId: room.id, roomImageUrl: dataUrl },
+        });
+
+        if (error || !data?.url) throw new Error(error?.message || "No URL returned");
+
+        setAdminProgress(p => ({ ...p, [room.id]: "✓ " + String(data.url).slice(-30) }));
+        setRoomImageOverrides(p => ({ ...p, [room.id]: data.url }));
+      } catch (err: any) {
+        setAdminProgress(p => ({ ...p, [room.id]: "✗ " + (err.message || "failed") }));
+      }
+    }
+    setAdminRunning(false);
+  };
   const [selectedRoomKey, setSelectedRoomKey] = useState<string>(() => {
     const style = (session as any)?.selectedStyle || "";
     if (style) {
