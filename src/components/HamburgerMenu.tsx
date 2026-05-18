@@ -63,7 +63,7 @@ export default function HamburgerMenu() {
         <div
           onClick={() => setOpen(false)}
           style={{
-            position:"fixed", inset:0, zIndex:9999,
+            position:"fixed", inset:0, zIndex:2147483647,
             background:"rgba(0,0,0,.45)", backdropFilter:"blur(3px)",
             animation:"shFade .18s ease",
           }}
@@ -71,11 +71,11 @@ export default function HamburgerMenu() {
           <aside
             onClick={e => e.stopPropagation()}
             style={{
-              position:"absolute", top:0, left:0, height:"100%",
+              position:"absolute", top:0, right:0, height:"100%",
               width:"min(340px, 90vw)", background:"#fff",
               display:"flex", flexDirection:"column",
               animation:"shSlideIn .22s ease",
-              boxShadow:"20px 0 60px rgba(0,0,0,.25)",
+              boxShadow:"-20px 0 60px rgba(0,0,0,.25)",
             }}
           >
             {/* Header */}
