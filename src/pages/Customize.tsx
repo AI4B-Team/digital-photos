@@ -4810,7 +4810,14 @@ export default function Customize() {
       <PreviewsDrawer
         open={previewsOpen}
         onClose={() => setPreviewsOpen(false)}
-        defaultEmail={(session as any)?.email || ""}
+        portraits={session.generatedPortraits || []}
+        onSelectPortrait={(url, style) => {
+          updateSelected({ photoUrl: url, style } as any);
+        }}
+        onOrderPortrait={(url, style) => {
+          const snapshot = { ...selected, photoUrl: url, style, qty: 1 };
+          addToCart(snapshot, 1);
+        }}
       />
 
 
