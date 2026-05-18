@@ -611,69 +611,84 @@ function RoomViewPanel({
   return (
     <div style={{
       width:"100%", height:"100%", display:"flex", flexDirection:"column",
-      gap:10, background:"#111", borderRadius:14, padding:12, color:"#fff",
+      gap:14, background:"#FAF7F2", borderRadius:16, padding:18, color: INK,
+      border:`1px solid ${BORDER}`,
     }}>
       {/* Header: Back + Title */}
-      <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+      <div style={{ display:"flex", gap:12, alignItems:"center", flexWrap:"wrap" }}>
         <button
           onClick={() => setRoomView(false)}
           style={{
-            padding:"5px 11px", borderRadius:8, fontSize:11, fontWeight:600,
+            padding:"7px 13px", borderRadius:999, fontSize:12, fontWeight:600,
             cursor:"pointer", fontFamily:"'Poppins',sans-serif",
-            background:"rgba(255,255,255,.1)", color:"#fff",
-            border:"1px solid rgba(255,255,255,.18)",
-            display:"inline-flex", alignItems:"center", gap:5,
-          }}>
-          <ChevronLeft size={13}/> Back to portrait
+            background:"#fff", color: INK,
+            border:`1px solid ${BORDER}`,
+            display:"inline-flex", alignItems:"center", gap:6,
+            transition:"background .15s",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = "#F4EFE7")}
+          onMouseLeave={e => (e.currentTarget.style.background = "#fff")}>
+          <ChevronLeft size={14}/> Back to portrait
         </button>
-        <span style={{
-          fontSize:11.5, fontWeight:600, color:"rgba(255,255,255,.7)",
-          fontFamily:"'Poppins',sans-serif", letterSpacing:".02em",
-        }}>See it on your wall</span>
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{
+            fontSize:9.5, letterSpacing:".22em", color: MUTED, fontWeight:700,
+            textTransform:"uppercase",
+          }}>Wall Preview</div>
+          <div style={{
+            fontSize:17, fontWeight:700, color: INK,
+            fontFamily:"'Poppins',sans-serif", lineHeight:1.2, marginTop:2,
+          }}>See it on your wall</div>
+        </div>
       </div>
 
-      {/* Upload + Generate strip */}
-      <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"center" }}>
-        <label style={{
-          display:"inline-flex", alignItems:"center", gap:6,
-          background:"rgba(255,255,255,.1)", border:"1px solid rgba(255,255,255,.15)",
-          padding:"6px 12px", borderRadius:8, cursor:"pointer",
-          fontSize:11.5, color:"rgba(255,255,255,.8)",
-          fontFamily:"'Poppins',sans-serif",
+      {/* Upload + Generate strip (only shown once a room is uploaded) */}
+      {userRoomUrl && (
+        <div style={{
+          display:"flex", gap:8, flexWrap:"wrap", alignItems:"center",
+          padding:"10px 12px", background:"#fff", borderRadius:10,
+          border:`1px solid ${BORDER}`,
         }}>
-          <Upload size={13}/>
-          {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
-          <input type="file" accept="image/*" style={{ display:"none" }}
-            onChange={e => {
-              const f = e.target.files?.[0];
-              if (!f) return;
-              const reader = new FileReader();
-              reader.onload = ev => {
-                setUserRoomUrl(ev.target?.result as string);
-                setAiRoomUrl(null);
-              };
-              reader.readAsDataURL(f);
-            }}/>
-        </label>
-        {userRoomUrl && (
+          <label style={{
+            display:"inline-flex", alignItems:"center", gap:6,
+            background:"#F4EFE7", border:`1px solid ${BORDER}`,
+            padding:"7px 12px", borderRadius:8, cursor:"pointer",
+            fontSize:11.5, color: INK, fontWeight:600,
+            fontFamily:"'Poppins',sans-serif",
+          }}>
+            <Upload size={13}/>
+            Change Room Photo
+            <input type="file" accept="image/*" style={{ display:"none" }}
+              onChange={e => {
+                const f = e.target.files?.[0];
+                if (!f) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                  setUserRoomUrl(ev.target?.result as string);
+                  setAiRoomUrl(null);
+                };
+                reader.readAsDataURL(f);
+              }}/>
+          </label>
           <button onClick={generateAIRoom} disabled={aiRoomLoading}
             style={{
               display:"inline-flex", alignItems:"center", gap:6,
-              background: aiRoomLoading ? "rgba(255,255,255,.1)" : RED,
-              border:"none", padding:"6px 14px", borderRadius:8,
+              background: aiRoomLoading ? "#E5DED2" : RED,
+              border:"none", padding:"7px 14px", borderRadius:8,
               fontSize:11.5, fontWeight:700, color:"#fff",
               cursor: aiRoomLoading ? "wait" : "pointer",
               fontFamily:"'Poppins',sans-serif",
+              boxShadow: aiRoomLoading ? "none" : "0 2px 8px rgba(212,38,46,.25)",
             }}>
             {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> {aiRoomUrl ? "Regenerate" : "Generate Realistic View"}</>}
           </button>
-        )}
-        {userRoomUrl && !aiRoomUrl && !aiRoomLoading && (
-          <span style={{ fontSize:10, color:"rgba(255,255,255,.4)", lineHeight:1.4 }}>
-            Drag portrait to reposition · Scroll to resize
-          </span>
-        )}
-      </div>
+          {!aiRoomUrl && !aiRoomLoading && (
+            <span style={{ fontSize:10.5, color: MUTED, lineHeight:1.4, marginLeft:"auto" }}>
+              Drag portrait to reposition · Scroll to resize
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Main room view */}
       <div
@@ -682,8 +697,9 @@ function RoomViewPanel({
         onMouseUp={onDragEnd}
         onMouseLeave={onDragEnd}
         style={{
-          position:"relative", flex:"1 1 auto", borderRadius:12,
-          overflow:"hidden", background:"#000", minHeight:0,
+          position:"relative", flex:"1 1 auto", borderRadius:14,
+          overflow:"hidden", background:"#fff", minHeight:0,
+          border:`1px solid ${BORDER}`,
           userSelect: isDragging ? "none" : "auto",
         }}>
         {bgUrl && (
@@ -693,19 +709,90 @@ function RoomViewPanel({
             style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
         )}
 
-        {/* Empty state */}
+        {/* Empty state — elegant drop zone */}
         {!userRoomUrl && (
-          <div style={{
+          <label style={{
             position:"absolute", inset:0, display:"flex", flexDirection:"column",
-            alignItems:"center", justifyContent:"center", gap:12,
-            color:"rgba(255,255,255,.7)", textAlign:"center", padding:24,
-            background:"#1a1a1a",
-          }}>
-            <Home size={44} color="rgba(255,255,255,.3)"/>
-            <span style={{ fontSize:13.5, fontFamily:"'Poppins',sans-serif", maxWidth:300, lineHeight:1.5 }}>
-              Upload a photo of your room to see exactly how your portrait will look on your wall
+            alignItems:"center", justifyContent:"center", gap:18,
+            textAlign:"center", padding:32, cursor:"pointer",
+            background:"linear-gradient(180deg, #FBF7EF 0%, #F4EDDF 100%)",
+            transition:"background .2s",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = "linear-gradient(180deg, #F8F1E2 0%, #EFE6D2 100%)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "linear-gradient(180deg, #FBF7EF 0%, #F4EDDF 100%)")}>
+            {/* Decorative frame mockup */}
+            <div style={{
+              position:"relative", width:120, height:150,
+              background:"#fff",
+              border:`10px solid ${INK}`,
+              boxShadow:"0 18px 40px rgba(0,0,0,.18), 0 4px 12px rgba(0,0,0,.08)",
+              borderRadius:2,
+              display:"flex", alignItems:"center", justifyContent:"center",
+            }}>
+              <Home size={32} color="#C9BFA9" strokeWidth={1.5}/>
+              {/* hanging cord */}
+              <div style={{
+                position:"absolute", top:-26, left:"50%", width:1,
+                height:18, background:"rgba(0,0,0,.35)", transform:"translateX(-50%)",
+              }}/>
+              <div style={{
+                position:"absolute", top:-30, left:"50%", width:6, height:6,
+                background:"#8B7E63", borderRadius:"50%", transform:"translateX(-50%)",
+              }}/>
+            </div>
+
+            <div style={{ maxWidth:340 }}>
+              <div style={{
+                fontSize:18, fontWeight:700, color: INK,
+                fontFamily:"'Poppins',sans-serif", marginBottom:6,
+              }}>
+                Upload a photo of your wall
+              </div>
+              <div style={{
+                fontSize:13, color: MUTED, lineHeight:1.55,
+                fontFamily:"'Poppins',sans-serif",
+              }}>
+                We'll show you exactly how your portrait will look in your space — with realistic lighting, shadows, and scale.
+              </div>
+            </div>
+
+            <span style={{
+              display:"inline-flex", alignItems:"center", gap:8,
+              background: RED, color:"#fff",
+              padding:"11px 22px", borderRadius:999,
+              fontSize:13, fontWeight:700, fontFamily:"'Poppins',sans-serif",
+              boxShadow:"0 6px 18px rgba(212,38,46,.28)",
+            }}>
+              <Upload size={15}/> Upload Your Room
             </span>
-          </div>
+
+            {/* Trust row */}
+            <div style={{
+              display:"flex", gap:18, alignItems:"center",
+              fontSize:10.5, color: MUTED, fontFamily:"'Poppins',sans-serif",
+              marginTop:4,
+            }}>
+              <span style={{ display:"inline-flex", alignItems:"center", gap:5 }}>
+                <Sparkles size={11} color={RED}/> AI-powered realism
+              </span>
+              <span style={{ width:3, height:3, borderRadius:"50%", background:"#C9BFA9" }}/>
+              <span style={{ display:"inline-flex", alignItems:"center", gap:5 }}>
+                <Shield size={11} color="#6B6357"/> Never stored or shared
+              </span>
+            </div>
+
+            <input type="file" accept="image/*" style={{ display:"none" }}
+              onChange={e => {
+                const f = e.target.files?.[0];
+                if (!f) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                  setUserRoomUrl(ev.target?.result as string);
+                  setAiRoomUrl(null);
+                };
+                reader.readAsDataURL(f);
+              }}/>
+          </label>
         )}
 
         {/* Portrait overlay (preview before AI generation) */}
@@ -733,16 +820,17 @@ function RoomViewPanel({
         {/* AI loading overlay */}
         {aiRoomLoading && (
           <div style={{
-            position:"absolute", inset:0, background:"rgba(0,0,0,.6)",
+            position:"absolute", inset:0, background:"rgba(0,0,0,.55)",
+            backdropFilter:"blur(2px)",
             display:"flex", flexDirection:"column", alignItems:"center",
             justifyContent:"center", gap:14,
           }}>
             <div style={{
-              width:36, height:36, borderRadius:"50%",
+              width:40, height:40, borderRadius:"50%",
               border:"3px solid rgba(255,255,255,.18)", borderTopColor:"#fff",
               animation:"spin .9s linear infinite",
             }}/>
-            <span style={{ color:"rgba(255,255,255,.8)", fontSize:13,
+            <span style={{ color:"#fff", fontSize:13, fontWeight:600,
               fontFamily:"'Poppins',sans-serif" }}>Compositing your portrait…</span>
           </div>
         )}
@@ -750,13 +838,14 @@ function RoomViewPanel({
         {/* Privacy notice */}
         {userRoomUrl && (
           <div style={{
-            position:"absolute", top:8, right:8,
-            background:"rgba(0,0,0,.5)", backdropFilter:"blur(6px)",
-            padding:"4px 10px", borderRadius:999,
-            fontSize:9.5, color:"rgba(255,255,255,.6)",
+            position:"absolute", top:10, right:10,
+            background:"rgba(0,0,0,.55)", backdropFilter:"blur(6px)",
+            padding:"5px 11px", borderRadius:999,
+            fontSize:10, color:"rgba(255,255,255,.85)", fontWeight:500,
             fontFamily:"'Poppins',sans-serif",
+            display:"inline-flex", alignItems:"center", gap:5,
           }}>
-            • Your room photo is never stored or shared
+            <Shield size={10}/> Your room photo is never stored
           </div>
         )}
       </div>
