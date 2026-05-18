@@ -690,9 +690,23 @@ function RoomViewPanel({
   const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
   const stagedLoading = false;
 
-  const wallX = portraitDragPos.x;
-  const wallY = portraitDragPos.y;
-  const wallW = portraitDragPos.w;
+  // Staged: snap to the room's exact frame coords. My Room / AI: draggable.
+  const isStaged = mode === "staged";
+  const frameX   = isStaged ? (stagedRoomDef?.frameX ?? 38) : portraitDragPos.x;
+  const frameY   = isStaged ? (stagedRoomDef?.frameY ?? 2)  : portraitDragPos.y;
+  const frameW   = isStaged ? (stagedRoomDef?.frameW ?? 24) : portraitDragPos.w;
+  const frameH   = isStaged ? (stagedRoomDef?.frameH ?? 44) : undefined;
+
+  // Size-responsive scale: small prints show smaller, larger prints fill more of the frame
+  const sizeScale = Math.max(0.82, Math.min(1.12, 0.7 + longestInches * 0.015));
+  const scaledW   = isStaged ? frameW * sizeScale : frameW;
+  const scaledH   = isStaged && frameH ? frameH * sizeScale : undefined;
+  const offsetX   = isStaged ? frameX + (frameW - scaledW) / 2 : frameX;
+  const offsetY   = isStaged && frameH ? frameY + (frameH - (scaledH ?? 0)) / 2 : frameY;
+
+  const wallX = offsetX;
+  const wallY = offsetY;
+  const wallW = scaledW;
 
   const onDragStart = (e: any) => {
     e.preventDefault();
