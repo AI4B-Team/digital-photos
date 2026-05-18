@@ -100,9 +100,10 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
         aria-label="Change language"
         style={{
           display:"flex", alignItems:"center", gap:6,
-          background:"rgba(255,255,255,.06)", border:"1px solid rgba(196,150,58,.35)",
-          color:"#F5EFE0", cursor:"pointer", padding:"6px 10px", borderRadius:6,
+          background:"#fff", border:"1.5px solid #0A0A0A",
+          color:"#0A0A0A", cursor:"pointer", padding:"6px 10px", borderRadius:6,
           fontFamily:"'Poppins',sans-serif", fontSize:12, letterSpacing:".06em",
+          fontWeight:600,
         }}
       >
         <span style={{ fontSize:16, lineHeight:1 }}>{active.flag}</span>
@@ -111,10 +112,10 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
       </button>
       {open && (
         <div style={{
-          position:"absolute", top:"calc(100% + 6px)", right:0, zIndex:1000,
-          background:"#13131A", border:"1px solid rgba(196,150,58,.3)", borderRadius:8,
-          minWidth:200, maxHeight:340, overflowY:"auto", padding:6,
-          boxShadow:"0 16px 40px rgba(0,0,0,.55)",
+          position:"absolute", top:"calc(100% + 6px)", left:0, zIndex:1000,
+          background:"#fff", border:"1.5px solid #0A0A0A", borderRadius:8,
+          minWidth:220, maxHeight:340, overflowY:"auto", padding:6,
+          boxShadow:"0 16px 40px rgba(0,0,0,.18)",
         }}>
           {LANGS.map(l => (
             <button
@@ -122,13 +123,14 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
               onClick={() => setLang(l.code)}
               style={{
                 display:"flex", alignItems:"center", gap:10, width:"100%",
-                background: l.code === current ? "rgba(196,150,58,.15)" : "transparent",
-                border:"none", color:"#F5EFE0", cursor:"pointer",
+                background: l.code === current ? "#FDECEC" : "transparent",
+                border:"none", color:"#0A0A0A", cursor:"pointer",
                 padding:"8px 10px", borderRadius:6, textAlign:"left",
                 fontFamily:"'Poppins',sans-serif", fontSize:13,
+                fontWeight: l.code === current ? 600 : 500,
               }}
-              onMouseOver={e => { e.currentTarget.style.background = "rgba(196,150,58,.18)"; }}
-              onMouseOut={e => { e.currentTarget.style.background = l.code === current ? "rgba(196,150,58,.15)" : "transparent"; }}
+              onMouseOver={e => { e.currentTarget.style.background = "#F4F1EC"; }}
+              onMouseOut={e => { e.currentTarget.style.background = l.code === current ? "#FDECEC" : "transparent"; }}
             >
               <span style={{ fontSize:18 }}>{l.flag}</span>
               <span>{l.label}</span>
