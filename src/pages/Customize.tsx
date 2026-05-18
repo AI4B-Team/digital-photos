@@ -751,6 +751,7 @@ function RoomViewPanel({
   const mountPx  = (MOUNT_COLORS.find((m:any) => m.id === mountColor) || MOUNT_COLORS[0]).color;
   const effectDef = EFFECTS.find((e:any) => e.id === (selected as any)?.effect) || EFFECTS[0];
   const isCanvas = productType === "canvas";
+  const isAcrylic = productType === "acrylic";
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const [hintDismissed, setHintDismissed] = useState(() => {
     try { return localStorage.getItem("cz-room-hint-dismissed") === "1"; } catch { return false; }
@@ -1038,7 +1039,7 @@ function RoomViewPanel({
 
         {/* Portrait overlay — snaps into staged room frames; draggable in My Room / AI */}
         {showPortraitOverlay && (() => {
-          const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
+          const mountPad = (isCanvas || isAcrylic) ? 0 : Math.max(4, wallW * 0.35);
           const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
           const nameFontDef  = NAME_FONTS.find(f => f.id === nameFontId) || NAME_FONTS[0];
@@ -1055,11 +1056,16 @@ function RoomViewPanel({
                 aspectRatio: `${aspectRatio || 0.75} / 1`,
                 cursor: isDragging ? "grabbing" : "grab",
                 overflow:"hidden",
-                boxShadow: isStaged
-                  ? "4px 8px 24px rgba(0,0,0,0.45)"
-                  : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
-                border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
-                background: isCanvas ? framePx : mountPx,
+                borderRadius: isAcrylic ? 2 : 0,
+                boxShadow: isAcrylic
+                  ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
+                  : isStaged
+                    ? "4px 8px 24px rgba(0,0,0,0.45)"
+                    : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
+                borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
+                border: isAcrylic ? undefined : (isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`),
+                background: isAcrylic ? "transparent" : (isCanvas ? framePx : mountPx),
                 padding: `${mountPad}px`,
                 boxSizing: "border-box",
                 transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
@@ -1071,6 +1077,12 @@ function RoomViewPanel({
                     width:"100%", height:"100%", objectFit:"cover", display:"block",
                     filter: effectDef.filter,
                   }}/>
+                {isAcrylic && (
+                  <div aria-hidden="true" style={{
+                    position:"absolute", inset:0, pointerEvents:"none",
+                    background:"linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%)",
+                  }}/>
+                )}
                 {!isStaged && namePosition !== "none" && (portraitName || portraitNameLine2) && (
                   <div style={{
                     position:"absolute", left:0, right:0, zIndex:3,
@@ -2030,6 +2042,7 @@ export default function Customize() {
           <div aria-hidden="true" style={{ width: aiOpen && isSelected ? 0 : 48, flexShrink:0, visibility:"hidden" }}/>
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, minWidth:0, flex:"0 1 auto" }}>
           <div style={{
+            position: "relative",
             background: isCanvas
               ? "#fff"
               : isFrameless
@@ -2039,22 +2052,30 @@ export default function Customize() {
                     radial-gradient(ellipse at center, ${actualWood} 60%, color-mix(in srgb, ${actualWood} 85%, black) 100%),
                     ${actualWood}
                   `,
-            padding: (isFrameless ? 6 : woodPad + 6),
-            borderRadius: isFrameless ? (isAcrylic ? 4 : 12) : 2,
+            padding: isAcrylic ? 0 : (isFrameless ? 6 : woodPad + 6),
+            borderRadius: isAcrylic ? 2 : (isFrameless ? 12 : 2),
             boxShadow: isAcrylic
-              ? "0 18px 48px rgba(0,0,0,.45), 0 6px 16px rgba(0,0,0,.30), inset 0 0 0 1px rgba(255,255,255,.20), inset 0 1px 0 rgba(255,255,255,.35)"
+              ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
               : isFrameless
                 ? "none"
                 : "0 0 0 1px rgba(0,0,0,.30)",
+            borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
+            borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
             filter: "none",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
             maxWidth: "100%",
-            border: "none",
             outline: "none",
             transition: "box-shadow .3s ease",
           }}>
+            {isAcrylic && (
+              <div aria-hidden="true" style={{
+                position:"absolute", inset:0, zIndex:5, pointerEvents:"none",
+                background:"linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%)",
+                borderRadius: 2,
+              }}/>
+            )}
             <div style={{
               background: bd.px === 0 ? "transparent" : bcd.bg,
               padding: bd.px,
@@ -2199,7 +2220,7 @@ export default function Customize() {
           <div style={{ display:"flex", gap:10, alignItems:"center", color:MUTED, fontSize:12.5 }}>
             <span>{sd.label}″</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
-            <span>{fd.label}</span>
+            <span>{isAcrylic ? "Acrylic" : fd.label}</span>
             <span style={{ width:3, height:3, borderRadius:"50%", background:MUTED }}/>
             <span>{ed.label}</span>
           </div>
@@ -3224,6 +3245,7 @@ export default function Customize() {
                           const bcd = BORDER_COLORS.find(c => c.id === it.borderColor) || BORDER_COLORS[0];
                           const isFrameless = fd.id === "frameless" || fd.id === "digital";
                           const isCanvasItem = fd.id === "canvas";
+                          const isAcrylicItem = it.productType === "acrylic";
                           const woodPad = (fd.w || 0) * 0.3;
                           const thumb = 44;
                           const imgW = sd.w >= sd.h ? thumb : thumb * (sd.w / sd.h);
@@ -3251,21 +3273,39 @@ export default function Customize() {
                                 width:62, minWidth:62, display:"flex", alignItems:"center", justifyContent:"center",
                                 background:BG, borderRadius:5, padding:5,
                               }}>
-                                <div style={{
-                                  background: isCanvasItem ? "#fff" : (isFrameless ? "transparent" : fd.wood),
-                                  padding: isFrameless ? 0 : woodPad, display:"inline-block",
-                                }}>
-                                  <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
+                                {isAcrylicItem ? (
+                                  <div style={{
+                                    position:"relative", display:"inline-block", borderRadius:2,
+                                    boxShadow:"0 4px 12px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.18)",
+                                    borderTop:"1px solid rgba(255,255,255,0.25)",
+                                    borderLeft:"1px solid rgba(255,255,255,0.2)",
+                                    overflow:"hidden",
+                                  }}>
                                     <img src={it.photoUrl} alt="" style={{
                                       width: imgW, height: imgH, objectFit:"cover", display:"block", filter: ed.filter,
                                     }}/>
+                                    <div aria-hidden="true" style={{
+                                      position:"absolute", inset:0, pointerEvents:"none",
+                                      background:"linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%)",
+                                    }}/>
                                   </div>
-                                </div>
+                                ) : (
+                                  <div style={{
+                                    background: isCanvasItem ? "#fff" : (isFrameless ? "transparent" : fd.wood),
+                                    padding: isFrameless ? 0 : woodPad, display:"inline-block",
+                                  }}>
+                                    <div style={{ background: bcd.bg, padding: bd.px * 0.25, display:"flex" }}>
+                                      <img src={it.photoUrl} alt="" style={{
+                                        width: imgW, height: imgH, objectFit:"cover", display:"block", filter: ed.filter,
+                                      }}/>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                               <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", justifyContent:"center", gap:2 }}>
                                 <div style={{ fontSize:12, fontWeight:600, color:INK }}>Portrait #{idx + 1}</div>
                                 <div style={{ fontSize:10.5, color:MUTED, lineHeight:1.4 }}>
-                                  {sd.label}″ · {fd.label}
+                                  {sd.label}″ · {isAcrylicItem ? "Acrylic" : fd.label}
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginTop:3 }}>
                                   <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
