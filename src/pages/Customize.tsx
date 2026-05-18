@@ -2481,7 +2481,7 @@ export default function Customize() {
         const sd = sizes.find((s) => s.id === it.size);
         const desc = it.productType === "digital"
           ? "High-resolution digital download"
-          : `${sd?.label || it.size}${it.frameColor ? " · " + it.frameColor : ""}`;
+          : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
         lineItems.push({
           name: ptLabel,
           description: desc,
