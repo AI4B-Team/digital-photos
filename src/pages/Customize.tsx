@@ -394,10 +394,20 @@ const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sk
   "acrylic": [
     { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-MOU-ACRY-8x8",   price:127, w:1,    h:1 },
     { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-MOU-ACRY-8x10",  price:147, w:0.80, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-10x10", price:157, w:1,    h:1 },
+    { id:"10x12", label:'10 × 12"', sub:"Portrait",  sku:"GLOBAL-MOU-ACRY-10x12", price:167, w:0.83, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-MOU-ACRY-11x14", price:177, w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-12x12", price:167, w:1,    h:1 },
     { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-MOU-ACRY-12x16", price:187, w:0.75, h:1 },
+    { id:"16x16", label:'16 × 16"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-16x16", price:197, w:1,    h:1 },
     { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-MOU-ACRY-16x20", price:207, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-MOU-ACRY-18x24", price:227, w:0.75, h:1 },
+    { id:"20x20", label:'20 × 20"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-20x20", price:227, w:1,    h:1 },
     { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-MOU-ACRY-20x24", price:247, w:0.83, h:1 },
+    { id:"24x24", label:'24 × 24"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-24x24", price:267, w:1,    h:1 },
+    { id:"24x32", label:'24 × 32"', sub:"Grand",     sku:"GLOBAL-MOU-ACRY-24x32", price:287, w:0.75, h:1 },
     { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-MOU-ACRY-24x36", price:297, w:0.67, h:1 },
+    { id:"24x48", label:'24 × 48"', sub:"Showcase",  sku:"GLOBAL-MOU-ACRY-24x48", price:347, w:0.50, h:1 },
   ],
 };
 
