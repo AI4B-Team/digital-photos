@@ -120,8 +120,8 @@ const G = `
 .cz-suggest{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .cz-suggest button{font-size:12.5px;padding:10px 12px;border-radius:8px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif;text-align:left;width:100%}
 .cz-suggest button:hover{border-color:${INK}}
-.cz-toolbar{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid ${BORDER};border-radius:12px;padding:4px;box-shadow:none}
-.cz-tool{width:32px;height:32px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
+.cz-toolbar{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid ${BORDER};border-radius:12px;padding:5px;box-shadow:none}
+.cz-tool{width:35px;height:35px;border-radius:9px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
 .cz-tool:hover{background:#F4F1EC;color:${INK}}
 .cz-tool.on{background:rgba(230,25,25,.10);color:${RED}}
 .cz-tool:disabled{opacity:.45;cursor:not-allowed}
