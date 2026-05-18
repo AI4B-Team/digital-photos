@@ -1411,7 +1411,7 @@ function LiveTeaser({ activeCat, onCatClick, preferredSlide }: { activeCat: stri
       {/* Prev / Next slide controls — big, easy to tap */}
       <div style={{ display:"flex", gap:10, marginTop:14, alignItems:"center", justifyContent:"center" }}>
         <button
-          onClick={() => { const n = (safeIdx - 1 + TEASERS.length) % TEASERS.length; setIdx(n); onCatClick(TEASERS[n].catId); }}
+          onClick={() => setIdx((safeIdx - 1 + TEASERS.length) % TEASERS.length)}
           aria-label="Previous example"
           style={{ width:44, height:44, borderRadius:22, border:`1px solid ${T.bGold}`,
             background:"#fff", cursor:"pointer", fontSize:18, color:T.gold, fontWeight:700,
@@ -1424,7 +1424,7 @@ function LiveTeaser({ activeCat, onCatClick, preferredSlide }: { activeCat: stri
           {cur.cat} <span style={{ opacity:.7, marginLeft:6 }}>{safeIdx+1}/{TEASERS.length}</span>
         </div>
         <button
-          onClick={() => { const n = (safeIdx + 1) % TEASERS.length; setIdx(n); onCatClick(TEASERS[n].catId); }}
+          onClick={() => setIdx((safeIdx + 1) % TEASERS.length)}
           aria-label="Next example"
           style={{ width:44, height:44, borderRadius:22, border:`1px solid ${T.bGold}`,
             background:"#fff", cursor:"pointer", fontSize:18, color:T.gold, fontWeight:700,
