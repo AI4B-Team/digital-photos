@@ -3276,30 +3276,33 @@ export default function Customize() {
                       )}
 
                       {(() => {
-                        const includedFeatures = card.id !== "digital"
-                          ? [...card.features, "Complimentary worldwide shipping"]
-                          : card.features;
+                        const hasShipping = card.id !== "digital";
+                        const includedCount = card.features.length + (hasShipping ? 1 : 0);
                         return (
-                          <div style={{ marginTop:18, paddingTop:16, borderTop:`1px solid ${BORDER}` }}>
-                            <details className="cz-acc" open>
-                              <summary>
-                                <span>What's Included</span>
-                                <span className="cz-acc-val">{includedFeatures.length} Items</span>
-                                <ChevronDown className="cz-acc-chev" size={15}/>
-                              </summary>
-                              <div className="cz-acc-body">
-                                <ul style={{ listStyle:"none", padding:0, margin:0,
-                                  display:"flex", flexDirection:"column", gap:6 }}>
-                                  {includedFeatures.map((f:string, i:number) => (
-                                    <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
-                                      fontSize:12, color:INK, lineHeight:1.5 }}>
-                                      <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </details>
-                          </div>
+                          <details className="cz-acc" open>
+                            <summary>
+                              <span>What's Included</span>
+                              <span className="cz-acc-val">{includedCount} Items</span>
+                              <ChevronDown className="cz-acc-chev" size={15}/>
+                            </summary>
+                            <div className="cz-acc-body">
+                              <ul style={{ listStyle:"none", padding:0, margin:0,
+                                display:"flex", flexDirection:"column", gap:6 }}>
+                                {card.features.map((f:string, i:number) => (
+                                  <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
+                                    fontSize:12, color:INK, lineHeight:1.5 }}>
+                                    <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
+                                  </li>
+                                ))}
+                                {hasShipping && (
+                                  <li style={{ display:"flex", alignItems:"flex-start", gap:6,
+                                    fontSize:12, color:"#16a34a", fontWeight:600, lineHeight:1.5 }}>
+                                    <Truck size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> Free Shipping Worldwide
+                                  </li>
+                                )}
+                              </ul>
+                            </div>
+                          </details>
                         );
                       })()}
 
