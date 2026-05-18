@@ -1898,7 +1898,7 @@ export default function Customize() {
               <button
                 className={`cz-tool ${roomView ? "on" : ""}`}
                 onClick={() => { setRoomView(v => !v); setAiRoomUrl(null); }}
-                data-tip={roomView ? "Live Preview" : "See In A Room"}
+                data-tip={roomView ? "Live Preview" : "Room View"}
                 aria-label="Toggle room view">
                 <Home size={17}/>
               </button>
