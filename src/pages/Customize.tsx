@@ -1077,6 +1077,12 @@ function RoomViewPanel({
                     width:"100%", height:"100%", objectFit:"cover", display:"block",
                     filter: effectDef.filter,
                   }}/>
+                {isAcrylic && (
+                  <div aria-hidden="true" style={{
+                    position:"absolute", inset:0, pointerEvents:"none",
+                    background:"linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%)",
+                  }}/>
+                )}
                 {!isStaged && namePosition !== "none" && (portraitName || portraitNameLine2) && (
                   <div style={{
                     position:"absolute", left:0, right:0, zIndex:3,
