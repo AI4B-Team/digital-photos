@@ -3107,7 +3107,7 @@ export default function Customize() {
                       <details className="cz-acc">
                         <summary>
                           <span>What's Included</span>
-                          <span className="cz-acc-val">{card.features.length} items</span>
+                          <span className="cz-acc-val">{card.features.length} Items</span>
                           <ChevronDown className="cz-acc-chev" size={15}/>
                         </summary>
                         <div className="cz-acc-body">
