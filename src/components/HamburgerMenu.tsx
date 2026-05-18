@@ -60,7 +60,7 @@ export default function HamburgerMenu() {
         <Menu size={18} />
       </button>
 
-      {open && (
+      {open && createPortal(
         <div
           onClick={() => setOpen(false)}
           style={{
