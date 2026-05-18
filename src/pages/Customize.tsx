@@ -104,7 +104,7 @@ const STAGED_ROOMS = [
     subtitle: "Editorial gallery feel",
     bg: roomCatalog,
     recommendedFor: ["minimal", "renaissance"],
-    ...FRAME_POS,
+    frameX: 39.5, frameY: 8.5, frameW: 19.0, frameH: 46.5,
   },
 ];
 
