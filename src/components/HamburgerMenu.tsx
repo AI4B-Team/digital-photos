@@ -24,7 +24,7 @@ export default function HamburgerMenu({
         style={{
           display:"flex", alignItems:"center", justifyContent:"center",
           background:"#fff", border:"1px solid #8C8C8C",
-          color:"#0A0A0A", cursor:"pointer", width:38, height:34, borderRadius:8,
+          color:"#8C8C8C", cursor:"pointer", width:38, height:34, borderRadius:8,
         }}
       >
         <Menu size={18} />
@@ -49,11 +49,11 @@ export default function HamburgerMenu({
           >
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
               <span style={{
-                fontFamily:"'Poppins',sans-serif", fontSize:13, color:"#0A0A0A",
+                fontFamily:"'Poppins',sans-serif", fontSize:13, color:"#8C8C8C",
                 letterSpacing:".22em", textTransform:"uppercase", fontWeight:700,
               }}>Menu</span>
               <button onClick={() => setOpen(false)} aria-label="Close menu" style={{
-                background:"none", border:"none", color:"#0A0A0A", cursor:"pointer",
+                background:"none", border:"none", color:"#8C8C8C", cursor:"pointer",
               }}>
                 <X size={22}/>
               </button>
@@ -71,7 +71,7 @@ export default function HamburgerMenu({
                   }}
                   style={{
                     textAlign:"left", background:"none", border:"none", cursor:"pointer",
-                    color:"#0A0A0A", padding:"14px 8px",
+                    color:"#8C8C8C", padding:"14px 8px",
                     fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:600,
                     letterSpacing:".16em", textTransform:"uppercase",
                     borderBottom:"1px solid rgba(0,0,0,.08)",
