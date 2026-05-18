@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
-  X, Upload, Camera, Link2, HardDrive, Clipboard, Shield, Lock
+  X, Upload, Camera, Link2, HardDrive, Clipboard, Shield, Lock, Clock
 } from "lucide-react";
 import {
   FaFacebook, FaInstagram, FaDropbox,
