@@ -377,7 +377,9 @@ export default function UploadSourceModal({
             <Lock size={12} color={T.red}/> Never Shared Or Used For Training
           </span>
           <span style={{ color:T.dim }}>·</span>
-          <span>Auto-Deleted After 30 Days</span>
+          <span style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <Clock size={12} color={T.red}/> Auto-Deleted After 30 Days
+          </span>
         </div>
 
         {/* Hidden inputs */}
