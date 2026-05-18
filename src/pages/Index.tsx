@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import UploadSourceModal from "@/components/UploadSourceModal";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import HamburgerMenu from "@/components/HamburgerMenu";
 import { useAuth } from "@/context/AuthContext";
 import readyTrio from "@/assets/ready-trio.png";
 import scenePets from "@/assets/scene-pets.jpg";
