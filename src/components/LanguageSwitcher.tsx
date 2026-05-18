@@ -96,7 +96,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
 
   useEffect(() => {
     injectGoogleTranslate();
-    setCurrent(readCookieLang());
+    setCurrent(readSavedLang());
     const onDoc = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
