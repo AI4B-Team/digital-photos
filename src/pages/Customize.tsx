@@ -886,6 +886,24 @@ function RoomViewPanel({
             style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
         )}
 
+        {/* Move/resize hint */}
+        {bgUrl && showPortraitOverlay && (
+          <div style={{
+            position:"absolute", top:10, left:"50%", transform:"translateX(-50%)",
+            display:"inline-flex", alignItems:"center", gap:8,
+            padding:"7px 13px", borderRadius:999,
+            background:"rgba(10,10,10,.62)", color:"#fff",
+            border:"1px solid rgba(255,255,255,.16)",
+            backdropFilter:"blur(8px)",
+            fontFamily:"'Poppins',sans-serif", fontSize:11.5, fontWeight:500,
+            letterSpacing:".02em", pointerEvents:"none", zIndex:4,
+            boxShadow:"0 6px 18px rgba(0,0,0,.35)",
+          }}>
+            <Info size={13} style={{ opacity:.85 }}/>
+            Drag the portrait to reposition · Change size & frame in the right panel
+          </div>
+        )}
+
         {/* Empty state when user/ai tab selected and no upload */}
         {(mode === "user" || mode === "ai") && !userRoomUrl && (
           <label style={{
