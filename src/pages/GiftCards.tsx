@@ -112,8 +112,13 @@ export default function GiftCards() {
               boxShadow:"0 20px 50px rgba(0,0,0,.18)",
             }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:30 }}>
-                <div>
-                  <img src={realArtLogo} alt="REAL ART" loading="lazy" style={{ height:28, width:"auto", display:"block", marginBottom:6 }} />
+                <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+                  <div aria-label="REAL ART" style={{ background:RED, padding:5, width:78, flexShrink:0 }}>
+                    <div style={{ border:"2px solid #fff", padding:"4px 10px", display:"flex", flexDirection:"column", alignItems:"center" }}>
+                      <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, fontWeight:900, color:"#fff", letterSpacing:".05em", lineHeight:1, textAlign:"center", display:"block" }}>REAL</span>
+                      <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:6, fontWeight:700, letterSpacing:".3em", color:"#fff", textTransform:"uppercase", textAlign:"center", display:"block", marginTop:2 }}>ART</span>
+                    </div>
+                  </div>
                   <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, color:"rgba(255,255,255,.7)" }}>Gift Card</div>
                 </div>
                 <Sparkles size={22} color={RED}/>
