@@ -2612,6 +2612,12 @@ export default function Customize() {
                 frameColor={cardFrame || "black"}
                 productType={activeCard}
                 selected={selected}
+                mountColor={mountColor}
+                portraitName={portraitName}
+                namePosition={namePosition}
+                nameFontId={nameFontId}
+                nameSizeId={nameSizeId}
+                nameColorId={nameColorId}
                 userRoomUrl={userRoomUrl} setUserRoomUrl={setUserRoomUrl}
                 aiRoomUrl={aiRoomUrl} setAiRoomUrl={setAiRoomUrl}
                 aiRoomLoading={aiRoomLoading} setAiRoomLoading={setAiRoomLoading}
