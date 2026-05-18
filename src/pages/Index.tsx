@@ -1601,7 +1601,7 @@ function HomePage({ onGenerate }) {
           <a href="/" aria-label="Real Art home" style={{
             display:"block", textDecoration:"none", flexShrink:0,
             background:"#E61919", padding:7, width:140,
-            position:"relative", top:0,
+            position:"relative", top:8, alignSelf:"flex-start",
           }}>
             <div style={{ border:"2.5px solid #fff", padding:"6px 18px",
               display:"flex", flexDirection:"column", alignItems:"center" }}>
