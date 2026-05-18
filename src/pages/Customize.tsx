@@ -697,7 +697,7 @@ function RoomViewPanel({
         </div>
       </div>
 
-      {/* Tab bar */}
+      {/* Tab bar + upload (top-right) */}
       <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
         {([
           { k:"staged", label:"Staged Rooms" },
@@ -727,48 +727,48 @@ function RoomViewPanel({
             </button>
           );
         })}
-      </div>
 
-      {/* Contextual action row (Upload / Generate) */}
-      {(mode === "user" || mode === "ai") && (
-        <div>
-          <label style={{
-            display:"inline-flex", alignItems:"center", gap:8,
-            padding:"8px 14px", borderRadius:8,
-            background:"rgba(255,255,255,.08)", color:"#fff",
-            border:"1px solid rgba(255,255,255,.14)",
-            fontSize:12, fontWeight:600, fontFamily:"'Poppins',sans-serif",
-            cursor:"pointer",
-          }}>
-            <Upload size={14}/> {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
-            <input type="file" accept="image/*" style={{ display:"none" }}
-              onChange={e => {
-                const f = e.target.files?.[0];
-                if (!f) return;
-                const reader = new FileReader();
-                reader.onload = ev => {
-                  setUserRoomUrl(ev.target?.result as string);
-                  setAiRoomUrl(null);
-                };
-                reader.readAsDataURL(f);
-              }}/>
-          </label>
-          {mode === "ai" && userRoomUrl && (
-            <button onClick={generateAIRoom} disabled={aiRoomLoading}
-              style={{
-                marginLeft:8,
-                display:"inline-flex", alignItems:"center", gap:6,
-                background: aiRoomLoading ? "rgba(255,255,255,.12)" : RED,
-                border:"none", padding:"9px 14px", borderRadius:8,
-                fontSize:12, fontWeight:700, color:"#fff",
-                cursor: aiRoomLoading ? "wait" : "pointer",
-                fontFamily:"'Poppins',sans-serif",
-              }}>
-              {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> {aiRoomUrl ? "Regenerate" : "Generate Realistic View"}</>}
-            </button>
-          )}
-        </div>
-      )}
+        {/* Push remaining controls to the right */}
+        <div style={{ flex:1 }} />
+
+        <label style={{
+          display:"inline-flex", alignItems:"center", gap:8,
+          padding:"8px 14px", borderRadius:8,
+          background:"rgba(255,255,255,.08)", color:"#fff",
+          border:"1px solid rgba(255,255,255,.14)",
+          fontSize:12, fontWeight:600, fontFamily:"'Poppins',sans-serif",
+          cursor:"pointer",
+        }}>
+          <Upload size={14}/> {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
+          <input type="file" accept="image/*" style={{ display:"none" }}
+            onChange={e => {
+              const f = e.target.files?.[0];
+              if (!f) return;
+              const reader = new FileReader();
+              reader.onload = ev => {
+                setUserRoomUrl(ev.target?.result as string);
+                setAiRoomUrl(null);
+                // Jump to My Room so the user sees their upload immediately
+                if (mode === "staged") setSelectedRoomKey("user");
+              };
+              reader.readAsDataURL(f);
+            }}/>
+        </label>
+
+        {mode === "ai" && userRoomUrl && (
+          <button onClick={generateAIRoom} disabled={aiRoomLoading}
+            style={{
+              display:"inline-flex", alignItems:"center", gap:6,
+              background: aiRoomLoading ? "rgba(255,255,255,.12)" : RED,
+              border:"none", padding:"9px 14px", borderRadius:8,
+              fontSize:12, fontWeight:700, color:"#fff",
+              cursor: aiRoomLoading ? "wait" : "pointer",
+              fontFamily:"'Poppins',sans-serif",
+            }}>
+            {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> {aiRoomUrl ? "Regenerate" : "Generate Realistic View"}</>}
+          </button>
+        )}
+      </div>
 
       {/* Main room view */}
       <div
