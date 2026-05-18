@@ -88,7 +88,7 @@ const STAGED_ROOMS = [
     subtitle: "Soft, intimate, romantic",
     bg: roomBedroomLux,
     recommendedFor: ["storybook", "minimal"],
-    ...FRAME_POS,
+    frameX: 41.0, frameY: 5.0, frameW: 18.5, frameH: 42.5,
   },
   {
     id: "coastal",
