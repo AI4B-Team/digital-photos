@@ -4284,6 +4284,58 @@ export default function Customize() {
         onClose={() => setPreviewsOpen(false)}
         defaultEmail={(session as any)?.email || ""}
       />
+
+      {showAdminPanel && (
+        <div style={{
+          position:"fixed", top:80, right:20, width:380, maxHeight:"80vh",
+          background:"#fff", border:"1px solid #ddd", borderRadius:12,
+          boxShadow:"0 20px 60px rgba(0,0,0,.25)", zIndex:9999,
+          padding:18, overflowY:"auto", fontFamily:"'Poppins',sans-serif",
+        }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
+            <div style={{ fontSize:14, fontWeight:700, color:"#111" }}>
+              ⚙ Admin — Regenerate Room Images
+            </div>
+            <button onClick={() => setShowAdminPanel(false)}
+              style={{ background:"none", border:"none", color:"#666", cursor:"pointer", fontSize:18 }}>
+              ×
+            </button>
+          </div>
+
+          <div style={{ fontSize:12, color:"#555", lineHeight:1.5, marginBottom:14 }}>
+            Removes placeholder frames from all room images using Gemini AI.
+            Results are saved to the backend and used immediately. Run once, then close this panel.
+          </div>
+
+          <div style={{ display:"flex", flexDirection:"column", gap:6, marginBottom:14 }}>
+            {STAGED_ROOMS.map(room => (
+              <div key={room.id} style={{
+                display:"flex", justifyContent:"space-between", gap:8,
+                fontSize:12, padding:"6px 8px", background:"#f7f7f7", borderRadius:6,
+              }}>
+                <span style={{ fontWeight:600, color:"#222" }}>{room.vibe}</span>
+                <span style={{ color:"#555", maxWidth:200, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                  {adminProgress[room.id] || (roomImageOverrides[room.id] ? "✓ saved" : "—")}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <button onClick={regenerateRoomImages} disabled={adminRunning}
+            style={{
+              width:"100%", padding:"12px 16px", borderRadius:8,
+              background: adminRunning ? "#999" : "#111", color:"#fff",
+              border:"none", fontWeight:700, fontSize:13,
+              cursor: adminRunning ? "not-allowed" : "pointer",
+            }}>
+            {adminRunning ? "⏳ Regenerating… (may take 2–3 min)" : `▶ Regenerate All ${STAGED_ROOMS.length} Rooms`}
+          </button>
+
+          <div style={{ marginTop:10, fontSize:11, color:"#888", textAlign:"center" }}>
+            Press Ctrl+Shift+A to toggle this panel
+          </div>
+        </div>
+      )}
     </div>
   );
 }
