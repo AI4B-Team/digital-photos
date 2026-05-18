@@ -2675,33 +2675,50 @@ export default function Customize() {
           {/* ── Name / Text Overlay ── */}
           <div className="cz-section">
             <div className="cz-label">
-              <span>Name</span>
+              <span>{isPetSession ? "Name" : "Personalise"}</span>
               <span className="cz-value" style={{ color:namePosition==="none"?MUTED:INK }}>
-                {namePosition === "none" ? "None" : portraitName || "Add a name"}
+                {namePosition === "none" ? "None" : portraitName || (isPetSession ? "Add a name" : "Add text")}
               </span>
             </div>
             <input
               type="text"
               value={portraitName}
               onChange={e => {
-                setPortraitName(e.target.value.slice(0, 20));
+                setPortraitName(e.target.value.slice(0, isPetSession ? 20 : 40));
                 if (e.target.value && namePosition === "none") setNamePosition("bottom");
               }}
-              placeholder={`e.g. ${({
-                pets:     "BARLEY, MILO, SOPHIE",
-                babies:   "OLIVIA, NOAH, EMMA",
-                couples:  "SARAH & JAMES, EMMA & LIAM",
-                people:   "THE SMITHS, JOHN, MARIA",
-                memorial: "IN LOVING MEMORY, GRANDMA ROSE",
-                gifts:    "MOM, DAD, BEST FRIEND",
-              } as Record<string,string>)[session.cat] || "BARLEY, MILO, SOPHIE"}`}
-              maxLength={20}
+              placeholder={isPetSession
+                ? `e.g. ${({
+                    pets: "BARLEY, MILO, SOPHIE",
+                  } as Record<string,string>)[session.cat] || "BARLEY, MILO, SOPHIE"}`
+                : "Name, occasion, date…"}
+              maxLength={isPetSession ? 20 : 40}
               style={{
-                width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:10,
-                border:`1px solid ${BORDER}`, fontFamily:"'Poppins',sans-serif",
+                width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:isPetSession?10:8,
+                border:`1px solid ${BORDER}`,
+                fontFamily: portraitName && !isPetSession
+                  ? (NAME_FONTS.find(f=>f.id===nameFontId)?.family || "'Poppins',sans-serif")
+                  : "'Poppins',sans-serif",
                 fontSize:13, color:INK, outline:"none", background:"#fff",
               }}
             />
+            {!isPetSession && (
+              <input
+                type="text"
+                value={portraitNameLine2}
+                onChange={e => setPortraitNameLine2(e.target.value.slice(0, 40))}
+                placeholder="Second line (optional)"
+                maxLength={40}
+                style={{
+                  width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:10,
+                  border:`1px solid ${BORDER}`,
+                  fontFamily: portraitNameLine2
+                    ? (NAME_FONTS.find(f=>f.id===nameFontId)?.family || "'Poppins',sans-serif")
+                    : "'Poppins',sans-serif",
+                  fontSize:13, color:INK, outline:"none", background:"#fff",
+                }}
+              />
+            )}
             <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:6, marginBottom:12 }}>
               {NAME_POSITIONS.map(pos => (
                 <button key={pos.id}
@@ -2712,27 +2729,36 @@ export default function Customize() {
                 </button>
               ))}
             </div>
-            {namePosition !== "none" && portraitName && (
+            {namePosition !== "none" && (portraitName || portraitNameLine2) && (
               <>
-                <div style={{ display:"flex", gap:6, marginBottom:10 }}>
-                  {NAME_FONTS.map(f => (
+                <div style={{
+                  display:"flex", flexWrap:"wrap", gap:6, marginBottom:10,
+                }}>
+                  {NAME_FONTS
+                    .filter(f => isPetSession
+                      ? (f.id === "bold" || f.id === "serif" || f.id === "italic")
+                      : true)
+                    .map(f => (
                     <button key={f.id}
                       onClick={() => setNameFontId(f.id)}
                       style={{
-                        flex:1, padding:"7px 4px", borderRadius:8, cursor:"pointer",
+                        flex: isPetSession ? 1 : "0 0 calc(33.333% - 4px)",
+                        padding:"7px 4px", borderRadius:8, cursor:"pointer",
                         border:`1.5px solid ${nameFontId===f.id?RED:BORDER}`,
                         background:nameFontId===f.id?"rgba(230,25,25,.05)":"#fff",
-                        fontSize:11, color:nameFontId===f.id?RED:MUTED,
-                        fontFamily: f.id==="serif" ? "Georgia,serif" : "'Poppins',sans-serif",
-                        fontStyle:  f.id==="italic" ? "italic" : "normal",
-                        fontWeight: f.id==="bold" ? 700 : 500,
+                        fontSize: f.id==="vibes" || f.id==="script" ? 14 : 12,
+                        color:nameFontId===f.id?RED:INK,
+                        fontFamily: f.family,
+                        fontStyle:  f.italic ? "italic" : "normal",
+                        fontWeight: f.weight,
+                        lineHeight: 1.1,
                       }}>
                       {f.label}
                     </button>
                   ))}
                 </div>
                 <div style={{ display:"flex", gap:6, marginBottom:14 }}>
-                  {NAME_SIZES.map(s => (
+                  {NAME_SIZES.filter(s => isPetSession ? true : s.id !== "xl").map(s => (
                     <button key={s.id}
                       onClick={() => setNameSizeId(s.id)}
                       style={{
@@ -2747,7 +2773,7 @@ export default function Customize() {
                     </button>
                   ))}
                 </div>
-                <div style={{ display:"flex", gap:8, paddingTop:6 }}>
+                <div style={{ display:"flex", gap:8, paddingTop:6, flexWrap:"wrap" }}>
                   {NAME_COLORS.map(c => (
                     <button key={c.id} title={c.label}
                       onClick={() => setNameColorId(c.id)}
