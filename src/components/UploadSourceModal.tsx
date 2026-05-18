@@ -169,7 +169,7 @@ export default function UploadSourceModal({
         style={{
           background: T.gold, color: T.bg, border: "none", padding: "12px 28px",
           borderRadius: 8, fontSize: 13, fontWeight: 700, letterSpacing: ".08em",
-          textTransform: "uppercase", cursor: "pointer",
+          textTransform:"none", cursor: "pointer",
           boxShadow: "0 6px 18px rgba(212,175,55,.22)",
         }}
       >
@@ -198,7 +198,7 @@ export default function UploadSourceModal({
       <button onClick={() => cameraInput.current?.click()}
         style={{ background:T.gold, color:T.bg, border:"none", padding:"12px 28px",
           borderRadius:8, fontSize:13, fontWeight:700, letterSpacing:".08em",
-          textTransform:"uppercase", cursor:"pointer" }}>
+          textTransform:"none", cursor:"pointer" }}>
         Open Camera
       </button>
     </div>
@@ -225,7 +225,7 @@ export default function UploadSourceModal({
         <button onClick={fetchFromUrl} disabled={linkBusy || !link}
           style={{ background:T.gold, color:T.bg, border:"none", padding:"0 22px",
             borderRadius:8, fontSize:12, fontWeight:700, letterSpacing:".08em",
-            textTransform:"uppercase", cursor: linkBusy ? "wait" : "pointer",
+            textTransform:"none", cursor: linkBusy ? "wait" : "pointer",
             opacity: (!link || linkBusy) ? .55 : 1 }}>
           {linkBusy ? "Loading…" : "Import"}
         </button>
@@ -253,7 +253,7 @@ export default function UploadSourceModal({
       <button onClick={fromClipboard}
         style={{ background:T.gold, color:T.bg, border:"none", padding:"12px 28px",
           borderRadius:8, fontSize:13, fontWeight:700, letterSpacing:".08em",
-          textTransform:"uppercase", cursor:"pointer" }}>
+          textTransform:"none", cursor:"pointer" }}>
         Paste image
       </button>
     </div>
@@ -276,7 +276,7 @@ export default function UploadSourceModal({
       <button onClick={() => setActive("local")}
         style={{ background:"transparent", color:T.gold, border:`1px solid ${T.gold}`,
           padding:"10px 22px", borderRadius:8, fontSize:12, fontWeight:700, letterSpacing:".08em",
-          textTransform:"uppercase", cursor:"pointer" }}>
+          textTransform:"none", cursor:"pointer" }}>
         Use Local Files
       </button>
     </div>
@@ -317,7 +317,7 @@ export default function UploadSourceModal({
           padding:"16px 20px", borderBottom:`1px solid ${T.borderSoft}` }}>
           <div>
             <div style={{ fontSize:10, letterSpacing:".24em", color:T.gold,
-              textTransform:"uppercase", fontWeight:600, marginBottom:4 }}>
+              textTransform:"none", fontWeight:600, marginBottom:4 }}>
               Add your photo
             </div>
             <div style={{ fontFamily:"'Playfair Display', serif", fontSize:18, color:T.cream }}>
@@ -357,7 +357,7 @@ export default function UploadSourceModal({
                   <span style={{ fontSize:13, fontWeight: isActive ? 600 : 500, flex:1 }}>{s.label}</span>
                   {s.soon && (
                     <span style={{ fontSize:8, letterSpacing:".12em", color:T.dim,
-                      textTransform:"uppercase" }}>Soon</span>
+                      textTransform:"none" }}>Soon</span>
                   )}
                 </button>
               );
