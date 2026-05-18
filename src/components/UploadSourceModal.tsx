@@ -8,8 +8,9 @@ import {
   FaFacebook, FaInstagram, FaDropbox,
 } from "react-icons/fa";
 import {
-  SiGoogledrive, SiGooglephotos, SiMicrosoftonedrive,
+  SiGoogledrive, SiGooglephotos,
 } from "react-icons/si";
+import { Cloud as OneDriveIcon } from "lucide-react";
 
 const T = {
   bg:        "#0B0B0F",
@@ -39,7 +40,7 @@ const SOURCES: { id: SourceId; label: string; Icon: any; brand?: string; soon?: 
   { id: "gdrive",    label: "Google Drive",  Icon: SiGoogledrive,        brand: "#1FA463", soon: true },
   { id: "gphotos",   label: "Google Photos", Icon: SiGooglephotos,       brand: "#4285F4", soon: true },
   { id: "dropbox",   label: "Dropbox",       Icon: FaDropbox,            brand: "#0061FF", soon: true },
-  { id: "onedrive",  label: "OneDrive",      Icon: SiMicrosoftonedrive,  brand: "#0078D4", soon: true },
+  { id: "onedrive",  label: "OneDrive",      Icon: OneDriveIcon,  brand: "#0078D4", soon: true },
 ];
 
 const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
