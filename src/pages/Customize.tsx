@@ -890,7 +890,7 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
-  const [mpSection, setMpSection]     = useState<"" | "ai" | "concierge">("");
+  const [mpSection, setMpSection]     = useState<"" | "regenerate" | "ai" | "concierge">("regenerate");
   const [conciergeNote, setConciergeNote] = useState("");
   useEffect(() => {
     try {
@@ -1642,14 +1642,11 @@ export default function Customize() {
               </button>
               <div className="cz-tool-divider"/>
               <span style={{ position:"relative", display:"inline-flex" }}>
-                <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("ai"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
+                <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("regenerate"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
                   <Sparkles size={18}/>
                 </button>
               </span>
               <div className="cz-tool-divider"/>
-              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
-                <RefreshCw size={17}/>
-              </button>
               <button
                 className="cz-tool"
                 onClick={() => setItems(prev => prev.map(i => i.id === item.id
