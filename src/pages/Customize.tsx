@@ -2796,6 +2796,7 @@ export default function Customize() {
                 dragStart={dragStart} setDragStart={setDragStart}
                 roomContainerRef={roomContainerRef}
                 setRoomView={setRoomView}
+                roomImageOverrides={roomImageOverrides}
               />
             </div>
           ) : (
