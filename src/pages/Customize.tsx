@@ -2537,7 +2537,7 @@ export default function Customize() {
           // Pass print fulfillment details so verify-payment can trigger Prodigi
           printSku:   primaryCartItem?.sku || "",
           productType: primaryCartItem?.productType || "",
-          printFrame: primaryCartItem?.frameColor || primaryCartItem?.canvasEdge || "",
+          printFrame: primaryCartItem?.productType === "acrylic" ? "" : (primaryCartItem?.frameColor || primaryCartItem?.canvasEdge || ""),
           printMount: mountColor || "snow-white",
           printGlaze: primaryCartItem?.glazeType || "perspex",
           vipPurchased: cartItems.some((i: any) => i.productType === "vip"),
