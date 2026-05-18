@@ -314,7 +314,7 @@ const BORDER_COLORS = [
 const PRODUCT_TYPES = [
   { id:"digital",       label:"Digital Only",     desc:"Hi-res download",                  icon:ArrowDownToLine, price:37   },
   { id:"print",         label:"Fine Art Print",   desc:"Ships rolled, frame yourself",     icon:ImageIcon,       price:null },
-  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colours",        icon:Frame,           price:null },
+  { id:"classic-frame", label:"Classic Frame",    desc:"Ready to hang · 8 colors",        icon:Frame,           price:null },
   { id:"box-frame",     label:"Box Frame",        desc:"Shadow box · premium look",        icon:LayoutPanelTop,  price:null },
   { id:"canvas",        label:"Canvas Print",     desc:"Gallery wrap · ready to hang",     icon:Square,          price:null },
   { id:"acrylic",       label:"Acrylic Glass",    desc:"Frameless · luminous · museum-grade", icon:Layers,        price:null },
@@ -413,7 +413,7 @@ const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> 
     { id:"light-grey",     label:"Light Grey",      color:"#c2c0bb" },
     { id:"brown",          label:"Brown",           color:"#6b4a30" },
   ],
-  // Box frames: 3 Prodigi colours ONLY (black, white, natural — no brown)
+  // Box frames: 3 Prodigi colors ONLY (black, white, natural — no brown)
   "box-frame": [
     { id:"black",   label:"Matte Black",   color:"#15151a" },
     { id:"white",   label:"Matte White",   color:"#efece6" },
@@ -421,7 +421,7 @@ const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> 
   ],
 };
 
-// Mount/mat colours for framed prints (CFPM / BOXM) — Prodigi confirmed
+// Mount/mat colors for framed prints (CFPM / BOXM) — Prodigi confirmed
 const MOUNT_COLORS = [
   { id:"snow-white", label:"White", color:"#f9f9f7" },
   { id:"hayseed",    label:"Hayseed",    color:"#e8dfc8" },
@@ -2939,10 +2939,10 @@ export default function Customize() {
                 delivery:"4–7 Business Days", canvasAddon:true },
               { id:"acrylic", label:"Acrylic Glass", sub:"Frameless · face-mounted · luminous.", badge:"Premium",
                 features:[
-                  "12-colour Giclée print on 10mm high-gloss acrylic",
+                  "12-color Giclée print on 10mm high-gloss acrylic",
                   "Crystal clear diamond-polished edges",
                   "Shatter, scratch and fade resistant",
-                  "100+ year colour guarantee",
+                  "100+ year color guarantee",
                   "Invisible floating subframe — arrives ready to hang",
                   "Hi-res digital download included",
                 ],
@@ -3281,7 +3281,7 @@ export default function Customize() {
                       {card.frameColors && (
                         <details className="cz-acc">
                           <summary>
-                            <span>Mount Colour</span>
+                            <span>Mount Color</span>
                             <span className="cz-acc-val">{MOUNT_COLORS.find(mc => mc.id === mountColor)?.label || ""}</span>
                             <ChevronDown className="cz-acc-chev" size={15}/>
                           </summary>
