@@ -1103,6 +1103,8 @@ const TEASERS = [
       ] },
     { cat:"Restored", catId:"occasions", style:"Archival",   before:beforeVintage,    after:sceneVintageRestored, portrait:sceneVintageRestored,
       portraits:[ { url:sceneVintageRestored, style:"Archival" } ] },
+    { cat:"Cat Crew", catId:"pets", style:"Studio", before:heroBeforeThreeCats, after:heroAfterThreeCats, portrait:heroAfterThreeCats,
+      portraits:[ { url:heroAfterThreeCats, style:"Studio" } ] },
     { cat:"Wedding",  catId:"occasions", style:"Heirloom",   before:beforeWedding,    after:sceneWeddingHeirloom, portrait:sceneWeddingHeirloom,
       portraits:[ { url:sceneWeddingHeirloom, style:"Heirloom" } ] },
     { cat:"Family",   catId:"occasions",style:"Heirloom",     before:beforeMemorial, after:sceneMemorial,portrait:sceneMemorial,
