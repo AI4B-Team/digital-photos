@@ -1613,6 +1613,12 @@ function HomePage({ onGenerate }) {
               display:"block", marginTop:3 }}>ART</span>
           </div>
         </a>
+
+        {/* Language switcher — right of logo */}
+        <div style={{ marginLeft:16, display:"flex", alignItems:"center" }}>
+          <LanguageSwitcher />
+        </div>
+
         <div className="hid" style={{ display:"flex", gap:44, alignItems:"center",
           position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)" }}>
           {CATS.map(c => {
