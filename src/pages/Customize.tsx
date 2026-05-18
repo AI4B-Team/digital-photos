@@ -832,26 +832,65 @@ function RoomViewPanel({
           </label>
         )}
 
-        {/* Portrait overlay — when staged is still loading or user uploaded but hasn't generated */}
-        {showPortraitOverlay && (
-          <div
-            onMouseDown={onDragStart}
-            style={{
-              position:"absolute",
-              left:   `${wallX}%`,
-              top:    `${wallY}%`,
-              width:  `${wallW}%`,
-              aspectRatio: `${1} / ${aspectRatio || 0.75}`,
-              cursor: isDragging ? "grabbing" : "grab",
-              boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
-              border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
-              background: framePx,
-              transition: isDragging ? "none" : "left .15s, top .15s, width .15s",
-            }}>
-            <img src={portraitUrl} alt="Your portrait"
-              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-          </div>
-        )}
+        {/* Portrait overlay — live mirror of right-panel choices (size, frame, mount, effect, name) */}
+        {showPortraitOverlay && (() => {
+          const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
+          const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
+          const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
+          const nameFontFam  = nameFontId === "serif"
+            ? "Georgia,'Times New Roman',serif"
+            : "'Poppins',sans-serif";
+          return (
+            <div
+              onMouseDown={onDragStart}
+              style={{
+                position:"absolute",
+                left:   `${wallX}%`,
+                top:    `${wallY}%`,
+                width:  `${wallW}%`,
+                aspectRatio: `${1} / ${aspectRatio || 0.75}`,
+                cursor: isDragging ? "grabbing" : "grab",
+                boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+                background: isCanvas ? framePx : mountPx,
+                padding: `${mountPad}px`,
+                boxSizing: "border-box",
+                transition: isDragging ? "none" : "left .15s, top .15s, width .15s",
+                containerType: "inline-size",
+              }}>
+              <div style={{ position:"relative", width:"100%", height:"100%" }}>
+                <img src={portraitUrl} alt="Your portrait"
+                  style={{
+                    width:"100%", height:"100%", objectFit:"cover", display:"block",
+                    filter: effectDef.filter,
+                  }}/>
+                {namePosition !== "none" && portraitName && (
+                  <div style={{
+                    position:"absolute", left:0, right:0, zIndex:3,
+                    top:    namePosition === "top"    ? "10%" : "auto",
+                    bottom: namePosition === "bottom" ? "10%" : "auto",
+                    textAlign:"center", pointerEvents:"none",
+                  }}>
+                    <span style={{
+                      display:"inline-block",
+                      color: nameColorHex,
+                      fontSize: `clamp(10px, ${nameSizeCss}, 80px)`,
+                      fontFamily: nameFontFam,
+                      fontWeight: nameFontId === "italic" ? 600 : 700,
+                      fontStyle:  nameFontId === "italic" ? "italic" : "normal",
+                      letterSpacing: ".18em",
+                      textShadow: (nameColorId === "white" || nameColorId === "cream")
+                        ? "0 2px 8px rgba(0,0,0,0.55)"
+                        : "0 2px 8px rgba(255,255,255,0.35)",
+                    }}>
+                      {portraitName.toUpperCase()}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* AI loading overlay */}
         {(aiRoomLoading || stagedLoading) && (
