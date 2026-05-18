@@ -1755,7 +1755,7 @@ function HomePage({ onGenerate }) {
                     );})}
                     {/* Add another photo card */}
                     <button type="button"
-                      onClick={() => { setAddSlot("extra"); fileRef.current?.click(); }}
+                      onClick={() => { setAddSlot("extra"); setUploadModalOpen(true); }}
                       style={{ width:90, height:70, borderRadius:10,
                         border:`1px dashed ${T.bGold}`, background:"rgba(255,255,255,.03)",
                         display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
