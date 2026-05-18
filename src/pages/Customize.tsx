@@ -3303,7 +3303,7 @@ export default function Customize() {
                         const hasShipping = card.id !== "digital";
                         const includedCount = card.features.length + (hasShipping ? 1 : 0);
                         return (
-                          <details className="cz-acc" open>
+                          <details className="cz-acc">
                             <summary>
                               <span>What's Included</span>
                               <span className="cz-acc-val">{includedCount} Items</span>
