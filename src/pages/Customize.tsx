@@ -2535,6 +2535,8 @@ export default function Customize() {
                 userRoomUrl={userRoomUrl} setUserRoomUrl={setUserRoomUrl}
                 aiRoomUrl={aiRoomUrl} setAiRoomUrl={setAiRoomUrl}
                 aiRoomLoading={aiRoomLoading} setAiRoomLoading={setAiRoomLoading}
+                stagedComposites={stagedComposites} setStagedComposites={setStagedComposites}
+                selectedRoomKey={selectedRoomKey} setSelectedRoomKey={setSelectedRoomKey}
                 portraitDragPos={portraitDragPos} setPortraitDragPos={setPortraitDragPos}
                 isDragging={isDragging} setIsDragging={setIsDragging}
                 dragStart={dragStart} setDragStart={setDragStart}
