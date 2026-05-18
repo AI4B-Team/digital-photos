@@ -210,6 +210,24 @@ export type Database = {
         }
         Relationships: []
       }
+      room_images: {
+        Row: {
+          regenerated_at: string
+          room_id: string
+          url: string
+        }
+        Insert: {
+          regenerated_at?: string
+          room_id: string
+          url: string
+        }
+        Update: {
+          regenerated_at?: string
+          room_id?: string
+          url?: string
+        }
+        Relationships: []
+      }
       sessions: {
         Row: {
           category: string | null
