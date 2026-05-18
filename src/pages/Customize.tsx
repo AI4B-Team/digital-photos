@@ -545,16 +545,14 @@ function FrameSwatch({ frame, on }) {
   );
 }
 
-/* ── Room View Panel ── */
+/* ── Room View Panel (upload-only) ── */
 function RoomViewPanel({
-  portraitUrl, frameColor, productType, selected, roomIdx, setRoomIdx,
-  roomMode, setRoomMode, userRoomUrl, setUserRoomUrl,
+  portraitUrl, frameColor, productType, selected,
+  userRoomUrl, setUserRoomUrl,
   aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
   dragStart, setDragStart, roomContainerRef, setRoomView,
-  stagedAiCache, setStagedAiCache, stagedAiLoading, setStagedAiLoading,
 }: any) {
-  const room     = ROOMS[roomIdx];
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
   const isCanvas = productType === "canvas";
 
@@ -565,17 +563,11 @@ function RoomViewPanel({
   };
   const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
 
-  const stagedKey = `${roomIdx}|${portraitUrl}|${frameColor}`;
-  const stagedAiUrl = stagedAiCache?.[stagedKey] || null;
+  const bgUrl = aiRoomUrl || userRoomUrl;
 
-  const bgUrl = roomMode === "staged" && stagedAiUrl ? stagedAiUrl
-              : roomMode === "myroom" && userRoomUrl ? userRoomUrl
-              : roomMode === "ai" && aiRoomUrl       ? aiRoomUrl
-              : room.url;
-
-  const wallX = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.x : room.wallX;
-  const wallY = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.y : room.wallY;
-  const wallW = (roomMode === "myroom" || roomMode === "ai") ? portraitDragPos.w : room.wallW;
+  const wallX = portraitDragPos.x;
+  const wallY = portraitDragPos.y;
+  const wallW = portraitDragPos.w;
 
   const onDragStart = (e: any) => {
     e.preventDefault();
@@ -614,40 +606,15 @@ function RoomViewPanel({
     setAiRoomLoading(false);
   };
 
-  const generateStagedAI = async () => {
-    if (!portraitUrl || stagedAiLoading) return;
-    setStagedAiLoading(true);
-    try {
-      const { supabase } = await import("@/integrations/supabase/client");
-      const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
-        body: { roomUrl: room.url, portraitUrl, frameColor },
-      });
-      if (!error && data?.url) {
-        setStagedAiCache((c: any) => ({ ...c, [stagedKey]: data.url }));
-      }
-    } catch { /* silent */ }
-    setStagedAiLoading(false);
-  };
-
-  const showPortraitOverlay = portraitUrl && (
-    (roomMode === "staged" && !stagedAiUrl && !stagedAiLoading) ||
-    (roomMode === "myroom" && userRoomUrl) ||
-    (roomMode === "ai" && userRoomUrl && !aiRoomUrl && !aiRoomLoading)
-  );
-
-  const TABS = [
-    { id:"staged", label:"Staged Rooms" },
-    { id:"myroom", label:"My Room"      },
-    { id:"ai",     label:"AI Magic ✦"   },
-  ] as const;
+  const showPortraitOverlay = portraitUrl && userRoomUrl && !aiRoomUrl && !aiRoomLoading;
 
   return (
     <div style={{
       width:"100%", height:"100%", display:"flex", flexDirection:"column",
       gap:10, background:"#111", borderRadius:14, padding:12, color:"#fff",
     }}>
-      {/* Mode tabs + Back to portrait */}
-      <div style={{ display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
+      {/* Header: Back + Title */}
+      <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
         <button
           onClick={() => setRoomView(false)}
           style={{
@@ -659,104 +626,54 @@ function RoomViewPanel({
           }}>
           <ChevronLeft size={13}/> Back to portrait
         </button>
-        <div style={{ width:1, height:18, background:"rgba(255,255,255,.12)", margin:"0 4px" }}/>
-        {TABS.map(tab => (
-          <button key={tab.id}
-            onClick={() => { setRoomMode(tab.id); setAiRoomUrl(null); }}
-            style={{
-              padding:"5px 11px", borderRadius:8, fontSize:11, fontWeight:600,
-              cursor:"pointer", fontFamily:"'Poppins',sans-serif",
-              background: roomMode===tab.id ? RED : "rgba(255,255,255,.06)",
-              color:      roomMode===tab.id ? "#fff" : "rgba(255,255,255,.5)",
-              border:     roomMode===tab.id ? "none" : "1px solid rgba(255,255,255,.1)",
-            }}>
-            {tab.label}
-          </button>
-        ))}
+        <span style={{
+          fontSize:11.5, fontWeight:600, color:"rgba(255,255,255,.7)",
+          fontFamily:"'Poppins',sans-serif", letterSpacing:".02em",
+        }}>See it on your wall</span>
       </div>
 
-      {/* Realistic on-wall AI button (staged mode) */}
-      {roomMode === "staged" && (
-        <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
-          {!stagedAiUrl ? (
-            <button onClick={generateStagedAI} disabled={stagedAiLoading || !portraitUrl}
-              style={{
-                display:"inline-flex", alignItems:"center", gap:6,
-                background: stagedAiLoading ? "rgba(255,255,255,.1)" : RED,
-                border:"none", padding:"6px 14px", borderRadius:8,
-                fontSize:11.5, fontWeight:700, color:"#fff",
-                cursor: stagedAiLoading ? "wait" : "pointer",
-                fontFamily:"'Poppins',sans-serif",
-              }}>
-              {stagedAiLoading ? "Compositing…" : <><Sparkles size={13}/> Generate Realistic View</>}
-            </button>
-          ) : (
-            <>
-              <span style={{ fontSize:11, color:"rgba(255,255,255,.7)",
-                fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:6 }}>
-                <Sparkles size={12} color="#fff"/> AI on-wall view
-              </span>
-              <button onClick={() => setStagedAiCache((c: any) => { const n={...c}; delete n[stagedKey]; return n; })}
-                style={{
-                  background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.15)",
-                  padding:"4px 10px", borderRadius:8, fontSize:10.5, color:"rgba(255,255,255,.7)",
-                  cursor:"pointer", fontFamily:"'Poppins',sans-serif",
-                }}>Show preview overlay</button>
-              <button onClick={generateStagedAI} disabled={stagedAiLoading}
-                style={{
-                  background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.15)",
-                  padding:"4px 10px", borderRadius:8, fontSize:10.5, color:"rgba(255,255,255,.7)",
-                  cursor:"pointer", fontFamily:"'Poppins',sans-serif",
-                }}>Regenerate</button>
-            </>
-          )}
-        </div>
-      )}
-
-      {/* Upload strip - My Room + AI */}
-      {(roomMode === "myroom" || roomMode === "ai") && (
-        <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"center" }}>
-          <label style={{
-            display:"inline-flex", alignItems:"center", gap:6,
-            background:"rgba(255,255,255,.1)", border:"1px solid rgba(255,255,255,.15)",
-            padding:"6px 12px", borderRadius:8, cursor:"pointer",
-            fontSize:11.5, color:"rgba(255,255,255,.8)",
-            fontFamily:"'Poppins',sans-serif",
-          }}>
-            <Upload size={13}/>
-            {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
-            <input type="file" accept="image/*" style={{ display:"none" }}
-              onChange={e => {
-                const f = e.target.files?.[0];
-                if (!f) return;
-                const reader = new FileReader();
-                reader.onload = ev => {
-                  setUserRoomUrl(ev.target?.result as string);
-                  setAiRoomUrl(null);
-                };
-                reader.readAsDataURL(f);
-              }}/>
-          </label>
-          {roomMode === "ai" && userRoomUrl && (
-            <button onClick={generateAIRoom} disabled={aiRoomLoading}
-              style={{
-                display:"inline-flex", alignItems:"center", gap:6,
-                background: aiRoomLoading ? "rgba(255,255,255,.1)" : RED,
-                border:"none", padding:"6px 14px", borderRadius:8,
-                fontSize:11.5, fontWeight:700, color:"#fff",
-                cursor: aiRoomLoading ? "wait" : "pointer",
-                fontFamily:"'Poppins',sans-serif",
-              }}>
-              {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> Generate AI Room</>}
-            </button>
-          )}
-          {roomMode === "myroom" && userRoomUrl && (
-            <span style={{ fontSize:10, color:"rgba(255,255,255,.4)", lineHeight:1.4 }}>
-              Drag portrait to reposition · Scroll to resize
-            </span>
-          )}
-        </div>
-      )}
+      {/* Upload + Generate strip */}
+      <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"center" }}>
+        <label style={{
+          display:"inline-flex", alignItems:"center", gap:6,
+          background:"rgba(255,255,255,.1)", border:"1px solid rgba(255,255,255,.15)",
+          padding:"6px 12px", borderRadius:8, cursor:"pointer",
+          fontSize:11.5, color:"rgba(255,255,255,.8)",
+          fontFamily:"'Poppins',sans-serif",
+        }}>
+          <Upload size={13}/>
+          {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
+          <input type="file" accept="image/*" style={{ display:"none" }}
+            onChange={e => {
+              const f = e.target.files?.[0];
+              if (!f) return;
+              const reader = new FileReader();
+              reader.onload = ev => {
+                setUserRoomUrl(ev.target?.result as string);
+                setAiRoomUrl(null);
+              };
+              reader.readAsDataURL(f);
+            }}/>
+        </label>
+        {userRoomUrl && (
+          <button onClick={generateAIRoom} disabled={aiRoomLoading}
+            style={{
+              display:"inline-flex", alignItems:"center", gap:6,
+              background: aiRoomLoading ? "rgba(255,255,255,.1)" : RED,
+              border:"none", padding:"6px 14px", borderRadius:8,
+              fontSize:11.5, fontWeight:700, color:"#fff",
+              cursor: aiRoomLoading ? "wait" : "pointer",
+              fontFamily:"'Poppins',sans-serif",
+            }}>
+            {aiRoomLoading ? "Generating…" : <><Sparkles size={13}/> {aiRoomUrl ? "Regenerate" : "Generate Realistic View"}</>}
+          </button>
+        )}
+        {userRoomUrl && !aiRoomUrl && !aiRoomLoading && (
+          <span style={{ fontSize:10, color:"rgba(255,255,255,.4)", lineHeight:1.4 }}>
+            Drag portrait to reposition · Scroll to resize
+          </span>
+        )}
+      </div>
 
       {/* Main room view */}
       <div
@@ -769,41 +686,40 @@ function RoomViewPanel({
           overflow:"hidden", background:"#000", minHeight:0,
           userSelect: isDragging ? "none" : "auto",
         }}>
-        <img
-          src={bgUrl}
-          alt="Room preview"
-          style={{
-            width:"100%", height:"100%", objectFit:"cover", display:"block",
-            filter: (!userRoomUrl && (roomMode==="myroom" || roomMode==="ai"))
-              ? "brightness(0.4)" : "none",
-          }}/>
+        {bgUrl && (
+          <img
+            src={bgUrl}
+            alt="Room preview"
+            style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+        )}
 
-        {/* Empty state for My Room / AI without upload */}
-        {(roomMode==="myroom" || roomMode==="ai") && !userRoomUrl && (
+        {/* Empty state */}
+        {!userRoomUrl && (
           <div style={{
             position:"absolute", inset:0, display:"flex", flexDirection:"column",
-            alignItems:"center", justifyContent:"center", gap:10,
-            color:"rgba(255,255,255,.7)", textAlign:"center", padding:20,
+            alignItems:"center", justifyContent:"center", gap:12,
+            color:"rgba(255,255,255,.7)", textAlign:"center", padding:24,
+            background:"#1a1a1a",
           }}>
-            <Home size={40} color="rgba(255,255,255,.3)"/>
-            <span style={{ fontSize:13, fontFamily:"'Poppins',sans-serif", maxWidth:260 }}>
-              Upload a photo of your room to see your portrait on your wall
+            <Home size={44} color="rgba(255,255,255,.3)"/>
+            <span style={{ fontSize:13.5, fontFamily:"'Poppins',sans-serif", maxWidth:300, lineHeight:1.5 }}>
+              Upload a photo of your room to see exactly how your portrait will look on your wall
             </span>
           </div>
         )}
 
-        {/* Portrait overlay */}
+        {/* Portrait overlay (preview before AI generation) */}
         {showPortraitOverlay && (
           <div
-            onMouseDown={(roomMode==="myroom" || roomMode==="ai") ? onDragStart : undefined}
-            onWheel={(roomMode==="myroom" || roomMode==="ai") ? onWheel : undefined}
+            onMouseDown={onDragStart}
+            onWheel={onWheel}
             style={{
               position:"absolute",
               left:   `${wallX}%`,
               top:    `${wallY}%`,
               width:  `${wallW}%`,
               aspectRatio: `${1} / ${aspectRatio || 0.75}`,
-              cursor: (roomMode==="myroom" || roomMode==="ai") ? (isDragging ? "grabbing" : "grab") : "default",
+              cursor: isDragging ? "grabbing" : "grab",
               boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
               border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
               background: framePx,
@@ -815,7 +731,7 @@ function RoomViewPanel({
         )}
 
         {/* AI loading overlay */}
-        {(aiRoomLoading || stagedAiLoading) && (
+        {aiRoomLoading && (
           <div style={{
             position:"absolute", inset:0, background:"rgba(0,0,0,.6)",
             display:"flex", flexDirection:"column", alignItems:"center",
@@ -831,57 +747,8 @@ function RoomViewPanel({
           </div>
         )}
 
-        {/* Room label + navigation (staged only) */}
-        {roomMode === "staged" && (
-          <>
-            <div style={{
-              position:"absolute", bottom:12, left:"50%",
-              transform:"translateX(-50%)",
-              background:"rgba(0,0,0,.55)", backdropFilter:"blur(8px)",
-              padding:"5px 14px", borderRadius:999,
-              fontSize:11, fontWeight:600, color:"rgba(255,255,255,.85)",
-              fontFamily:"'Poppins',sans-serif", letterSpacing:".06em",
-              textTransform:"uppercase", whiteSpace:"nowrap",
-            }}>{room.label}</div>
-            <button onClick={() => setRoomIdx((p: number) => (p - 1 + ROOMS.length) % ROOMS.length)}
-              style={{
-                position:"absolute", left:12, top:"50%", transform:"translateY(-50%)",
-                width:34, height:34, borderRadius:"50%",
-                background:"rgba(0,0,0,.4)", backdropFilter:"blur(6px)",
-                border:"1px solid rgba(255,255,255,.15)",
-                cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
-              }}>
-              <ChevronLeft size={17} color="#fff"/>
-            </button>
-            <button onClick={() => setRoomIdx((p: number) => (p + 1) % ROOMS.length)}
-              style={{
-                position:"absolute", right:12, top:"50%", transform:"translateY(-50%)",
-                width:34, height:34, borderRadius:"50%",
-                background:"rgba(0,0,0,.4)", backdropFilter:"blur(6px)",
-                border:"1px solid rgba(255,255,255,.15)",
-                cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
-              }}>
-              <ChevronRight size={17} color="#fff"/>
-            </button>
-            <div style={{
-              position:"absolute", bottom:42, left:"50%", transform:"translateX(-50%)",
-              display:"flex", gap:5,
-            }}>
-              {ROOMS.map((_,i) => (
-                <button key={i} onClick={() => setRoomIdx(i)}
-                  style={{
-                    width: i===roomIdx ? 18 : 6, height:6, borderRadius:3,
-                    border:"none", cursor:"pointer", padding:0,
-                    background: i===roomIdx ? "#fff" : "rgba(255,255,255,.35)",
-                    transition:"width .2s, background .2s",
-                  }}/>
-              ))}
-            </div>
-          </>
-        )}
-
         {/* Privacy notice */}
-        {(roomMode==="myroom" || roomMode==="ai") && userRoomUrl && (
+        {userRoomUrl && (
           <div style={{
             position:"absolute", top:8, right:8,
             background:"rgba(0,0,0,.5)", backdropFilter:"blur(6px)",
