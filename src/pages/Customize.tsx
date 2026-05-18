@@ -56,7 +56,7 @@ const STAGED_ROOMS = [
     subtitle: "Ideal for family portraits",
     bg: roomWarmOrganic,
     recommendedFor: ["storybook", "minimal"],
-    ...FRAME_POS,
+    frameX: 40.0, frameY: 5.0, frameW: 19.0, frameH: 40.0,
   },
   {
     id: "modern-minimal",
