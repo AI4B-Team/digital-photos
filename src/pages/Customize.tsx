@@ -980,24 +980,6 @@ function RoomViewPanel({
             );
           })}
 
-          {/* Size guide — always visible info tile */}
-          <button onClick={() => setSizeGuideOpen(true)} style={{
-            flex:"0 0 130px", height:92, position:"relative",
-            borderRadius:10, overflow:"hidden", padding:0, cursor:"pointer",
-            border:"2px solid rgba(255,255,255,.12)",
-            background:"#fff",
-          }}>
-            <img src={sizeGuideImg} alt="Size guide"
-              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-            <div style={{
-              position:"absolute", left:0, right:0, bottom:0,
-              background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
-              color:"#fff", fontSize:9.5, fontWeight:600,
-              fontFamily:"'Poppins',sans-serif",
-              padding:"10px 6px 5px", textAlign:"left",
-              letterSpacing:".04em",
-            }}>Size Guide</div>
-          </button>
         </div>
       )}
 
@@ -1171,6 +1153,7 @@ export default function Customize() {
   const [promoCode, setPromoCode]     = useState("");
   const [promoApplied, setPromoApplied] = useState<{ code: string; pct: number; label: string } | null>(null);
   const [promoOpen, setPromoOpen]     = useState(false);
+  const [sizeGuideModalOpen, setSizeGuideModalOpen] = useState(false);
   const [promoError, setPromoError]   = useState("");
   const [giftNote, setGiftNote]       = useState("");
   const [giftOpen, setGiftOpen]       = useState(false);
@@ -2913,7 +2896,32 @@ export default function Customize() {
                             <ChevronDown className="cz-acc-chev" size={15}/>
                           </summary>
                           <div className="cz-acc-body">
+                          {card.id !== "case" && (
+                            <button
+                              type="button"
+                              onClick={() => setSizeGuideModalOpen(true)}
+                              style={{
+                                display:"flex", alignItems:"center", gap:10,
+                                width:"100%", padding:8, marginBottom:10,
+                                background:"#faf7f2",
+                                border:`1px solid ${BORDER}`, borderRadius:10,
+                                cursor:"pointer", textAlign:"left",
+                              }}>
+                              <img src={sizeGuideImg} alt=""
+                                style={{ width:54, height:40, objectFit:"cover", borderRadius:6, flex:"0 0 auto" }}/>
+                              <div style={{ flex:1, minWidth:0 }}>
+                                <div style={{ fontSize:11.5, fontWeight:700, color:INK, fontFamily:"'Poppins',sans-serif" }}>
+                                  Size Guide
+                                </div>
+                                <div style={{ fontSize:10.5, color:MUTED, marginTop:1 }}>
+                                  See sizes compared on a wall
+                                </div>
+                              </div>
+                              <span style={{ fontSize:10, color:MUTED, fontWeight:600, textDecoration:"underline" }}>View</span>
+                            </button>
+                          )}
                           <div style={{ position:"relative", marginBottom:12 }}>
+
                             {sizes.length > 3 && (
                               <button
                                 type="button"
@@ -4057,6 +4065,28 @@ export default function Customize() {
             @keyframes vipFadeIn { from { opacity:0 } to { opacity:1 } }
             @keyframes vipPop { from { opacity:0; transform:translateY(20px) scale(.96) } to { opacity:1; transform:translateY(0) scale(1) } }
           `}</style>
+        </div>
+      )}
+      {sizeGuideModalOpen && (
+        <div onClick={() => setSizeGuideModalOpen(false)} style={{
+          position:"fixed", inset:0, zIndex:10000,
+          background:"rgba(0,0,0,.85)", display:"flex",
+          alignItems:"center", justifyContent:"center", padding:24, cursor:"zoom-out",
+        }}>
+          <img src={sizeGuideImg} alt="Size guide"
+            onClick={e => e.stopPropagation()}
+            style={{
+              maxWidth:"min(900px, 95vw)", maxHeight:"90vh",
+              objectFit:"contain", borderRadius:8,
+              boxShadow:"0 20px 60px rgba(0,0,0,.6)", background:"#fff",
+            }}/>
+          <button onClick={() => setSizeGuideModalOpen(false)} style={{
+            position:"absolute", top:18, right:18,
+            background:"rgba(255,255,255,.12)", border:"1px solid rgba(255,255,255,.25)",
+            color:"#fff", borderRadius:8, padding:"8px 14px",
+            fontSize:13, fontWeight:600, cursor:"pointer",
+            fontFamily:"'Poppins',sans-serif",
+          }}>Close</button>
         </div>
       )}
       <PreviewsDrawer
