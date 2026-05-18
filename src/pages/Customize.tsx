@@ -3216,31 +3216,33 @@ export default function Customize() {
                         </details>
                       )}
 
-                      {card.id !== "digital" && (
-                        <div style={{ display:"flex", alignItems:"center", gap:6,
-                          fontSize:12, color:"#16a34a", fontWeight:600, marginBottom:10 }}>
-                          <Truck size={14}/> Free Shipping Included
-                        </div>
-                      )}
-
-                      <details className="cz-acc">
-                        <summary>
-                          <span>What's Included</span>
-                          <span className="cz-acc-val">{card.features.length} Items</span>
-                          <ChevronDown className="cz-acc-chev" size={15}/>
-                        </summary>
-                        <div className="cz-acc-body">
-                          <ul style={{ listStyle:"none", padding:0, margin:0,
-                            display:"flex", flexDirection:"column", gap:5 }}>
-                            {card.features.map((f:string, i:number) => (
-                              <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
-                                fontSize:12, color:INK, lineHeight:1.5 }}>
-                                <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </details>
+                      {(() => {
+                        const includedFeatures = card.id !== "digital"
+                          ? [...card.features, "Complimentary worldwide shipping"]
+                          : card.features;
+                        return (
+                          <div style={{ marginTop:18, paddingTop:16, borderTop:`1px solid ${BORDER}` }}>
+                            <details className="cz-acc" open>
+                              <summary>
+                                <span>What's Included</span>
+                                <span className="cz-acc-val">{includedFeatures.length} Items</span>
+                                <ChevronDown className="cz-acc-chev" size={15}/>
+                              </summary>
+                              <div className="cz-acc-body">
+                                <ul style={{ listStyle:"none", padding:0, margin:0,
+                                  display:"flex", flexDirection:"column", gap:6 }}>
+                                  {includedFeatures.map((f:string, i:number) => (
+                                    <li key={i} style={{ display:"flex", alignItems:"flex-start", gap:6,
+                                      fontSize:12, color:INK, lineHeight:1.5 }}>
+                                      <Check size={13} style={{ color:"#16a34a", flexShrink:0, marginTop:2 }}/> {f}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </details>
+                          </div>
+                        );
+                      })()}
 
                       {cardDiscount > 0 && (
                         <div style={{ fontSize:12, color:"#16a34a", fontWeight:700, marginBottom:10 }}>
@@ -3248,11 +3250,20 @@ export default function Customize() {
                         </div>
                       )}
 
-                      {/* ── In-box extras: add photo upsell, promo, gift ── */}
+                      {/* ── Complete Your Order section ── */}
+                      <div style={{ marginTop:22, paddingTop:18, borderTop:`1px solid ${BORDER}` }}>
+                        <div style={{
+                          fontSize:10.5, fontWeight:700, color:MUTED,
+                          letterSpacing:".14em", textTransform:"uppercase",
+                          marginBottom:12, fontFamily:"'Poppins',sans-serif",
+                        }}>
+                          Complete Your Order
+                        </div>
                       <div style={{
-                        border:`1px dashed ${BORDER}`, borderRadius:10, padding:10,
-                        marginBottom:12, display:"flex", flexDirection:"column", gap:8,
-                        background:"#FAFAF7",
+                        border:`1px solid ${BORDER}`, borderRadius:12, padding:12,
+                        marginBottom:12, display:"flex", flexDirection:"column", gap:10,
+                        background:"#FBF8F1",
+                        boxShadow:"0 1px 2px rgba(0,0,0,.03)",
                       }}>
                         {card.canvasAddon && (
                           <div onClick={() => setCanvasFrame(p => !p)}
@@ -3291,7 +3302,7 @@ export default function Customize() {
                           disabled={busy}
                           style={{
                             width:"100%", padding:"9px 10px",
-                            border:`1.5px dashed ${BORDER}`, borderRadius:8,
+                            border:`1px solid ${BORDER}`, borderRadius:10,
                             background:"#fff", cursor:"pointer",
                             fontFamily:"'Poppins',sans-serif",
                             display:"flex", alignItems:"center", gap:10,
@@ -3305,10 +3316,10 @@ export default function Customize() {
                           </div>
                           <div style={{ flex:1, minWidth:0 }}>
                             <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>Add Another Photo</div>
-                            <div style={{ fontSize:11, color: bundlePct > 0 ? "#16a34a" : MUTED, fontWeight: bundlePct > 0 ? 700 : 400 }}>
+                            <div style={{ fontSize:11, color: bundlePct > 0 ? "#16a34a" : MUTED, fontWeight: bundlePct > 0 ? 700 : 500 }}>
                               {bundlePct > 0
                                 ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
-                                : "Add 2 — Save 10% · Add 3+ — Save 15%"}
+                                : "Save 10% On 2+ Portraits"}
                             </div>
                           </div>
                         </button>
@@ -3383,6 +3394,7 @@ export default function Customize() {
                             }}>+ Add Gift Note</button>
                           )}
                         </div>
+                      </div>
                       </div>
 
                       {card.id === "digital" && (
@@ -3526,9 +3538,9 @@ export default function Customize() {
                           <>
                             <div style={{
                               fontSize:12, color:MUTED, textAlign:"center",
-                              marginBottom:10, fontStyle:"italic",
+                              marginTop:18, marginBottom:18, fontStyle:"italic",
                               fontFamily:"'Playfair Display','Poppins',serif",
-                              letterSpacing:".01em",
+                              letterSpacing:".02em", opacity:.72, lineHeight:1.5,
                             }}>
                               A timeless piece made uniquely for you.
                             </div>
