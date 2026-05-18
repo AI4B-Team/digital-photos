@@ -2984,7 +2984,7 @@ export default function Customize() {
                                 {sz.best && (
                                   <span style={{ position:"absolute", top:-9, left:"50%",
                                     transform:"translateX(-50%)", fontSize:8, fontWeight:700,
-                                    background:"#8B6B3D", color:"#fff", padding:"3px 7px",
+                                    background:RED, color:"#fff", padding:"3px 7px",
                                     borderRadius:10, letterSpacing:".06em", textTransform:"uppercase",
                                     whiteSpace:"nowrap" }}>Best Value</span>
                                 )}
@@ -3339,7 +3339,7 @@ export default function Customize() {
                                     {pk.badge && (
                                       <span style={{
                                         position:"absolute", top:-8, left:12,
-                                        fontSize:9, fontWeight:700, background: pk.featured ? RED : "#F59E0B",
+                                        fontSize:9, fontWeight:700, background: RED,
                                         color:"#fff", padding:"3px 8px", borderRadius:20,
                                         letterSpacing:".08em", textTransform:"uppercase",
                                         fontFamily:"'Poppins',sans-serif",
