@@ -900,7 +900,8 @@ function RoomViewPanel({
                   boxShadow: on ? "0 4px 14px rgba(230,25,25,.35)" : "none",
                 }}>
                 <img src={thumb} alt={room.vibe}
-                  style={{ width:"100%", height:"100%", objectFit:"cover", display:"block",
+                  style={{ width:"100%", height:"100%", objectFit:"contain", display:"block",
+                    background:"#1a1a1a",
                     opacity: loading ? .5 : 1 }}/>
                 {loading && (
                   <div style={{
