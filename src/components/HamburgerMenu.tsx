@@ -150,7 +150,8 @@ export default function HamburgerMenu() {
               </div>
             </div>
           </aside>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
