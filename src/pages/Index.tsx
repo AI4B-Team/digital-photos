@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import UploadSourceModal from "@/components/UploadSourceModal";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import HamburgerMenu from "@/components/HamburgerMenu";
 import { useAuth } from "@/context/AuthContext";
 import readyTrio from "@/assets/ready-trio.png";
 import scenePets from "@/assets/scene-pets.jpg";
@@ -1611,6 +1613,12 @@ function HomePage({ onGenerate }) {
               display:"block", marginTop:3 }}>ART</span>
           </div>
         </a>
+
+        {/* Language switcher — right of logo */}
+        <div style={{ marginLeft:16, display:"flex", alignItems:"center" }}>
+          <LanguageSwitcher />
+        </div>
+
         <div className="hid" style={{ display:"flex", gap:44, alignItems:"center",
           position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)" }}>
           {CATS.map(c => {
@@ -1659,6 +1667,25 @@ function HomePage({ onGenerate }) {
               Sign In
             </a>
           )}
+          <HamburgerMenu
+            items={[
+              ...CATS.map(c => ({
+                id: c.id,
+                label: c.label,
+                onClick: () => {
+                  setCat(c.id); setSelectedTemplate(null);
+                  setPreferredTeaser(c.id === "occasions" ? "Wedding" : null);
+                  heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
+                },
+              })),
+              ...(user
+                ? [
+                    { id:"portraits", label:"My Portraits", href:"/customize" },
+                    { id:"signout", label:"Sign Out", onClick: () => signOut() },
+                  ]
+                : [{ id:"signin", label:"Sign In", href:"/auth" }]),
+            ]}
+          />
         </div>
       </nav>
 
