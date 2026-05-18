@@ -486,23 +486,31 @@ const NAME_POSITIONS = [
 ] as const;
 
 const NAME_FONTS = [
-  { id:"bold",   label:"Bold Sans",     css:(fs:number)=>`700 ${fs}px 'Poppins',sans-serif` },
-  { id:"serif",  label:"Classic Serif", css:(fs:number)=>`700 ${fs}px Georgia,'Times New Roman',serif` },
-  { id:"italic", label:"Italic",        css:(fs:number)=>`600 italic ${fs}px 'Poppins',sans-serif` },
+  { id:"bold",       label:"Bold Sans",     family:"'Poppins',sans-serif",                weight:700, italic:false, css:(fs:number)=>`700 ${fs}px 'Poppins',sans-serif` },
+  { id:"serif",      label:"Classic Serif", family:"Georgia,'Times New Roman',serif",     weight:700, italic:false, css:(fs:number)=>`700 ${fs}px Georgia,'Times New Roman',serif` },
+  { id:"italic",     label:"Italic",        family:"'Poppins',sans-serif",                weight:600, italic:true,  css:(fs:number)=>`600 italic ${fs}px 'Poppins',sans-serif` },
+  { id:"cormorant",  label:"Cormorant",     family:"'Cormorant Garamond',serif",          weight:400, italic:false, css:(fs:number)=>`400 ${fs}px 'Cormorant Garamond',serif` },
+  { id:"playfair",   label:"Playfair",      family:"'Playfair Display',serif",            weight:700, italic:false, css:(fs:number)=>`700 ${fs}px 'Playfair Display',serif` },
+  { id:"montserrat", label:"Montserrat",    family:"'Montserrat',sans-serif",             weight:400, italic:false, css:(fs:number)=>`400 ${fs}px 'Montserrat',sans-serif` },
+  { id:"script",     label:"Script",        family:"'Dancing Script',cursive",            weight:700, italic:false, css:(fs:number)=>`700 ${fs}px 'Dancing Script',cursive` },
+  { id:"vibes",      label:"Vibes",         family:"'Great Vibes',cursive",               weight:400, italic:false, css:(fs:number)=>`400 ${fs}px 'Great Vibes',cursive` },
+  { id:"josefin",    label:"Josefin",       family:"'Josefin Sans',sans-serif",           weight:300, italic:false, css:(fs:number)=>`300 ${fs}px 'Josefin Sans',sans-serif` },
 ] as const;
 
 const NAME_SIZES = [
-  { id:"sm", label:"S", mult:0.045, css:"3.5cqw" },
-  { id:"md", label:"M", mult:0.065, css:"5cqw" },
-  { id:"lg", label:"L", mult:0.085, css:"6.8cqw" },
-  { id:"xl", label:"XL", mult:0.105, css:"8.5cqw" },
+  { id:"sm", label:"S", mult:0.045, css:"3.5cqw", px:13 },
+  { id:"md", label:"M", mult:0.065, css:"5cqw",   px:17 },
+  { id:"lg", label:"L", mult:0.085, css:"6.8cqw", px:22 },
+  { id:"xl", label:"XL", mult:0.105, css:"8.5cqw", px:28 },
 ] as const;
 
 const NAME_COLORS = [
-  { id:"white", label:"White", hex:"#FFFFFF" },
-  { id:"cream", label:"Cream", hex:"#EDE6D9" },
-  { id:"black", label:"Black", hex:"#0A0A0A" },
-  { id:"gold",  label:"Gold",  hex:"#C4963A" },
+  { id:"white",     label:"White",     hex:"#FFFFFF" },
+  { id:"cream",     label:"Cream",     hex:"#F5F0E8" },
+  { id:"black",     label:"Black",     hex:"#0A0A0A" },
+  { id:"gold",      label:"Gold",      hex:"#C4963A" },
+  { id:"rose-gold", label:"Rose Gold", hex:"#B76E79" },
+  { id:"slate",     label:"Slate",     hex:"#64748B" },
 ] as const;
 
 const toFrameId = (productType:string, frameColor:string): string => {
@@ -1004,9 +1012,8 @@ function RoomViewPanel({
           const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
           const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
-          const nameFontFam  = nameFontId === "serif"
-            ? "Georgia,'Times New Roman',serif"
-            : "'Poppins',sans-serif";
+          const nameFontDef  = NAME_FONTS.find(f => f.id === nameFontId) || NAME_FONTS[0];
+          const nameFontFam  = nameFontDef.family;
           return (
             <div
               onMouseDown={onDragStart}
@@ -1035,27 +1042,47 @@ function RoomViewPanel({
                     width:"100%", height:"100%", objectFit:"cover", display:"block",
                     filter: effectDef.filter,
                   }}/>
-                {!isStaged && namePosition !== "none" && portraitName && (
+                {!isStaged && namePosition !== "none" && (portraitName || portraitNameLine2) && (
                   <div style={{
                     position:"absolute", left:0, right:0, zIndex:3,
                     top:    namePosition === "top"    ? "10%" : "auto",
                     bottom: namePosition === "bottom" ? "10%" : "auto",
                     textAlign:"center", pointerEvents:"none",
+                    display:"flex", flexDirection:"column", alignItems:"center", gap:"0.15em",
                   }}>
-                    <span style={{
-                      display:"inline-block",
-                      color: nameColorHex,
-                      fontSize: `clamp(10px, ${nameSizeCss}, 80px)`,
-                      fontFamily: nameFontFam,
-                      fontWeight: nameFontId === "italic" ? 600 : 700,
-                      fontStyle:  nameFontId === "italic" ? "italic" : "normal",
-                      letterSpacing: ".18em",
-                      textShadow: (nameColorId === "white" || nameColorId === "cream")
-                        ? "0 2px 8px rgba(0,0,0,0.55)"
-                        : "0 2px 8px rgba(255,255,255,0.35)",
-                    }}>
-                      {portraitName.toUpperCase()}
-                    </span>
+                    {portraitName && (
+                      <span style={{
+                        display:"inline-block",
+                        color: nameColorHex,
+                        fontSize: `clamp(10px, ${nameSizeCss}, 80px)`,
+                        fontFamily: nameFontFam,
+                        fontWeight: nameFontDef.weight,
+                        fontStyle:  nameFontDef.italic ? "italic" : "normal",
+                        letterSpacing: nameFontDef.id === "script" || nameFontDef.id === "vibes" ? "0.02em" : ".18em",
+                        textShadow: (nameColorId === "white" || nameColorId === "cream")
+                          ? "0 2px 8px rgba(0,0,0,0.55)"
+                          : "0 2px 8px rgba(255,255,255,0.35)",
+                      }}>
+                        {isPetSession ? portraitName.toUpperCase() : portraitName}
+                      </span>
+                    )}
+                    {!isPetSession && portraitNameLine2 && (
+                      <span style={{
+                        display:"inline-block",
+                        color: nameColorHex,
+                        fontSize: `clamp(8px, calc(${nameSizeCss} * 0.72), 60px)`,
+                        fontFamily: nameFontFam,
+                        fontWeight: nameFontDef.weight,
+                        fontStyle:  nameFontDef.italic ? "italic" : "normal",
+                        letterSpacing: nameFontDef.id === "script" || nameFontDef.id === "vibes" ? "0.02em" : ".14em",
+                        opacity: 0.9,
+                        textShadow: (nameColorId === "white" || nameColorId === "cream")
+                          ? "0 2px 8px rgba(0,0,0,0.55)"
+                          : "0 2px 8px rgba(255,255,255,0.35)",
+                      }}>
+                        {portraitNameLine2}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -1427,7 +1454,9 @@ export default function Customize() {
   const [nameFontId,      setNameFontId]      = useState("bold");
   const [nameSizeId,      setNameSizeId]      = useState("md");
   const [nameColorId,     setNameColorId]     = useState("white");
+  const [portraitNameLine2, setPortraitNameLine2] = useState("");
   const [nameCompositing, setNameCompositing] = useState(false);
+  const isPetSession = ((session as any)?.cat === "pets");
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
@@ -1533,6 +1562,8 @@ export default function Customize() {
     fontId: string,
     colorId: string,
     sizeId: string = "md",
+    line2: string = "",
+    upper: boolean = true,
   ): Promise<string> => {
     try {
       const fontDef  = NAME_FONTS.find(f => f.id === fontId)   || NAME_FONTS[0];
@@ -1551,7 +1582,7 @@ export default function Customize() {
       ctx.drawImage(img, 0, 0);
       const sizeMult = (NAME_SIZES.find(s => s.id === sizeId)?.mult) ?? 0.065;
       const fontSize = Math.round(img.naturalHeight * sizeMult);
-      ctx.font      = fontDef.css(fontSize);
+      const fontSize2 = Math.round(fontSize * 0.72);
       ctx.fillStyle = colorDef.hex;
       ctx.textAlign = "center";
       ctx.shadowColor   = colorId === "white" || colorId === "cream"
@@ -1561,8 +1592,22 @@ export default function Customize() {
       ctx.shadowOffsetY = fontSize * 0.04;
       const x = img.naturalWidth / 2;
       const padding = img.naturalHeight * 0.055;
-      const y = position === "top" ? padding + fontSize : img.naturalHeight - padding;
-      ctx.fillText(name.toUpperCase(), x, y);
+      const lineGap = Math.round(fontSize * 0.25);
+      const text1 = upper ? (name || "").toUpperCase() : (name || "");
+      const text2 = upper ? (line2 || "").toUpperCase() : (line2 || "");
+      const totalH = (text1 ? fontSize : 0) + (text2 ? fontSize2 + lineGap : 0);
+      let y1 = position === "top"
+        ? padding + fontSize
+        : img.naturalHeight - padding - (text2 ? fontSize2 + lineGap : 0);
+      if (text1) {
+        ctx.font = fontDef.css(fontSize);
+        ctx.fillText(text1, x, y1);
+      }
+      if (text2) {
+        ctx.font = fontDef.css(fontSize2);
+        const y2 = text1 ? y1 + fontSize2 + lineGap : (position === "top" ? padding + fontSize2 : img.naturalHeight - padding);
+        ctx.fillText(text2, x, y2);
+      }
       const blob = await new Promise<Blob>((res, rej) =>
         canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas export failed")), "image/jpeg", 0.95)
       );
@@ -2051,31 +2096,48 @@ export default function Customize() {
                         </div>
                       </div>
                       {/* Live name overlay */}
-                      {namePosition !== "none" && portraitName && (
-                        <div style={{
-                          position:"absolute", left:0, right:0, zIndex:3,
-                          top:    namePosition === "top"    ? "10%" : "auto",
-                          bottom: namePosition === "bottom" ? "10%" : "auto",
-                          textAlign:"center", pointerEvents:"none",
-                        }}>
-                          <span style={{
-                            display:"inline-block",
-                            color: NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff",
-                            fontSize: `clamp(11px, ${NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "5cqw"}, 96px)`,
-                            fontFamily: nameFontId==="serif"
-                              ? "Georgia,'Times New Roman',serif"
-                              : "'Poppins',sans-serif",
-                            fontWeight: nameFontId==="italic" ? 600 : 700,
-                            fontStyle:  nameFontId==="italic" ? "italic" : "normal",
-                            letterSpacing:".18em",
-                            textShadow: nameColorId==="white"||nameColorId==="cream"
-                              ? "0 2px 8px rgba(0,0,0,0.55)"
-                              : "0 2px 8px rgba(255,255,255,0.35)",
+                      {namePosition !== "none" && (portraitName || portraitNameLine2) && (() => {
+                        const fDef = NAME_FONTS.find(f => f.id === nameFontId) || NAME_FONTS[0];
+                        const cHex = NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff";
+                        const sCss = NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "5cqw";
+                        const shadow = nameColorId==="white"||nameColorId==="cream"
+                          ? "0 2px 8px rgba(0,0,0,0.55)"
+                          : "0 2px 8px rgba(255,255,255,0.35)";
+                        const letterSp = fDef.id === "script" || fDef.id === "vibes" ? "0.02em" : ".18em";
+                        return (
+                          <div style={{
+                            position:"absolute", left:0, right:0, zIndex:3,
+                            top:    namePosition === "top"    ? "10%" : "auto",
+                            bottom: namePosition === "bottom" ? "10%" : "auto",
+                            textAlign:"center", pointerEvents:"none",
+                            display:"flex", flexDirection:"column", alignItems:"center", gap:"0.15em",
                           }}>
-                            {portraitName.toUpperCase()}
-                          </span>
-                        </div>
-                      )}
+                            {portraitName && (
+                              <span style={{
+                                display:"inline-block", color: cHex,
+                                fontSize: `clamp(11px, ${sCss}, 96px)`,
+                                fontFamily: fDef.family, fontWeight: fDef.weight,
+                                fontStyle: fDef.italic ? "italic" : "normal",
+                                letterSpacing: letterSp, textShadow: shadow,
+                              }}>
+                                {isPetSession ? portraitName.toUpperCase() : portraitName}
+                              </span>
+                            )}
+                            {!isPetSession && portraitNameLine2 && (
+                              <span style={{
+                                display:"inline-block", color: cHex,
+                                fontSize: `clamp(9px, calc(${sCss} * 0.72), 70px)`,
+                                fontFamily: fDef.family, fontWeight: fDef.weight,
+                                fontStyle: fDef.italic ? "italic" : "normal",
+                                letterSpacing: fDef.id === "script" || fDef.id === "vibes" ? "0.02em" : ".14em",
+                                opacity:.9, textShadow: shadow,
+                              }}>
+                                {portraitNameLine2}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </div>
                     {/* Glaze sheen — visible on Standard Perspex, removed on Moth-Eye */}
                     {isFramedItem && glazeType === "perspex" && (
@@ -2629,33 +2691,50 @@ export default function Customize() {
           {/* ── Name / Text Overlay ── */}
           <div className="cz-section">
             <div className="cz-label">
-              <span>Name</span>
+              <span>{isPetSession ? "Name" : "Personalise"}</span>
               <span className="cz-value" style={{ color:namePosition==="none"?MUTED:INK }}>
-                {namePosition === "none" ? "None" : portraitName || "Add a name"}
+                {namePosition === "none" ? "None" : portraitName || (isPetSession ? "Add a name" : "Add text")}
               </span>
             </div>
             <input
               type="text"
               value={portraitName}
               onChange={e => {
-                setPortraitName(e.target.value.slice(0, 20));
+                setPortraitName(e.target.value.slice(0, isPetSession ? 20 : 40));
                 if (e.target.value && namePosition === "none") setNamePosition("bottom");
               }}
-              placeholder={`e.g. ${({
-                pets:     "BARLEY, MILO, SOPHIE",
-                babies:   "OLIVIA, NOAH, EMMA",
-                couples:  "SARAH & JAMES, EMMA & LIAM",
-                people:   "THE SMITHS, JOHN, MARIA",
-                memorial: "IN LOVING MEMORY, GRANDMA ROSE",
-                gifts:    "MOM, DAD, BEST FRIEND",
-              } as Record<string,string>)[session.cat] || "BARLEY, MILO, SOPHIE"}`}
-              maxLength={20}
+              placeholder={isPetSession
+                ? `e.g. ${({
+                    pets: "BARLEY, MILO, SOPHIE",
+                  } as Record<string,string>)[session.cat] || "BARLEY, MILO, SOPHIE"}`
+                : "Name, occasion, date…"}
+              maxLength={isPetSession ? 20 : 40}
               style={{
-                width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:10,
-                border:`1px solid ${BORDER}`, fontFamily:"'Poppins',sans-serif",
+                width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:isPetSession?10:8,
+                border:`1px solid ${BORDER}`,
+                fontFamily: portraitName && !isPetSession
+                  ? (NAME_FONTS.find(f=>f.id===nameFontId)?.family || "'Poppins',sans-serif")
+                  : "'Poppins',sans-serif",
                 fontSize:13, color:INK, outline:"none", background:"#fff",
               }}
             />
+            {!isPetSession && (
+              <input
+                type="text"
+                value={portraitNameLine2}
+                onChange={e => setPortraitNameLine2(e.target.value.slice(0, 40))}
+                placeholder="Second line (optional)"
+                maxLength={40}
+                style={{
+                  width:"100%", padding:"10px 12px", borderRadius:8, marginBottom:10,
+                  border:`1px solid ${BORDER}`,
+                  fontFamily: portraitNameLine2
+                    ? (NAME_FONTS.find(f=>f.id===nameFontId)?.family || "'Poppins',sans-serif")
+                    : "'Poppins',sans-serif",
+                  fontSize:13, color:INK, outline:"none", background:"#fff",
+                }}
+              />
+            )}
             <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:6, marginBottom:12 }}>
               {NAME_POSITIONS.map(pos => (
                 <button key={pos.id}
@@ -2666,27 +2745,36 @@ export default function Customize() {
                 </button>
               ))}
             </div>
-            {namePosition !== "none" && portraitName && (
+            {namePosition !== "none" && (portraitName || portraitNameLine2) && (
               <>
-                <div style={{ display:"flex", gap:6, marginBottom:10 }}>
-                  {NAME_FONTS.map(f => (
+                <div style={{
+                  display:"flex", flexWrap:"wrap", gap:6, marginBottom:10,
+                }}>
+                  {NAME_FONTS
+                    .filter(f => isPetSession
+                      ? (f.id === "bold" || f.id === "serif" || f.id === "italic")
+                      : true)
+                    .map(f => (
                     <button key={f.id}
                       onClick={() => setNameFontId(f.id)}
                       style={{
-                        flex:1, padding:"7px 4px", borderRadius:8, cursor:"pointer",
+                        flex: isPetSession ? 1 : "0 0 calc(33.333% - 4px)",
+                        padding:"7px 4px", borderRadius:8, cursor:"pointer",
                         border:`1.5px solid ${nameFontId===f.id?RED:BORDER}`,
                         background:nameFontId===f.id?"rgba(230,25,25,.05)":"#fff",
-                        fontSize:11, color:nameFontId===f.id?RED:MUTED,
-                        fontFamily: f.id==="serif" ? "Georgia,serif" : "'Poppins',sans-serif",
-                        fontStyle:  f.id==="italic" ? "italic" : "normal",
-                        fontWeight: f.id==="bold" ? 700 : 500,
+                        fontSize: f.id==="vibes" || f.id==="script" ? 14 : 12,
+                        color:nameFontId===f.id?RED:INK,
+                        fontFamily: f.family,
+                        fontStyle:  f.italic ? "italic" : "normal",
+                        fontWeight: f.weight,
+                        lineHeight: 1.1,
                       }}>
                       {f.label}
                     </button>
                   ))}
                 </div>
                 <div style={{ display:"flex", gap:6, marginBottom:14 }}>
-                  {NAME_SIZES.map(s => (
+                  {NAME_SIZES.filter(s => isPetSession ? true : s.id !== "xl").map(s => (
                     <button key={s.id}
                       onClick={() => setNameSizeId(s.id)}
                       style={{
@@ -2701,7 +2789,7 @@ export default function Customize() {
                     </button>
                   ))}
                 </div>
-                <div style={{ display:"flex", gap:8, paddingTop:6 }}>
+                <div style={{ display:"flex", gap:8, paddingTop:6, flexWrap:"wrap" }}>
                   {NAME_COLORS.map(c => (
                     <button key={c.id} title={c.label}
                       onClick={() => setNameColorId(c.id)}
@@ -3679,7 +3767,8 @@ export default function Customize() {
                             </div>
                             <button disabled={nameCompositing} onClick={async () => {
                               let finalPhotoUrl = (snapshot as any).photoUrl;
-                              if (portraitName && namePosition !== "none") {
+                              const hasText = (portraitName || (!isPetSession && portraitNameLine2));
+                              if (hasText && namePosition !== "none") {
                                 setNameCompositing(true);
                                 finalPhotoUrl = await composeNameOnImage(
                                   (snapshot as any).photoUrl,
@@ -3688,17 +3777,20 @@ export default function Customize() {
                                   nameFontId,
                                   nameColorId,
                                   nameSizeId,
+                                  isPetSession ? "" : portraitNameLine2,
+                                  isPetSession,
                                 );
                                 setNameCompositing(false);
                               }
                               const namedSnapshot = {
                                 ...snapshot,
                                 photoUrl: finalPhotoUrl,
-                                portraitName: portraitName || null,
-                                namePosition: portraitName ? namePosition : null,
-                                nameFontId:   portraitName ? nameFontId   : null,
-                                nameSizeId:   portraitName ? nameSizeId   : null,
-                                nameColorId:  portraitName ? nameColorId  : null,
+                                portraitName:      portraitName || null,
+                                portraitNameLine2: (!isPetSession && portraitNameLine2) ? portraitNameLine2 : null,
+                                namePosition: hasText ? namePosition : null,
+                                nameFontId:   hasText ? nameFontId   : null,
+                                nameSizeId:   hasText ? nameSizeId   : null,
+                                nameColorId:  hasText ? nameColorId  : null,
                               };
                               addToCart(namedSnapshot, lineQty);
                               setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
