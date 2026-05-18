@@ -40,6 +40,15 @@ const App = () => (
               <Route path="/auth"           element={<Auth />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/admin"          element={<Admin />} />
+              <Route path="/styles"         element={<Styles />} />
+              <Route path="/tracking"       element={<Tracking />} />
+              <Route path="/contact"        element={<Contact />} />
+              <Route path="/faq"            element={<FAQ />} />
+              <Route path="/gift-cards"     element={<GiftCards />} />
+              <Route path="/reviews"        element={<Reviews />} />
+              <Route path="/privacy"        element={<Legal />} />
+              <Route path="/terms"          element={<Legal />} />
+              <Route path="/refund"         element={<Legal />} />
               <Route path="/styles-:cat"   element={<Index />} />
               <Route path="*"              element={<NotFound />} />
             </Routes>
