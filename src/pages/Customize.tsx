@@ -2599,8 +2599,8 @@ export default function Customize() {
             mixBlendMode:"multiply",
           }}/>
           {roomView ? (
-            <div style={{ flex:"1 1 auto", width:"100%", minHeight:0, height:"calc(100vh - 100px)",
-              display:"flex", padding:"4px 8px 8px" }}>
+            <div style={{ flex:"1 1 auto", width:"100%", minHeight:0, height:"100%",
+              display:"flex", padding:"4px 8px 8px", overflow:"hidden" }}>
               <RoomViewPanel
                 portraitUrl={(selected as any).photoUrl || ""}
                 frameColor={cardFrame || "black"}
