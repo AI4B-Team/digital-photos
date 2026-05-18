@@ -4794,6 +4794,13 @@ export default function Customize() {
         </div>
       )}
 
+      <PreviewsDrawer
+        open={previewsOpen}
+        onClose={() => setPreviewsOpen(false)}
+        defaultEmail={(session as any)?.email || ""}
+      />
+
+
       {showAdminPanel && (
         <div style={{
           position:"fixed", top:80, right:20, width:380, maxHeight:"80vh",
