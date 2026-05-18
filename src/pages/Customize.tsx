@@ -120,8 +120,8 @@ const G = `
 .cz-suggest{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .cz-suggest button{font-size:12.5px;padding:10px 12px;border-radius:8px;border:1px solid ${BORDER};background:#fafafa;cursor:pointer;color:${INK};font-family:'Poppins',sans-serif;text-align:left;width:100%}
 .cz-suggest button:hover{border-color:${INK}}
-.cz-toolbar{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid ${BORDER};border-radius:12px;padding:4px;box-shadow:none}
-.cz-tool{width:32px;height:32px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
+.cz-toolbar{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid ${BORDER};border-radius:12px;padding:5px;box-shadow:none}
+.cz-tool{width:35px;height:35px;border-radius:9px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5A5550;transition:all .15s ease;position:relative}
 .cz-tool:hover{background:#F4F1EC;color:${INK}}
 .cz-tool.on{background:rgba(230,25,25,.10);color:${RED}}
 .cz-tool:disabled{opacity:.45;cursor:not-allowed}
@@ -1895,6 +1895,12 @@ export default function Customize() {
             <div className="cz-toolbar" role="toolbar" aria-label="Image tools"
               onClick={(e) => e.stopPropagation()}
               style={{ flexShrink:0 }}>
+              <span style={{ position:"relative", display:"inline-flex" }}>
+                <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("regenerate"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
+                  <Sparkles size={18}/>
+                </button>
+              </span>
+              <div className="cz-tool-divider"/>
               <button
                 className={`cz-tool ${roomView ? "on" : ""}`}
                 onClick={() => { setRoomView(v => !v); setAiRoomUrl(null); }}
@@ -1902,12 +1908,6 @@ export default function Customize() {
                 aria-label="Toggle room view">
                 <Home size={17}/>
               </button>
-              <div className="cz-tool-divider"/>
-              <span style={{ position:"relative", display:"inline-flex" }}>
-                <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("regenerate"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
-                  <Sparkles size={18}/>
-                </button>
-              </span>
               <div className="cz-tool-divider"/>
               <button
                 className="cz-tool"
