@@ -383,13 +383,20 @@ const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sk
     { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
   ],
   canvas: [
+    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-CAN-8x8",   price:77,  w:1,    h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CAN-8x10",  price:87,  w:0.80, h:1 },
     { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10x10", price:97,  w:1,    h:1 },
     { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12x12", price:97,  w:1,    h:1 },
     { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12x16", price:117, w:0.75, h:1 },
+    { id:"16x16", label:'16 × 16"', sub:"Square",    sku:"GLOBAL-CAN-16x16", price:127, w:1,    h:1 },
     { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16x20", price:137, w:0.80, h:1 },
     { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18x24", price:157, w:0.75, h:1 },
+    { id:"20x20", label:'20 × 20"', sub:"Statement", sku:"GLOBAL-CAN-20x20", price:167, w:1,    h:1 },
     { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:177, w:0.83, h:1 },
+    { id:"20x30", label:'20 × 30"', sub:"Tall",      sku:"GLOBAL-CAN-20x30", price:197, w:0.67, h:1 },
+    { id:"24x30", label:'24 × 30"', sub:"Grand",     sku:"GLOBAL-CAN-24x30", price:207, w:0.80, h:1 },
     { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:227, w:0.67, h:1 },
+    { id:"30x40", label:'30 × 40"', sub:"Showcase",  sku:"GLOBAL-CAN-30x40", price:267, w:0.75, h:1 },
   ],
   "acrylic": [
     { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-MOU-ACRY-8x8",   price:127, w:1,    h:1 },
@@ -483,9 +490,20 @@ const FRAME_COLOR_HEX: Record<string,string> = {
 };
 
 const CANVAS_EDGES = [
-  { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
-  { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",  color:"#1a1a1a" },
-  { id:"museum-white", label:"Museum (White edge)", desc:"Clean solid white edges",  color:"#f4f4f4" },
+  { id:"gallery",      label:"Gallery Wrap",        desc:"Image wraps around the sides",  color:null      },
+  { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",        color:null      },
+  { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",       color:"#1a1a1a" },
+  { id:"museum-white", label:"Museum (White edge)", desc:"Clean solid white edges",       color:"#f4f4f4" },
+];
+
+// Float frame colors for Prodigi GLOBAL-FRA-CAN
+const CANVAS_FRAME_COLORS = [
+  { id:"black",          label:"Black",          color:"#1a1a1a" },
+  { id:"white",          label:"White",          color:"#f4f4f4" },
+  { id:"antique-gold",   label:"Antique Gold",   color:"#c4963a" },
+  { id:"antique-silver", label:"Antique Silver", color:"#9a9a9a" },
+  { id:"natural",        label:"Natural",        color:"#c89968" },
+  { id:"brown",          label:"Brown",          color:"#6b4a30" },
 ];
 
 // ── Name overlay options ──────────────────────────────
@@ -1238,7 +1256,7 @@ export default function Customize() {
     style: styleId,
     productType: "classic-frame",
     frameColor:  "black",
-    canvasEdge:  "mirror",
+    canvasEdge:  "gallery",
     sku:         "GLOBAL-CFPM-8x10",
     frame:       "black",      // legacy — derived, drives visual preview
     size:        "8x10",       // new id format
@@ -1704,7 +1722,7 @@ export default function Customize() {
 
   const productType   = selected.productType || "classic-frame";
   const frameColor    = selected.frameColor  || "black";
-  const canvasEdge    = selected.canvasEdge  || "mirror";
+  const canvasEdge    = selected.canvasEdge  || "gallery";
   const currentSizes  = SIZES_BY_PRODUCT[productType] || SIZES_BY_PRODUCT["classic-frame"];
   const sizeDef       = currentSizes.find(s => s.id === selected.size) || currentSizes[1];
   const frameColorDef = (FRAME_COLORS[productType] || []).find(c => c.id === frameColor) || (FRAME_COLORS[productType] || [])[0];
@@ -1972,8 +1990,9 @@ export default function Customize() {
     const ed = EFFECTS.find(e => e.id === item.effect) || EFFECTS[0];
     const isDigitalItem = item.productType === "digital";
     const isFramedItem = item.productType === "classic-frame" || item.productType === "box-frame";
+    const isCanvasItem = item.productType === "canvas";
     const mountDef = MOUNT_COLORS.find(m => m.id === mountColor) || MOUNT_COLORS[0];
-    const bd = isDigitalItem
+    const bd = (isDigitalItem || isCanvasItem)
       ? (BORDERS.find(b => b.id === "none") || { id:"none", label:"None", px:0 })
       : isFramedItem
         ? { id:"mount", label:"Mount", px: 22 }
@@ -2482,9 +2501,20 @@ export default function Customize() {
                                                 "Classic Frame";
         const sizes = SIZES_BY_PRODUCT[it.productType] || SIZES_BY_PRODUCT["classic-frame"];
         const sd = sizes.find((s) => s.id === it.size);
+        const canvasAttrLabel = (it: any) => {
+          if (it.productType !== "canvas") return "";
+          if (it.canvasFloatFrame) {
+            const fc = CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor);
+            return ` · Float Frame${fc ? " (" + fc.label + ")" : ""}`;
+          }
+          const ed = CANVAS_EDGES.find(e => e.id === (it.canvasEdge || "gallery"));
+          return ed ? ` · ${ed.label}` : "";
+        };
         const desc = it.productType === "digital"
           ? "High-resolution digital download"
-          : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
+          : it.productType === "canvas"
+            ? `${sd?.label || it.size}${canvasAttrLabel(it)}`
+            : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
         lineItems.push({
           name: ptLabel,
           description: desc,
@@ -2890,8 +2920,8 @@ export default function Customize() {
             </div>
           </div>
 
-          {/* Mat / Border — only for unframed products */}
-          {(productType === "print" || productType === "canvas") && (
+          {/* Mat / Border — only for unframed fine art prints (NEVER canvas) */}
+          {productType === "print" && (
           <div className="cz-section">
             <div className="cz-label"><span>Mat</span><span className="cz-value">{borderDef.label}</span></div>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(2, minmax(0, 1fr))", gap:6, marginBottom:14 }}>
@@ -2913,6 +2943,54 @@ export default function Customize() {
             </div>
           </div>
           )}
+
+          {/* Edge Wrap — canvas only (canvas has no mat/glazing) */}
+          {productType === "canvas" && (() => {
+            const isMuseum = canvasEdge === "museum-black" || canvasEdge === "museum-white";
+            const edgeBase = isMuseum ? "museum" : canvasEdge;
+            const setEdge = (id: string) => updateSelected({ canvasEdge: id });
+            return (
+              <div className="cz-section">
+                <div className="cz-label"><span>Edge wrap</span><span className="cz-value">{canvasEdgeDef.label}</span></div>
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0, 1fr))", gap:6, marginBottom: isMuseum ? 14 : 0 }}>
+                  {[
+                    { id:"gallery", label:"Gallery" },
+                    { id:"mirror",  label:"Mirror"  },
+                    { id:"museum",  label:"Museum"  },
+                  ].map(opt => (
+                    <button key={opt.id}
+                      className={`cz-chip ${edgeBase===opt.id?"on":""}`}
+                      style={{ width:"100%", minWidth:0, justifyContent:"center", padding:"9px 8px", whiteSpace:"nowrap" }}
+                      onClick={() => setEdge(opt.id === "museum" ? "museum-black" : opt.id)}>
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+                {isMuseum && (
+                  <>
+                    <div className="cz-label" style={{ marginBottom:8 }}>
+                      <span>Edge color</span>
+                      <span className="cz-value">{canvasEdge === "museum-white" ? "White" : "Black"}</span>
+                    </div>
+                    <div style={{ display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:8 }}>
+                      {[
+                        { id:"museum-black", label:"Black", bg:"#1a1a1a" },
+                        { id:"museum-white", label:"White", bg:"#f4f4f4" },
+                      ].map(c => (
+                        <button key={c.id}
+                          className={`cz-chip ${canvasEdge===c.id?"on":""}`}
+                          onClick={() => setEdge(c.id)}
+                          style={{ width:"100%", justifyContent:"flex-start", gap:8, padding:"9px 12px" }}>
+                          <span style={{ width:18, height:18, borderRadius:5, background:c.bg, border:"1px solid rgba(0,0,0,.18)" }}/>
+                          {c.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })()}
           </>
           )}
         </aside>
@@ -3517,9 +3595,10 @@ export default function Customize() {
                             </div>
                             <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>+$49</span>
                             {canvasFrame && (
-                              <div style={{ display:"flex", gap:6, marginLeft:6 }} onClick={e => e.stopPropagation()}>
-                                {[{id:"black",color:"#1a1a1a"},{id:"white",color:"#f4f4f4"},{id:"walnut",color:"#5a3a24"}].map(fc => (
+                              <div style={{ display:"flex", gap:5, marginLeft:6, flexWrap:"wrap" }} onClick={e => e.stopPropagation()}>
+                                {CANVAS_FRAME_COLORS.map(fc => (
                                   <button key={fc.id}
+                                    title={fc.label}
                                     onClick={() => setCanvasFrameColor(fc.id)}
                                     style={{ width:18, height:18, borderRadius:5,
                                       background:fc.color, cursor:"pointer",
@@ -3757,14 +3836,22 @@ export default function Customize() {
                       )}
 
                       {(() => {
+                        const isCanvasCard = card.id === "canvas";
+                        const baseSku = cardSizeDef?.sku || "";
+                        const floatFrameSku = isCanvasCard && canvasFrame && baseSku
+                          ? baseSku.replace("GLOBAL-CAN-", "GLOBAL-FRA-CAN-")
+                          : baseSku;
                         const snapshot = {
                           ...selected,
                           productType: card.id,
                           size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
-                          sku: cardSizeDef?.sku || "",
-                          frameColor: card.frameColors ? cardFrame : undefined,
+                          sku: floatFrameSku,
+                          frameColor: card.frameColors
+                            ? cardFrame
+                            : (isCanvasCard && canvasFrame ? canvasFrameColor : undefined),
                           glazeType: card.frameColors ? glazeType : undefined,
-                          canvasEdge: canvasFrame ? "mirror" : undefined,
+                          canvasEdge: isCanvasCard ? (selected.canvasEdge || "gallery") : undefined,
+                          canvasFloatFrame: isCanvasCard && canvasFrame ? true : undefined,
                           qty: selected.qty || 1,
                         };
                         const lineQty = selected.qty || 1;
@@ -4081,7 +4168,11 @@ export default function Customize() {
                       <div style={{ fontSize:13.5, fontWeight:700, color:INK, lineHeight:1.3 }}>{ptLabel}</div>
                       <div style={{ fontSize:11.5, color:MUTED, marginTop:2 }}>
                         {it.productType !== "digital" && (sd?.label || it.size)}
-                        {it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : ""}
+                        {it.productType === "canvas"
+                          ? (it.canvasFloatFrame
+                              ? ` · Float Frame${(CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor)?.label) ? " (" + CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor)!.label + ")" : ""}`
+                              : ` · ${CANVAS_EDGES.find(e => e.id === (it.canvasEdge || "gallery"))?.label || "Gallery Wrap"}`)
+                          : (it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : "")}
                       </div>
                       {it.portraitName && (
                         <div style={{ display:"inline-flex", alignItems:"center", gap:4,
