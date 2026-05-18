@@ -2198,18 +2198,31 @@ export default function Customize() {
                   userSelect: "none",
                   pointerEvents: "none",
                 };
-                return (
-                  <div
-                    className="cz-img-wrap"
-                    onMouseDown={(e) => onDragStart(item, e)}
-                    style={{
-                      width: `${sd.w * 42}vh`,
-                      aspectRatio: `${sd.w} / ${sd.h}`,
-                      maxWidth: "100%",
-                      cursor: isDraggingThis ? "grabbing" : "grab",
-                      overflow: isDraggingThis ? "visible" : "hidden",
-                    }}
-                  >
+                 const [_previewW, _previewH] = (() => {
+                   const m = /(\d+)x(\d+)/i.exec(item.size || '8x10');
+                   if (!m) return [sd.w * 38, sd.h * 38];
+                   const wi = parseInt(m[1]);
+                   const hi = parseInt(m[2]);
+                   const base = 2.4; // vh per inch
+                   const maxW = 44;
+                   const maxH = 54;
+                   const rawW = wi * base;
+                   const rawH = hi * base;
+                   const scale = Math.min(1, maxW / rawW, maxH / rawH);
+                   return [rawW * scale, rawH * scale];
+                 })();
+                 return (
+                   <div
+                     className="cz-img-wrap"
+                     onMouseDown={(e) => onDragStart(item, e)}
+                     style={{
+                       width: `${_previewW}vh`,
+                       height: `${_previewH}vh`,
+                       maxWidth: "100%",
+                       cursor: isDraggingThis ? "grabbing" : "grab",
+                       overflow: isDraggingThis ? "visible" : "hidden",
+                     }}
+                   >
                     {/* Faded ghost of the full image — visible while dragging so user can see edges */}
                     {isDraggingThis && (
                       <img
