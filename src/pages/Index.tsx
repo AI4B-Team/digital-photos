@@ -1647,10 +1647,10 @@ function HomePage({ onGenerate }) {
         <div style={{ display:"flex", gap:10, alignItems:"center" }}>
           {user ? (
             <>
-              <a href="/customize" style={{ fontSize:11, color:T.muted, textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
+              <a href="/customize" style={{ fontSize:11, color:"#E61919", textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
                 padding:"6px 14px", border:`1px solid ${T.muted}`, borderRadius:8, transition:"all .25s" }}
-                onMouseOver={e => { e.currentTarget.style.color = T.cream; }}
-                onMouseOut={e => { e.currentTarget.style.color = T.muted; }}>
+                onMouseOver={e => { e.currentTarget.style.opacity = "0.8"; }}
+                onMouseOut={e => { e.currentTarget.style.opacity = "1"; }}>
                 My Portraits
               </a>
               <button onClick={() => signOut()} style={{ background:"none", fontSize:11, color:T.muted, cursor:"pointer", letterSpacing:".08em", textTransform:"uppercase",
