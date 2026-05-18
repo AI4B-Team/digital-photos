@@ -68,7 +68,7 @@ export default function Contact() {
           <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:11, color:RED, fontWeight:700, letterSpacing:".22em", marginBottom:10 }}>
             ✉️ CONTACT SUPPORT
           </div>
-          <h1 style={{ fontFamily:"'Poppins',sans-serif", fontSize:42, fontWeight:800, color:INK, margin:0, letterSpacing:"-.02em" }}>How Can We Help?</h1>
+          <h1 style={{ fontFamily:"'Poppins',sans-serif", fontSize:42, fontWeight:800, color:INK, margin:0, letterSpacing:"-.02em" }}>How can we help?</h1>
           <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:15, color:MUTED, marginTop:10 }}>
             Real humans. Real fast. Real Art support.
           </p>
