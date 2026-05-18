@@ -130,6 +130,7 @@ serve(async (req) => {
           print_size: printSize || null,
           print_frame: printFrame || null,
           print_sku: printSku || null,
+          print_items: Array.isArray(printItems) && printItems.length > 0 ? printItems : null,
           vip_purchased: vipPurchased,
         })
         .eq("id", sessionId);
