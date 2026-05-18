@@ -694,10 +694,13 @@ function RoomViewPanel({
   const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
   const stagedLoading = false;
 
-  // Staged: snap to the room's exact frame coords. My Room / AI: draggable.
+  // Staged: snap to the room's exact frame coords by default, but allow drag overrides per room.
   const isStaged = mode === "staged";
-  const frameX   = isStaged ? (stagedRoomDef?.frameX ?? 38) : portraitDragPos.x;
-  const frameY   = isStaged ? (stagedRoomDef?.frameY ?? 2)  : portraitDragPos.y;
+  const [stagedOverrides, setStagedOverrides] = useState<Record<string, { x: number; y: number }>>({});
+  const stagedOv = isStaged && selectedRoomKey ? stagedOverrides[selectedRoomKey] : undefined;
+
+  const frameX   = isStaged ? (stagedOv?.x ?? stagedRoomDef?.frameX ?? 38) : portraitDragPos.x;
+  const frameY   = isStaged ? (stagedOv?.y ?? stagedRoomDef?.frameY ?? 2)  : portraitDragPos.y;
   const frameW   = isStaged ? (stagedRoomDef?.frameW ?? 24) : portraitDragPos.w;
   const frameH   = isStaged ? (stagedRoomDef?.frameH ?? 44) : undefined;
 
@@ -715,21 +718,24 @@ function RoomViewPanel({
   const onDragStart = (e: any) => {
     e.preventDefault();
     setIsDragging(true);
-    setDragStart({ mx:e.clientX, my:e.clientY, px:portraitDragPos.x, py:portraitDragPos.y });
+    setDragStart({ mx: e.clientX, my: e.clientY, px: frameX, py: frameY });
   };
   const onDragMove = (e: any) => {
     if (!isDragging || !roomContainerRef.current) return;
     const rect = roomContainerRef.current.getBoundingClientRect();
     const dx = ((e.clientX - dragStart.mx) / rect.width) * 100;
     const dy = ((e.clientY - dragStart.my) / rect.height) * 100;
-    setPortraitDragPos((p: any) => ({
-      ...p,
-      x: Math.max(0, Math.min(80 - wallW, dragStart.px + dx)),
-      y: Math.max(0, Math.min(70, dragStart.py + dy)),
-    }));
+    const nextX = Math.max(0, Math.min(100 - frameW, dragStart.px + dx));
+    const nextY = Math.max(0, Math.min(95 - (frameH ?? 0), dragStart.py + dy));
+    if (isStaged && selectedRoomKey) {
+      setStagedOverrides(prev => ({ ...prev, [selectedRoomKey]: { x: nextX, y: nextY } }));
+    } else {
+      setPortraitDragPos((p: any) => ({ ...p, x: nextX, y: nextY }));
+    }
   };
   const onDragEnd = () => setIsDragging(false);
   const onWheel = (e: any) => {
+    if (isStaged) return;
     setPortraitDragPos((p: any) => ({
       ...p, w: Math.max(10, Math.min(60, p.w - e.deltaY * 0.02)),
     }));
