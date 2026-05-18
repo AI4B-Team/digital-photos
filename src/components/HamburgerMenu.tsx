@@ -39,6 +39,29 @@ const CSS = `
 export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const [portalRoot, setPortalRoot] = useState(null);
+
+  useEffect(() => {
+    let root = document.getElementById("hamburger-menu-portal-root");
+    if (!root) {
+      root = document.createElement("div");
+      root.id = "hamburger-menu-portal-root";
+      document.documentElement.appendChild(root);
+    }
+
+    Object.assign(root.style, {
+      position: "fixed",
+      inset: "0",
+      width: "100vw",
+      height: "100vh",
+      pointerEvents: "none",
+      overflow: "visible",
+      zIndex: "2147483647",
+      isolation: "isolate",
+    });
+
+    setPortalRoot(root);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -60,11 +83,13 @@ export default function HamburgerMenu() {
         <Menu size={18} />
       </button>
 
-      {open && createPortal(
+      {open && portalRoot && createPortal(
         <div
           onClick={() => setOpen(false)}
           style={{
-            position:"fixed", inset:0, zIndex:2147483647,
+            position:"fixed", top:0, right:0, bottom:0, left:0, zIndex:2147483647,
+            width:"100vw", height:"100dvh", minHeight:"100vh", pointerEvents:"auto",
+            overflow:"visible", isolation:"isolate", transform:"none",
             background:"rgba(0,0,0,.45)", backdropFilter:"blur(3px)",
             animation:"shFade .18s ease",
           }}
@@ -72,7 +97,8 @@ export default function HamburgerMenu() {
           <aside
             onClick={e => e.stopPropagation()}
             style={{
-              position:"absolute", top:0, right:0, height:"100%",
+              position:"fixed", top:0, right:0, bottom:0, height:"100dvh", minHeight:"100vh",
+              zIndex:2147483647, overflow:"hidden",
               width:"min(340px, 90vw)", background:"#fff",
               display:"flex", flexDirection:"column",
               animation:"shSlideIn .22s ease",
@@ -151,7 +177,7 @@ export default function HamburgerMenu() {
             </div>
           </aside>
         </div>,
-        document.body
+        portalRoot
       )}
     </>
   );
