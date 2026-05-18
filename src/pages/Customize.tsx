@@ -2719,6 +2719,18 @@ export default function Customize() {
           printMount: mountColor || "snow-white",
           printGlaze: primaryCartItem?.glazeType || "perspex",
           vipPurchased: cartItems.some((i: any) => i.productType === "vip"),
+          // BUG-09: send ALL cart items for fulfillment, not just the first
+          printItems: cartItems.map((it: any) => ({
+            photoUrl:    it.photoUrl,
+            sku:         it.sku,
+            productType: it.productType,
+            frameColor:  it.frameColor || "",
+            canvasEdge:  it.canvasEdge || "",
+            canvasFloatFrame: !!it.canvasFloatFrame,
+            mountColor:  mountColor || "snow-white",
+            glazeType:   it.glazeType || "perspex",
+            qty:         it.qty || 1,
+          })),
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
