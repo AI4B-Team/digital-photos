@@ -2858,8 +2858,8 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       {/* Art Styles header */}
       {baseCards.length > 0 && (
         <div style={{ padding:"20px 24px 8px" }}>
-          <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-            color:T.muted, fontWeight:600, textAlign:"left", margin:0 }}>Signature Styles</p>
+          <p style={{ fontSize:11, letterSpacing:".04em",
+            color:T.muted, fontWeight:600, textAlign:"left", margin:0 }}>Signature styles</p>
         </div>
       )}
 
