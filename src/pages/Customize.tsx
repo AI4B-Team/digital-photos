@@ -1026,7 +1026,7 @@ function RoomViewPanel({
         }}>
           {STAGED_ROOMS.map(room => {
             const entry = stagedComposites[room.id];
-            const thumb = entry?.url || room.bg;
+            const thumb = entry?.url || (roomImageOverrides && roomImageOverrides[room.id]) || room.bg;
             const on = selectedRoomKey === room.id;
             const loading = entry?.loading;
             return (
