@@ -23,16 +23,19 @@ import roomBedroomLux   from "@/assets/rooms/lux-bedroom.jpg";
 import roomCoastal      from "@/assets/rooms/lux-coastal.jpg";
 import roomCatalog      from "@/assets/rooms/lux-catalog-clean.jpg";
 
+// STYLED SPACES — each room carries an emotional subtitle + a
+// "recommendedFor" list of portrait style ids so the system can later
+// surface curated, personalized room matches per artwork.
 const STAGED_ROOMS = [
-  { id: "dark-moody",     vibe: "Dark Lounge",      bg: roomDarkMoody },
-  { id: "bright-edit",    vibe: "Parisian",         bg: roomBrightEdit },
-  { id: "warm-organic",   vibe: "Warm Organic",     bg: roomWarmOrganic },
-  { id: "modern-minimal", vibe: "Modern Minimal",   bg: roomModernMin },
-  { id: "library-study",  vibe: "Library Study",    bg: roomLibrary },
-  { id: "entryway",       vibe: "Entryway",         bg: roomEntryway },
-  { id: "bedroom-lux",    vibe: "Serene Bedroom",   bg: roomBedroomLux },
-  { id: "coastal",        vibe: "Coastal Airy",     bg: roomCoastal },
-  { id: "catalog-clean",  vibe: "Clean Catalog",    bg: roomCatalog },
+  { id: "dark-moody",     vibe: "Dark Lounge",      subtitle: "Best for dramatic portraits",      bg: roomDarkMoody,    recommendedFor: ["royal","cinematic","fantasy"] },
+  { id: "bright-edit",    vibe: "Parisian",         subtitle: "Perfect for elegant interiors",    bg: roomBrightEdit,   recommendedFor: ["renaissance","minimal"] },
+  { id: "warm-organic",   vibe: "Warm Organic",     subtitle: "Ideal for family portraits",       bg: roomWarmOrganic,  recommendedFor: ["storybook","minimal"] },
+  { id: "modern-minimal", vibe: "Modern Minimal",   subtitle: "Clean contemporary aesthetic",     bg: roomModernMin,    recommendedFor: ["minimal","cinematic"] },
+  { id: "library-study",  vibe: "Library Study",    subtitle: "Luxury masculine atmosphere",      bg: roomLibrary,      recommendedFor: ["royal","renaissance"] },
+  { id: "entryway",       vibe: "Entryway",         subtitle: "A welcoming first impression",     bg: roomEntryway,     recommendedFor: ["minimal","storybook"] },
+  { id: "bedroom-lux",    vibe: "Serene Bedroom",   subtitle: "Soft, intimate, romantic",         bg: roomBedroomLux,   recommendedFor: ["storybook","minimal"] },
+  { id: "coastal",        vibe: "Coastal Airy",     subtitle: "Bright, breezy, refined",          bg: roomCoastal,      recommendedFor: ["minimal","storybook"] },
+  { id: "catalog-clean",  vibe: "Clean Catalog",    subtitle: "Editorial gallery feel",           bg: roomCatalog,      recommendedFor: ["minimal","renaissance"] },
 ];
 
 /* ── Tokens ── */
