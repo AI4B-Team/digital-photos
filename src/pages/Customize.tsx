@@ -947,7 +947,7 @@ function RoomViewPanel({
             : "'Poppins',sans-serif";
           return (
             <div
-              onMouseDown={!isStaged ? onDragStart : undefined}
+              onMouseDown={onDragStart}
               onWheel={!isStaged ? onWheel : undefined}
               style={{
                 position:"absolute",
