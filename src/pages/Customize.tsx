@@ -923,13 +923,9 @@ export default function Customize() {
 
   // ── Room View state ──
   const [roomView,        setRoomView]      = useState(false);
-  const [roomMode,        setRoomMode]      = useState<"staged"|"myroom"|"ai">("staged");
-  const [roomIdx,         setRoomIdx]       = useState(0);
   const [userRoomUrl,     setUserRoomUrl]   = useState<string|null>(null);
   const [aiRoomUrl,       setAiRoomUrl]     = useState<string|null>(null);
   const [aiRoomLoading,   setAiRoomLoading] = useState(false);
-  const [stagedAiCache,   setStagedAiCache] = useState<Record<string,string>>({});
-  const [stagedAiLoading, setStagedAiLoading] = useState(false);
   const [portraitDragPos, setPortraitDragPos] = useState({ x:45, y:12, w:26 });
   const [isDragging,      setIsDragging]    = useState(false);
   const [dragStart,       setDragStart]     = useState({ mx:0, my:0, px:0, py:0 });
