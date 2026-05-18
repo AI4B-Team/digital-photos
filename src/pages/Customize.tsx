@@ -2317,8 +2317,6 @@ export default function Customize() {
                 frameColor={cardFrame || "black"}
                 productType={activeCard}
                 selected={selected}
-                roomIdx={roomIdx} setRoomIdx={setRoomIdx}
-                roomMode={roomMode} setRoomMode={setRoomMode}
                 userRoomUrl={userRoomUrl} setUserRoomUrl={setUserRoomUrl}
                 aiRoomUrl={aiRoomUrl} setAiRoomUrl={setAiRoomUrl}
                 aiRoomLoading={aiRoomLoading} setAiRoomLoading={setAiRoomLoading}
@@ -2327,8 +2325,6 @@ export default function Customize() {
                 dragStart={dragStart} setDragStart={setDragStart}
                 roomContainerRef={roomContainerRef}
                 setRoomView={setRoomView}
-                stagedAiCache={stagedAiCache} setStagedAiCache={setStagedAiCache}
-                stagedAiLoading={stagedAiLoading} setStagedAiLoading={setStagedAiLoading}
               />
             </div>
           ) : (
