@@ -101,7 +101,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
         style={{
           display:"flex", alignItems:"center", gap:6,
           background:"#fff", border:"1px solid #8C8C8C",
-          color:"#0A0A0A", cursor:"pointer", padding:"6px 10px", borderRadius:8,
+          color:"#8C8C8C", cursor:"pointer", padding:"6px 10px", borderRadius:8,
           fontFamily:"'Poppins',sans-serif", fontSize:12, letterSpacing:".06em",
           fontWeight:600,
         }}
@@ -124,7 +124,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
               style={{
                 display:"flex", alignItems:"center", gap:10, width:"100%",
                 background: l.code === current ? "#FDECEC" : "transparent",
-                border:"none", color:"#0A0A0A", cursor:"pointer",
+                border:"none", color:"#8C8C8C", cursor:"pointer",
                 padding:"8px 10px", borderRadius:8, textAlign:"left",
                 fontFamily:"'Poppins',sans-serif", fontSize:13,
                 fontWeight: l.code === current ? 600 : 500,
