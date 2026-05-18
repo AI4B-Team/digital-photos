@@ -2883,8 +2883,8 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       {tmplCards.length > 0 && (
         <>
           <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
-            <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-              color:T.muted, fontWeight:600 }}>Featured Scenes</p>
+            <p style={{ fontSize:11, letterSpacing:".04em",
+              color:T.muted, fontWeight:600 }}>Featured scenes</p>
           </div>
           <div style={{ margin:"0 auto", padding:"0 24px" }}>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
