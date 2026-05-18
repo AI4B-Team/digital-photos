@@ -4078,7 +4078,7 @@ export default function Customize() {
                       <div style={{ fontSize:13.5, fontWeight:700, color:INK, lineHeight:1.3 }}>{ptLabel}</div>
                       <div style={{ fontSize:11.5, color:MUTED, marginTop:2 }}>
                         {it.productType !== "digital" && (sd?.label || it.size)}
-                        {it.frameColor && it.productType !== "digital" ? ` · ${it.frameColor}` : ""}
+                        {it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : ""}
                       </div>
                       {it.portraitName && (
                         <div style={{ display:"inline-flex", alignItems:"center", gap:4,
