@@ -1315,7 +1315,7 @@ export default function Customize() {
     productType: "classic-frame",
     frameColor:  "black",
     canvasEdge:  "gallery",
-    sku:         "GLOBAL-CFPM-8x10",
+    sku:         "GLOBAL-CFPM-8X10",
     frame:       "black",      // legacy — derived, drives visual preview
     size:        "8x10",       // new id format
     effect:      "original",
