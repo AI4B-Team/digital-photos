@@ -1758,7 +1758,7 @@ export default function Customize() {
     mug:     { size: "11oz",  sku: "GLOBAL-MUG-11OZ" },
     case:    { size: "iphone-16-pro", sku: "GLOBAL-TPC-IP16P" },
   };
-  const PORTRAIT_DEFAULT = { productType: "classic-frame", size: "11x14", sku: "GLOBAL-CFPM-11x14", frameColor: "black" };
+  const PORTRAIT_DEFAULT = { productType: "classic-frame", size: "11x14", sku: "GLOBAL-CFPM-11X14", frameColor: "black" };
   const toggleExtraProduct = (id: string) => {
     setEnabledExtras(prev => {
       const on = prev.includes(id);
