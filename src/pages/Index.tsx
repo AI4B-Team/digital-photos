@@ -15,6 +15,7 @@ import {
   CalendarDays, ZoomIn
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
+import UploadSourceModal from "@/components/UploadSourceModal";
 import { useAuth } from "@/context/AuthContext";
 import readyTrio from "@/assets/ready-trio.png";
 import scenePets from "@/assets/scene-pets.jpg";
@@ -1418,8 +1419,30 @@ function HomePage({ onGenerate }) {
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [heroNames, setHeroNames] = useState<string[]>([""]);
   const totalPhotos = (photo ? 1 : 0) + extraPhotos.length;
+
+  const handleSelectedFile = useCallback((f: File) => {
+    const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
+    if (!ALLOWED.includes(f.type)) {
+      alert("Please upload a PNG, JPEG, WebP, or GIF image.");
+      return;
+    }
+    if (addSlot === "extra") {
+      const reader = new FileReader();
+      reader.onload = async ev => {
+        const dataUrl = ev.target?.result as string;
+        setExtraPhotos(p => [...p, dataUrl]);
+        let low = false;
+        try { const { w, h } = await getImageDimensions(dataUrl); low = isLowRes(w, h); } catch {}
+        setExtraLowRes(p => [...p, low]);
+      };
+      reader.readAsDataURL(f);
+    } else {
+      loadFile(f);
+    }
+  }, [addSlot, loadFile]);
   useEffect(() => {
     setHeroNames(prev => {
       const n = Math.max(1, totalPhotos, reqFor(cat).minPhotos);
@@ -1692,7 +1715,7 @@ function HomePage({ onGenerate }) {
                 </div>
                 {!photo ? (
                   <div className={`dz ${drag?"drag":""}`} style={{ borderRadius:6, padding:"20px 16px" }}
-                    onClick={() => { setAddSlot("primary"); fileRef.current?.click(); }}
+                    onClick={() => { setAddSlot("primary"); setUploadModalOpen(true); }}
                     onDragOver={e => { e.preventDefault(); setDrag(true); }}
                     onDragLeave={() => setDrag(false)}
                     onDrop={e => { e.preventDefault(); setDrag(false); setAddSlot("primary"); loadFile(e.dataTransfer.files[0]); }}>
@@ -1753,7 +1776,7 @@ function HomePage({ onGenerate }) {
                     );})}
                     {/* Add another photo card */}
                     <button type="button"
-                      onClick={() => { setAddSlot("extra"); fileRef.current?.click(); }}
+                      onClick={() => { setAddSlot("extra"); setUploadModalOpen(true); }}
                       style={{ width:90, height:70, borderRadius:10,
                         border:`1px dashed ${T.bGold}`, background:"rgba(255,255,255,.03)",
                         display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
@@ -1792,28 +1815,15 @@ function HomePage({ onGenerate }) {
                   onChange={e => {
                     const f = e.target.files?.[0];
                     if (!f) return;
-                    const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
-                    if (!ALLOWED.includes(f.type)) {
-                      alert("Please upload a PNG, JPEG, WebP, or GIF image.");
-                      e.target.value = "";
-                      return;
-                    }
-                    if (addSlot === "extra") {
-                      const reader = new FileReader();
-                      reader.onload = async ev => {
-                        const dataUrl = ev.target?.result as string;
-                        setExtraPhotos(p => [...p, dataUrl]);
-                        let low = false;
-                        try { const { w, h } = await getImageDimensions(dataUrl); low = isLowRes(w, h); } catch {}
-                        setExtraLowRes(p => [...p, low]);
-                      };
-                      reader.readAsDataURL(f);
-                    } else {
-                      loadFile(f);
-                    }
-                    // reset so the same file can be re-selected after removal
+                    handleSelectedFile(f);
                     e.target.value = "";
                   }}/>
+                <UploadSourceModal
+                  open={uploadModalOpen}
+                  onClose={() => setUploadModalOpen(false)}
+                  onFile={(f) => handleSelectedFile(f)}
+                  forCouplesPartner2={cat === "couples" && addSlot === "extra"}
+                />
               </div>
 
               {/* ── NAME (Optional) — only after photo uploaded ── */}
