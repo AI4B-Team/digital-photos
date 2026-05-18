@@ -2780,6 +2780,8 @@ export default function Customize() {
         current="customize"
         onBack={() => navigate("/")}
         total={headerTotal}
+        showPreviews
+        onPreviews={() => setPreviewsOpen(true)}
         showCart
         onCart={() => setCartOpen(true)}
         cartCount={cartCount}
