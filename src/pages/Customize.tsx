@@ -1985,6 +1985,7 @@ export default function Customize() {
         : (BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0]);
     const isFrameless = fd.id === "frameless" || fd.id === "digital";
     const isCanvas    = fd.id === "canvas";
+    const isAcrylic   = item.productType === "acrylic";
     const woodPad     = fd.w || 0;
     // Resolve actual selected frame color (so all 8 swatches render distinctly)
     const itemFrameColorDef = (FRAME_COLORS[item.productType] || []).find(c => c.id === item.frameColor);
