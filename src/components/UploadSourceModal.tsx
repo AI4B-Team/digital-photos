@@ -1,9 +1,15 @@
 // @ts-nocheck
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
-  X, Upload, Camera, Link2, Facebook, Instagram, Cloud,
-  HardDrive, Image as ImageIcon, Clipboard, Smartphone, Shield, Lock
+  X, Upload, Camera, Link2, HardDrive, Clipboard, Shield, Lock
 } from "lucide-react";
+import {
+  FaFacebook, FaInstagram, FaDropbox,
+} from "react-icons/fa";
+import {
+  SiGoogledrive, SiGooglephotos, SiMicrosoftonedrive,
+} from "react-icons/si";
 
 const T = {
   bg:        "#0B0B0F",
@@ -22,17 +28,18 @@ type SourceId =
   | "local" | "camera" | "link" | "clipboard"
   | "facebook" | "instagram" | "gdrive" | "gphotos" | "dropbox" | "onedrive";
 
-const SOURCES: { id: SourceId; label: string; Icon: any; soon?: boolean }[] = [
+// Brand colors for each provider (used only when active, otherwise gold/muted)
+const SOURCES: { id: SourceId; label: string; Icon: any; brand?: string; soon?: boolean }[] = [
   { id: "local",     label: "Local Files",   Icon: HardDrive },
   { id: "camera",    label: "Camera",        Icon: Camera },
   { id: "link",      label: "Direct Link",   Icon: Link2 },
   { id: "clipboard", label: "Clipboard",     Icon: Clipboard },
-  { id: "facebook",  label: "Facebook",      Icon: Facebook,  soon: true },
-  { id: "instagram", label: "Instagram",     Icon: Instagram, soon: true },
-  { id: "gdrive",    label: "Google Drive",  Icon: Cloud,     soon: true },
-  { id: "gphotos",   label: "Google Photos", Icon: ImageIcon, soon: true },
-  { id: "dropbox",   label: "Dropbox",       Icon: Cloud,     soon: true },
-  { id: "onedrive",  label: "OneDrive",      Icon: Cloud,     soon: true },
+  { id: "facebook",  label: "Facebook",      Icon: FaFacebook,           brand: "#1877F2", soon: true },
+  { id: "instagram", label: "Instagram",     Icon: FaInstagram,          brand: "#E4405F", soon: true },
+  { id: "gdrive",    label: "Google Drive",  Icon: SiGoogledrive,        brand: "#1FA463", soon: true },
+  { id: "gphotos",   label: "Google Photos", Icon: SiGooglephotos,       brand: "#4285F4", soon: true },
+  { id: "dropbox",   label: "Dropbox",       Icon: FaDropbox,            brand: "#0061FF", soon: true },
+  { id: "onedrive",  label: "OneDrive",      Icon: SiMicrosoftonedrive,  brand: "#0078D4", soon: true },
 ];
 
 const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
@@ -66,7 +73,13 @@ export default function UploadSourceModal({
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    // Lock body scroll while modal open
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
   }, [open, onClose]);
 
   if (!open) return null;
@@ -246,13 +259,13 @@ export default function UploadSourceModal({
     </div>
   );
 
-  const soonPanel = (label: string) => (
+  const soonPanel = (label: string, BrandIcon: any, brandColor?: string) => (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
       textAlign:"center", padding:"40px 24px", minHeight:280 }}>
-      <div style={{ width:56, height:56, borderRadius:14, background:T.goldSoft,
+      <div style={{ width:64, height:64, borderRadius:16, background:T.goldSoft,
         border:`1px solid ${T.border}`, display:"flex", alignItems:"center",
         justifyContent:"center", marginBottom:16 }}>
-        <Lock size={22} color={T.gold}/>
+        <BrandIcon size={28} color={brandColor || T.gold}/>
       </div>
       <div style={{ fontFamily:"'Playfair Display', serif", fontSize:24, color:T.cream, marginBottom:8 }}>
         {label} import — coming soon
@@ -275,16 +288,17 @@ export default function UploadSourceModal({
   else if (active === "clipboard") panel = clipboardPanel;
   else if (active !== "local") {
     const src = SOURCES.find(s => s.id === active)!;
-    panel = soonPanel(src.label);
+    panel = soonPanel(src.label, src.Icon, src.brand);
   }
 
-  return (
+  const modal = (
     <div
       role="dialog"
       aria-modal="true"
       onClick={onClose}
       style={{
-        position:"fixed", inset:0, zIndex:1000,
+        position:"fixed", top:0, left:0, right:0, bottom:0, width:"100vw", height:"100vh",
+        zIndex:2147483600,
         background:"rgba(5,5,9,.78)", backdropFilter:"blur(6px)",
         display:"flex", alignItems:"center", justifyContent:"center", padding:16,
       }}
@@ -321,11 +335,14 @@ export default function UploadSourceModal({
         {/* Body */}
         <div style={{ display:"flex", flex:1, minHeight:0 }}>
           {/* Sidebar */}
-          <div style={{ width:220, background:T.panelAlt, borderRight:`1px solid ${T.borderSoft}`,
+          <div style={{ width:240, background:T.panelAlt, borderRight:`1px solid ${T.borderSoft}`,
             padding:"12px 8px", overflowY:"auto" }}>
             {SOURCES.map(s => {
               const I = s.Icon;
               const isActive = active === s.id;
+              const iconColor = isActive
+                ? (s.brand || T.gold)
+                : (s.brand ? s.brand : T.muted);
               return (
                 <button key={s.id} onClick={() => setActive(s.id)}
                   style={{
@@ -336,7 +353,7 @@ export default function UploadSourceModal({
                     cursor:"pointer", textAlign:"left", marginBottom:2,
                     transition:"background .15s, color .15s",
                   }}>
-                  <I size={16} color={isActive ? T.gold : T.muted}/>
+                  <I size={16} color={iconColor} style={{ flexShrink:0 }}/>
                   <span style={{ fontSize:13, fontWeight: isActive ? 600 : 500, flex:1 }}>{s.label}</span>
                   {s.soon && (
                     <span style={{ fontSize:8, letterSpacing:".12em", color:T.dim,
@@ -378,4 +395,8 @@ export default function UploadSourceModal({
       </div>
     </div>
   );
+
+  // Render via portal to <body> so the modal escapes any transformed/positioned
+  // ancestor and is always centered on the viewport.
+  return createPortal(modal, document.body);
 }
