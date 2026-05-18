@@ -12,20 +12,27 @@ import klarnaLogo from "@/assets/payment-logos/klarna.svg";
 import afterpayLogo from "@/assets/payment-logos/afterpay.png";
 import sizeGuideImg from "@/assets/size-guide.png";
 
-/* ── Staged Room Presets (5 vibes) ── */
-// Simple, clean wall scenes — minimal clutter, mostly empty walls so any portrait looks great
-import roomLivingImg  from "@/assets/room-living.jpg";
-import roomBedroomImg from "@/assets/room-bedroom.jpg";
-import roomOfficeImg  from "@/assets/room-office.jpg";
-import roomDiningImg  from "@/assets/room-dining.jpg";
-import roomEntryImg   from "@/assets/room-entry.jpg";
+/* ── Staged Room Presets — luxury scenes generated from reference inspiration ── */
+import roomDarkMoody    from "@/assets/rooms/lux-dark-moody.jpg";
+import roomBrightEdit   from "@/assets/rooms/lux-bright-editorial.jpg";
+import roomWarmOrganic  from "@/assets/rooms/lux-warm-organic.jpg";
+import roomModernMin    from "@/assets/rooms/lux-modern-minimal.jpg";
+import roomLibrary      from "@/assets/rooms/lux-library-study.jpg";
+import roomEntryway     from "@/assets/rooms/lux-entryway.jpg";
+import roomBedroomLux   from "@/assets/rooms/lux-bedroom.jpg";
+import roomCoastal      from "@/assets/rooms/lux-coastal.jpg";
+import roomCatalog      from "@/assets/rooms/lux-catalog-clean.jpg";
 
 const STAGED_ROOMS = [
-  { id: "living-sofa",   vibe: "Living Room",   bg: roomLivingImg },
-  { id: "bedroom-calm",  vibe: "Bedroom",       bg: roomBedroomImg },
-  { id: "office-clean",  vibe: "Home Office",   bg: roomOfficeImg },
-  { id: "dining-simple", vibe: "Dining Nook",   bg: roomDiningImg },
-  { id: "entry-minimal", vibe: "Minimal Entry", bg: roomEntryImg },
+  { id: "dark-moody",     vibe: "Dark Lounge",      bg: roomDarkMoody },
+  { id: "bright-edit",    vibe: "Parisian",         bg: roomBrightEdit },
+  { id: "warm-organic",   vibe: "Warm Organic",     bg: roomWarmOrganic },
+  { id: "modern-minimal", vibe: "Modern Minimal",   bg: roomModernMin },
+  { id: "library-study",  vibe: "Library Study",    bg: roomLibrary },
+  { id: "entryway",       vibe: "Entryway",         bg: roomEntryway },
+  { id: "bedroom-lux",    vibe: "Serene Bedroom",   bg: roomBedroomLux },
+  { id: "coastal",        vibe: "Coastal Airy",     bg: roomCoastal },
+  { id: "catalog-clean",  vibe: "Clean Catalog",    bg: roomCatalog },
 ];
 
 /* ── Tokens ── */
