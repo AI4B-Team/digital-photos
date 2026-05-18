@@ -1039,7 +1039,7 @@ function RoomViewPanel({
 
         {/* Portrait overlay — snaps into staged room frames; draggable in My Room / AI */}
         {showPortraitOverlay && (() => {
-          const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
+          const mountPad = (isCanvas || isAcrylic) ? 0 : Math.max(4, wallW * 0.35);
           const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
           const nameFontDef  = NAME_FONTS.find(f => f.id === nameFontId) || NAME_FONTS[0];
@@ -1056,11 +1056,16 @@ function RoomViewPanel({
                 aspectRatio: `${aspectRatio || 0.75} / 1`,
                 cursor: isDragging ? "grabbing" : "grab",
                 overflow:"hidden",
-                boxShadow: isStaged
-                  ? "4px 8px 24px rgba(0,0,0,0.45)"
-                  : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
-                border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
-                background: isCanvas ? framePx : mountPx,
+                borderRadius: isAcrylic ? 2 : 0,
+                boxShadow: isAcrylic
+                  ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
+                  : isStaged
+                    ? "4px 8px 24px rgba(0,0,0,0.45)"
+                    : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
+                borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
+                border: isAcrylic ? undefined : (isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`),
+                background: isAcrylic ? "transparent" : (isCanvas ? framePx : mountPx),
                 padding: `${mountPad}px`,
                 boxSizing: "border-box",
                 transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
