@@ -2691,7 +2691,7 @@ export default function Customize() {
           {/* ── Name / Text Overlay ── */}
           <div className="cz-section">
             <div className="cz-label">
-              <span>{isPetSession ? "Name" : "Personalise"}</span>
+              <span>{isPetSession ? "Name" : "Personalize"}</span>
               <span className="cz-value" style={{ color:namePosition==="none"?MUTED:INK }}>
                 {namePosition === "none" ? "None" : portraitName || (isPetSession ? "Add a name" : "Add text")}
               </span>
