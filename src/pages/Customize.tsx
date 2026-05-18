@@ -3583,9 +3583,10 @@ export default function Customize() {
                             </div>
                             <span style={{ fontSize:12.5, fontWeight:700, color:INK }}>+$49</span>
                             {canvasFrame && (
-                              <div style={{ display:"flex", gap:6, marginLeft:6 }} onClick={e => e.stopPropagation()}>
-                                {[{id:"black",color:"#1a1a1a"},{id:"white",color:"#f4f4f4"},{id:"walnut",color:"#5a3a24"}].map(fc => (
+                              <div style={{ display:"flex", gap:5, marginLeft:6, flexWrap:"wrap" }} onClick={e => e.stopPropagation()}>
+                                {CANVAS_FRAME_COLORS.map(fc => (
                                   <button key={fc.id}
+                                    title={fc.label}
                                     onClick={() => setCanvasFrameColor(fc.id)}
                                     style={{ width:18, height:18, borderRadius:5,
                                       background:fc.color, cursor:"pointer",
