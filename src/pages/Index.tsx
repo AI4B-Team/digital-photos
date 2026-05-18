@@ -2585,9 +2585,9 @@ const COLLECTIONS: { id: string; label: string; match: (c: { id?: string; label?
 function CollectionsRail({ collection, onChange }: { collection: string; onChange: (id: string) => void }) {
   return (
     <div style={{ maxWidth:1280, margin:"0 auto", padding:"4px 12px 18px" }}>
-      <p style={{ fontSize:10.5, letterSpacing:".26em", textTransform:"uppercase",
+      <p style={{ fontSize:11, letterSpacing:".04em",
         color:T.gold, fontWeight:600, margin:"0 14px 10px", fontFamily:"'Poppins',sans-serif" }}>
-        Curated Collections
+        Curated collections
       </p>
       <div style={{ display:"flex", gap:10, overflowX:"auto", padding:"4px 14px 8px",
         scrollbarWidth:"none" as any }}>
