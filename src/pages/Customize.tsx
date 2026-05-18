@@ -7,6 +7,7 @@ import { TEMPLATES } from "./Index";
 import PreviewsDrawer from "@/components/PreviewsDrawer";
 import SiteHeader from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
 import klarnaLogo from "@/assets/payment-logos/klarna.svg";
