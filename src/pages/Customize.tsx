@@ -417,7 +417,7 @@ const FRAME_COLORS: Record<string, { id:string; label:string; color:string }[]> 
 
 // Mount/mat colours for framed prints (CFPM / BOXM) — Prodigi confirmed
 const MOUNT_COLORS = [
-  { id:"snow-white", label:"Snow White", color:"#f9f9f7" },
+  { id:"snow-white", label:"White", color:"#f9f9f7" },
   { id:"hayseed",    label:"Hayseed",    color:"#e8dfc8" },
   { id:"black",      label:"Black",      color:"#1a1a1a" },
 ];
@@ -2952,7 +2952,7 @@ export default function Customize() {
                 features:["Premium 230gsm archival paper, fade-resistant","Vivid colors, sunlight resistant","Ships rolled in a protective tube","Hi-res digital download included"],
                 delivery:"5–7 Business Days" },
               { id:"classic-frame", label:"Framed Print", sub:"Ready to hang, 8 frame colors.", badge:"Most Popular",
-                features:[`Museum-grade cotton art paper · ${MOUNT_COLORS.find(m => m.id === mountColor)?.label ?? "Snow White"} mount`,"Hand-finished solid frame, conservation-grade mount","Ready to hang — arrives fully assembled","Hi-res digital download included"],
+                features:[`Museum-grade cotton art paper · ${MOUNT_COLORS.find(m => m.id === mountColor)?.label ?? "White"} mount`,"Hand-finished solid frame, conservation-grade mount","Ready to hang — arrives fully assembled","Hi-res digital download included"],
                 delivery:"5–9 Business Days", frameColors:true },
               { id:"canvas", label:"Canvas Print", sub:"Ready to hang.", badge:null,
                 features:["Fine-textured canvas, vivid detail & color","Archival inks, UV-protected, fade-resistant","Stretched over solid pine wood frame","Ready to hang — mounting hardware included","Hi-res digital download included"],
