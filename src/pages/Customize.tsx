@@ -855,10 +855,8 @@ function RoomViewPanel({
         {([
           { k:"staged", label:"Styled Spaces" },
           { k:"user",   label:"My Room" },
-          { k:"ai",     label:"AI Magic", icon:<Sparkles size={13}/> },
         ] as const).map(t => {
           const on = mode === t.k;
-          const isAi = t.k === "ai";
           return (
             <button key={t.k}
               onClick={() => {
@@ -870,43 +868,19 @@ function RoomViewPanel({
                 padding:"8px 14px", borderRadius:8,
                 fontSize:12, fontWeight:700, fontFamily:"'Poppins',sans-serif",
                 cursor:"pointer",
-                background: on ? (isAi ? RED : "rgba(255,255,255,.14)") : "transparent",
+                background: on ? "rgba(255,255,255,.14)" : "transparent",
                 color: "#fff",
                 border: on
-                  ? `1px solid ${isAi ? RED : "rgba(255,255,255,.22)"}`
+                  ? "1px solid rgba(255,255,255,.22)"
                   : "1px solid rgba(255,255,255,.18)",
               }}>
-              {t.label}{t.icon ? <span style={{ marginLeft:2 }}>{t.icon}</span> : null}
+              {t.label}
             </button>
           );
         })}
 
         {/* Push remaining controls to the right */}
         <div style={{ flex:1 }} />
-
-        <label style={{
-          display:"inline-flex", alignItems:"center", gap:8,
-          padding:"8px 14px", borderRadius:8,
-          background:"rgba(255,255,255,.08)", color:"#fff",
-          border:"1px solid rgba(255,255,255,.14)",
-          fontSize:12, fontWeight:600, fontFamily:"'Poppins',sans-serif",
-          cursor:"pointer",
-        }}>
-          <Upload size={14}/> {userRoomUrl ? "Change Room Photo" : "Upload Your Room"}
-          <input type="file" accept="image/*" style={{ display:"none" }}
-            onChange={e => {
-              const f = e.target.files?.[0];
-              if (!f) return;
-              const reader = new FileReader();
-              reader.onload = ev => {
-                setUserRoomUrl(ev.target?.result as string);
-                setAiRoomUrl(null);
-                // Jump to My Room so the user sees their upload immediately
-                if (mode === "staged") setSelectedRoomKey("user");
-              };
-              reader.readAsDataURL(f);
-            }}/>
-        </label>
 
         {mode === "ai" && userRoomUrl && (
           <button onClick={generateAIRoom} disabled={aiRoomLoading}
