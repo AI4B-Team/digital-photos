@@ -773,7 +773,7 @@ function RoomViewPanel({
   const onDragStart = (e: any) => {
     e.preventDefault();
     setIsDragging(true);
-    setDragStart({ mx: e.clientX, my: e.clientY, px: frameX, py: frameY });
+    setDragStart({ mx: e.clientX, my: e.clientY, px: wallX, py: wallY });
   };
   const onDragMove = (e: any) => {
     if (!isDragging || !roomContainerRef.current) return;
@@ -1036,8 +1036,7 @@ function RoomViewPanel({
                 left:   `${wallX}%`,
                 top:    `${wallY}%`,
                 width:  `${wallW}%`,
-                height: scaledH ? `${scaledH}%` : undefined,
-                aspectRatio: !scaledH ? `${1} / ${aspectRatio || 0.75}` : undefined,
+                aspectRatio: `${aspectRatio || 0.75} / 1`,
                 cursor: isDragging ? "grabbing" : "grab",
                 overflow:"hidden",
                 boxShadow: isStaged
