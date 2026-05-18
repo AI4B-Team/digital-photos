@@ -96,7 +96,7 @@ const STAGED_ROOMS = [
     subtitle: "Bright, breezy, refined",
     bg: roomCoastal,
     recommendedFor: ["minimal", "storybook"],
-    ...FRAME_POS,
+    frameX: 41.0, frameY: 4.0, frameW: 19.0, frameH: 46.0,
   },
   {
     id: "catalog-clean",
