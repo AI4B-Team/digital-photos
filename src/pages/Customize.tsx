@@ -3302,7 +3302,7 @@ export default function Customize() {
                           disabled={busy}
                           style={{
                             width:"100%", padding:"9px 10px",
-                            border:`1.5px dashed ${BORDER}`, borderRadius:8,
+                            border:`1px solid ${BORDER}`, borderRadius:10,
                             background:"#fff", cursor:"pointer",
                             fontFamily:"'Poppins',sans-serif",
                             display:"flex", alignItems:"center", gap:10,
