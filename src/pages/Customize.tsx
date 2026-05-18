@@ -3171,7 +3171,7 @@ export default function Customize() {
 
         {/* Preview (middle) — gallery wall ambience */}
         <div className="cz-stage cz-fade" style={{
-          padding:"0 24px 24px",
+          padding:"0 24px 4px",
           minHeight:"calc(100vh - 70px)",
           maxHeight:"calc(100vh - 70px)",
           display:"flex", flexDirection:"column", alignItems:"center",
@@ -3238,7 +3238,7 @@ export default function Customize() {
                 flex:"1 1 auto", width:"100%", minWidth:0, maxHeight:"100%", height:"100%",
                 overflowY:"auto", display:"flex", flexDirection:"column",
                 alignItems:"center", justifyContent:"flex-start", gap:8,
-                padding:"20px 60px 60px 20px",
+                padding:"20px 20px 16px 20px",
                 scrollBehavior:"smooth", scrollSnapType:"y proximity",
                 WebkitOverflowScrolling:"touch", overscrollBehavior:"contain",
               }}>
