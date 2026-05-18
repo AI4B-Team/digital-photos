@@ -1667,6 +1667,25 @@ function HomePage({ onGenerate }) {
               Sign In
             </a>
           )}
+          <HamburgerMenu
+            items={[
+              ...CATS.map(c => ({
+                id: c.id,
+                label: c.label,
+                onClick: () => {
+                  setCat(c.id); setSelectedTemplate(null);
+                  setPreferredTeaser(c.id === "occasions" ? "Wedding" : null);
+                  heroRef.current?.scrollIntoView({ behavior:"smooth", block:"start" });
+                },
+              })),
+              ...(user
+                ? [
+                    { id:"portraits", label:"My Portraits", href:"/customize" },
+                    { id:"signout", label:"Sign Out", onClick: () => signOut() },
+                  ]
+                : [{ id:"signin", label:"Sign In", href:"/auth" }]),
+            ]}
+          />
         </div>
       </nav>
 
