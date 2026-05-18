@@ -160,7 +160,7 @@ export default function Contact() {
             </div>
 
             <div style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14, padding:20 }}>
-              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>Follow Us</h3>
+              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>Follow us</h3>
               <a href="https://instagram.com/realartportraits" target="_blank" style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 0", color:INK, textDecoration:"none", fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:500 }}>
                 <Instagram size={18} color="#E4405F"/> @realartportraits
               </a>
