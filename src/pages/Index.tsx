@@ -2585,9 +2585,9 @@ const COLLECTIONS: { id: string; label: string; match: (c: { id?: string; label?
 function CollectionsRail({ collection, onChange }: { collection: string; onChange: (id: string) => void }) {
   return (
     <div style={{ maxWidth:1280, margin:"0 auto", padding:"4px 12px 18px" }}>
-      <p style={{ fontSize:10.5, letterSpacing:".26em", textTransform:"uppercase",
+      <p style={{ fontSize:11, letterSpacing:".04em",
         color:T.gold, fontWeight:600, margin:"0 14px 10px", fontFamily:"'Poppins',sans-serif" }}>
-        Curated Collections
+        Curated collections
       </p>
       <div style={{ display:"flex", gap:10, overflowX:"auto", padding:"4px 14px 8px",
         scrollbarWidth:"none" as any }}>
@@ -2598,7 +2598,7 @@ function CollectionsRail({ collection, onChange }: { collection: string; onChang
               style={{
                 flex:"0 0 auto",
                 padding:"10px 18px",
-                borderRadius:999,
+                borderRadius:8,
                 border: on ? `1px solid ${T.gold}` : `1px solid rgba(255,255,255,.08)`,
                 background: on ? "rgba(230,180,80,.12)" : "rgba(255,255,255,.03)",
                 color: on ? T.gold : T.cream,
@@ -2858,8 +2858,8 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       {/* Art Styles header */}
       {baseCards.length > 0 && (
         <div style={{ padding:"20px 24px 8px" }}>
-          <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-            color:T.muted, fontWeight:600, textAlign:"left", margin:0 }}>Signature Styles</p>
+          <p style={{ fontSize:11, letterSpacing:".04em",
+            color:T.muted, fontWeight:600, textAlign:"left", margin:0 }}>Signature styles</p>
         </div>
       )}
 
@@ -2883,8 +2883,8 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       {tmplCards.length > 0 && (
         <>
           <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
-            <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-              color:T.muted, fontWeight:600 }}>Featured Scenes</p>
+            <p style={{ fontSize:11, letterSpacing:".04em",
+              color:T.muted, fontWeight:600 }}>Featured scenes</p>
           </div>
           <div style={{ margin:"0 auto", padding:"0 24px" }}>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
