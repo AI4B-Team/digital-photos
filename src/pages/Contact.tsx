@@ -53,7 +53,7 @@ export default function Contact() {
           <button onClick={()=>navigate("/")} style={{
             marginTop:24, padding:"13px 26px", borderRadius:12, background:RED, color:"#fff", border:"none", cursor:"pointer",
             fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
-          }}>Back To Home</button>
+          }}>Back to home</button>
         </div>
       </div>
     );
