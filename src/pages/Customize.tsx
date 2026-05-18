@@ -949,20 +949,29 @@ function RoomViewPanel({
         )}
 
         {/* Move/resize hint */}
-        {bgUrl && showPortraitOverlay && (
+        {bgUrl && showPortraitOverlay && !hintDismissed && (
           <div style={{
             position:"absolute", top:10, left:"50%", transform:"translateX(-50%)",
             display:"inline-flex", alignItems:"center", gap:8,
-            padding:"7px 13px", borderRadius:999,
+            padding:"7px 8px 7px 13px", borderRadius:999,
             background:"rgba(10,10,10,.62)", color:"#fff",
             border:"1px solid rgba(255,255,255,.16)",
             backdropFilter:"blur(8px)",
             fontFamily:"'Poppins',sans-serif", fontSize:11.5, fontWeight:500,
-            letterSpacing:".02em", pointerEvents:"none", zIndex:4,
+            letterSpacing:".02em", zIndex:4,
             boxShadow:"0 6px 18px rgba(0,0,0,.35)",
           }}>
-            <Info size={13} style={{ opacity:.85 }}/>
-            Drag the portrait to reposition · Change size & frame in the right panel
+            <Info size={13} style={{ opacity:.85, pointerEvents:"none" }}/>
+            <span style={{ pointerEvents:"none" }}>Drag the portrait to reposition · Change size & frame in the right panel</span>
+            <button onClick={dismissHint} aria-label="Dismiss hint"
+              style={{
+                marginLeft:4, width:20, height:20, borderRadius:"50%",
+                display:"inline-flex", alignItems:"center", justifyContent:"center",
+                background:"rgba(255,255,255,.12)", color:"#fff",
+                border:"none", cursor:"pointer", padding:0,
+              }}>
+              <X size={11}/>
+            </button>
           </div>
         )}
 
