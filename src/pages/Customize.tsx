@@ -2896,7 +2896,32 @@ export default function Customize() {
                             <ChevronDown className="cz-acc-chev" size={15}/>
                           </summary>
                           <div className="cz-acc-body">
+                          {card.id !== "case" && (
+                            <button
+                              type="button"
+                              onClick={() => setSizeGuideModalOpen(true)}
+                              style={{
+                                display:"flex", alignItems:"center", gap:10,
+                                width:"100%", padding:8, marginBottom:10,
+                                background:"#faf7f2",
+                                border:`1px solid ${BORDER}`, borderRadius:10,
+                                cursor:"pointer", textAlign:"left",
+                              }}>
+                              <img src={sizeGuideImg} alt=""
+                                style={{ width:54, height:40, objectFit:"cover", borderRadius:6, flex:"0 0 auto" }}/>
+                              <div style={{ flex:1, minWidth:0 }}>
+                                <div style={{ fontSize:11.5, fontWeight:700, color:INK, fontFamily:"'Poppins',sans-serif" }}>
+                                  Size Guide
+                                </div>
+                                <div style={{ fontSize:10.5, color:MUTED, marginTop:1 }}>
+                                  See sizes compared on a wall
+                                </div>
+                              </div>
+                              <span style={{ fontSize:10, color:MUTED, fontWeight:600, textDecoration:"underline" }}>View</span>
+                            </button>
+                          )}
                           <div style={{ position:"relative", marginBottom:12 }}>
+
                             {sizes.length > 3 && (
                               <button
                                 type="button"
