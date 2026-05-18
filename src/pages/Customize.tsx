@@ -1153,6 +1153,7 @@ export default function Customize() {
   const [promoCode, setPromoCode]     = useState("");
   const [promoApplied, setPromoApplied] = useState<{ code: string; pct: number; label: string } | null>(null);
   const [promoOpen, setPromoOpen]     = useState(false);
+  const [sizeGuideModalOpen, setSizeGuideModalOpen] = useState(false);
   const [promoError, setPromoError]   = useState("");
   const [giftNote, setGiftNote]       = useState("");
   const [giftOpen, setGiftOpen]       = useState(false);
