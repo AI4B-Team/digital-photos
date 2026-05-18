@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { ArrowLeft, ChevronRight, ImageIcon, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import HamburgerMenu from "@/components/HamburgerMenu";
 
 const RED = "#E61919";
 const TXT = "#0A0A0A";
@@ -121,6 +122,7 @@ export default function SiteHeader({
               )}
             </button>
           )}
+          <HamburgerMenu />
         </div>
       </header>
     </>
