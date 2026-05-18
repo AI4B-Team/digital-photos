@@ -100,9 +100,10 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
         aria-label="Change language"
         style={{
           display:"flex", alignItems:"center", gap:6,
-          background:"rgba(255,255,255,.06)", border:"1px solid rgba(196,150,58,.35)",
-          color:"#F5EFE0", cursor:"pointer", padding:"6px 10px", borderRadius:6,
+          background:"#fff", border:"1.5px solid #0A0A0A",
+          color:"#0A0A0A", cursor:"pointer", padding:"6px 10px", borderRadius:6,
           fontFamily:"'Poppins',sans-serif", fontSize:12, letterSpacing:".06em",
+          fontWeight:600,
         }}
       >
         <span style={{ fontSize:16, lineHeight:1 }}>{active.flag}</span>
