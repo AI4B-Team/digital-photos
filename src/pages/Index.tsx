@@ -2598,7 +2598,7 @@ function CollectionsRail({ collection, onChange }: { collection: string; onChang
               style={{
                 flex:"0 0 auto",
                 padding:"10px 18px",
-                borderRadius:999,
+                borderRadius:8,
                 border: on ? `1px solid ${T.gold}` : `1px solid rgba(255,255,255,.08)`,
                 background: on ? "rgba(230,180,80,.12)" : "rgba(255,255,255,.03)",
                 color: on ? T.gold : T.cream,
