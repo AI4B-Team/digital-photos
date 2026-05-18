@@ -2501,9 +2501,20 @@ export default function Customize() {
                                                 "Classic Frame";
         const sizes = SIZES_BY_PRODUCT[it.productType] || SIZES_BY_PRODUCT["classic-frame"];
         const sd = sizes.find((s) => s.id === it.size);
+        const canvasAttrLabel = (it: any) => {
+          if (it.productType !== "canvas") return "";
+          if (it.canvasFloatFrame) {
+            const fc = CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor);
+            return ` · Float Frame${fc ? " (" + fc.label + ")" : ""}`;
+          }
+          const ed = CANVAS_EDGES.find(e => e.id === (it.canvasEdge || "gallery"));
+          return ed ? ` · ${ed.label}` : "";
+        };
         const desc = it.productType === "digital"
           ? "High-resolution digital download"
-          : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
+          : it.productType === "canvas"
+            ? `${sd?.label || it.size}${canvasAttrLabel(it)}`
+            : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
         lineItems.push({
           name: ptLabel,
           description: desc,
