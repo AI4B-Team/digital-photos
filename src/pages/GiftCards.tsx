@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Gift, Mail, Calendar, Sparkles, Check, Clock, Infinity as InfIcon, DollarSign } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
+import realArtLogo from "@/assets/real-art-logo.png";
 
 const RED = "#E61919";
 const INK = "#0A0A0A";
@@ -109,8 +110,8 @@ export default function GiftCards() {
             }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:30 }}>
                 <div>
-                  <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:11, color:"rgba(255,255,255,.5)", letterSpacing:".18em", fontWeight:700 }}>REAL ART</div>
-                  <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, color:"rgba(255,255,255,.7)", marginTop:2 }}>Gift Card</div>
+                  <img src={realArtLogo} alt="REAL ART" loading="lazy" style={{ height:28, width:"auto", display:"block", marginBottom:6 }} />
+                  <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, color:"rgba(255,255,255,.7)" }}>Gift Card</div>
                 </div>
                 <Sparkles size={22} color={RED}/>
               </div>
