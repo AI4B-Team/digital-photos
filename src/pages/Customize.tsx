@@ -3767,7 +3767,8 @@ export default function Customize() {
                             </div>
                             <button disabled={nameCompositing} onClick={async () => {
                               let finalPhotoUrl = (snapshot as any).photoUrl;
-                              if (portraitName && namePosition !== "none") {
+                              const hasText = (portraitName || (!isPetSession && portraitNameLine2));
+                              if (hasText && namePosition !== "none") {
                                 setNameCompositing(true);
                                 finalPhotoUrl = await composeNameOnImage(
                                   (snapshot as any).photoUrl,
@@ -3776,17 +3777,20 @@ export default function Customize() {
                                   nameFontId,
                                   nameColorId,
                                   nameSizeId,
+                                  isPetSession ? "" : portraitNameLine2,
+                                  isPetSession,
                                 );
                                 setNameCompositing(false);
                               }
                               const namedSnapshot = {
                                 ...snapshot,
                                 photoUrl: finalPhotoUrl,
-                                portraitName: portraitName || null,
-                                namePosition: portraitName ? namePosition : null,
-                                nameFontId:   portraitName ? nameFontId   : null,
-                                nameSizeId:   portraitName ? nameSizeId   : null,
-                                nameColorId:  portraitName ? nameColorId  : null,
+                                portraitName:      portraitName || null,
+                                portraitNameLine2: (!isPetSession && portraitNameLine2) ? portraitNameLine2 : null,
+                                namePosition: hasText ? namePosition : null,
+                                nameFontId:   hasText ? nameFontId   : null,
+                                nameSizeId:   hasText ? nameSizeId   : null,
+                                nameColorId:  hasText ? nameColorId  : null,
                               };
                               addToCart(namedSnapshot, lineQty);
                               setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
