@@ -2080,31 +2080,48 @@ export default function Customize() {
                         </div>
                       </div>
                       {/* Live name overlay */}
-                      {namePosition !== "none" && portraitName && (
-                        <div style={{
-                          position:"absolute", left:0, right:0, zIndex:3,
-                          top:    namePosition === "top"    ? "10%" : "auto",
-                          bottom: namePosition === "bottom" ? "10%" : "auto",
-                          textAlign:"center", pointerEvents:"none",
-                        }}>
-                          <span style={{
-                            display:"inline-block",
-                            color: NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff",
-                            fontSize: `clamp(11px, ${NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "5cqw"}, 96px)`,
-                            fontFamily: nameFontId==="serif"
-                              ? "Georgia,'Times New Roman',serif"
-                              : "'Poppins',sans-serif",
-                            fontWeight: nameFontId==="italic" ? 600 : 700,
-                            fontStyle:  nameFontId==="italic" ? "italic" : "normal",
-                            letterSpacing:".18em",
-                            textShadow: nameColorId==="white"||nameColorId==="cream"
-                              ? "0 2px 8px rgba(0,0,0,0.55)"
-                              : "0 2px 8px rgba(255,255,255,0.35)",
+                      {namePosition !== "none" && (portraitName || portraitNameLine2) && (() => {
+                        const fDef = NAME_FONTS.find(f => f.id === nameFontId) || NAME_FONTS[0];
+                        const cHex = NAME_COLORS.find(c=>c.id===nameColorId)?.hex || "#fff";
+                        const sCss = NAME_SIZES.find(s=>s.id===nameSizeId)?.css || "5cqw";
+                        const shadow = nameColorId==="white"||nameColorId==="cream"
+                          ? "0 2px 8px rgba(0,0,0,0.55)"
+                          : "0 2px 8px rgba(255,255,255,0.35)";
+                        const letterSp = fDef.id === "script" || fDef.id === "vibes" ? "0.02em" : ".18em";
+                        return (
+                          <div style={{
+                            position:"absolute", left:0, right:0, zIndex:3,
+                            top:    namePosition === "top"    ? "10%" : "auto",
+                            bottom: namePosition === "bottom" ? "10%" : "auto",
+                            textAlign:"center", pointerEvents:"none",
+                            display:"flex", flexDirection:"column", alignItems:"center", gap:"0.15em",
                           }}>
-                            {portraitName.toUpperCase()}
-                          </span>
-                        </div>
-                      )}
+                            {portraitName && (
+                              <span style={{
+                                display:"inline-block", color: cHex,
+                                fontSize: `clamp(11px, ${sCss}, 96px)`,
+                                fontFamily: fDef.family, fontWeight: fDef.weight,
+                                fontStyle: fDef.italic ? "italic" : "normal",
+                                letterSpacing: letterSp, textShadow: shadow,
+                              }}>
+                                {isPetSession ? portraitName.toUpperCase() : portraitName}
+                              </span>
+                            )}
+                            {!isPetSession && portraitNameLine2 && (
+                              <span style={{
+                                display:"inline-block", color: cHex,
+                                fontSize: `clamp(9px, calc(${sCss} * 0.72), 70px)`,
+                                fontFamily: fDef.family, fontWeight: fDef.weight,
+                                fontStyle: fDef.italic ? "italic" : "normal",
+                                letterSpacing: fDef.id === "script" || fDef.id === "vibes" ? "0.02em" : ".14em",
+                                opacity:.9, textShadow: shadow,
+                              }}>
+                                {portraitNameLine2}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </div>
                     {/* Glaze sheen — visible on Standard Perspex, removed on Moth-Eye */}
                     {isFramedItem && glazeType === "perspex" && (
