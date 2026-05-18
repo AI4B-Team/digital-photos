@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Gift, Mail, Calendar, Sparkles, Check, Clock, Infinity as InfIcon, DollarSign } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
-import realArtLogo from "@/assets/real-art-logo.png";
+
 
 const RED = "#E61919";
 const INK = "#0A0A0A";
