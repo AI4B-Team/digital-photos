@@ -3316,10 +3316,10 @@ export default function Customize() {
                           </div>
                           <div style={{ flex:1, minWidth:0 }}>
                             <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>Add Another Photo</div>
-                            <div style={{ fontSize:11, color: bundlePct > 0 ? "#16a34a" : MUTED, fontWeight: bundlePct > 0 ? 700 : 400 }}>
+                            <div style={{ fontSize:11, color: bundlePct > 0 ? "#16a34a" : MUTED, fontWeight: bundlePct > 0 ? 700 : 500 }}>
                               {bundlePct > 0
                                 ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
-                                : "Add 2 — Save 10% · Add 3+ — Save 15%"}
+                                : "Save 10% On 2+ Portraits"}
                             </div>
                           </div>
                         </button>
