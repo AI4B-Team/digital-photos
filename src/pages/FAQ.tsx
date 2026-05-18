@@ -34,11 +34,11 @@ const CATS = [
     ["How fast is shipping?", "US: 3-5 business days standard. International: 7-14 business days."],
     ["Do you offer rush shipping?", "Yes - express options are available at checkout."],
     ["How do I track my order?", "Visit /tracking and enter your email or order number for live status."],
-    ["What if my order arrives damaged?", "Email a photo to support@realartnow.com within 14 days for a free replacement."],
+    ["What if my order arrives damaged?", "Email a photo to support@realart.ai within 14 days for a free replacement."],
   ]],
   ["Refunds & Support", [
     ["What's your refund policy?", "Full refunds available within 14 days. See our Refund Policy for details."],
-    ["How do I contact support?", "Use the Contact Us page or email support@realartnow.com. We reply within a few hours."],
+    ["How do I contact support?", "Use the Contact Us page or email support@realart.ai. We reply within a few hours."],
     ["Do you offer gift cards?", "Yes - visit our Gift Cards page to purchase one in any amount."],
   ]],
 ];
@@ -121,7 +121,7 @@ export default function FAQ() {
           border:`1px solid ${BORDER}`, textAlign:"center",
         }}>
           <div style={{ fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:16, color:INK }}>Still Have Questions?</div>
-          <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, color:MUTED, marginTop:6 }}>Email <a href="mailto:support@realartnow.com" style={{color:RED, fontWeight:600, textDecoration:"none"}}>support@realartnow.com</a> or use the contact form.</p>
+          <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, color:MUTED, marginTop:6 }}>Email <a href="mailto:support@realart.ai" style={{color:RED, fontWeight:600, textDecoration:"none"}}>support@realart.ai</a> or use the contact form.</p>
           <button onClick={()=>navigate("/contact")} style={{
             marginTop:14, padding:"11px 22px", borderRadius:10, background:RED, color:"#fff",
             border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:13,
