@@ -1042,10 +1042,7 @@ function RoomViewPanel({
 
       {/* Footer thumbnail strip — only on Styled Spaces tab */}
       {mode === "staged" && (
-        <div style={{
-          display:"flex", gap:10, alignItems:"stretch",
-          overflowX:"auto", paddingBottom:2,
-        }}>
+        <ScrollStrip>
           {STAGED_ROOMS.map(room => {
             const entry = stagedComposites[room.id];
             const thumb = entry?.url || (roomImageOverrides && roomImageOverrides[room.id]) || room.bg;
@@ -1110,8 +1107,7 @@ function RoomViewPanel({
               </button>
             );
           })}
-
-        </div>
+        </ScrollStrip>
       )}
 
       {sizeGuideOpen && (
