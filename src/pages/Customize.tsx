@@ -745,6 +745,7 @@ function RoomViewPanel({
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
   dragStart, setDragStart, roomContainerRef, setRoomView,
   roomImageOverrides,
+  canvasFloatFrame, canvasFloatFrameColor, canvasEdge,
 }: any) {
   const { session } = useSession();
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
