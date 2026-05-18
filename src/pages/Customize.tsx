@@ -13,12 +13,13 @@ import afterpayLogo from "@/assets/payment-logos/afterpay.png";
 import sizeGuideImg from "@/assets/size-guide.png";
 
 /* ── Staged Room Presets (5 vibes) ── */
+// Simple, clean wall scenes — minimal clutter, mostly empty walls so any portrait looks great
 const STAGED_ROOMS = [
-  { id: "modern-living", vibe: "Modern Living",  bg: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=80" },
-  { id: "cozy-bedroom",  vibe: "Cozy Bedroom",   bg: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&q=80" },
-  { id: "home-office",   vibe: "Home Office",    bg: "https://images.unsplash.com/photo-1593476550610-87baa860004a?w=1200&q=80" },
-  { id: "dining-warm",   vibe: "Dining Room",    bg: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1200&q=80" },
-  { id: "minimal-entry", vibe: "Minimal Entry",  bg: "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=1200&q=80" },
+  { id: "living-sofa",   vibe: "Living Room",    bg: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1200&q=80" },
+  { id: "bedroom-calm",  vibe: "Bedroom",        bg: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=80" },
+  { id: "office-clean",  vibe: "Home Office",    bg: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=1200&q=80" },
+  { id: "dining-simple", vibe: "Dining Nook",    bg: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=1200&q=80" },
+  { id: "entry-minimal", vibe: "Minimal Entry",  bg: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80" },
 ];
 
 /* ── Tokens ── */
