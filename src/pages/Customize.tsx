@@ -636,6 +636,61 @@ function FrameSwatch({ frame, on }) {
   );
 }
 
+/* ── Horizontal scroll strip with chevron arrows ── */
+function ScrollStrip({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [canL, setCanL] = useState(false);
+  const [canR, setCanR] = useState(false);
+  const update = () => {
+    const el = ref.current; if (!el) return;
+    setCanL(el.scrollLeft > 4);
+    setCanR(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+  useEffect(() => {
+    update();
+    const el = ref.current; if (!el) return;
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update); ro.observe(el);
+    return () => { el.removeEventListener("scroll", update); ro.disconnect(); };
+  }, []);
+  const nudge = (dir: number) => {
+    const el = ref.current; if (!el) return;
+    el.scrollBy({ left: dir * Math.max(200, el.clientWidth * 0.7), behavior: "smooth" });
+  };
+  const Arrow = ({ side }: { side: "L" | "R" }) => {
+    const show = side === "L" ? canL : canR;
+    if (!show) return null;
+    return (
+      <button onClick={() => nudge(side === "L" ? -1 : 1)}
+        aria-label={side === "L" ? "Scroll left" : "Scroll right"}
+        style={{
+          position:"absolute", top:"50%", [side === "L" ? "left" : "right"]: 4,
+          transform:"translateY(-50%)", zIndex:5,
+          width:32, height:32, borderRadius:"50%", padding:0,
+          background:"rgba(20,20,20,.85)", color:"#fff",
+          border:"1px solid rgba(255,255,255,.22)",
+          boxShadow:"0 4px 14px rgba(0,0,0,.45)",
+          cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+          backdropFilter:"blur(6px)",
+        } as React.CSSProperties}>
+        {side === "L" ? <ChevronLeft size={16}/> : <ChevronRight size={16}/>}
+      </button>
+    );
+  };
+  return (
+    <div style={{ position:"relative" }}>
+      <Arrow side="L"/>
+      <div ref={ref} style={{
+        display:"flex", gap:10, alignItems:"stretch",
+        overflowX:"auto", paddingBottom:2, scrollBehavior:"smooth",
+      }}>
+        {children}
+      </div>
+      <Arrow side="R"/>
+    </div>
+  );
+}
+
 /* ── Room View Panel (staged + upload) ── */
 function RoomViewPanel({
   portraitUrl, frameColor, productType, selected,
@@ -1042,10 +1097,7 @@ function RoomViewPanel({
 
       {/* Footer thumbnail strip — only on Styled Spaces tab */}
       {mode === "staged" && (
-        <div style={{
-          display:"flex", gap:10, alignItems:"stretch",
-          overflowX:"auto", paddingBottom:2,
-        }}>
+        <ScrollStrip>
           {STAGED_ROOMS.map(room => {
             const entry = stagedComposites[room.id];
             const thumb = entry?.url || (roomImageOverrides && roomImageOverrides[room.id]) || room.bg;
@@ -1110,8 +1162,7 @@ function RoomViewPanel({
               </button>
             );
           })}
-
-        </div>
+        </ScrollStrip>
       )}
 
       {sizeGuideOpen && (
