@@ -1454,7 +1454,9 @@ export default function Customize() {
   const [nameFontId,      setNameFontId]      = useState("bold");
   const [nameSizeId,      setNameSizeId]      = useState("md");
   const [nameColorId,     setNameColorId]     = useState("white");
+  const [portraitNameLine2, setPortraitNameLine2] = useState("");
   const [nameCompositing, setNameCompositing] = useState(false);
+  const isPetSession = ((session as any)?.cat === "pets");
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
 
