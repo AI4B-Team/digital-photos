@@ -1597,27 +1597,28 @@ function HomePage({ onGenerate }) {
         backdropFilter:scrolled?"blur(22px)":"none",
         borderBottom:scrolled?`1px solid ${T.border}`:"none",
         transition:"all .4s" }}>
-        <a href="/" aria-label="Real Art home" style={{
-          display:"block", textDecoration:"none", flexShrink:0,
-          background:"#E61919", padding:7, width:140,
-          position:"relative", top:28, /* overlaps nav bottom border */
-        }}>
-          <div style={{ border:"2.5px solid #fff", padding:"6px 18px",
-            display:"flex", flexDirection:"column", alignItems:"center" }}>
-            <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:"2.1rem",
-              fontWeight:900, color:"#fff", letterSpacing:".05em",
-              lineHeight:1, textAlign:"center", display:"block" }}>REAL</span>
-            <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:".52rem",
-              fontWeight:700, letterSpacing:".3em", color:"#fff",
-              textTransform:"uppercase", textAlign:"center",
-              display:"block", marginTop:3 }}>ART</span>
-          </div>
-        </a>
+        <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+          <a href="/" aria-label="Real Art home" style={{
+            display:"block", textDecoration:"none", flexShrink:0,
+            background:"#E61919", padding:7, width:140,
+            position:"relative", top:28, /* overlaps nav bottom border */
+          }}>
+            <div style={{ border:"2.5px solid #fff", padding:"6px 18px",
+              display:"flex", flexDirection:"column", alignItems:"center" }}>
+              <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:"2.1rem",
+                fontWeight:900, color:"#fff", letterSpacing:".05em",
+                lineHeight:1, textAlign:"center", display:"block" }}>REAL</span>
+              <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:".52rem",
+                fontWeight:700, letterSpacing:".3em", color:"#fff",
+                textTransform:"uppercase", textAlign:"center",
+                display:"block", marginTop:3 }}>ART</span>
+            </div>
+          </a>
 
-        {/* Language switcher — right of logo */}
-        <div style={{ marginLeft:16, display:"flex", alignItems:"center" }}>
+          {/* Language switcher — immediate right of logo */}
           <LanguageSwitcher />
         </div>
+
 
         <div className="hid" style={{ display:"flex", gap:44, alignItems:"center",
           position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)" }}>
