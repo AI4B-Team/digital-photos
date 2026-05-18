@@ -45,7 +45,7 @@ export default function GiftCards() {
         <div style={{ display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:28 }}>
           {/* Form */}
           <div style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
-            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, fontWeight:800, color:INK, margin:"0 0 14px" }}>Choose An Amount</h2>
+            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, fontWeight:800, color:INK, margin:"0 0 14px" }}>Choose an amount</h2>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8, marginBottom:14 }}>
               {AMOUNTS.map(a => (
                 <button key={a} onClick={()=>{ setAmount(a); setCustom(""); }} style={{
@@ -58,7 +58,7 @@ export default function GiftCards() {
               ))}
             </div>
             <div style={{ marginBottom:18 }}>
-              <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600 }}>Or Enter A Custom Amount</label>
+              <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600 }}>Or enter a custom amount</label>
               <div style={{ position:"relative", marginTop:6 }}>
                 <span style={{ position:"absolute", left:14, top:11, color:MUTED, fontFamily:"'Poppins',sans-serif" }}>$</span>
                 <input type="number" min={10} max={1000} value={custom} onChange={e=>setCustom(e.target.value)} placeholder="100"
@@ -66,11 +66,11 @@ export default function GiftCards() {
               </div>
             </div>
 
-            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, fontWeight:800, color:INK, margin:"6px 0 14px" }}>Personalize It</h2>
+            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:18, fontWeight:800, color:INK, margin:"6px 0 14px" }}>Personalize it</h2>
             {[
               ["From", from, setFrom, "Your name", "text"],
               ["To", to, setTo, "Recipient's name", "text"],
-              ["Recipient Email", recipientEmail, setRecipientEmail, "they@email.com", "email"],
+              ["Recipient email", recipientEmail, setRecipientEmail, "they@email.com", "email"],
             ].map(([l, v, s, ph, t]) => (
               <div key={l as string} style={{ marginBottom:12 }}>
                 <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600 }}>{l as string}</label>
@@ -79,12 +79,12 @@ export default function GiftCards() {
               </div>
             ))}
             <div style={{ marginBottom:12 }}>
-              <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600 }}>Personal Message</label>
+              <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600 }}>Personal message</label>
               <textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Wishing you a beautiful portrait..."
                 style={{ width:"100%", marginTop:6, padding:"11px 14px", borderRadius:10, border:`1px solid ${BORDER}`, fontFamily:"'Poppins',sans-serif", fontSize:14, minHeight:80, resize:"vertical", outline:"none" }}/>
             </div>
             <div style={{ marginBottom:18 }}>
-              <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600 }}>Deliver On (Leave Blank For Instant)</label>
+              <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600 }}>Deliver on (leave blank for instant)</label>
               <input type="date" value={deliverOn} onChange={e=>setDeliverOn(e.target.value)}
                 style={{ width:"100%", marginTop:6, padding:"11px 14px", borderRadius:10, border:`1px solid ${BORDER}`, fontFamily:"'Poppins',sans-serif", fontSize:14, outline:"none" }}/>
             </div>
@@ -94,12 +94,15 @@ export default function GiftCards() {
               border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
               boxShadow:"0 8px 22px rgba(230,25,25,.28)",
               display:"flex", alignItems:"center", justifyContent:"center", gap:8,
-            }}><Gift size={16}/> Purchase Gift Card · ${displayAmount || 0}</button>
+            }}><Gift size={16}/> Purchase gift card · ${displayAmount || 0}</button>
 
-            <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:11.5, color:MUTED, marginTop:10, textAlign:"center" }}>
-              Note: Gift cards are currently fulfilled manually within 1 business day. We're building a fully automated flow soon.
+            <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:11.5, color:MUTED, marginTop:10, textAlign:"center", lineHeight:1.6 }}>
+              Note: Gift cards are currently fulfilled manually within 1 business day.
+              <br/>
+              We're building a fully automated flow soon.
             </p>
           </div>
+
 
           {/* Preview */}
           <div>
@@ -136,7 +139,7 @@ export default function GiftCards() {
             </div>
 
             <div style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14, padding:20, marginBottom:14 }}>
-              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>They Can Use It For</h3>
+              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>They can use it for</h3>
               {[
                 "AI portrait generation in 6 styles",
                 "Fine art print",
