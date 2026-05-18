@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw, Home, Upload, Info } from "lucide-react";
 import { TEMPLATES } from "./Index";
-import PreviewsDrawer from "@/components/PreviewsDrawer";
+
 import SiteHeader from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
@@ -1563,7 +1563,7 @@ export default function Customize() {
 
   // Cart drawer + extra pack line items
   const [cartOpen, setCartOpen]   = useState(false);
-  const [previewsOpen, setPreviewsOpen] = useState(false);
+  
   const [addedPacks, setAddedPacks] = useState<Array<{ id: string; packId: string; name: string; price: number; qty: number }>>([]);
 
   // Cart items: snapshots of configured prints the user has explicitly added.
@@ -2777,8 +2777,6 @@ export default function Customize() {
         current="customize"
         onBack={() => navigate("/")}
         total={headerTotal}
-        showPreviews
-        onPreviews={() => setPreviewsOpen(true)}
         showCart
         onCart={() => setCartOpen(true)}
         cartCount={cartCount}
@@ -4790,11 +4788,6 @@ export default function Customize() {
           }}>Close</button>
         </div>
       )}
-      <PreviewsDrawer
-        open={previewsOpen}
-        onClose={() => setPreviewsOpen(false)}
-        defaultEmail={(session as any)?.email || ""}
-      />
 
       {showAdminPanel && (
         <div style={{
