@@ -27,7 +27,7 @@ const NAV = [
 
 const CSS = `
 @keyframes shFade { from{opacity:0} to{opacity:1} }
-@keyframes shSlideIn { from{transform:translateX(-100%)} to{transform:translateX(0)} }
+@keyframes shSlideIn { from{transform:translateX(100%)} to{transform:translateX(0)} }
 .sh-link{display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;cursor:pointer;background:none;border:none;width:100%;text-align:left;transition:background .15s}
 .sh-link:hover{background:#FAFAFA}
 .sh-pill{width:36px;height:36px;border-radius:10px;background:rgba(230,25,25,.10);color:${RED};display:flex;align-items:center;justify-content:center;flex-shrink:0}
