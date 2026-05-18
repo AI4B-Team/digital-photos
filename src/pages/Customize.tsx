@@ -1308,22 +1308,27 @@ export default function Customize() {
     || PLACEHOLDER;
 
   // Multi-image cart: each item is an independent print with its own config
-  const makeItem = (overrides = {}) => ({
-    id: crypto.randomUUID(),
-    photoUrl: initialPortraitUrl,
-    style: styleId,
-    productType: "classic-frame",
-    frameColor:  "black",
-    canvasEdge:  "gallery",
-    sku:         "GLOBAL-CFPM-8X10",
-    frame:       "black",      // legacy — derived, drives visual preview
-    size:        "8x10",       // new id format
-    effect:      "original",
-    border:      "shallow",
-    borderColor: "soft-white",
-    qty:         1,
-    ...overrides,
-  });
+  const makeItem = (overrides: any = {}) => {
+    const pt = overrides.productType || "classic-frame";
+    const fc = overrides.frameColor || "black";
+    return {
+      id: crypto.randomUUID(),
+      photoUrl: initialPortraitUrl,
+      style: styleId,
+      productType: pt,
+      frameColor:  fc,
+      canvasEdge:  "gallery",
+      sku:         "GLOBAL-CFPM-8X10",
+      // BUG-11: derive legacy `frame` from productType so previews don't get stuck on "black"
+      frame:       toFrameId(pt, fc),
+      size:        "8x10",
+      effect:      "original",
+      border:      "shallow",
+      borderColor: "soft-white",
+      qty:         1,
+      ...overrides,
+    };
+  };
 
 
   const [items, setItems] = useState(() => {
