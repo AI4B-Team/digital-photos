@@ -1419,6 +1419,7 @@ function HomePage({ onGenerate }) {
   const [drag,    setDrag]    = useState(false);
   const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
   const [addSlot, setAddSlot] = useState<"primary"|"extra">("primary");
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [heroNames, setHeroNames] = useState<string[]>([""]);
   const totalPhotos = (photo ? 1 : 0) + extraPhotos.length;
   useEffect(() => {
