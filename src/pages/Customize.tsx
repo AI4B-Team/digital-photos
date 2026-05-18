@@ -717,12 +717,8 @@ function RoomViewPanel({
     try { localStorage.setItem("cz-room-hint-dismissed", "1"); } catch {}
   };
 
-  const sizeMap: Record<string, number> = {
-    "8x8":1, "10x10":1, "12x12":1, "16x16":1,
-    "8x10":0.80, "8x11":0.73, "10x8":1.25, "11x14":0.79,
-    "12x16":0.75, "16x20":0.80, "18x24":0.75, "20x24":0.83, "24x36":0.67,
-  };
-  const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
+  const sizeDef = getSizeDef(selected);
+  const aspectRatio = Math.max(0.55, Math.min(1.45, (sizeDef?.w || 0.75) / (sizeDef?.h || 1)));
 
   // ── Dynamic size scaling: drive wall % from the actual print dimensions ──
   // Larger prints visibly appear larger on the wall (perceived realism + upsell).
@@ -732,8 +728,9 @@ function RoomViewPanel({
     if (!m) return 16;
     return Math.max(parseInt(m[1], 10), parseInt(m[2], 10));
   })();
-  // Map 8" → 26%, 36" → 48% of wall width — smooth, realistic curve.
-  const targetWallW = Math.round(Math.max(24, Math.min(50, 22 + longestInches * 0.78)));
+  // Width is driven only by the selected print size, never by the selected room/style.
+  // The same print now keeps the same frame dimensions across every staged space.
+  const targetWallW = Math.round(Math.max(17, Math.min(30, 13 + longestInches * 0.45)));
   useEffect(() => {
     setPortraitDragPos((p: any) => (p.w === targetWallW ? p : { ...p, w: targetWallW }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -756,31 +753,27 @@ function RoomViewPanel({
   const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
   const stagedLoading = false;
 
-  // Staged: snap to the room's exact frame coords by default, but allow drag overrides per room.
+  // Staged: each room only provides the ideal center point. Size/aspect stay locked
+  // to the selected print so switching rooms never resizes or distorts the frame.
   const isStaged = mode === "staged";
   const [stagedOverrides, setStagedOverrides] = useState<Record<string, { x: number; y: number }>>({});
   const stagedOv = isStaged && selectedRoomKey ? stagedOverrides[selectedRoomKey] : undefined;
 
-  const frameX   = isStaged ? (stagedOv?.x ?? stagedRoomDef?.frameX ?? 38) : portraitDragPos.x;
-  const frameY   = isStaged ? (stagedOv?.y ?? stagedRoomDef?.frameY ?? 2)  : portraitDragPos.y;
-  const frameW   = isStaged ? (stagedRoomDef?.frameW ?? 24) : portraitDragPos.w;
-  const frameH   = isStaged ? (stagedRoomDef?.frameH ?? 44) : undefined;
+  const roomCenterX = (stagedRoomDef?.frameX ?? 38) + ((stagedRoomDef?.frameW ?? targetWallW) / 2);
+  const roomCenterY = (stagedRoomDef?.frameY ?? 8) + ((stagedRoomDef?.frameH ?? 40) / 2);
+  const frameW   = isStaged ? targetWallW : portraitDragPos.w;
+  const frameH   = undefined;
+  const defaultStagedX = Math.max(2, Math.min(98 - frameW, roomCenterX - frameW / 2));
+  const defaultStagedY = Math.max(2, Math.min(84, roomCenterY - 18));
 
-  // Size-responsive scale: small prints show smaller, larger prints fill more of the frame
-  const sizeScale = Math.max(0.82, Math.min(1.12, 0.7 + longestInches * 0.015));
-  const scaledW   = isStaged ? frameW * sizeScale : frameW;
-  const scaledH   = isStaged && frameH ? frameH * sizeScale : undefined;
-  const offsetX   = isStaged ? frameX + (frameW - scaledW) / 2 : frameX;
-  const offsetY   = isStaged && frameH ? frameY + (frameH - (scaledH ?? 0)) / 2 : frameY;
-
-  const wallX = offsetX;
-  const wallY = offsetY;
-  const wallW = scaledW;
+  const wallX = isStaged ? (stagedOv?.x ?? defaultStagedX) : portraitDragPos.x;
+  const wallY = isStaged ? (stagedOv?.y ?? defaultStagedY) : portraitDragPos.y;
+  const wallW = frameW;
 
   const onDragStart = (e: any) => {
     e.preventDefault();
     setIsDragging(true);
-    setDragStart({ mx: e.clientX, my: e.clientY, px: frameX, py: frameY });
+    setDragStart({ mx: e.clientX, my: e.clientY, px: wallX, py: wallY });
   };
   const onDragMove = (e: any) => {
     if (!isDragging || !roomContainerRef.current) return;
@@ -1043,8 +1036,7 @@ function RoomViewPanel({
                 left:   `${wallX}%`,
                 top:    `${wallY}%`,
                 width:  `${wallW}%`,
-                height: scaledH ? `${scaledH}%` : undefined,
-                aspectRatio: !scaledH ? `${1} / ${aspectRatio || 0.75}` : undefined,
+                aspectRatio: `${aspectRatio || 0.75} / 1`,
                 cursor: isDragging ? "grabbing" : "grab",
                 overflow:"hidden",
                 boxShadow: isStaged
