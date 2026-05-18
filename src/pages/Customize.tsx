@@ -10,6 +10,16 @@ import SiteHeader from "@/components/SiteHeader";
 import affirmLogo from "@/assets/payment-logos/affirm-reference-cropped.png";
 import klarnaLogo from "@/assets/payment-logos/klarna.svg";
 import afterpayLogo from "@/assets/payment-logos/afterpay.png";
+import sizeGuideImg from "@/assets/size-guide.png";
+
+/* ── Staged Room Presets (5 vibes) ── */
+const STAGED_ROOMS = [
+  { id: "modern-living", vibe: "Modern Living",  bg: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=80" },
+  { id: "cozy-bedroom",  vibe: "Cozy Bedroom",   bg: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&q=80" },
+  { id: "home-office",   vibe: "Home Office",    bg: "https://images.unsplash.com/photo-1593476550610-87baa860004a?w=1200&q=80" },
+  { id: "dining-warm",   vibe: "Dining Room",    bg: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1200&q=80" },
+  { id: "minimal-entry", vibe: "Minimal Entry",  bg: "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=1200&q=80" },
+];
 
 /* ── Tokens ── */
 const RED = "#E61919";
