@@ -1042,27 +1042,47 @@ function RoomViewPanel({
                     width:"100%", height:"100%", objectFit:"cover", display:"block",
                     filter: effectDef.filter,
                   }}/>
-                {!isStaged && namePosition !== "none" && portraitName && (
+                {!isStaged && namePosition !== "none" && (portraitName || portraitNameLine2) && (
                   <div style={{
                     position:"absolute", left:0, right:0, zIndex:3,
                     top:    namePosition === "top"    ? "10%" : "auto",
                     bottom: namePosition === "bottom" ? "10%" : "auto",
                     textAlign:"center", pointerEvents:"none",
+                    display:"flex", flexDirection:"column", alignItems:"center", gap:"0.15em",
                   }}>
-                    <span style={{
-                      display:"inline-block",
-                      color: nameColorHex,
-                      fontSize: `clamp(10px, ${nameSizeCss}, 80px)`,
-                      fontFamily: nameFontFam,
-                      fontWeight: nameFontId === "italic" ? 600 : 700,
-                      fontStyle:  nameFontId === "italic" ? "italic" : "normal",
-                      letterSpacing: ".18em",
-                      textShadow: (nameColorId === "white" || nameColorId === "cream")
-                        ? "0 2px 8px rgba(0,0,0,0.55)"
-                        : "0 2px 8px rgba(255,255,255,0.35)",
-                    }}>
-                      {portraitName.toUpperCase()}
-                    </span>
+                    {portraitName && (
+                      <span style={{
+                        display:"inline-block",
+                        color: nameColorHex,
+                        fontSize: `clamp(10px, ${nameSizeCss}, 80px)`,
+                        fontFamily: nameFontFam,
+                        fontWeight: nameFontDef.weight,
+                        fontStyle:  nameFontDef.italic ? "italic" : "normal",
+                        letterSpacing: nameFontDef.id === "script" || nameFontDef.id === "vibes" ? "0.02em" : ".18em",
+                        textShadow: (nameColorId === "white" || nameColorId === "cream")
+                          ? "0 2px 8px rgba(0,0,0,0.55)"
+                          : "0 2px 8px rgba(255,255,255,0.35)",
+                      }}>
+                        {isPetSession ? portraitName.toUpperCase() : portraitName}
+                      </span>
+                    )}
+                    {!isPetSession && portraitNameLine2 && (
+                      <span style={{
+                        display:"inline-block",
+                        color: nameColorHex,
+                        fontSize: `clamp(8px, calc(${nameSizeCss} * 0.72), 60px)`,
+                        fontFamily: nameFontFam,
+                        fontWeight: nameFontDef.weight,
+                        fontStyle:  nameFontDef.italic ? "italic" : "normal",
+                        letterSpacing: nameFontDef.id === "script" || nameFontDef.id === "vibes" ? "0.02em" : ".14em",
+                        opacity: 0.9,
+                        textShadow: (nameColorId === "white" || nameColorId === "cream")
+                          ? "0 2px 8px rgba(0,0,0,0.55)"
+                          : "0 2px 8px rgba(255,255,255,0.35)",
+                      }}>
+                        {portraitNameLine2}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
