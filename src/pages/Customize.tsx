@@ -40,7 +40,7 @@ const STAGED_ROOMS = [
     subtitle: "Best for dramatic portraits",
     bg: roomDarkMoody,
     recommendedFor: ["royal", "cinematic", "fantasy"],
-    ...FRAME_POS,
+    frameX: 37.0, frameY: 10.0, frameW: 20.0, frameH: 41.5,
   },
   {
     id: "bright-edit",
