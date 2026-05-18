@@ -857,7 +857,6 @@ function RoomViewPanel({
         {showPortraitOverlay && (
           <div
             onMouseDown={onDragStart}
-            onWheel={onWheel}
             style={{
               position:"absolute",
               left:   `${wallX}%`,
@@ -907,9 +906,6 @@ function RoomViewPanel({
             }}>
               <span style={{ fontSize:20, fontWeight:700, lineHeight:1 }}>
                 ✦ Drag to move
-              </span>
-              <span style={{ fontSize:15, opacity:.85, lineHeight:1 }}>
-                scroll to resize
               </span>
             </div>
 
