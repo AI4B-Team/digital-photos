@@ -890,7 +890,7 @@ export default function Customize() {
   const [errorMsg, setErrorMsg]       = useState("");
   const [aiOpen, setAiOpen]           = useState(false);
   const [aiInput, setAiInput]         = useState("");
-  const [mpSection, setMpSection]     = useState<"" | "ai" | "concierge">("");
+  const [mpSection, setMpSection]     = useState<"" | "regenerate" | "ai" | "concierge">("regenerate");
   const [conciergeNote, setConciergeNote] = useState("");
   useEffect(() => {
     try {
@@ -1642,14 +1642,11 @@ export default function Customize() {
               </button>
               <div className="cz-tool-divider"/>
               <span style={{ position:"relative", display:"inline-flex" }}>
-                <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("ai"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
+                <button ref={(el) => { if (el) (window as any).__aiBtn = el; }} className={`cz-tool ${aiOpen?"on":""}`} onClick={(e) => { (window as any).__aiBtn = e.currentTarget; setAiOpen(v => !v); setMpSection("regenerate"); }} data-tip="Make It Perfect" aria-label="Make It Perfect" style={{ color: RED, background: "#FDECEC", borderRadius: 10 }}>
                   <Sparkles size={18}/>
                 </button>
               </span>
               <div className="cz-tool-divider"/>
-              <button className="cz-tool" onClick={handleRetry} disabled={busy} data-tip="Regenerate" aria-label="Regenerate">
-                <RefreshCw size={17}/>
-              </button>
               <button
                 className="cz-tool"
                 onClick={() => setItems(prev => prev.map(i => i.id === item.id
@@ -1727,6 +1724,57 @@ export default function Customize() {
                 background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14,
                 boxShadow:"none", padding:14,
               }}>
+                      {/* Regenerate */}
+                      <div style={{
+                        border:`1px solid ${mpSection==="regenerate" ? RED : BORDER}`, borderRadius:12,
+                        padding:14, marginBottom:10, background:"#fff",
+                      }}>
+                        <button onClick={() => setMpSection(mpSection==="regenerate" ? "" : "regenerate")}
+                          style={{ width:"100%", background:"transparent", border:"none", cursor:"pointer",
+                            display:"flex", alignItems:"center", gap:12, textAlign:"left", padding:0 }}>
+                          <span style={{ width:36, height:36, borderRadius:"50%",
+                            background:"#FDECEC", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                            <RefreshCw size={16} color={RED}/>
+                          </span>
+                          <div style={{ flex:1, minWidth:0 }}>
+                            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                              <span style={{ fontSize:14, fontWeight:700, color:INK,
+                                fontFamily:"'Poppins',sans-serif" }}>Regenerate</span>
+                              <span style={{ fontSize:9, fontWeight:700, color:RED,
+                                background:"#FDECEC", padding:"2px 6px", borderRadius:6,
+                                letterSpacing:".08em", textTransform:"uppercase" }}>New Take</span>
+                            </div>
+                            <div style={{ fontSize:12, color:MUTED, marginTop:2 }}>
+                              Get a fresh version in the same style.
+                            </div>
+                          </div>
+                        </button>
+                        {mpSection === "regenerate" && (
+                          <div style={{ marginTop:14, paddingTop:14, borderTop:`1px solid ${BORDER}` }}>
+                            <div style={{ fontSize:12, color:INK, marginBottom:12, lineHeight:1.5 }}>
+                              Not quite right? Generate a brand new version of this portrait — same style, fresh result.
+                            </div>
+                            <button
+                              disabled={busy}
+                              onClick={() => {
+                                setAiOpen(false);
+                                setMpSection("regenerate");
+                                handleRetry();
+                              }}
+                              style={{
+                                width:"100%", padding:"12px 0",
+                                background:RED, color:"#fff", border:"none", borderRadius:10,
+                                fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:13,
+                                cursor: busy ? "wait" : "pointer",
+                                display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                                opacity: busy ? .5 : 1,
+                              }}>
+                              <RefreshCw size={14}/> {busy ? "Regenerating…" : "Regenerate Now"}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
                       {/* AI quick fix */}
                       <div style={{
                         border:`1px solid ${mpSection==="ai" ? RED : BORDER}`, borderRadius:12,
