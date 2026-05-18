@@ -686,10 +686,11 @@ function RoomViewPanel({
   // ── Resolve background: staged & user always raw (so right-panel changes show live).
   // AI mode keeps the realistic composite since the user explicitly generates it. ──
   const stagedRoomDef = STAGED_ROOMS.find(r => r.id === selectedRoomKey);
+  const stagedBg = (roomImageOverrides && stagedRoomDef && roomImageOverrides[stagedRoomDef.id]) || stagedRoomDef?.bg;
   const bgUrl =
     mode === "ai"   ? (aiRoomUrl || userRoomUrl)
     : mode === "user" ? userRoomUrl
-    : stagedRoomDef?.bg;
+    : stagedBg;
   const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
   const stagedLoading = false;
 
