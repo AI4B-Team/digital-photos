@@ -1551,6 +1551,15 @@ export default function Customize() {
   const isPetSession = ((session as any)?.cat === "pets");
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
+  // BUG-12: when the selected item changes, restore its canvas float-frame state
+  useEffect(() => {
+    const sel = items.find((i: any) => i.id === selectedId);
+    if (sel?.productType === "canvas") {
+      setCanvasFrame(!!sel.canvasFloatFrame);
+      setCanvasFrameColor(sel.frameColor || "black");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId]);
 
   // Cart drawer + extra pack line items
   const [cartOpen, setCartOpen]   = useState(false);
