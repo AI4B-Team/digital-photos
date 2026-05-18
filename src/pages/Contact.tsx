@@ -53,7 +53,7 @@ export default function Contact() {
           <button onClick={()=>navigate("/")} style={{
             marginTop:24, padding:"13px 26px", borderRadius:12, background:RED, color:"#fff", border:"none", cursor:"pointer",
             fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
-          }}>Back To Home</button>
+          }}>Back to home</button>
         </div>
       </div>
     );
@@ -68,7 +68,7 @@ export default function Contact() {
           <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:11, color:RED, fontWeight:700, letterSpacing:".22em", marginBottom:10 }}>
             ✉️ CONTACT SUPPORT
           </div>
-          <h1 style={{ fontFamily:"'Poppins',sans-serif", fontSize:42, fontWeight:800, color:INK, margin:0, letterSpacing:"-.02em" }}>How Can We Help?</h1>
+          <h1 style={{ fontFamily:"'Poppins',sans-serif", fontSize:42, fontWeight:800, color:INK, margin:0, letterSpacing:"-.02em" }}>How can we help?</h1>
           <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:15, color:MUTED, marginTop:10 }}>
             Real humans. Real fast. Real Art support.
           </p>
@@ -77,9 +77,9 @@ export default function Contact() {
         {/* Stats */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(200px,1fr))", gap:14, marginBottom:32 }}>
           {[
-            [Clock, "Response Time", "2–4 hours"],
-            [Mail, "Email Support", "Mon–Fri 9am–6pm EST"],
-            [MessageCircle, "Live Chat", "Coming soon"],
+            [Clock, "Response time", "2–4 hours"],
+            [Mail, "Email support", "Mon–Fri 9am–6pm EST"],
+            [MessageCircle, "Live chat", "Coming soon"],
             [Heart, "Satisfaction", "100% guaranteed"],
           ].map(([Icon, l, v], i)=>(
             <div key={i} style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14, padding:18, textAlign:"center" }}>
@@ -93,12 +93,12 @@ export default function Contact() {
         <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr", gap:24 }}>
           {/* Form */}
           <form onSubmit={submit} style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
-            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, fontWeight:800, color:INK, margin:"0 0 18px" }}>Send Us A Message</h2>
+            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, fontWeight:800, color:INK, margin:"0 0 18px" }}>Send us a message</h2>
 
             {[
-              ["name","Full Name *","text","Your name"],
-              ["email","Email Address *","email","you@email.com"],
-              ["order_id","Order Number (optional)","text","Helps us find your order faster"],
+              ["name","Full name *","text","Your name"],
+              ["email","Email address *","email","you@email.com"],
+              ["order_id","Order number (optional)","text","Helps us find your order faster"],
             ].map(([k,l,t,ph])=>(
               <div key={k} style={{ marginBottom:14 }}>
                 <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600, letterSpacing:".06em" }}>{l}</label>
@@ -131,13 +131,13 @@ export default function Contact() {
               width:"100%", padding:"14px 18px", borderRadius:12, background:RED, color:"#fff",
               border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
               boxShadow:"0 8px 22px rgba(230,25,25,.28)", opacity: sending ? .7 : 1,
-            }}>{sending ? "Sending..." : "Send Message"}</button>
+            }}>{sending ? "Sending..." : "Send message"}</button>
           </form>
 
           {/* Sidebar */}
           <div>
             <div style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14, padding:20, marginBottom:14 }}>
-              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>Before You Write</h3>
+              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>Before you write</h3>
               {[
                 ["Need tracking?", "/tracking"],
                 ["Want a refund?", "/refund"],
@@ -153,14 +153,14 @@ export default function Contact() {
 
             <div style={{ background:`linear-gradient(135deg, ${RED} 0%, #B81313 100%)`, color:"#fff", borderRadius:14, padding:20, marginBottom:14 }}>
               <Shield size={22} style={{ marginBottom:10 }}/>
-              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:15, fontWeight:800, margin:"0 0 6px" }}>Satisfaction Guarantee</h3>
+              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:15, fontWeight:800, margin:"0 0 6px" }}>Satisfaction guarantee</h3>
               <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:12.5, opacity:.9, margin:0, lineHeight:1.5 }}>
                 Not happy? We'll redo it free or refund you fully. No fuss.
               </p>
             </div>
 
             <div style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14, padding:20 }}>
-              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>Follow Us</h3>
+              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, fontWeight:800, color:INK, margin:"0 0 12px" }}>Follow us</h3>
               <a href="https://instagram.com/realartportraits" target="_blank" style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 0", color:INK, textDecoration:"none", fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:500 }}>
                 <Instagram size={18} color="#E4405F"/> @realartportraits
               </a>
