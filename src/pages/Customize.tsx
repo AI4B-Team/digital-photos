@@ -48,7 +48,7 @@ const STAGED_ROOMS = [
     subtitle: "Perfect for elegant interiors",
     bg: roomBrightEdit,
     recommendedFor: ["renaissance", "minimal"],
-    ...FRAME_POS,
+    frameX: 40.5, frameY: 20.0, frameW: 19.0, frameH: 41.0,
   },
   {
     id: "warm-organic",
