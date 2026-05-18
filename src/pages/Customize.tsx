@@ -4067,6 +4067,28 @@ export default function Customize() {
           `}</style>
         </div>
       )}
+      {sizeGuideModalOpen && (
+        <div onClick={() => setSizeGuideModalOpen(false)} style={{
+          position:"fixed", inset:0, zIndex:10000,
+          background:"rgba(0,0,0,.85)", display:"flex",
+          alignItems:"center", justifyContent:"center", padding:24, cursor:"zoom-out",
+        }}>
+          <img src={sizeGuideImg} alt="Size guide"
+            onClick={e => e.stopPropagation()}
+            style={{
+              maxWidth:"min(900px, 95vw)", maxHeight:"90vh",
+              objectFit:"contain", borderRadius:8,
+              boxShadow:"0 20px 60px rgba(0,0,0,.6)", background:"#fff",
+            }}/>
+          <button onClick={() => setSizeGuideModalOpen(false)} style={{
+            position:"absolute", top:18, right:18,
+            background:"rgba(255,255,255,.12)", border:"1px solid rgba(255,255,255,.25)",
+            color:"#fff", borderRadius:8, padding:"8px 14px",
+            fontSize:13, fontWeight:600, cursor:"pointer",
+            fontFamily:"'Poppins',sans-serif",
+          }}>Close</button>
+        </div>
+      )}
       <PreviewsDrawer
         open={previewsOpen}
         onClose={() => setPreviewsOpen(false)}
