@@ -3538,9 +3538,9 @@ export default function Customize() {
                           <>
                             <div style={{
                               fontSize:12, color:MUTED, textAlign:"center",
-                              marginBottom:10, fontStyle:"italic",
+                              marginTop:18, marginBottom:18, fontStyle:"italic",
                               fontFamily:"'Playfair Display','Poppins',serif",
-                              letterSpacing:".01em",
+                              letterSpacing:".02em", opacity:.72, lineHeight:1.5,
                             }}>
                               A timeless piece made uniquely for you.
                             </div>
