@@ -1953,7 +1953,7 @@ export default function Customize() {
                                 letterSpacing:".08em", textTransform:"uppercase" }}>New Take</span>
                             </div>
                             <div style={{ fontSize:12, color:MUTED, marginTop:2 }}>
-                              Get a fresh version in the same style.
+                              Get a new version instantly
                             </div>
                           </div>
                         </button>
