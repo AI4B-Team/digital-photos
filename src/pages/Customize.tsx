@@ -679,23 +679,19 @@ function RoomViewPanel({
       gap:14, background:"#0A0A0A", borderRadius:16, padding:18, color:"#fff",
       border:"1px solid rgba(255,255,255,.08)",
     }}>
-      {/* Header: Back + Title */}
-      <div style={{ display:"flex", gap:12, alignItems:"center" }}>
+      {/* Toolbar: Back + tabs + upload (single row) */}
+      <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
         <button
           onClick={() => setRoomView(false)}
           style={{
-            padding:"7px 13px", borderRadius:999, fontSize:12, fontWeight:600,
+            padding:"8px 14px", borderRadius:8, fontSize:12, fontWeight:700,
             cursor:"pointer", fontFamily:"'Poppins',sans-serif",
             background:"rgba(255,255,255,.08)", color:"#fff",
-            border:"1px solid rgba(255,255,255,.14)",
+            border:"1px solid rgba(255,255,255,.18)",
             display:"inline-flex", alignItems:"center", gap:6,
           }}>
-          <ChevronLeft size={14}/> Back to portrait
+          <ChevronLeft size={14}/> Back
         </button>
-      </div>
-
-      {/* Tab bar + upload (top-right) */}
-      <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
         {([
           { k:"staged", label:"Staged Rooms" },
           { k:"user",   label:"My Room" },
