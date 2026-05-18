@@ -2030,6 +2030,7 @@ export default function Customize() {
           <div aria-hidden="true" style={{ width: aiOpen && isSelected ? 0 : 48, flexShrink:0, visibility:"hidden" }}/>
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, minWidth:0, flex:"0 1 auto" }}>
           <div style={{
+            position: "relative",
             background: isCanvas
               ? "#fff"
               : isFrameless
@@ -2039,22 +2040,30 @@ export default function Customize() {
                     radial-gradient(ellipse at center, ${actualWood} 60%, color-mix(in srgb, ${actualWood} 85%, black) 100%),
                     ${actualWood}
                   `,
-            padding: (isFrameless ? 6 : woodPad + 6),
-            borderRadius: isFrameless ? (isAcrylic ? 4 : 12) : 2,
+            padding: isAcrylic ? 0 : (isFrameless ? 6 : woodPad + 6),
+            borderRadius: isAcrylic ? 2 : (isFrameless ? 12 : 2),
             boxShadow: isAcrylic
-              ? "0 18px 48px rgba(0,0,0,.45), 0 6px 16px rgba(0,0,0,.30), inset 0 0 0 1px rgba(255,255,255,.20), inset 0 1px 0 rgba(255,255,255,.35)"
+              ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.12)"
               : isFrameless
                 ? "none"
                 : "0 0 0 1px rgba(0,0,0,.30)",
+            borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
+            borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
             filter: "none",
             display: "inline-block",
             flex:"0 1 auto",
             minWidth:0,
             maxWidth: "100%",
-            border: "none",
             outline: "none",
             transition: "box-shadow .3s ease",
           }}>
+            {isAcrylic && (
+              <div aria-hidden="true" style={{
+                position:"absolute", inset:0, zIndex:5, pointerEvents:"none",
+                background:"linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%)",
+                borderRadius: 2,
+              }}/>
+            )}
             <div style={{
               background: bd.px === 0 ? "transparent" : bcd.bg,
               padding: bd.px,
