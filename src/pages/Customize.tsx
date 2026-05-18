@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw, Home, Upload } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw, Home, Upload, Info } from "lucide-react";
 import { TEMPLATES } from "./Index";
 import PreviewsDrawer from "@/components/PreviewsDrawer";
 import SiteHeader from "@/components/SiteHeader";
@@ -694,10 +694,13 @@ function RoomViewPanel({
   const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
   const stagedLoading = false;
 
-  // Staged: snap to the room's exact frame coords. My Room / AI: draggable.
+  // Staged: snap to the room's exact frame coords by default, but allow drag overrides per room.
   const isStaged = mode === "staged";
-  const frameX   = isStaged ? (stagedRoomDef?.frameX ?? 38) : portraitDragPos.x;
-  const frameY   = isStaged ? (stagedRoomDef?.frameY ?? 2)  : portraitDragPos.y;
+  const [stagedOverrides, setStagedOverrides] = useState<Record<string, { x: number; y: number }>>({});
+  const stagedOv = isStaged && selectedRoomKey ? stagedOverrides[selectedRoomKey] : undefined;
+
+  const frameX   = isStaged ? (stagedOv?.x ?? stagedRoomDef?.frameX ?? 38) : portraitDragPos.x;
+  const frameY   = isStaged ? (stagedOv?.y ?? stagedRoomDef?.frameY ?? 2)  : portraitDragPos.y;
   const frameW   = isStaged ? (stagedRoomDef?.frameW ?? 24) : portraitDragPos.w;
   const frameH   = isStaged ? (stagedRoomDef?.frameH ?? 44) : undefined;
 
@@ -715,21 +718,24 @@ function RoomViewPanel({
   const onDragStart = (e: any) => {
     e.preventDefault();
     setIsDragging(true);
-    setDragStart({ mx:e.clientX, my:e.clientY, px:portraitDragPos.x, py:portraitDragPos.y });
+    setDragStart({ mx: e.clientX, my: e.clientY, px: frameX, py: frameY });
   };
   const onDragMove = (e: any) => {
     if (!isDragging || !roomContainerRef.current) return;
     const rect = roomContainerRef.current.getBoundingClientRect();
     const dx = ((e.clientX - dragStart.mx) / rect.width) * 100;
     const dy = ((e.clientY - dragStart.my) / rect.height) * 100;
-    setPortraitDragPos((p: any) => ({
-      ...p,
-      x: Math.max(0, Math.min(80 - wallW, dragStart.px + dx)),
-      y: Math.max(0, Math.min(70, dragStart.py + dy)),
-    }));
+    const nextX = Math.max(0, Math.min(100 - frameW, dragStart.px + dx));
+    const nextY = Math.max(0, Math.min(95 - (frameH ?? 0), dragStart.py + dy));
+    if (isStaged && selectedRoomKey) {
+      setStagedOverrides(prev => ({ ...prev, [selectedRoomKey]: { x: nextX, y: nextY } }));
+    } else {
+      setPortraitDragPos((p: any) => ({ ...p, x: nextX, y: nextY }));
+    }
   };
   const onDragEnd = () => setIsDragging(false);
   const onWheel = (e: any) => {
+    if (isStaged) return;
     setPortraitDragPos((p: any) => ({
       ...p, w: Math.max(10, Math.min(60, p.w - e.deltaY * 0.02)),
     }));
@@ -880,6 +886,24 @@ function RoomViewPanel({
             style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
         )}
 
+        {/* Move/resize hint */}
+        {bgUrl && showPortraitOverlay && (
+          <div style={{
+            position:"absolute", top:10, left:"50%", transform:"translateX(-50%)",
+            display:"inline-flex", alignItems:"center", gap:8,
+            padding:"7px 13px", borderRadius:999,
+            background:"rgba(10,10,10,.62)", color:"#fff",
+            border:"1px solid rgba(255,255,255,.16)",
+            backdropFilter:"blur(8px)",
+            fontFamily:"'Poppins',sans-serif", fontSize:11.5, fontWeight:500,
+            letterSpacing:".02em", pointerEvents:"none", zIndex:4,
+            boxShadow:"0 6px 18px rgba(0,0,0,.35)",
+          }}>
+            <Info size={13} style={{ opacity:.85 }}/>
+            Drag the portrait to reposition · Change size & frame in the right panel
+          </div>
+        )}
+
         {/* Empty state when user/ai tab selected and no upload */}
         {(mode === "user" || mode === "ai") && !userRoomUrl && (
           <label style={{
@@ -941,7 +965,7 @@ function RoomViewPanel({
             : "'Poppins',sans-serif";
           return (
             <div
-              onMouseDown={!isStaged ? onDragStart : undefined}
+              onMouseDown={onDragStart}
               onWheel={!isStaged ? onWheel : undefined}
               style={{
                 position:"absolute",
@@ -950,7 +974,7 @@ function RoomViewPanel({
                 width:  `${wallW}%`,
                 height: scaledH ? `${scaledH}%` : undefined,
                 aspectRatio: !scaledH ? `${1} / ${aspectRatio || 0.75}` : undefined,
-                cursor: !isStaged ? (isDragging ? "grabbing" : "grab") : "default",
+                cursor: isDragging ? "grabbing" : "grab",
                 overflow:"hidden",
                 boxShadow: isStaged
                   ? "4px 8px 24px rgba(0,0,0,0.45)"
