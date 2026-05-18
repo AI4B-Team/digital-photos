@@ -28,6 +28,11 @@ import roomCatalog      from "@/assets/rooms/lux-catalog-clean.jpg";
 // STYLED SPACES — each room carries an emotional subtitle + a
 // "recommendedFor" list of portrait style ids so the system can later
 // surface curated, personalized room matches per artwork.
+// Fixed frame placement applied to EVERY staged room so the artwork
+// always appears in the same spot — centred horizontally, upper-middle,
+// matching the reference Parisian/entryway composition.
+const FRAME_POS = { frameX: 39.0, frameY: 18.0, frameW: 22.0, frameH: 43.0 };
+
 const STAGED_ROOMS = [
   {
     id: "dark-moody",
@@ -35,7 +40,7 @@ const STAGED_ROOMS = [
     subtitle: "Best for dramatic portraits",
     bg: roomDarkMoody,
     recommendedFor: ["royal", "cinematic", "fantasy"],
-    frameX: 38.5, frameY: 2.0, frameW: 23.0, frameH: 42.5,
+    ...FRAME_POS,
   },
   {
     id: "bright-edit",
@@ -43,7 +48,7 @@ const STAGED_ROOMS = [
     subtitle: "Perfect for elegant interiors",
     bg: roomBrightEdit,
     recommendedFor: ["renaissance", "minimal"],
-    frameX: 29.5, frameY: 9.5, frameW: 41.0, frameH: 31.0,
+    ...FRAME_POS,
   },
   {
     id: "warm-organic",
@@ -51,7 +56,7 @@ const STAGED_ROOMS = [
     subtitle: "Ideal for family portraits",
     bg: roomWarmOrganic,
     recommendedFor: ["storybook", "minimal"],
-    frameX: 54.0, frameY: 4.5, frameW: 26.5, frameH: 53.0,
+    ...FRAME_POS,
   },
   {
     id: "modern-minimal",
@@ -59,7 +64,7 @@ const STAGED_ROOMS = [
     subtitle: "Clean contemporary aesthetic",
     bg: roomModernMin,
     recommendedFor: ["minimal", "cinematic"],
-    frameX: 45.5, frameY: 2.0, frameW: 31.5, frameH: 65.5,
+    ...FRAME_POS,
   },
   {
     id: "library-study",
@@ -67,7 +72,7 @@ const STAGED_ROOMS = [
     subtitle: "Luxury masculine atmosphere",
     bg: roomLibrary,
     recommendedFor: ["royal", "renaissance"],
-    frameX: 29.5, frameY: 2.5, frameW: 40.5, frameH: 56.5,
+    ...FRAME_POS,
   },
   {
     id: "entryway",
@@ -75,7 +80,7 @@ const STAGED_ROOMS = [
     subtitle: "A welcoming first impression",
     bg: roomEntryway,
     recommendedFor: ["minimal", "storybook"],
-    frameX: 38.0, frameY: 7.5, frameW: 23.0, frameH: 44.5,
+    ...FRAME_POS,
   },
   {
     id: "bedroom-lux",
@@ -83,7 +88,7 @@ const STAGED_ROOMS = [
     subtitle: "Soft, intimate, romantic",
     bg: roomBedroomLux,
     recommendedFor: ["storybook", "minimal"],
-    frameX: 29.5, frameY: 1.0, frameW: 41.0, frameH: 41.0,
+    ...FRAME_POS,
   },
   {
     id: "coastal",
@@ -91,7 +96,7 @@ const STAGED_ROOMS = [
     subtitle: "Bright, breezy, refined",
     bg: roomCoastal,
     recommendedFor: ["minimal", "storybook"],
-    frameX: 30.5, frameY: 9.0, frameW: 38.5, frameH: 30.0,
+    ...FRAME_POS,
   },
   {
     id: "catalog-clean",
@@ -99,7 +104,7 @@ const STAGED_ROOMS = [
     subtitle: "Editorial gallery feel",
     bg: roomCatalog,
     recommendedFor: ["minimal", "renaissance"],
-    frameX: 27.5, frameY: 7.5, frameW: 45.0, frameH: 37.0,
+    ...FRAME_POS,
   },
 ];
 
