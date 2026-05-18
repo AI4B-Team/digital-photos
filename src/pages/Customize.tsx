@@ -323,98 +323,98 @@ const PRODUCT_TYPES = [
 // Simplified S/M/L sizes per product (drives right-panel product cards)
 const SIMPLE_SIZES: Record<string, { id:string; pid:string; label:string; dim:string; sku:string; price:number; w:number; h:number; best?:boolean }[]> = {
   "print": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-FAP-8x10",  price:77,  w:0.80, h:1 },
-    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-FAP-12x16", price:97,  w:0.75, h:1, best:true },
-    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-FAP-24x36", price:187, w:0.67, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-FAP-8X10",  price:77,  w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-FAP-12X16", price:97,  w:0.75, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-FAP-24X36", price:187, w:0.67, h:1 },
   ],
   "canvas": [
-    { id:"sm", pid:"12x16", label:"Small",  dim:'12 × 16"', sku:"GLOBAL-CAN-12x16", price:117, w:0.75, h:1 },
-    { id:"md", pid:"16x20", label:"Medium", dim:'16 × 20"', sku:"GLOBAL-CAN-16x20", price:137, w:0.80, h:1, best:true },
-    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-CAN-24x36", price:227, w:0.67, h:1 },
+    { id:"sm", pid:"12x16", label:"Small",  dim:'12 × 16"', sku:"GLOBAL-CAN-12X16", price:117, w:0.75, h:1 },
+    { id:"md", pid:"16x20", label:"Medium", dim:'16 × 20"', sku:"GLOBAL-CAN-16X20", price:137, w:0.80, h:1, best:true },
+    { id:"lg", pid:"24x36", label:"Large",  dim:'24 × 36"', sku:"GLOBAL-CAN-24X36", price:227, w:0.67, h:1 },
   ],
   "classic-frame": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-CFPM-8x10",  price:97,  w:0.80, h:1 },
-    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-CFPM-12x16", price:137, w:0.75, h:1, best:true },
-    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-CFPM-8X10",  price:97,  w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-CFPM-12X16", price:137, w:0.75, h:1, best:true },
+    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-CFPM-18X24", price:197, w:0.75, h:1 },
   ],
   "box-frame": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-BOXM-8x10",  price:107, w:0.80, h:1 },
-    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-BOXM-12x16", price:147, w:0.75, h:1, best:true },
-    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-BOXM-8X10",  price:107, w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-BOXM-12X16", price:147, w:0.75, h:1, best:true },
+    { id:"lg", pid:"18x24", label:"Large",  dim:'18 × 24"', sku:"GLOBAL-BOXM-18X24", price:207, w:0.75, h:1 },
   ],
   "acrylic": [
-    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-MOU-ACRY-8x10",  price:147, w:0.80, h:1 },
-    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-MOU-ACRY-12x16", price:187, w:0.75, h:1, best:true },
-    { id:"lg", pid:"16x20", label:"Large",  dim:'16 × 20"', sku:"GLOBAL-MOU-ACRY-16x20", price:207, w:0.80, h:1 },
-    { id:"xl", pid:"20x24", label:"XL",     dim:'20 × 24"', sku:"GLOBAL-MOU-ACRY-20x24", price:247, w:0.83, h:1 },
+    { id:"sm", pid:"8x10",  label:"Small",  dim:'8 × 10"',  sku:"GLOBAL-MOU-ACRY-8X10",  price:147, w:0.80, h:1 },
+    { id:"md", pid:"12x16", label:"Medium", dim:'12 × 16"', sku:"GLOBAL-MOU-ACRY-12X16", price:187, w:0.75, h:1, best:true },
+    { id:"lg", pid:"16x20", label:"Large",  dim:'16 × 20"', sku:"GLOBAL-MOU-ACRY-16X20", price:207, w:0.80, h:1 },
+    { id:"xl", pid:"20x24", label:"XL",     dim:'20 × 24"', sku:"GLOBAL-MOU-ACRY-20X24", price:247, w:0.83, h:1 },
   ],
 };
 
 const SIZES_BY_PRODUCT: Record<string, { id:string; label:string; sub:string; sku:string; price:number; w:number; h:number }[]> = {
   print: [
-    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-FAP-8x8",   price:57,  w:1,    h:1 },
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-FAP-8x10",  price:77,  w:0.80, h:1 },
-    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-FAP-8x11",  price:77,  w:0.73, h:1 },
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-FAP-10x10", price:77,  w:1,    h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-FAP-11x14", price:87,  w:0.79, h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-FAP-12x12", price:87,  w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-FAP-12x16", price:97,  w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-FAP-16x20", price:117, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-FAP-18x24", price:137, w:0.75, h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-FAP-20x24", price:157, w:0.83, h:1 },
-    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-FAP-24x36", price:187, w:0.67, h:1 },
+    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-FAP-8X8",   price:57,  w:1,    h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-FAP-8X10",  price:77,  w:0.80, h:1 },
+    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-FAP-8X11",  price:77,  w:0.73, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-FAP-10X10", price:77,  w:1,    h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-FAP-11X14", price:87,  w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-FAP-12X12", price:87,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-FAP-12X16", price:97,  w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-FAP-16X20", price:117, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-FAP-18X24", price:137, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-FAP-20X24", price:157, w:0.83, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-FAP-24X36", price:187, w:0.67, h:1 },
   ],
   "classic-frame": [
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CFPM-8x10",  price:97,  w:0.80, h:1 },
-    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-CFPM-8x11",  price:97,  w:0.73, h:1 },
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CFPM-10x10", price:97,  w:1,    h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-CFPM-11x14", price:117, w:0.79, h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CFPM-12x12", price:117, w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CFPM-12x16", price:137, w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CFPM-16x20", price:167, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CFPM-18x24", price:197, w:0.75, h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CFPM-20x24", price:217, w:0.83, h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CFPM-8X10",  price:97,  w:0.80, h:1 },
+    { id:"8x11",  label:'8 × 11"',  sub:"Portrait",  sku:"GLOBAL-CFPM-8X11",  price:97,  w:0.73, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CFPM-10X10", price:97,  w:1,    h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-CFPM-11X14", price:117, w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CFPM-12X12", price:117, w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CFPM-12X16", price:137, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CFPM-16X20", price:167, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CFPM-18X24", price:197, w:0.75, h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CFPM-20X24", price:217, w:0.83, h:1 },
   ],
   "box-frame": [
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-BOXM-8x10",  price:107, w:0.80, h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-BOXM-11x14", price:127, w:0.79, h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-BOXM-12x16", price:147, w:0.75, h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-BOXM-16x20", price:177, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18x24", price:207, w:0.75, h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-BOXM-8X10",  price:107, w:0.80, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-BOXM-11X14", price:127, w:0.79, h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-BOXM-12X16", price:147, w:0.75, h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-BOXM-16X20", price:177, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-BOXM-18X24", price:207, w:0.75, h:1 },
   ],
   canvas: [
-    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-CAN-8x8",   price:77,  w:1,    h:1 },
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CAN-8x10",  price:87,  w:0.80, h:1 },
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10x10", price:97,  w:1,    h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12x12", price:97,  w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12x16", price:117, w:0.75, h:1 },
-    { id:"16x16", label:'16 × 16"', sub:"Square",    sku:"GLOBAL-CAN-16x16", price:127, w:1,    h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16x20", price:137, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18x24", price:157, w:0.75, h:1 },
-    { id:"20x20", label:'20 × 20"', sub:"Statement", sku:"GLOBAL-CAN-20x20", price:167, w:1,    h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20x24", price:177, w:0.83, h:1 },
-    { id:"20x30", label:'20 × 30"', sub:"Tall",      sku:"GLOBAL-CAN-20x30", price:197, w:0.67, h:1 },
-    { id:"24x30", label:'24 × 30"', sub:"Grand",     sku:"GLOBAL-CAN-24x30", price:207, w:0.80, h:1 },
-    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24x36", price:227, w:0.67, h:1 },
-    { id:"30x40", label:'30 × 40"', sub:"Showcase",  sku:"GLOBAL-CAN-30x40", price:267, w:0.75, h:1 },
+    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-CAN-8X8",   price:77,  w:1,    h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-CAN-8X10",  price:87,  w:0.80, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-CAN-10X10", price:97,  w:1,    h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-CAN-12X12", price:97,  w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-CAN-12X16", price:117, w:0.75, h:1 },
+    { id:"16x16", label:'16 × 16"', sub:"Square",    sku:"GLOBAL-CAN-16X16", price:127, w:1,    h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-CAN-16X20", price:137, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-CAN-18X24", price:157, w:0.75, h:1 },
+    { id:"20x20", label:'20 × 20"', sub:"Statement", sku:"GLOBAL-CAN-20X20", price:167, w:1,    h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-CAN-20X24", price:177, w:0.83, h:1 },
+    { id:"20x30", label:'20 × 30"', sub:"Tall",      sku:"GLOBAL-CAN-20X30", price:197, w:0.67, h:1 },
+    { id:"24x30", label:'24 × 30"', sub:"Grand",     sku:"GLOBAL-CAN-24X30", price:207, w:0.80, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-CAN-24X36", price:227, w:0.67, h:1 },
+    { id:"30x40", label:'30 × 40"', sub:"Showcase",  sku:"GLOBAL-CAN-30X40", price:267, w:0.75, h:1 },
   ],
   "acrylic": [
-    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-MOU-ACRY-8x8",   price:127, w:1,    h:1 },
-    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-MOU-ACRY-8x10",  price:147, w:0.80, h:1 },
-    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-10x10", price:157, w:1,    h:1 },
-    { id:"10x12", label:'10 × 12"', sub:"Portrait",  sku:"GLOBAL-MOU-ACRY-10x12", price:167, w:0.83, h:1 },
-    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-MOU-ACRY-11x14", price:177, w:0.79, h:1 },
-    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-12x12", price:167, w:1,    h:1 },
-    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-MOU-ACRY-12x16", price:187, w:0.75, h:1 },
-    { id:"16x16", label:'16 × 16"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-16x16", price:197, w:1,    h:1 },
-    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-MOU-ACRY-16x20", price:207, w:0.80, h:1 },
-    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-MOU-ACRY-18x24", price:227, w:0.75, h:1 },
-    { id:"20x20", label:'20 × 20"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-20x20", price:227, w:1,    h:1 },
-    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-MOU-ACRY-20x24", price:247, w:0.83, h:1 },
-    { id:"24x24", label:'24 × 24"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-24x24", price:267, w:1,    h:1 },
-    { id:"24x32", label:'24 × 32"', sub:"Grand",     sku:"GLOBAL-MOU-ACRY-24x32", price:287, w:0.75, h:1 },
-    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-MOU-ACRY-24x36", price:297, w:0.67, h:1 },
-    { id:"24x48", label:'24 × 48"', sub:"Showcase",  sku:"GLOBAL-MOU-ACRY-24x48", price:347, w:0.50, h:1 },
+    { id:"8x8",   label:'8 × 8"',   sub:"Square",    sku:"GLOBAL-MOU-ACRY-8X8",   price:127, w:1,    h:1 },
+    { id:"8x10",  label:'8 × 10"',  sub:"Classic",   sku:"GLOBAL-MOU-ACRY-8X10",  price:147, w:0.80, h:1 },
+    { id:"10x10", label:'10 × 10"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-10X10", price:157, w:1,    h:1 },
+    { id:"10x12", label:'10 × 12"', sub:"Portrait",  sku:"GLOBAL-MOU-ACRY-10X12", price:167, w:0.83, h:1 },
+    { id:"11x14", label:'11 × 14"', sub:"Standard",  sku:"GLOBAL-MOU-ACRY-11X14", price:177, w:0.79, h:1 },
+    { id:"12x12", label:'12 × 12"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-12X12", price:167, w:1,    h:1 },
+    { id:"12x16", label:'12 × 16"', sub:"Portrait",  sku:"GLOBAL-MOU-ACRY-12X16", price:187, w:0.75, h:1 },
+    { id:"16x16", label:'16 × 16"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-16X16", price:197, w:1,    h:1 },
+    { id:"16x20", label:'16 × 20"', sub:"Large",     sku:"GLOBAL-MOU-ACRY-16X20", price:207, w:0.80, h:1 },
+    { id:"18x24", label:'18 × 24"', sub:"XL",        sku:"GLOBAL-MOU-ACRY-18X24", price:227, w:0.75, h:1 },
+    { id:"20x20", label:'20 × 20"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-20X20", price:227, w:1,    h:1 },
+    { id:"20x24", label:'20 × 24"', sub:"Statement", sku:"GLOBAL-MOU-ACRY-20X24", price:247, w:0.83, h:1 },
+    { id:"24x24", label:'24 × 24"', sub:"Square",    sku:"GLOBAL-MOU-ACRY-24X24", price:267, w:1,    h:1 },
+    { id:"24x32", label:'24 × 32"', sub:"Grand",     sku:"GLOBAL-MOU-ACRY-24X32", price:287, w:0.75, h:1 },
+    { id:"24x36", label:'24 × 36"', sub:"Grand",     sku:"GLOBAL-MOU-ACRY-24X36", price:297, w:0.67, h:1 },
+    { id:"24x48", label:'24 × 48"', sub:"Showcase",  sku:"GLOBAL-MOU-ACRY-24X48", price:347, w:0.50, h:1 },
   ],
 };
 
@@ -1308,22 +1308,27 @@ export default function Customize() {
     || PLACEHOLDER;
 
   // Multi-image cart: each item is an independent print with its own config
-  const makeItem = (overrides = {}) => ({
-    id: crypto.randomUUID(),
-    photoUrl: initialPortraitUrl,
-    style: styleId,
-    productType: "classic-frame",
-    frameColor:  "black",
-    canvasEdge:  "gallery",
-    sku:         "GLOBAL-CFPM-8x10",
-    frame:       "black",      // legacy — derived, drives visual preview
-    size:        "8x10",       // new id format
-    effect:      "original",
-    border:      "shallow",
-    borderColor: "soft-white",
-    qty:         1,
-    ...overrides,
-  });
+  const makeItem = (overrides: any = {}) => {
+    const pt = overrides.productType || "classic-frame";
+    const fc = overrides.frameColor || "black";
+    return {
+      id: crypto.randomUUID(),
+      photoUrl: initialPortraitUrl,
+      style: styleId,
+      productType: pt,
+      frameColor:  fc,
+      canvasEdge:  "gallery",
+      sku:         "GLOBAL-CFPM-8X10",
+      // BUG-11: derive legacy `frame` from productType so previews don't get stuck on "black"
+      frame:       toFrameId(pt, fc),
+      size:        "8x10",
+      effect:      "original",
+      border:      "shallow",
+      borderColor: "soft-white",
+      qty:         1,
+      ...overrides,
+    };
+  };
 
 
   const [items, setItems] = useState(() => {
@@ -1546,6 +1551,15 @@ export default function Customize() {
   const isPetSession = ((session as any)?.cat === "pets");
   const [canvasFrame, setCanvasFrame]           = useState(false);
   const [canvasFrameColor, setCanvasFrameColor] = useState("black");
+  // BUG-12: when the selected item changes, restore its canvas float-frame state
+  useEffect(() => {
+    const sel = items.find((i: any) => i.id === selectedId);
+    if (sel?.productType === "canvas") {
+      setCanvasFrame(!!sel.canvasFloatFrame);
+      setCanvasFrameColor(sel.frameColor || "black");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId]);
 
   // Cart drawer + extra pack line items
   const [cartOpen, setCartOpen]   = useState(false);
@@ -1758,7 +1772,7 @@ export default function Customize() {
     mug:     { size: "11oz",  sku: "GLOBAL-MUG-11OZ" },
     case:    { size: "iphone-16-pro", sku: "GLOBAL-TPC-IP16P" },
   };
-  const PORTRAIT_DEFAULT = { productType: "classic-frame", size: "11x14", sku: "GLOBAL-CFPM-11x14", frameColor: "black" };
+  const PORTRAIT_DEFAULT = { productType: "classic-frame", size: "11x14", sku: "GLOBAL-CFPM-11X14", frameColor: "black" };
   const toggleExtraProduct = (id: string) => {
     setEnabledExtras(prev => {
       const on = prev.includes(id);
@@ -2060,9 +2074,10 @@ export default function Customize() {
       : isFramedItem
         ? { id:"mount", label: mountDef.label, bg: mountDef.color }
         : (BORDER_COLORS.find(c => c.id === item.borderColor) || BORDER_COLORS[0]);
-    const isFrameless = fd.id === "frameless" || fd.id === "digital";
-    const isCanvas    = fd.id === "canvas" || item.productType === "canvas";
     const isAcrylic   = item.productType === "acrylic";
+    const isCanvas    = fd.id === "canvas" || item.productType === "canvas";
+    // BUG-01: acrylic must be treated as frameless so no frame background bleeds
+    const isFrameless = fd.id === "frameless" || fd.id === "digital" || isAcrylic;
     const woodPad     = fd.w || 0;
     // Resolve actual selected frame color (so all 8 swatches render distinctly)
     const itemFrameColorDef = (FRAME_COLORS[item.productType] || []).find(c => c.id === item.frameColor);
@@ -2124,8 +2139,9 @@ export default function Customize() {
                   ? "none"
                   : "0 0 0 1px rgba(0,0,0,.30)",
             border: isAcrylic ? "none" : undefined,
-            borderTop: undefined,
-            borderLeft: undefined,
+            // BUG-02: subtle polished-edge highlights on acrylic (match RoomViewPanel)
+            borderTop:  isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
+            borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
             filter: "none",
             display: "inline-block",
             flex:"0 1 auto",
@@ -2703,6 +2719,18 @@ export default function Customize() {
           printMount: mountColor || "snow-white",
           printGlaze: primaryCartItem?.glazeType || "perspex",
           vipPurchased: cartItems.some((i: any) => i.productType === "vip"),
+          // BUG-09: send ALL cart items for fulfillment, not just the first
+          printItems: cartItems.map((it: any) => ({
+            photoUrl:    it.photoUrl,
+            sku:         it.sku,
+            productType: it.productType,
+            frameColor:  it.frameColor || "",
+            canvasEdge:  it.canvasEdge || "",
+            canvasFloatFrame: !!it.canvasFloatFrame,
+            mountColor:  mountColor || "snow-white",
+            glazeType:   it.glazeType || "perspex",
+            qty:         it.qty || 1,
+          })),
         },
       });
       if (error) throw new Error(error.message || "Checkout failed");
@@ -3147,8 +3175,8 @@ export default function Customize() {
               display:"flex", padding:"4px 8px 8px", overflow:"hidden" }}>
               <RoomViewPanel
                 portraitUrl={(selected as any).photoUrl || ""}
-                frameColor={cardFrame || "black"}
-                productType={activeCard}
+                frameColor={(selected as any).frameColor || cardFrame || "black"}
+                productType={(selected as any).productType || activeCard}
                 selected={selected}
                 mountColor={mountColor}
                 portraitName={portraitName}
@@ -3565,7 +3593,26 @@ export default function Customize() {
                               <button key={sz.id}
                                 onClick={() => {
                                   setCardSize(prev => ({ ...prev, [card.id]: sz.id }));
-                                  updateSelected({ size: sz.pid, sku: sz.sku, productType: card.id });
+                                  // BUG-11: derive the legacy `frame` so the preview reacts to productType.
+                                  // BUG-12: persist canvas float-frame + edge so they survive size changes.
+                                  const isCanvasCard = card.id === "canvas";
+                                  const wantsFloat = isCanvasCard && canvasFrame;
+                                  const baseSku = sz.sku || "";
+                                  const finalSku = wantsFloat && baseSku.startsWith("GLOBAL-CAN-")
+                                    ? baseSku.replace("GLOBAL-CAN-", "GLOBAL-FRA-CAN-")
+                                    : baseSku;
+                                  const derivedFrameColor = card.frameColors
+                                    ? cardFrame
+                                    : (wantsFloat ? canvasFrameColor : (selected as any).frameColor);
+                                  updateSelected({
+                                    size: sz.pid,
+                                    sku: finalSku,
+                                    productType: card.id,
+                                    frame: toFrameId(card.id, derivedFrameColor || "black"),
+                                    frameColor: derivedFrameColor,
+                                    canvasFloatFrame: wantsFloat || undefined,
+                                    canvasEdge: isCanvasCard ? ((selected as any).canvasEdge || "gallery") : undefined,
+                                  });
                                 }}
                                 style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
                                   borderRadius:10, padding:"10px 10px 10px",

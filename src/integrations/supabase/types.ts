@@ -238,6 +238,7 @@ export type Database = {
           order_product: string | null
           photo_url: string | null
           print_frame: string | null
+          print_items: Json | null
           print_product_type: string | null
           print_size: string | null
           print_sku: string | null
@@ -267,6 +268,7 @@ export type Database = {
           order_product?: string | null
           photo_url?: string | null
           print_frame?: string | null
+          print_items?: Json | null
           print_product_type?: string | null
           print_size?: string | null
           print_sku?: string | null
@@ -296,6 +298,7 @@ export type Database = {
           order_product?: string | null
           photo_url?: string | null
           print_frame?: string | null
+          print_items?: Json | null
           print_product_type?: string | null
           print_size?: string | null
           print_sku?: string | null

@@ -33,6 +33,7 @@ serve(async (req) => {
       printGlaze = "perspex",
       vipPurchased = false,
       productType = "",
+      printItems = null, // BUG-09: full multi-item snapshot for Prodigi fulfillment
     } = await req.json();
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
@@ -129,6 +130,7 @@ serve(async (req) => {
           print_size: printSize || null,
           print_frame: printFrame || null,
           print_sku: printSku || null,
+          print_items: Array.isArray(printItems) && printItems.length > 0 ? printItems : null,
           vip_purchased: vipPurchased,
         })
         .eq("id", sessionId);

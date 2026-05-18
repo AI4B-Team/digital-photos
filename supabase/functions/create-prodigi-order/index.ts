@@ -19,25 +19,79 @@ const FRAME_COLOR_ATTR: Record<string, string> = {
   "brown":          "brown",
 };
 
+// Prodigi canvas wrap attribute values (per Prodigi API docs)
 const CANVAS_EDGE_ATTR: Record<string, string> = {
-  "mirror":       "mirror",
+  "gallery":      "imageWrap",
+  "mirror":       "mirrorWrap",
   "museum-black": "black",
   "museum-white": "white",
 };
+
+const MOUNT_ATTR: Record<string, string> = {
+  "snow-white": "snowWhite",
+  "hayseed":    "hayseed",
+  "black":      "black",
+};
+
+const GLAZE_ATTR: Record<string, string> = {
+  "perspex":     "perspex",
+  "float-glass": "floatGlass",
+  "moth-eye":    "mothEye",
+};
+
+function buildItem(opts: {
+  portraitUrl: string;
+  sku: string;
+  productType: string;
+  frameColor?: string;
+  canvasEdge?: string;
+  mountColor?: string;
+  glazeType?: string;
+  copies?: number;
+  ref?: string;
+}) {
+  const {
+    portraitUrl, sku, productType,
+    frameColor, canvasEdge,
+    mountColor = "snow-white", glazeType = "perspex",
+    copies = 1, ref = "portrait-print",
+  } = opts;
+
+  const isPhysicalPrint = ["classic-frame","box-frame","print","canvas","acrylic"].includes(productType);
+  const attributes: Record<string, string> = {};
+
+  if (isPhysicalPrint && (productType === "classic-frame" || productType === "box-frame")) {
+    if (frameColor) attributes.color = FRAME_COLOR_ATTR[frameColor] || frameColor;
+    if (mountColor) attributes.mount = MOUNT_ATTR[mountColor] || "snowWhite";
+    if (glazeType)  attributes.glaze = GLAZE_ATTR[glazeType] || "perspex";
+  }
+
+  if (isPhysicalPrint && productType === "canvas") {
+    // Float-frame canvas — SKU prefix GLOBAL-FRA-CAN needs the frame color
+    if (sku.startsWith("GLOBAL-FRA-CAN") && frameColor) {
+      attributes.color = FRAME_COLOR_ATTR[frameColor] || frameColor;
+    } else if (canvasEdge) {
+      attributes.wrap = CANVAS_EDGE_ATTR[canvasEdge] || canvasEdge;
+    }
+  }
+
+  return {
+    merchantReference: ref,
+    sku,
+    copies,
+    sizing: "fillPrintArea",
+    ...(Object.keys(attributes).length ? { attributes } : {}),
+    assets: [{ printArea: "default", url: portraitUrl }],
+  };
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
+    const body = await req.json();
     const {
       sessionId,
-      portraitUrl,
-      sku,
-      productType,
-      frameColor,
-      canvasEdge,
-      mountColor = "snow-white",
-      glazeType = "perspex",
       shippingName,
       shippingEmail,
       shippingLine1,
@@ -45,10 +99,46 @@ serve(async (req) => {
       shippingZip,
       shippingCountry = "US",
       vipPurchased = false,
-    } = await req.json();
+    } = body;
 
-    if (!portraitUrl || !sku || !shippingLine1) {
-      throw new Error("portraitUrl, sku, and shipping address are required");
+    if (!shippingLine1) {
+      throw new Error("shipping address is required");
+    }
+
+    // Build a normalized item list — accept either a single item shape
+    // (backward compatible) or an `items` array (BUG-09 multi-item fix).
+    let rawItems: any[] = [];
+    if (Array.isArray(body.items) && body.items.length > 0) {
+      rawItems = body.items;
+    } else {
+      rawItems = [{
+        portraitUrl: body.portraitUrl,
+        sku:         body.sku,
+        productType: body.productType,
+        frameColor:  body.frameColor,
+        canvasEdge:  body.canvasEdge,
+        mountColor:  body.mountColor,
+        glazeType:   body.glazeType,
+        copies:      body.copies,
+      }];
+    }
+
+    const prodigiItems = rawItems
+      .filter((it: any) => it && it.portraitUrl && it.sku)
+      .map((it: any, i: number) => buildItem({
+        portraitUrl: it.portraitUrl,
+        sku:         it.sku,
+        productType: it.productType,
+        frameColor:  it.frameColor,
+        canvasEdge:  it.canvasEdge,
+        mountColor:  it.mountColor,
+        glazeType:   it.glazeType,
+        copies:      Math.max(1, parseInt(it.copies || it.qty || 1) || 1),
+        ref:         `portrait-print-${i + 1}`,
+      }));
+
+    if (prodigiItems.length === 0) {
+      throw new Error("at least one item with portraitUrl and sku is required");
     }
 
     const isSandbox = Deno.env.get("PRODIGI_SANDBOX") !== "false";
@@ -58,30 +148,6 @@ serve(async (req) => {
 
     const apiKey = Deno.env.get("PRODIGI_API_KEY");
     if (!apiKey) throw new Error("PRODIGI_API_KEY secret not set");
-
-    // Build per-product attributes (skip for mug/case which have none)
-    const isPhysicalPrint = ["classic-frame","box-frame","print","canvas","acrylic"].includes(productType);
-    const attributes: Record<string, string> = {};
-    if (isPhysicalPrint && (productType === "classic-frame" || productType === "box-frame") && frameColor) {
-      attributes.color = FRAME_COLOR_ATTR[frameColor] || frameColor;
-    }
-    // Mount/mat colour for CFPM and BOXM
-    if (isPhysicalPrint && (productType === "classic-frame" || productType === "box-frame") && mountColor) {
-      const mountAttr: Record<string,string> = {
-        "snow-white": "snowWhite", "hayseed": "hayseed", "black": "black",
-      };
-      attributes.mount = mountAttr[mountColor] || "snowWhite";
-      // Glaze: perspex (standard) / float glass (premium) / moth-eye (anti-reflective)
-      const glazeMap: Record<string,string> = {
-        "perspex": "perspex",
-        "float-glass": "floatGlass",
-        "moth-eye": "mothEye",
-      };
-      attributes.glaze = glazeMap[glazeType] || "perspex";
-    }
-    if (isPhysicalPrint && productType === "canvas" && canvasEdge) {
-      attributes.wrap = CANVAS_EDGE_ATTR[canvasEdge] || canvasEdge;
-    }
 
     const orderPayload = {
       merchantReference: sessionId || `dp-${Date.now()}`,
@@ -97,16 +163,7 @@ serve(async (req) => {
           townOrCity: shippingCity,
         },
       },
-      items: [
-        {
-          merchantReference: "portrait-print-1",
-          sku,
-          copies: 1,
-          sizing: "fillPrintArea",
-          ...(Object.keys(attributes).length ? { attributes } : {}),
-          assets: [{ printArea: "default", url: portraitUrl }],
-        },
-      ],
+      items: prodigiItems,
     };
 
     const prodigiRes = await fetch(`${baseUrl}/orders`, {
@@ -122,6 +179,7 @@ serve(async (req) => {
     }
 
     const prodigiOrderId = prodigiData?.order?.id;
+    const allSkus = prodigiItems.map(i => i.sku).join(",");
 
     if (sessionId) {
       const supabase = createClient(
@@ -139,14 +197,13 @@ serve(async (req) => {
           shipping_city: shippingCity,
           shipping_zip: shippingZip,
           shipping_country: shippingCountry,
-          print_sku: sku,
-          print_frame: frameColor || canvasEdge || productType,
+          print_sku: allSkus,
         })
         .eq("id", sessionId);
     }
 
     return new Response(
-      JSON.stringify({ success: true, prodigiOrderId, sku, sandbox: isSandbox }),
+      JSON.stringify({ success: true, prodigiOrderId, skus: prodigiItems.map(i => i.sku), sandbox: isSandbox }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {
