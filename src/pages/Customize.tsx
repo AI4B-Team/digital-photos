@@ -3250,11 +3250,20 @@ export default function Customize() {
                         </div>
                       )}
 
-                      {/* ── In-box extras: add photo upsell, promo, gift ── */}
+                      {/* ── Complete Your Order section ── */}
+                      <div style={{ marginTop:22, paddingTop:18, borderTop:`1px solid ${BORDER}` }}>
+                        <div style={{
+                          fontSize:10.5, fontWeight:700, color:MUTED,
+                          letterSpacing:".14em", textTransform:"uppercase",
+                          marginBottom:12, fontFamily:"'Poppins',sans-serif",
+                        }}>
+                          Complete Your Order
+                        </div>
                       <div style={{
-                        border:`1px dashed ${BORDER}`, borderRadius:10, padding:10,
-                        marginBottom:12, display:"flex", flexDirection:"column", gap:8,
-                        background:"#FAFAF7",
+                        border:`1px solid ${BORDER}`, borderRadius:12, padding:12,
+                        marginBottom:12, display:"flex", flexDirection:"column", gap:10,
+                        background:"#FBF8F1",
+                        boxShadow:"0 1px 2px rgba(0,0,0,.03)",
                       }}>
                         {card.canvasAddon && (
                           <div onClick={() => setCanvasFrame(p => !p)}
