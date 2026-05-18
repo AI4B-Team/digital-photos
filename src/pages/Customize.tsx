@@ -3149,8 +3149,8 @@ export default function Customize() {
               display:"flex", padding:"4px 8px 8px", overflow:"hidden" }}>
               <RoomViewPanel
                 portraitUrl={(selected as any).photoUrl || ""}
-                frameColor={cardFrame || "black"}
-                productType={activeCard}
+                frameColor={(selected as any).frameColor || cardFrame || "black"}
+                productType={(selected as any).productType || activeCard}
                 selected={selected}
                 mountColor={mountColor}
                 portraitName={portraitName}
