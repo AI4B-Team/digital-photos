@@ -27,15 +27,78 @@ import roomCatalog      from "@/assets/rooms/lux-catalog-clean.jpg";
 // "recommendedFor" list of portrait style ids so the system can later
 // surface curated, personalized room matches per artwork.
 const STAGED_ROOMS = [
-  { id: "dark-moody",     vibe: "Dark Lounge",      subtitle: "Best for dramatic portraits",      bg: roomDarkMoody,    recommendedFor: ["royal","cinematic","fantasy"] },
-  { id: "bright-edit",    vibe: "Parisian",         subtitle: "Perfect for elegant interiors",    bg: roomBrightEdit,   recommendedFor: ["renaissance","minimal"] },
-  { id: "warm-organic",   vibe: "Warm Organic",     subtitle: "Ideal for family portraits",       bg: roomWarmOrganic,  recommendedFor: ["storybook","minimal"] },
-  { id: "modern-minimal", vibe: "Modern Minimal",   subtitle: "Clean contemporary aesthetic",     bg: roomModernMin,    recommendedFor: ["minimal","cinematic"] },
-  { id: "library-study",  vibe: "Library Study",    subtitle: "Luxury masculine atmosphere",      bg: roomLibrary,      recommendedFor: ["royal","renaissance"] },
-  { id: "entryway",       vibe: "Entryway",         subtitle: "A welcoming first impression",     bg: roomEntryway,     recommendedFor: ["minimal","storybook"] },
-  { id: "bedroom-lux",    vibe: "Serene Bedroom",   subtitle: "Soft, intimate, romantic",         bg: roomBedroomLux,   recommendedFor: ["storybook","minimal"] },
-  { id: "coastal",        vibe: "Coastal Airy",     subtitle: "Bright, breezy, refined",          bg: roomCoastal,      recommendedFor: ["minimal","storybook"] },
-  { id: "catalog-clean",  vibe: "Clean Catalog",    subtitle: "Editorial gallery feel",           bg: roomCatalog,      recommendedFor: ["minimal","renaissance"] },
+  {
+    id: "dark-moody",
+    vibe: "Dark Lounge",
+    subtitle: "Best for dramatic portraits",
+    bg: roomDarkMoody,
+    recommendedFor: ["royal", "cinematic", "fantasy"],
+    frameX: 38.5, frameY: 2.0, frameW: 23.0, frameH: 42.5,
+  },
+  {
+    id: "bright-edit",
+    vibe: "Parisian",
+    subtitle: "Perfect for elegant interiors",
+    bg: roomBrightEdit,
+    recommendedFor: ["renaissance", "minimal"],
+    frameX: 29.5, frameY: 9.5, frameW: 41.0, frameH: 31.0,
+  },
+  {
+    id: "warm-organic",
+    vibe: "Warm Organic",
+    subtitle: "Ideal for family portraits",
+    bg: roomWarmOrganic,
+    recommendedFor: ["storybook", "minimal"],
+    frameX: 54.0, frameY: 4.5, frameW: 26.5, frameH: 53.0,
+  },
+  {
+    id: "modern-minimal",
+    vibe: "Modern Minimal",
+    subtitle: "Clean contemporary aesthetic",
+    bg: roomModernMin,
+    recommendedFor: ["minimal", "cinematic"],
+    frameX: 45.5, frameY: 2.0, frameW: 31.5, frameH: 65.5,
+  },
+  {
+    id: "library-study",
+    vibe: "Library Study",
+    subtitle: "Luxury masculine atmosphere",
+    bg: roomLibrary,
+    recommendedFor: ["royal", "renaissance"],
+    frameX: 29.5, frameY: 2.5, frameW: 40.5, frameH: 56.5,
+  },
+  {
+    id: "entryway",
+    vibe: "Entryway",
+    subtitle: "A welcoming first impression",
+    bg: roomEntryway,
+    recommendedFor: ["minimal", "storybook"],
+    frameX: 38.0, frameY: 7.5, frameW: 23.0, frameH: 44.5,
+  },
+  {
+    id: "bedroom-lux",
+    vibe: "Serene Bedroom",
+    subtitle: "Soft, intimate, romantic",
+    bg: roomBedroomLux,
+    recommendedFor: ["storybook", "minimal"],
+    frameX: 29.5, frameY: 1.0, frameW: 41.0, frameH: 41.0,
+  },
+  {
+    id: "coastal",
+    vibe: "Coastal Airy",
+    subtitle: "Bright, breezy, refined",
+    bg: roomCoastal,
+    recommendedFor: ["minimal", "storybook"],
+    frameX: 30.5, frameY: 9.0, frameW: 38.5, frameH: 30.0,
+  },
+  {
+    id: "catalog-clean",
+    vibe: "Clean Catalog",
+    subtitle: "Editorial gallery feel",
+    bg: roomCatalog,
+    recommendedFor: ["minimal", "renaissance"],
+    frameX: 27.5, frameY: 7.5, frameW: 45.0, frameH: 37.0,
+  },
 ];
 
 /* ── Tokens ── */
@@ -583,6 +646,7 @@ function RoomViewPanel({
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
   dragStart, setDragStart, roomContainerRef, setRoomView,
 }: any) {
+  const { session } = useSession();
   const framePx  = FRAME_COLOR_HEX[frameColor] || "#15151a";
   const mountPx  = (MOUNT_COLORS.find((m:any) => m.id === mountColor) || MOUNT_COLORS[0]).color;
   const effectDef = EFFECTS.find((e:any) => e.id === (selected as any)?.effect) || EFFECTS[0];
@@ -627,9 +691,23 @@ function RoomViewPanel({
   const bgIsComposite = mode === "ai" ? !!aiRoomUrl : false;
   const stagedLoading = false;
 
-  const wallX = portraitDragPos.x;
-  const wallY = portraitDragPos.y;
-  const wallW = portraitDragPos.w;
+  // Staged: snap to the room's exact frame coords. My Room / AI: draggable.
+  const isStaged = mode === "staged";
+  const frameX   = isStaged ? (stagedRoomDef?.frameX ?? 38) : portraitDragPos.x;
+  const frameY   = isStaged ? (stagedRoomDef?.frameY ?? 2)  : portraitDragPos.y;
+  const frameW   = isStaged ? (stagedRoomDef?.frameW ?? 24) : portraitDragPos.w;
+  const frameH   = isStaged ? (stagedRoomDef?.frameH ?? 44) : undefined;
+
+  // Size-responsive scale: small prints show smaller, larger prints fill more of the frame
+  const sizeScale = Math.max(0.82, Math.min(1.12, 0.7 + longestInches * 0.015));
+  const scaledW   = isStaged ? frameW * sizeScale : frameW;
+  const scaledH   = isStaged && frameH ? frameH * sizeScale : undefined;
+  const offsetX   = isStaged ? frameX + (frameW - scaledW) / 2 : frameX;
+  const offsetY   = isStaged && frameH ? frameY + (frameH - (scaledH ?? 0)) / 2 : frameY;
+
+  const wallX = offsetX;
+  const wallY = offsetY;
+  const wallW = scaledW;
 
   const onDragStart = (e: any) => {
     e.preventDefault();
@@ -850,9 +928,9 @@ function RoomViewPanel({
           </label>
         )}
 
-        {/* Portrait overlay — live mirror of right-panel choices (size, frame, mount, effect, name) */}
+        {/* Portrait overlay — snaps into staged room frames; draggable in My Room / AI */}
         {showPortraitOverlay && (() => {
-          const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
+          const mountPad = isStaged || isCanvas ? 0 : Math.max(4, wallW * 0.35);
           const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
           const nameFontFam  = nameFontId === "serif"
@@ -860,20 +938,27 @@ function RoomViewPanel({
             : "'Poppins',sans-serif";
           return (
             <div
-              onMouseDown={onDragStart}
+              onMouseDown={!isStaged ? onDragStart : undefined}
+              onWheel={!isStaged ? onWheel : undefined}
               style={{
                 position:"absolute",
                 left:   `${wallX}%`,
                 top:    `${wallY}%`,
                 width:  `${wallW}%`,
-                aspectRatio: `${1} / ${aspectRatio || 0.75}`,
-                cursor: isDragging ? "grabbing" : "grab",
-                boxShadow: "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
-                border: isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
-                background: isCanvas ? framePx : mountPx,
+                height: scaledH ? `${scaledH}%` : undefined,
+                aspectRatio: !scaledH ? `${1} / ${aspectRatio || 0.75}` : undefined,
+                cursor: !isStaged ? (isDragging ? "grabbing" : "grab") : "default",
+                overflow:"hidden",
+                boxShadow: isStaged
+                  ? "4px 8px 24px rgba(0,0,0,0.45)"
+                  : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                border: isStaged
+                  ? "none"
+                  : (isCanvas ? "none" : `${Math.max(6, wallW*0.6)}px solid ${framePx}`),
+                background: isStaged ? "transparent" : (isCanvas ? framePx : mountPx),
                 padding: `${mountPad}px`,
                 boxSizing: "border-box",
-                transition: isDragging ? "none" : "left .15s, top .15s, width .15s",
+                transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
                 containerType: "inline-size",
               }}>
               <div style={{ position:"relative", width:"100%", height:"100%" }}>
@@ -882,7 +967,7 @@ function RoomViewPanel({
                     width:"100%", height:"100%", objectFit:"cover", display:"block",
                     filter: effectDef.filter,
                   }}/>
-                {namePosition !== "none" && portraitName && (
+                {!isStaged && namePosition !== "none" && portraitName && (
                   <div style={{
                     position:"absolute", left:0, right:0, zIndex:3,
                     top:    namePosition === "top"    ? "10%" : "auto",
@@ -928,31 +1013,6 @@ function RoomViewPanel({
           </div>
         )}
 
-        {/* Elegant first-time helper — shown once, then dismissed via localStorage */}
-        {showPortraitOverlay && !isDragging && (() => {
-          const dismissed = typeof window !== "undefined" && localStorage.getItem("rv_helper_seen") === "1";
-          if (dismissed) return null;
-          return (
-            <div
-              onClick={() => { try { localStorage.setItem("rv_helper_seen","1"); } catch {} ; setIsDragging(false); }}
-              style={{
-                position:"absolute", left:"50%", bottom:18, transform:"translateX(-50%)",
-                zIndex:4, display:"inline-flex", alignItems:"center", gap:14,
-                padding:"9px 16px", borderRadius:999,
-                background:"rgba(20,20,20,.55)", backdropFilter:"blur(10px)",
-                border:"1px solid rgba(255,255,255,.14)",
-                color:"rgba(255,255,255,.92)", fontFamily:"'Poppins',sans-serif",
-                fontSize:11.5, fontWeight:500, letterSpacing:".04em",
-                pointerEvents:"auto", cursor:"pointer",
-                boxShadow:"0 10px 30px -10px rgba(0,0,0,.5)",
-              }}>
-              <span>Drag artwork to reposition</span>
-              <span style={{ opacity:.35 }}>·</span>
-              <span>Resize using the size selector</span>
-              <X size={12} style={{ opacity:.55, marginLeft:2 }}/>
-            </div>
-          );
-        })()}
       </div>
 
       {/* Footer thumbnail strip — only on Styled Spaces tab */}
@@ -1009,6 +1069,19 @@ function RoomViewPanel({
                     fontStyle:"italic", letterSpacing:".01em", lineHeight:1.2,
                   }}>{(room as any).subtitle}</div>
                 </div>
+                {(session as any)?.selectedStyle &&
+                  room.recommendedFor.includes((session as any).selectedStyle) && (
+                  <div style={{
+                    position:"absolute", top:5, right:5,
+                    background: RED, color:"#fff",
+                    fontSize:8, fontWeight:700,
+                    padding:"2px 5px", borderRadius:4,
+                    fontFamily:"'Poppins',sans-serif",
+                    letterSpacing:".06em", textTransform:"uppercase",
+                  }}>
+                    ✦ Perfect Match
+                  </div>
+                )}
               </button>
             );
           })}
@@ -1206,7 +1279,14 @@ export default function Customize() {
   const [aiRoomUrl,       setAiRoomUrl]     = useState<string|null>(null);
   const [aiRoomLoading,   setAiRoomLoading] = useState(false);
   const [stagedComposites, setStagedComposites] = useState<Record<string,{url?:string;loading?:boolean}>>({});
-  const [selectedRoomKey, setSelectedRoomKey] = useState<string>(STAGED_ROOMS[0].id);
+  const [selectedRoomKey, setSelectedRoomKey] = useState<string>(() => {
+    const style = (session as any)?.selectedStyle || "";
+    if (style) {
+      const match = STAGED_ROOMS.find(r => r.recommendedFor.includes(style));
+      if (match) return match.id;
+    }
+    return STAGED_ROOMS[0].id;
+  });
   const [portraitDragPos, setPortraitDragPos] = useState({ x:45, y:12, w:26 });
   const [isDragging,      setIsDragging]    = useState(false);
   const [dragStart,       setDragStart]     = useState({ mx:0, my:0, px:0, py:0 });
