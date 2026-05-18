@@ -872,6 +872,43 @@ function RoomViewPanel({
               fontFamily:"'Poppins',sans-serif" }}>Compositing your portrait…</span>
           </div>
         )}
+
+        {/* Doodle instruction overlays */}
+        {showPortraitOverlay && !isDragging && (
+          <>
+            {/* Drag/scroll hint — top-left, near the portrait */}
+            <div style={{
+              position:"absolute", top:12, left:14, zIndex:4,
+              display:"flex", flexDirection:"column", gap:4,
+              color:"#fff", pointerEvents:"none",
+              fontFamily:"'Caveat','Comic Sans MS',cursive",
+              textShadow:"0 2px 6px rgba(0,0,0,.6)",
+              transform:"rotate(-3deg)",
+            }}>
+              <span style={{ fontSize:20, fontWeight:700, lineHeight:1 }}>
+                ✦ Drag to move
+              </span>
+              <span style={{ fontSize:15, opacity:.85, lineHeight:1 }}>
+                scroll to resize
+              </span>
+            </div>
+
+            {/* Size hint — top-right, points to right panel */}
+            <div style={{
+              position:"absolute", top:12, right:14, zIndex:4,
+              display:"flex", alignItems:"center", gap:6,
+              color:"#fff", pointerEvents:"none",
+              fontFamily:"'Caveat','Comic Sans MS',cursive",
+              textShadow:"0 2px 6px rgba(0,0,0,.6)",
+              transform:"rotate(2deg)",
+            }}>
+              <span style={{ fontSize:18, fontWeight:700, lineHeight:1 }}>
+                Pick a size in the panel
+              </span>
+              <span style={{ fontSize:22, lineHeight:1 }}>→</span>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Footer thumbnail strip — only on Staged Rooms tab */}
