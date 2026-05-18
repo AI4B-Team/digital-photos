@@ -93,12 +93,12 @@ export default function Contact() {
         <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr", gap:24 }}>
           {/* Form */}
           <form onSubmit={submit} style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
-            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, fontWeight:800, color:INK, margin:"0 0 18px" }}>Send Us A Message</h2>
+            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:20, fontWeight:800, color:INK, margin:"0 0 18px" }}>Send us a message</h2>
 
             {[
-              ["name","Full Name *","text","Your name"],
-              ["email","Email Address *","email","you@email.com"],
-              ["order_id","Order Number (optional)","text","Helps us find your order faster"],
+              ["name","Full name *","text","Your name"],
+              ["email","Email address *","email","you@email.com"],
+              ["order_id","Order number (optional)","text","Helps us find your order faster"],
             ].map(([k,l,t,ph])=>(
               <div key={k} style={{ marginBottom:14 }}>
                 <label style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:MUTED, fontWeight:600, letterSpacing:".06em" }}>{l}</label>
