@@ -555,11 +555,13 @@ function FrameSwatch({ frame, on }) {
   );
 }
 
-/* ── Room View Panel (upload-only) ── */
+/* ── Room View Panel (staged + upload) ── */
 function RoomViewPanel({
   portraitUrl, frameColor, productType, selected,
   userRoomUrl, setUserRoomUrl,
   aiRoomUrl, setAiRoomUrl, aiRoomLoading, setAiRoomLoading,
+  stagedComposites, setStagedComposites,
+  selectedRoomKey, setSelectedRoomKey,
   portraitDragPos, setPortraitDragPos, isDragging, setIsDragging,
   dragStart, setDragStart, roomContainerRef, setRoomView,
 }: any) {
@@ -573,7 +575,15 @@ function RoomViewPanel({
   };
   const aspectRatio = sizeMap[(selected as any)?.size] || 0.75;
 
-  const bgUrl = aiRoomUrl || userRoomUrl;
+  // ── Resolve background based on selected room ──
+  const isUserRoom = selectedRoomKey === "user";
+  const stagedEntry = !isUserRoom ? stagedComposites[selectedRoomKey] : null;
+  const stagedRoomDef = STAGED_ROOMS.find(r => r.id === selectedRoomKey);
+  const bgUrl = isUserRoom
+    ? (aiRoomUrl || userRoomUrl)
+    : (stagedEntry?.url || stagedRoomDef?.bg);
+  const bgIsComposite = isUserRoom ? !!aiRoomUrl : !!stagedEntry?.url;
+  const stagedLoading = !isUserRoom && stagedEntry?.loading;
 
   const wallX = portraitDragPos.x;
   const wallY = portraitDragPos.y;
@@ -602,6 +612,35 @@ function RoomViewPanel({
     }));
   };
 
+  // ── Auto-generate composites for all 5 staged rooms when portrait changes ──
+  useEffect(() => {
+    if (!portraitUrl) return;
+    let cancelled = false;
+    (async () => {
+      const { supabase } = await import("@/integrations/supabase/client");
+      for (const room of STAGED_ROOMS) {
+        const existing = stagedComposites[room.id];
+        if (existing?.url || existing?.loading) continue;
+        setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: true } }));
+        try {
+          const { data, error } = await supabase.functions.invoke("composite-room-portrait", {
+            body: { roomUrl: room.bg, portraitUrl, frameColor },
+          });
+          if (cancelled) return;
+          if (!error && data?.url) {
+            setStagedComposites((prev: any) => ({ ...prev, [room.id]: { url: data.url, loading: false } }));
+          } else {
+            setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: false } }));
+          }
+        } catch {
+          if (!cancelled) setStagedComposites((prev: any) => ({ ...prev, [room.id]: { loading: false } }));
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [portraitUrl, frameColor]);
+
   const generateAIRoom = async () => {
     if (!userRoomUrl || !portraitUrl) return;
     setAiRoomLoading(true);
@@ -616,7 +655,7 @@ function RoomViewPanel({
     setAiRoomLoading(false);
   };
 
-  const showPortraitOverlay = portraitUrl && userRoomUrl && !aiRoomUrl && !aiRoomLoading;
+  const showPortraitOverlay = portraitUrl && bgUrl && !bgIsComposite && !aiRoomLoading && !stagedLoading;
 
   return (
     <div style={{
