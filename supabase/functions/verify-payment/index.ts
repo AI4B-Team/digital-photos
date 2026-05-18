@@ -46,7 +46,7 @@ serve(async (req) => {
     // then fall back to Stripe metadata, then to hardcoded price IDs (legacy).
     const { data: earlySession } = await supabase
       .from("sessions")
-      .select("print_product_type, id")
+      .select("print_product_type, id, print_items")
       .eq("stripe_session_id", stripe_session_id)
       .maybeSingle();
 
