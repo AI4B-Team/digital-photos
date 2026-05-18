@@ -69,7 +69,7 @@ export default function SiteHeader({
 
         <nav style={{
           display: "flex", alignItems: "center", gap: 2,
-          position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)",
+          position: "absolute", left: "50%", top: "50%", transform: `translate(calc(-50% + ${navCenterOffset}px), -50%)`,
         }}>
           {STEPS.map((s, i) => (
             <div key={s.id} style={{ display: "flex", alignItems: "center", gap: 2 }}>
