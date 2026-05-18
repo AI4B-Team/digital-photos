@@ -122,6 +122,7 @@ export default function SiteHeader({
               )}
             </button>
           )}
+          <HamburgerMenu />
         </div>
       </header>
     </>
