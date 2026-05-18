@@ -6,6 +6,7 @@ import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkle
 import { TEMPLATES } from "./Index";
 
 import SiteHeader from "@/components/SiteHeader";
+import PreviewsDrawer from "@/components/PreviewsDrawer";
 import { supabase } from "@/integrations/supabase/client";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
