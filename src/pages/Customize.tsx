@@ -970,11 +970,13 @@ function RoomViewPanel({
               <button key={room.id}
                 onClick={() => setSelectedRoomKey(room.id)}
                 style={{
-                  flex:"0 0 130px", height:92, position:"relative",
-                  borderRadius:10, overflow:"hidden", cursor:"pointer",
-                  border: on ? `2px solid ${RED}` : "2px solid rgba(255,255,255,.12)",
+                  flex:"0 0 158px", height:108, position:"relative",
+                  borderRadius:12, overflow:"hidden", cursor:"pointer",
+                  border: on ? `2px solid ${RED}` : "2px solid rgba(255,255,255,.10)",
                   padding:0, background:"#1a1a1a",
-                  boxShadow: on ? "0 4px 14px rgba(230,25,25,.35)" : "none",
+                  boxShadow: on ? "0 6px 18px rgba(230,25,25,.32)" : "0 2px 6px rgba(0,0,0,.25)",
+                  transition:"transform .2s ease, border-color .2s ease",
+                  transform: on ? "translateY(-1px)" : "none",
                 }}>
                 <img src={thumb} alt={room.vibe}
                   style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center", display:"block",
@@ -994,12 +996,19 @@ function RoomViewPanel({
                 )}
                 <div style={{
                   position:"absolute", left:0, right:0, bottom:0,
-                  background:"linear-gradient(180deg,transparent,rgba(0,0,0,.85))",
-                  color:"#fff", fontSize:9.5, fontWeight:600,
+                  background:"linear-gradient(180deg,transparent 0%,rgba(0,0,0,.55) 45%,rgba(0,0,0,.92) 100%)",
+                  color:"#fff",
                   fontFamily:"'Poppins',sans-serif",
-                  padding:"10px 6px 5px", textAlign:"left",
-                  letterSpacing:".04em",
-                }}>{room.vibe}</div>
+                  padding:"18px 9px 7px", textAlign:"left",
+                }}>
+                  <div style={{
+                    fontSize:11, fontWeight:700, letterSpacing:".06em", lineHeight:1.15,
+                  }}>{room.vibe}</div>
+                  <div style={{
+                    fontSize:9.5, fontWeight:400, opacity:.78, marginTop:2,
+                    fontStyle:"italic", letterSpacing:".01em", lineHeight:1.2,
+                  }}>{(room as any).subtitle}</div>
+                </div>
               </button>
             );
           })}
