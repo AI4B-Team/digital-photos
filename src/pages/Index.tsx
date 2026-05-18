@@ -23,6 +23,8 @@ import scenePetsPitbull from "@/assets/scene-pets-pitbull.jpg";
 import scenePetsGallery from "@/assets/scene-pets-gallery.jpg";
 import scenePetsShepherdFlag from "@/assets/scene-pets-shepherd-flag.jpg";
 import scenePetsHorseLavender from "@/assets/scene-pets-horse-lavender.jpg";
+import scenePetsDogCoverEyes from "@/assets/scene-pets-dog-cover-eyes-color.jpg";
+import scenePetsCatShoulder from "@/assets/scene-pets-cat-shoulder-color.jpg";
 import sceneBabies from "@/assets/scene-babies.jpg";
 import sceneBabiesSkateboard from "@/assets/scene-babies-skateboard.jpg";
 import sceneBabiesSuperman from "@/assets/scene-babies-superman.jpg";
