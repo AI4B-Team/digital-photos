@@ -3117,6 +3117,9 @@ export default function Customize() {
                 roomContainerRef={roomContainerRef}
                 setRoomView={setRoomView}
                 roomImageOverrides={roomImageOverrides}
+                canvasFloatFrame={canvasFrame}
+                canvasFloatFrameColor={canvasFrameColor}
+                canvasEdge={(selected as any).canvasEdge || "gallery"}
               />
             </div>
           ) : (
