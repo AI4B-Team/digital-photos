@@ -1012,9 +1012,8 @@ function RoomViewPanel({
           const mountPad = isCanvas ? 0 : Math.max(4, wallW * 0.35);
           const nameColorHex = (NAME_COLORS.find((c:any) => c.id === nameColorId)?.hex) || "#fff";
           const nameSizeCss  = (NAME_SIZES.find((s:any) => s.id === nameSizeId)?.css) || "5cqw";
-          const nameFontFam  = nameFontId === "serif"
-            ? "Georgia,'Times New Roman',serif"
-            : "'Poppins',sans-serif";
+          const nameFontDef  = NAME_FONTS.find(f => f.id === nameFontId) || NAME_FONTS[0];
+          const nameFontFam  = nameFontDef.family;
           return (
             <div
               onMouseDown={onDragStart}
