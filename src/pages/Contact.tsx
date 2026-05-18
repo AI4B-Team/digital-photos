@@ -131,7 +131,7 @@ export default function Contact() {
               width:"100%", padding:"14px 18px", borderRadius:12, background:RED, color:"#fff",
               border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
               boxShadow:"0 8px 22px rgba(230,25,25,.28)", opacity: sending ? .7 : 1,
-            }}>{sending ? "Sending..." : "Send Message"}</button>
+            }}>{sending ? "Sending..." : "Send message"}</button>
           </form>
 
           {/* Sidebar */}
