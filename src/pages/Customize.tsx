@@ -6,6 +6,7 @@ import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkle
 import { TEMPLATES } from "./Index";
 
 import SiteHeader from "@/components/SiteHeader";
+import PreviewsDrawer from "@/components/PreviewsDrawer";
 import { supabase } from "@/integrations/supabase/client";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
@@ -1563,6 +1564,8 @@ export default function Customize() {
 
   // Cart drawer + extra pack line items
   const [cartOpen, setCartOpen]   = useState(false);
+  const [previewsOpen, setPreviewsOpen] = useState(false);
+  
   
   const [addedPacks, setAddedPacks] = useState<Array<{ id: string; packId: string; name: string; price: number; qty: number }>>([]);
 
@@ -2777,6 +2780,8 @@ export default function Customize() {
         current="customize"
         onBack={() => navigate("/")}
         total={headerTotal}
+        showPreviews
+        onPreviews={() => setPreviewsOpen(true)}
         showCart
         onCart={() => setCartOpen(true)}
         cartCount={cartCount}
@@ -4788,6 +4793,13 @@ export default function Customize() {
           }}>Close</button>
         </div>
       )}
+
+      <PreviewsDrawer
+        open={previewsOpen}
+        onClose={() => setPreviewsOpen(false)}
+        defaultEmail={(session as any)?.email || ""}
+      />
+
 
       {showAdminPanel && (
         <div style={{
