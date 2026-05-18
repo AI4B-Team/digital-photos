@@ -483,9 +483,20 @@ const FRAME_COLOR_HEX: Record<string,string> = {
 };
 
 const CANVAS_EDGES = [
-  { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",   color:null      },
-  { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",  color:"#1a1a1a" },
-  { id:"museum-white", label:"Museum (White edge)", desc:"Clean solid white edges",  color:"#f4f4f4" },
+  { id:"gallery",      label:"Gallery Wrap",        desc:"Image wraps around the sides",  color:null      },
+  { id:"mirror",       label:"Mirror Wrap",         desc:"Edges mirror the image",        color:null      },
+  { id:"museum-black", label:"Museum (Black edge)", desc:"Clean solid black edges",       color:"#1a1a1a" },
+  { id:"museum-white", label:"Museum (White edge)", desc:"Clean solid white edges",       color:"#f4f4f4" },
+];
+
+// Float frame colors for Prodigi GLOBAL-FRA-CAN
+const CANVAS_FRAME_COLORS = [
+  { id:"black",          label:"Black",          color:"#1a1a1a" },
+  { id:"white",          label:"White",          color:"#f4f4f4" },
+  { id:"antique-gold",   label:"Antique Gold",   color:"#c4963a" },
+  { id:"antique-silver", label:"Antique Silver", color:"#9a9a9a" },
+  { id:"natural",        label:"Natural",        color:"#c89968" },
+  { id:"brown",          label:"Brown",          color:"#6b4a30" },
 ];
 
 // ── Name overlay options ──────────────────────────────
