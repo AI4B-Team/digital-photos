@@ -1648,13 +1648,13 @@ function HomePage({ onGenerate }) {
           {user ? (
             <>
               <a href="/customize" style={{ fontSize:11, color:T.gold, textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
-                padding:"6px 14px", border:`1px solid rgba(196,150,58,.5)`, transition:"all .25s" }}
+                padding:"6px 14px", border:`1px solid rgba(196,150,58,.5)`, borderRadius:8, transition:"all .25s" }}
                 onMouseOver={e => { e.currentTarget.style.background="rgba(196,150,58,.1)"; }}
                 onMouseOut={e => { e.currentTarget.style.background="transparent"; }}>
                 My Portraits
               </a>
               <button onClick={() => signOut()} style={{ background:"none", fontSize:11, color:T.muted, cursor:"pointer", letterSpacing:".08em", textTransform:"uppercase",
-                padding:"6px 14px", border:`1px solid ${T.border}`, transition:"all .25s", fontFamily:"'Poppins',sans-serif" }}
+                padding:"6px 14px", border:`1px solid ${T.border}`, borderRadius:8, transition:"all .25s", fontFamily:"'Poppins',sans-serif" }}
                 onMouseOver={e => { e.currentTarget.style.color = T.cream; }}
                 onMouseOut={e => { e.currentTarget.style.color = T.muted; }}>
                 Sign Out
@@ -1662,7 +1662,7 @@ function HomePage({ onGenerate }) {
             </>
           ) : (
             <a href="/auth" style={{ fontSize:11, color:T.muted, textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
-              padding:"6px 14px", border:`1px solid ${T.border}`, transition:"all .25s" }}
+              padding:"6px 14px", border:`1px solid ${T.border}`, borderRadius:8, transition:"all .25s" }}
               onMouseOver={e => { e.currentTarget.style.borderColor="rgba(196,150,58,.4)"; e.currentTarget.style.color=T.cream; }}
               onMouseOut={e => { e.currentTarget.style.borderColor=T.border; e.currentTarget.style.color=T.muted; }}>
               Sign In
