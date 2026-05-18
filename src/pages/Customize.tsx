@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "@/context/SessionContext";
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, RotateCcw, Pencil, Sparkles, Plus, Copy, Lock, EyeOff, Download, Trash2, ChevronUp, ChevronDown, SlidersHorizontal, X, Send, ZoomIn, ZoomOut, ArrowDownToLine, ImageIcon, Frame, Square, LayoutPanelTop, Truck, Layers, UploadCloud, Wand2, ShoppingCart, Minus, Zap, Star, Shield, RefreshCw, Home, Upload, Info } from "lucide-react";
 import { TEMPLATES } from "./Index";
-import PreviewsDrawer from "@/components/PreviewsDrawer";
+
 import SiteHeader from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
