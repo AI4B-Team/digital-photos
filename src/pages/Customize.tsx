@@ -710,7 +710,7 @@ function RoomViewPanel({
           <ChevronLeft size={14}/> Back
         </button>
         {([
-          { k:"staged", label:"Staged Rooms" },
+          { k:"staged", label:"Styled Spaces" },
           { k:"user",   label:"My Room" },
           { k:"ai",     label:"AI Magic", icon:<Sparkles size={13}/> },
         ] as const).map(t => {
