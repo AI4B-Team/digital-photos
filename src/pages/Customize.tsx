@@ -893,15 +893,14 @@ function RoomViewPanel({
               <button key={room.id}
                 onClick={() => setSelectedRoomKey(room.id)}
                 style={{
-                  flex:"0 0 110px", height:90, position:"relative",
+                  flex:"0 0 130px", height:92, position:"relative",
                   borderRadius:10, overflow:"hidden", cursor:"pointer",
                   border: on ? `2px solid ${RED}` : "2px solid rgba(255,255,255,.12)",
-                  padding:0, background:"#222",
+                  padding:0, background:"#1a1a1a",
                   boxShadow: on ? "0 4px 14px rgba(230,25,25,.35)" : "none",
                 }}>
                 <img src={thumb} alt={room.vibe}
-                  style={{ width:"100%", height:"100%", objectFit:"contain", display:"block",
-                    background:"#1a1a1a",
+                  style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center", display:"block",
                     opacity: loading ? .5 : 1 }}/>
                 {loading && (
                   <div style={{
@@ -930,7 +929,7 @@ function RoomViewPanel({
 
           {/* Size guide — always visible info tile */}
           <button onClick={() => setSizeGuideOpen(true)} style={{
-            flex:"0 0 110px", height:90, position:"relative",
+            flex:"0 0 130px", height:92, position:"relative",
             borderRadius:10, overflow:"hidden", padding:0, cursor:"pointer",
             border:"2px solid rgba(255,255,255,.12)",
             background:"#fff",
