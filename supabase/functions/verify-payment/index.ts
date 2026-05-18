@@ -120,18 +120,40 @@ serve(async (req) => {
         const shippingEmail = checkoutSession.customer_details?.email || "";
 
         if (portraitUrl && shipping?.line1) {
+          // BUG-09: send EVERY cart item to Prodigi, not just the first.
+          // Prefer the saved multi-item snapshot; fall back to single legacy fields.
+          const savedItems = Array.isArray(sessionRecord?.print_items) ? sessionRecord.print_items : null;
+          const itemsPayload = (savedItems && savedItems.length > 0)
+            ? savedItems
+                .filter((it: any) =>
+                  it && it.sku && !["digital", "vip"].includes(it.productType))
+                .map((it: any) => ({
+                  portraitUrl: it.photoUrl || portraitUrl,
+                  sku:         it.sku,
+                  productType: it.productType,
+                  frameColor:  it.frameColor || "",
+                  canvasEdge:  it.canvasEdge || "",
+                  mountColor:  it.mountColor || checkoutSession.metadata?.printMount || "snow-white",
+                  glazeType:   it.glazeType  || checkoutSession.metadata?.printGlaze || "perspex",
+                  copies:      it.qty || 1,
+                }))
+            : [{
+                portraitUrl,
+                sku:         sessionRecord?.print_sku || checkoutSession.metadata?.printSku || "",
+                productType: sessionRecord?.order_product || orderProduct,
+                frameColor:  sessionRecord?.print_frame || checkoutSession.metadata?.printFrame || "",
+                canvasEdge:  sessionRecord?.print_canvas_edge || "",
+                mountColor:  checkoutSession.metadata?.printMount || "snow-white",
+                glazeType:   checkoutSession.metadata?.printGlaze || "perspex",
+                copies:      1,
+              }];
+
           const { data: prodigiData, error: prodigiErr } = await supabase.functions.invoke(
             "create-prodigi-order",
             {
               body: {
                 sessionId,
-                portraitUrl,
-                sku: sessionRecord?.print_sku || checkoutSession.metadata?.printSku || "",
-                productType: sessionRecord?.order_product || orderProduct,
-                frameColor: sessionRecord?.print_frame || checkoutSession.metadata?.printFrame || "",
-                canvasEdge: sessionRecord?.print_canvas_edge || "mirror",
-                mountColor: checkoutSession.metadata?.printMount || "snow-white",
-                glazeType: checkoutSession.metadata?.printGlaze || "perspex",
+                items: itemsPayload,
                 shippingName,
                 shippingEmail,
                 shippingLine1: shipping.line1,
