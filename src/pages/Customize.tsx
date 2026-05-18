@@ -3825,14 +3825,22 @@ export default function Customize() {
                       )}
 
                       {(() => {
+                        const isCanvasCard = card.id === "canvas";
+                        const baseSku = cardSizeDef?.sku || "";
+                        const floatFrameSku = isCanvasCard && canvasFrame && baseSku
+                          ? baseSku.replace("GLOBAL-CAN-", "GLOBAL-FRA-CAN-")
+                          : baseSku;
                         const snapshot = {
                           ...selected,
                           productType: card.id,
                           size: card.id === "digital" ? selected.size : (cardSizeDef?.pid || selSize),
-                          sku: cardSizeDef?.sku || "",
-                          frameColor: card.frameColors ? cardFrame : undefined,
+                          sku: floatFrameSku,
+                          frameColor: card.frameColors
+                            ? cardFrame
+                            : (isCanvasCard && canvasFrame ? canvasFrameColor : undefined),
                           glazeType: card.frameColors ? glazeType : undefined,
-                          canvasEdge: canvasFrame ? "mirror" : undefined,
+                          canvasEdge: isCanvasCard ? (selected.canvasEdge || "gallery") : undefined,
+                          canvasFloatFrame: isCanvasCard && canvasFrame ? true : undefined,
                           qty: selected.qty || 1,
                         };
                         const lineQty = selected.qty || 1;
