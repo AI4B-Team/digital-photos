@@ -1794,28 +1794,15 @@ function HomePage({ onGenerate }) {
                   onChange={e => {
                     const f = e.target.files?.[0];
                     if (!f) return;
-                    const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
-                    if (!ALLOWED.includes(f.type)) {
-                      alert("Please upload a PNG, JPEG, WebP, or GIF image.");
-                      e.target.value = "";
-                      return;
-                    }
-                    if (addSlot === "extra") {
-                      const reader = new FileReader();
-                      reader.onload = async ev => {
-                        const dataUrl = ev.target?.result as string;
-                        setExtraPhotos(p => [...p, dataUrl]);
-                        let low = false;
-                        try { const { w, h } = await getImageDimensions(dataUrl); low = isLowRes(w, h); } catch {}
-                        setExtraLowRes(p => [...p, low]);
-                      };
-                      reader.readAsDataURL(f);
-                    } else {
-                      loadFile(f);
-                    }
-                    // reset so the same file can be re-selected after removal
+                    handleSelectedFile(f);
                     e.target.value = "";
                   }}/>
+                <UploadSourceModal
+                  open={uploadModalOpen}
+                  onClose={() => setUploadModalOpen(false)}
+                  onFile={(f) => handleSelectedFile(f)}
+                  forCouplesPartner2={cat === "couples" && addSlot === "extra"}
+                />
               </div>
 
               {/* ── NAME (Optional) — only after photo uploaded ── */}
