@@ -20,6 +20,29 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import { useAuth } from "@/context/AuthContext";
 import readyTrio from "@/assets/ready-trio.png";
+
+// Auto-load signature template images: src/assets/signature/<subtype>-<style>.jpg
+// or single-hero fallback src/assets/signature/<subtype>.jpg
+const SIGNATURE_FILES = import.meta.glob("@/assets/signature/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
+const SIGNATURE_STYLE_IMAGES: Record<string, Partial<Record<string, string>>> = {};
+const SIGNATURE_HERO_IMAGES: Record<string, string> = {};
+for (const [path, url] of Object.entries(SIGNATURE_FILES)) {
+  const name = path.split("/").pop()!.replace(/\.jpg$/, "");
+  const styleIds = ["royal","renaissance","storybook","fantasy","cinematic","minimal"];
+  const matchedStyle = styleIds.find(s => name.endsWith("-" + s));
+  if (matchedStyle) {
+    const sub = name.slice(0, name.length - matchedStyle.length - 1);
+    (SIGNATURE_STYLE_IMAGES[sub] ||= {})[matchedStyle] = url;
+  } else {
+    SIGNATURE_HERO_IMAGES[name] = url;
+  }
+}
+for (const [sub, hero] of Object.entries(SIGNATURE_HERO_IMAGES)) {
+  const map = (SIGNATURE_STYLE_IMAGES[sub] ||= {});
+  for (const s of ["royal","renaissance","storybook","fantasy","cinematic","minimal"]) {
+    if (!map[s]) map[s] = hero;
+  }
+}
 import scenePets from "@/assets/scene-pets.jpg";
 import scenePetsBrutus  from "@/assets/scene-pets-brutus.jpg";
 import scenePetsPitbull from "@/assets/scene-pets-pitbull.jpg";
