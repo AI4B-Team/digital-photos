@@ -2091,7 +2091,7 @@ export default function Customize() {
       ? (BORDERS.find(b => b.id === "none") || { id:"none", label:"None", px:0 })
       : isFramedItem
         ? { id:"mount", label:"Mount", px: 22 }
-        : (BORDERS.find(b => b.id === item.border) || BORDERS[1]);
+        : (BORDERS.find(b => b.id === item.border) || (item.productType === "print" ? BORDERS[0] : BORDERS[1]));
     const bcd = isDigitalItem
       ? { id:"transparent", label:"None", bg:"transparent" }
       : isFramedItem
