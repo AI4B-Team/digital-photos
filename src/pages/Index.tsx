@@ -398,7 +398,7 @@ const STYLES = [
    scene images (no frame, no wall). CollectionCard will slideshow through them
    edge-to-edge. The legacy `img` (2×2 framed composite) is used as a fallback
    and gets auto-cropped into the inner picture of each quadrant. */
-export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string; scenes?: string[] }[]> = {
+export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string; scenes?: string[]; isGrid?: boolean }[]> = {
   pets: [
     { id:"pet-bath",      label:"Bath Time",       desc:"Spa Day Bubbles",
       img: petBathTime,
