@@ -3048,8 +3048,9 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       prompt: t.prompt,
     }));
 
-  // Show Premium Couple section whenever the user has uploaded 2+ photos (couple intent)
-  const showPremiumCouple = (allPhotos?.length || 0) >= 2 || cat === "couples";
+  // Show Premium Couple section only when "couple" sub-type is selected (or couples category)
+  const showPremiumCouple = subType === "couple" || cat === "couples";
+
   const couplesTemplatePool = (TEMPLATES["couples"] || []).concat(
     (SUBTYPE_TEMPLATES["couple"] || []).filter(t => !((TEMPLATES["couples"] || []).some(c => c.id === t.id)))
   );
@@ -3242,33 +3243,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         </div>
       )}
 
-      {/* Premium Couple — matching outfits & jerseys */}
-      {premiumCoupleCards.length > 0 && (
-        <>
-          <div style={{ margin:"0 auto", padding:"18px 24px 4px" }}>
-            <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-              color:T.gold, fontWeight:700 }}>Premium Couple</p>
-            <p style={{ fontSize:13, color:T.muted, marginTop:4,
-              fontFamily:"'Poppins',sans-serif" }}>
-              Matching jerseys, tailored sets & coordinated looks
-            </p>
-          </div>
-          <div style={{ margin:"0 auto", padding:"8px 24px 22px" }}>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-              {applyCollection(premiumCoupleCards, collection).map(card => {
-                const isSelected = selected?.type === "template" && selected?.id === card.id;
-                return (
-                  <StyleCard key={`pc-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
-                    confirming={confirming}
-                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
-                    onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
-                    onConfirm={handleConfirm}/>
-                );
-              })}
-            </div>
-          </div>
-        </>
-      )}
+
 
 
       {/* Art Styles header */}
@@ -3318,6 +3293,35 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           </div>
         </>
       )}
+
+      {/* Premium Couple — matching outfits & jerseys */}
+      {premiumCoupleCards.length > 0 && (
+        <>
+          <div style={{ margin:"0 auto", padding:"36px 24px 4px" }}>
+            <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
+              color:T.gold, fontWeight:700 }}>Premium Couple</p>
+            <p style={{ fontSize:13, color:T.muted, marginTop:4,
+              fontFamily:"'Poppins',sans-serif" }}>
+              Matching jerseys, tailored sets & coordinated looks
+            </p>
+          </div>
+          <div style={{ margin:"0 auto", padding:"8px 24px 22px" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
+              {applyCollection(premiumCoupleCards, collection).map(card => {
+                const isSelected = selected?.type === "template" && selected?.id === card.id;
+                return (
+                  <StyleCard key={`pc-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
+                    confirming={confirming}
+                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
+                    onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
+                    onConfirm={handleConfirm}/>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
 
       {/* Themed sections — Seasons / Holidays / Occasions */}
       {THEMES[cat] && (Object.keys(THEMES[cat]) as Array<keyof typeof THEMES[typeof cat]>).map(group => {
