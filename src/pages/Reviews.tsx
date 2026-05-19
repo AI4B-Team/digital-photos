@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useNavigate } from "react-router-dom";
 import { Star, CheckCircle, Sparkles } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
+import LandingHeader from "@/components/LandingHeader";
 
 const RED = "#E61919";
 const INK = "#0A0A0A";

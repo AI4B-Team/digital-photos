@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Gift, Mail, Calendar, Sparkles, Check, Clock, Infinity as InfIcon, DollarSign } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
+import LandingHeader from "@/components/LandingHeader";
 
 
 const RED = "#E61919";

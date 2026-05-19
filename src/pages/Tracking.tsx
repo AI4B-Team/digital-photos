@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Package, Clock, CheckCircle, Truck, AlertCircle, ChevronDown, Search } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
+import LandingHeader from "@/components/LandingHeader";
 import { supabase } from "@/integrations/supabase/client";
 
 const RED = "#E61919";
