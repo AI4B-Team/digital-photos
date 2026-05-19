@@ -26,6 +26,8 @@ import readyTrio from "@/assets/ready-trio.png";
 const SIGNATURE_FILES = import.meta.glob("@/assets/signature/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
 const SIGNATURE_STYLE_IMAGES: Record<string, Partial<Record<string, string>>> = {};
 const SIGNATURE_HERO_IMAGES: Record<string, string> = {};
+const FEATURED_FILES = import.meta.glob("@/assets/featured/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
+const FEATURED_SCENE_IMAGES: Record<string, Record<number, string>> = {};
 for (const [path, url] of Object.entries(SIGNATURE_FILES)) {
   const name = path.split("/").pop()!.replace(/\.jpg$/, "");
   const styleIds = ["royal","renaissance","storybook","fantasy","cinematic","minimal"];
@@ -42,6 +44,11 @@ for (const [sub, hero] of Object.entries(SIGNATURE_HERO_IMAGES)) {
   for (const s of ["royal","renaissance","storybook","fantasy","cinematic","minimal"]) {
     if (!map[s]) map[s] = hero;
   }
+}
+for (const [path, url] of Object.entries(FEATURED_FILES)) {
+  const name = path.split("/").pop()!.replace(/\.jpg$/, "");
+  const match = name.match(/^(.*)-(\d+)$/);
+  if (match) (FEATURED_SCENE_IMAGES[match[1]] ||= {})[Number(match[2])] = url;
 }
 import scenePets from "@/assets/scene-pets.jpg";
 import scenePetsBrutus  from "@/assets/scene-pets-brutus.jpg";
