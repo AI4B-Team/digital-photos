@@ -298,7 +298,7 @@ export default function Styles() {
           display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(160px,1fr))", gap:20, textAlign:"center",
         }}>
           {[
-            ["50+","Templates"],
+            ["70+","Templates"],
             ["6","Art Styles"],
             ["5,000+","Happy Customers"],
             ["24–48h","Delivery"],
