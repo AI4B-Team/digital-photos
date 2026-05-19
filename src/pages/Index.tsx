@@ -3049,7 +3049,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     }));
 
   // Show Premium Couple section whenever the user has uploaded 2+ photos (couple intent)
-  const showPremiumCouple = (photos?.length || 0) >= 2 || cat === "couples";
+  const showPremiumCouple = (allPhotos?.length || 0) >= 2 || cat === "couples";
   const couplesTemplatePool = (SUBTYPE_TEMPLATES["couples"] || []).concat(
     (templates || []).filter(t => !((SUBTYPE_TEMPLATES["couples"] || []).some(c => c.id === t.id)))
   );
