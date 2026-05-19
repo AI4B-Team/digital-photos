@@ -2091,7 +2091,7 @@ export default function Customize() {
       ? (BORDERS.find(b => b.id === "none") || { id:"none", label:"None", px:0 })
       : isFramedItem
         ? { id:"mount", label:"Mount", px: 22 }
-        : (BORDERS.find(b => b.id === item.border) || BORDERS[1]);
+        : (BORDERS.find(b => b.id === item.border) || (item.productType === "print" ? BORDERS[0] : BORDERS[1]));
     const bcd = isDigitalItem
       ? { id:"transparent", label:"None", bg:"transparent" }
       : isFramedItem
@@ -2151,8 +2151,8 @@ export default function Customize() {
                   `,
             padding: isCanvas
               ? (liveCanvasFloat ? 12 : 0)
-              : (isAcrylic ? 0 : (isFrameless ? (isPrintItem ? bd.px : 6) : woodPad + 6)),
-            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? (isPrintItem ? 2 : 12) : 2)),
+              : (isAcrylic ? 0 : (isFrameless ? (isPrintItem ? 0 : 6) : woodPad + 6)),
+            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? (isPrintItem ? 0 : 12) : 2)),
             boxShadow: isCanvas
               ? (liveCanvasFloat
                   ? "0 4px 20px rgba(0,0,0,0.35)"
@@ -3679,6 +3679,7 @@ export default function Customize() {
                                     canvasFloatFrame: wantsFloat || undefined,
                                     canvasEdge: isCanvasCard ? ((selected as any).canvasEdge || "gallery") : undefined,
                                   });
+                                  if (card.id === "print") setBorder("none");
                                 }}
                                 style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
                                   borderRadius:10, padding:"10px 10px 10px",
