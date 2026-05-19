@@ -122,6 +122,11 @@ import petKitchenTails from "@/assets/pet-kitchen-tails.jpg";
 import petNineToFive from "@/assets/pet-nine-to-five.jpg";
 import petCleanFluffy from "@/assets/pet-clean-fluffy.jpg";
 import petSports from "@/assets/pet-sports.jpg";
+import petPopartGolden from "@/assets/templates/pets/pet-popart-golden.jpg";
+import petPopartPug from "@/assets/templates/pets/pet-popart-pug.jpg";
+import petPopartCorgi from "@/assets/templates/pets/pet-popart-corgi.jpg";
+import petPopartTuxedo from "@/assets/templates/pets/pet-popart-tuxedo.jpg";
+import petPopartShepherd from "@/assets/templates/pets/pet-popart-shepherd.jpg";
 import portraitBabies from "@/assets/portrait-babies.jpg";
 import portraitBabiesRoyal from "@/assets/portrait-babies-royal.jpg";
 import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
@@ -387,13 +392,33 @@ const STYLES = [
   { id:"minimal",     label:"Minimal",     desc:"Clean · Modern Fine Art",   preview:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=520&h=650&fit=crop&q=80" },
 ];
 
+/* Shared pool of pop-art pet portrait scenes — every pop-art card slideshows
+   through these so users see 6+ variants per collection. To add more variants
+   in the future, just push another image into this array. */
+const PET_POPART_SCENES: string[] = [
+  new URL("@/assets/templates/pets/pet-popart-cat-orange.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-cat-tabby.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-doodle.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-husky.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-siamese.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-frenchie.jpg", import.meta.url).href,
+  petPopartGolden,
+  petPopartPug,
+  petPopartCorgi,
+  petPopartTuxedo,
+  petPopartShepherd,
+];
+/* Put the card's own image first, then the rest of the pool. */
+const popartScenes = (ownUrl: string) =>
+  [ownUrl, ...PET_POPART_SCENES.filter(u => u !== ownUrl)];
+
 /* TEMPLATE SETS — category-specific scene/costume prompts.
    Each adds an "Additionally, depict the subject ..." clause to every style.
    NOTE: For new templates, include a `scenes: string[]` of 6+ UNFRAMED, full-bleed
    scene images (no frame, no wall). CollectionCard will slideshow through them
    edge-to-edge. The legacy `img` (2×2 framed composite) is used as a fallback
    and gets auto-cropped into the inner picture of each quadrant. */
-export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string; scenes?: string[] }[]> = {
+export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string; scenes?: string[]; isGrid?: boolean }[]> = {
   pets: [
     { id:"pet-bath",      label:"Bath Time",       desc:"Spa Day Bubbles",
       img: petBathTime,
