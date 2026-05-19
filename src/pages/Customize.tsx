@@ -3440,12 +3440,27 @@ export default function Customize() {
                           const unitDisc = itemGetsDiscount ? Math.max(0, unitPrice - discountAmt) : unitPrice;
                           const lineP = unitDisc * qty;
                           const isSel = it.id === selectedId;
+                          const inCart = isItemInCart(it);
                           return (
                             <div key={it.id} onClick={() => setSelectedId(it.id)} style={{
-                              display:"flex", gap:10, padding:8, borderRadius:9,
+                              display:"flex", gap:10, padding:"8px 8px 8px 30px", borderRadius:9,
                               border: isSel ? `1.5px solid ${RED}` : `1px solid ${BORDER}`,
-                              background:"#fff", cursor:"pointer", position:"relative",
+                              background: inCart ? "rgba(230,25,25,.04)" : "#fff", cursor:"pointer", position:"relative",
                             }}>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); toggleItemInCart(it); }}
+                                aria-label={inCart ? "Remove from cart" : "Add to cart"}
+                                title={inCart ? "Remove from cart" : "Add to cart"}
+                                style={{
+                                  position:"absolute", top:"50%", left:8, transform:"translateY(-50%)",
+                                  width:18, height:18, borderRadius:4,
+                                  border: `1.5px solid ${inCart ? RED : BORDER}`,
+                                  background: inCart ? RED : "#fff",
+                                  cursor:"pointer", padding:0,
+                                  display:"flex", alignItems:"center", justifyContent:"center",
+                                }}>
+                                {inCart && <Check size={12} color="#fff" strokeWidth={3}/>}
+                              </button>
                               <div style={{
                                 width:62, minWidth:62, display:"flex", alignItems:"center", justifyContent:"center",
                                 background:BG, borderRadius:5, padding:5,
