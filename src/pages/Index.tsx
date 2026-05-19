@@ -369,7 +369,7 @@ body{background:#FFFFFF;color:#0A0A0A;font-family:'Poppins',sans-serif;font-weig
 const CATS = [
   { id:"pets",      label:"Pets",      icon:"🐾", Icon: PawPrint     },
   { id:"people",    label:"People",    icon:"👤", Icon: Users        },
-  { id:"couples",   label:"Couples",   icon:"❤",  Icon: Heart        },
+  
   { id:"occasions", label:"Occasions", icon:"✦",  Icon: CalendarDays },
 ];
 
