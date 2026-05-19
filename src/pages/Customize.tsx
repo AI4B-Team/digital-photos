@@ -4224,53 +4224,26 @@ export default function Customize() {
                         };
                         const lineQty = selected.qty || 1;
                         const linePrice = Math.max(0, itemUnitPrice(snapshot) - discountAmt) * lineQty;
+                        const allItemsTotal = Math.max(0, stagedTotal - (discountAmt || 0));
+                        const isMulti = items.length > 1;
+                        const btnLabel = isMulti
+                          ? `Add All ${items.length} To Cart`
+                          : `Add ${card.label} To Cart`;
                         return (
                           <>
-                            <div style={{
-                              fontSize:12, color:MUTED, textAlign:"center",
-                              marginTop:18, marginBottom:18, fontStyle:"italic",
-                              fontFamily:"'Playfair Display','Poppins',serif",
-                              letterSpacing:".02em", opacity:.72, lineHeight:1.5,
-                            }}>
-                              A timeless piece made uniquely for you.
-                            </div>
-                            <button disabled={nameCompositing} onClick={async () => {
-                              let finalPhotoUrl = (snapshot as any).photoUrl;
-                              const hasText = (portraitName || (!isPetSession && portraitNameLine2));
-                              if (hasText && namePosition !== "none") {
-                                setNameCompositing(true);
-                                finalPhotoUrl = await composeNameOnImage(
-                                  (snapshot as any).photoUrl,
-                                  portraitName,
-                                  namePosition as "top" | "bottom",
-                                  nameFontId,
-                                  nameColorId,
-                                  nameSizeId,
-                                  isPetSession ? "" : portraitNameLine2,
-                                  isPetSession,
-                                );
-                                setNameCompositing(false);
-                              }
-                              const namedSnapshot = {
-                                ...snapshot,
-                                photoUrl: finalPhotoUrl,
-                                portraitName:      portraitName || null,
-                                portraitNameLine2: (!isPetSession && portraitNameLine2) ? portraitNameLine2 : null,
-                                namePosition: hasText ? namePosition : null,
-                                nameFontId:   hasText ? nameFontId   : null,
-                                nameSizeId:   hasText ? nameSizeId   : null,
-                                nameColorId:  hasText ? nameColorId  : null,
-                              };
-                              addToCart(namedSnapshot, lineQty);
-                              setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
-                              setUpsellOpen(true);
+                            <button disabled={nameCompositing || items.length === 0} onClick={async () => {
+                              await addAllToCart();
                             }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
                               borderRadius:10, fontSize:14, display:"flex", alignItems:"center",
-                              justifyContent:"center", gap:8 }}>
+                              justifyContent:"center", gap:8, marginTop:14,
+                              opacity: items.length === 0 ? .55 : 1 }}>
                               {nameCompositing
                                 ? <><div className="cz-spinner" style={{ width:14,height:14 }}/> Adding name…</>
-                                : <><ShoppingCart size={15}/> Add {card.label} To Cart — <span style={{ fontWeight:900 }}>${linePrice}</span></>}
+                                : <><ShoppingCart size={15}/> {btnLabel} — <span style={{ fontWeight:900 }}>${allItemsTotal}</span></>}
                             </button>
+                            <div style={{ fontSize:10.5, color:MUTED, textAlign:"center", marginTop:6 }}>
+                              100% satisfaction guarantee · Free shipping worldwide
+                            </div>
                           </>
                         );
                       })()}
