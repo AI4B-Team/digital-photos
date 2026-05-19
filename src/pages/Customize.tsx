@@ -3679,6 +3679,7 @@ export default function Customize() {
                                     canvasFloatFrame: wantsFloat || undefined,
                                     canvasEdge: isCanvasCard ? ((selected as any).canvasEdge || "gallery") : undefined,
                                   });
+                                  if (card.id === "print") setBorder("none");
                                 }}
                                 style={{ border:`1px solid ${selSize===sz.id?RED:BORDER}`,
                                   borderRadius:10, padding:"10px 10px 10px",
