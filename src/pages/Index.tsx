@@ -2636,6 +2636,7 @@ function applyCollection<T extends { id?: string; label?: string; desc?: string 
    STYLE SELECT PAGE — between homepage and generation
 ═══════════════════════════════════════════════════════════ */
 function StyleSelectPage({ session, onConfirm, onBack }) {
+  const navigate = useNavigate();
   const { cat, heroName, photo, extraPhotos = [] } = session;
   const allPhotos = [photo, ...(extraPhotos || [])].filter(Boolean);
   const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
