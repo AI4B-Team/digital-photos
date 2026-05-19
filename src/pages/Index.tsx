@@ -2713,6 +2713,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     label: t.label,
     desc: t.desc,
     img: t.img,
+    scenes: t.scenes || [],
   }));
 
   const toAbsUrl = (u?: string) => {
