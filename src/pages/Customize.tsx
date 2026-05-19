@@ -4212,6 +4212,11 @@ export default function Customize() {
                                 nameColorId:  hasText ? nameColorId  : null,
                               };
                               addToCart(namedSnapshot, lineQty);
+                              // Also commit any other staged items (checkboxes) to the cart.
+                              stagedItems.forEach(si => {
+                                if (si.id !== selectedId) addToCart({ ...si }, si.qty || 1);
+                              });
+                              setStagedIds(new Set());
                               setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
                               setUpsellOpen(true);
                             }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
