@@ -1608,19 +1608,27 @@ export default function Customize() {
     const q = Math.max(1, Math.min(99, qty|0));
     setCartItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
   };
-  // Quick toggle: add/remove a customization item to the cart by its photoUrl identity
+  // Quick toggle: stage/unstage a workspace item for adding to cart via the
+  // bottom "Add to Cart" button. Selection here only affects the header total
+  // and what gets committed to the cart on click — it does NOT add to the cart.
+  const [stagedIds, setStagedIds] = useState<Set<string>>(new Set());
   const cartItemForItem = (it: any) =>
     cartItems.find(ci => cartKey(ci) === cartKey(it)) ||
     cartItems.find(ci => ci.photoUrl === it.photoUrl);
-  const isItemInCart = (it: any) => !!cartItemForItem(it);
+  const isItemInCart = (it: any) => stagedIds.has(it.id) || !!cartItemForItem(it);
   const toggleItemInCart = (it: any) => {
-    const existing = cartItemForItem(it);
-    if (existing) {
-      removeCartItem(existing.id);
-    } else {
-      addToCart({ ...it }, it.qty || 1);
+    setStagedIds(prev => {
+      const n = new Set(prev);
+      if (n.has(it.id)) n.delete(it.id); else n.add(it.id);
+      return n;
+    });
+    // If the item is already in the real cart, unchecking should remove it.
+    if (!stagedIds.has(it.id)) {
+      const existing = cartItemForItem(it);
+      if (existing) removeCartItem(existing.id);
     }
   };
+
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
