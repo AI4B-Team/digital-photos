@@ -26,6 +26,8 @@ import readyTrio from "@/assets/ready-trio.png";
 const SIGNATURE_FILES = import.meta.glob("@/assets/signature/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
 const SIGNATURE_STYLE_IMAGES: Record<string, Partial<Record<string, string>>> = {};
 const SIGNATURE_HERO_IMAGES: Record<string, string> = {};
+const FEATURED_FILES = import.meta.glob("@/assets/featured/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
+const FEATURED_SCENE_IMAGES: Record<string, Record<number, string>> = {};
 for (const [path, url] of Object.entries(SIGNATURE_FILES)) {
   const name = path.split("/").pop()!.replace(/\.jpg$/, "");
   const styleIds = ["royal","renaissance","storybook","fantasy","cinematic","minimal"];
@@ -42,6 +44,11 @@ for (const [sub, hero] of Object.entries(SIGNATURE_HERO_IMAGES)) {
   for (const s of ["royal","renaissance","storybook","fantasy","cinematic","minimal"]) {
     if (!map[s]) map[s] = hero;
   }
+}
+for (const [path, url] of Object.entries(FEATURED_FILES)) {
+  const name = path.split("/").pop()!.replace(/\.jpg$/, "");
+  const match = name.match(/^(.*)-(\d+)$/);
+  if (match) (FEATURED_SCENE_IMAGES[match[1]] ||= {})[Number(match[2])] = url;
 }
 import scenePets from "@/assets/scene-pets.jpg";
 import scenePetsBrutus  from "@/assets/scene-pets-brutus.jpg";
@@ -3020,12 +3027,13 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const tmplCards = (subType && SUBTYPE_TEMPLATES[subType]
     ? SUBTYPE_TEMPLATES[subType]
     : templates.filter(matchesSubType)
-  ).map(t => ({
+  ).map((t, index) => ({
     type: "template" as const,
     id: t.id,
     label: t.label,
     desc: t.desc,
-    img: t.img,
+    img: subType ? (FEATURED_SCENE_IMAGES[subType]?.[index] || t.img) : t.img,
+    prompt: t.prompt,
   }));
 
   const toAbsUrl = (u?: string) => {
@@ -3067,7 +3075,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         const card = baseCards.find(c => c.id === selected.id);
         onConfirm({ styles: [selected.id], templatePrompt: subTypePromptContext, styleRefUrl: await getStyleRef(card?.img) });
       } else {
-        const tmpl = templates.find(t => t.id === selected.id);
+        const tmpl = tmplCards.find(t => t.id === selected.id) || templates.find(t => t.id === selected.id);
         const card = tmplCards.find(c => c.id === selected.id);
         const base = [subTypePromptContext, tmpl?.prompt].filter(Boolean).join(" ");
         const variants = cat === "pets"
