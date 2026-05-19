@@ -1861,6 +1861,11 @@ export default function Customize() {
   const cartFullSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
   const packsSubtotal  = addedPacks.reduce((sum, p) => sum + p.price * p.qty, 0);
   const subtotal     = cartFullSubtotal + packsSubtotal;
+  // Staged total = sum of items[] currently being configured (pre-cart). Used so the
+  // header TOTAL pill and the unified "Add All to Cart" button reflect what the user
+  // is building before they commit it.
+  const stagedTotal = items.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
+  const stagedTotalAfterPromo = Math.max(0, stagedTotal - (discountAmt || 0));
   const listSubtotal = cartPrintsListSubtotal
     + cartItems.filter(it => it.productType === "vip" || it.productType === "digital")
         .reduce((sum, it) => sum + itemListPrice(it), 0)
