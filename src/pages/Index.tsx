@@ -2894,16 +2894,16 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           </div>
           <div style={{ margin:"0 auto", padding:"0 24px" }}>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-              {applyCollection(tmplCards, collection).map(card => {
-                const isSelected = selected?.type === "template" && selected?.id === card.id;
-                return (
-                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
-                    confirming={confirming}
-                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
-                    onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
-                    onConfirm={handleConfirm}/>
-                );
-              })}
+              {applyCollection(tmplCards, collection).map(card => (
+                <CollectionCard
+                  key={`t-${card.id}`}
+                  card={card}
+                  originalPhotos={allPhotos}
+                  confirming={confirming}
+                  onView={() => navigate(`/collection/${card.id}`, { state: { card, category: cat } })}
+                  onCreate={() => { setSelected({ type:"template", id:card.id }); setTimeout(handleConfirm, 0); }}
+                />
+              ))}
             </div>
           </div>
         </>
