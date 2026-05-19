@@ -388,8 +388,12 @@ const STYLES = [
 ];
 
 /* TEMPLATE SETS — category-specific scene/costume prompts.
-   Each adds an "Additionally, depict the subject ..." clause to every style. */
-export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string }[]> = {
+   Each adds an "Additionally, depict the subject ..." clause to every style.
+   NOTE: For new templates, include a `scenes: string[]` of 6+ UNFRAMED, full-bleed
+   scene images (no frame, no wall). CollectionCard will slideshow through them
+   edge-to-edge. The legacy `img` (2×2 framed composite) is used as a fallback
+   and gets auto-cropped into the inner picture of each quadrant. */
+export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string; scenes?: string[] }[]> = {
   pets: [
     { id:"pet-bath",      label:"Bath Time",       desc:"Spa Day Bubbles",
       img: petBathTime,
@@ -2709,6 +2713,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     label: t.label,
     desc: t.desc,
     img: t.img,
+    scenes: t.scenes || [],
   }));
 
   const toAbsUrl = (u?: string) => {
@@ -3118,27 +3123,48 @@ export const QUADRANT_HINTS = [
 ];
 function CollectionCard({ card, onView, onCreate, originalPhotos = [], confirming }: any) {
   const [slideIdx, setSlideIdx] = useState(0);
-  const isGrid = card.isGrid ?? true; // default to grid for our 2×2 composites
-  const slideCount = isGrid ? 4 : 1;
+  const scenes: string[] = Array.isArray(card.scenes) ? card.scenes.filter(Boolean) : [];
+  const useScenes = scenes.length > 0;
+  const isGrid = !useScenes && (card.isGrid ?? true);
+  const slideCount = useScenes ? scenes.length : (isGrid ? 4 : 1);
   const labels: string[] = card.sceneLabels || [];
   const subLabel = labels[slideIdx] || card.desc;
   const photos = (originalPhotos || []).filter(Boolean).slice(0, 1);
   const prev = (e: any) => { e.stopPropagation(); setSlideIdx(i => (i - 1 + slideCount) % slideCount); };
   const next = (e: any) => { e.stopPropagation(); setSlideIdx(i => (i + 1) % slideCount); };
+
+  // Fallback: zoom deeper into the 2×2 composite so the frame/wall is cropped
+  // out and only the inner picture fills the box.
+  const Z = 3.6; // 360% zoom — quadrant inner picture ≈ fills the card
+  const fx = [0.25, 0.75, 0.25, 0.75][slideIdx] ?? 0.5;
+  const fy = [0.25, 0.25, 0.75, 0.75][slideIdx] ?? 0.5;
+  const posX = ((0.5 - fx * Z) / (1 - Z)) * 100;
+  const posY = ((0.5 - fy * Z) / (1 - Z)) * 100;
+
   return (
     <div style={{
       border:`1px solid ${T.border}`, borderRadius:16, overflow:"hidden",
       background:T.bg, display:"flex", flexDirection:"column",
     }}>
-      <div style={{
-        position:"relative", aspectRatio:"1/1",
-        backgroundImage:`url(${card.img})`,
-        backgroundSize: isGrid ? "200% 200%" : "cover",
-        backgroundPosition: isGrid ? QUADRANT_POSITIONS[slideIdx] : "50% 50%",
-        backgroundRepeat:"no-repeat",
-        transition:"background-position .25s ease",
-      }}>
-        {isGrid && (
+      <div style={{ position:"relative", aspectRatio:"1/1", overflow:"hidden", background:"#1a1a1a" }}>
+        {useScenes ? (
+          <img
+            src={scenes[slideIdx]}
+            alt={subLabel || card.label}
+            style={{ position:"absolute", inset:0, width:"100%", height:"100%",
+              objectFit:"cover", objectPosition:"center", display:"block" }}
+          />
+        ) : (
+          <div style={{
+            position:"absolute", inset:0,
+            backgroundImage:`url(${card.img})`,
+            backgroundSize: isGrid ? `${Z*100}% ${Z*100}%` : "cover",
+            backgroundPosition: isGrid ? `${posX}% ${posY}%` : "50% 50%",
+            backgroundRepeat:"no-repeat",
+            transition:"background-position .25s ease",
+          }}/>
+        )}
+        {slideCount > 1 && (
           <>
             <button onClick={prev} aria-label="Previous"
               style={{ position:"absolute", left:8, top:"50%", transform:"translateY(-50%)",
@@ -3153,8 +3179,8 @@ function CollectionCard({ card, onView, onCreate, originalPhotos = [], confirmin
                 fontSize:18, lineHeight:1, cursor:"pointer", display:"flex",
                 alignItems:"center", justifyContent:"center", zIndex:2 }}>›</button>
             <div style={{ position:"absolute", bottom:8, left:0, right:0,
-              display:"flex", justifyContent:"center", gap:6, zIndex:2 }}>
-              {[0,1,2,3].map(i => (
+              display:"flex", justifyContent:"center", gap:6, zIndex:2, flexWrap:"wrap", padding:"0 8px" }}>
+              {Array.from({ length: slideCount }).map((_, i) => (
                 <button key={i} onClick={(e) => { e.stopPropagation(); setSlideIdx(i); }}
                   aria-label={`Slide ${i+1}`}
                   style={{ width:6, height:6, borderRadius:"50%", border:"none",
@@ -3165,7 +3191,7 @@ function CollectionCard({ card, onView, onCreate, originalPhotos = [], confirmin
           </>
         )}
         {photos.length > 0 && (
-          <div style={{ position:"absolute", left:10, bottom:24, display:"flex", gap:6 }}>
+          <div style={{ position:"absolute", left:10, bottom:24, display:"flex", gap:6, zIndex:2 }}>
             {photos.map((src, i) => (
               <div key={i} style={{ width:48, height:48, borderRadius:8, overflow:"hidden",
                 border:"2px solid #fff", boxShadow:"0 2px 8px rgba(0,0,0,0.35)", background:"#222" }}>
@@ -3175,7 +3201,7 @@ function CollectionCard({ card, onView, onCreate, originalPhotos = [], confirmin
           </div>
         )}
       </div>
-      {isGrid && (
+      {slideCount > 1 && (
         <div style={{ textAlign:"center", fontSize:10.5, color:T.muted, padding:"4px 0",
           fontFamily:"'Poppins',sans-serif", letterSpacing:".06em" }}>
           {slideIdx + 1} of {slideCount}
