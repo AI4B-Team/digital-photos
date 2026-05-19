@@ -2938,18 +2938,47 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const portraits = teaser?.portraits || [];
   const templates = TEMPLATES[cat] || [];
 
+  // Per sub-type signature-style preview images (override teaser images)
+  const SUBTYPE_STYLE_IMAGES: Record<string, Partial<Record<string, string>>> = {
+    baby:         { royal: portraitBabiesRoyal, renaissance: portraitBabiesRen, fantasy: portraitBabiesFan, cinematic: portraitBabiesCine, minimal: portraitBabiesMin, storybook: portraitBabies },
+    couple:       { royal: portraitCouplesRoyal, renaissance: portraitCouplesRen, storybook: portraitCouplesStory, fantasy: portraitCouplesFan, cinematic: portraitCouplesCine, minimal: portraitCouplesMin },
+    family:       { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    individual:   { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    graduation:   { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    maternity:    { royal: portraitCouplesRoyal, renaissance: portraitCouplesRen, storybook: portraitCouplesStory, fantasy: portraitCouplesFan, cinematic: portraitCouplesCine, minimal: portraitCouplesMin },
+    grandparents: { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    friends:      { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    professional: { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    creator:      { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    birthday:     { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    wedding:      { royal: portraitCouplesRoyal, renaissance: portraitCouplesRen, storybook: portraitCouplesStory, fantasy: portraitCouplesFan, cinematic: portraitCouplesCine, minimal: portraitCouplesMin },
+    anniversary:  { royal: portraitCouplesRoyal, renaissance: portraitCouplesRen, storybook: portraitCouplesStory, fantasy: portraitCouplesFan, cinematic: portraitCouplesCine, minimal: portraitCouplesMin },
+    memorial:     { royal: portraitMemorialRoyal, renaissance: portraitMemorialRen, storybook: portraitMemorialStory, fantasy: portraitMemorialFan, cinematic: portraitMemorialCine, minimal: portraitMemorial },
+    "mothers-day":{ royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    "fathers-day":{ royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+    christmas:    { royal: portraitGiftsRoyal, storybook: portraitGiftsStory, fantasy: portraitGiftsFan, cinematic: portraitGiftsCine, minimal: portraitGiftsMin, renaissance: portraitPeopleRen },
+    valentines:   { royal: portraitCouplesRoyal, renaissance: portraitCouplesRen, storybook: portraitCouplesStory, fantasy: portraitCouplesFan, cinematic: portraitCouplesCine, minimal: portraitCouplesMin },
+    retirement:   { royal: portraitCouplesRoyal, renaissance: portraitCouplesRen, storybook: portraitCouplesStory, fantasy: portraitCouplesFan, cinematic: portraitCouplesCine, minimal: portraitCouplesMin },
+    engagement:   { royal: portraitCouplesRoyal, renaissance: portraitCouplesRen, storybook: portraitCouplesStory, fantasy: portraitCouplesFan, cinematic: portraitCouplesCine, minimal: portraitCouplesMin },
+    "new-home":   { royal: portraitPeopleRoyal, renaissance: portraitPeopleRen, storybook: portraitPeopleStory, cinematic: portraitPeopleCine, minimal: portraitPeopleMin, fantasy: portraitGiftsFan },
+  };
+  const subOverrides = (subType && SUBTYPE_STYLE_IMAGES[subType]) || null;
+
   const baseCards = STYLES
     .map(st => {
+      const override = subOverrides?.[st.id];
       const match = portraits.find(p => p.style === st.label);
-      return match ? {
+      const img = override || match?.url;
+      return img ? {
         type: "style" as const,
         id: st.id,
         label: st.label,
         desc: st.desc,
-        img: match.url,
+        img,
       } : null;
     })
     .filter(Boolean) as { type:"style"; id:string; label:string; desc:string; img:string }[];
+
 
   // Keyword tags per sub-type — used to actually filter templates/themes below
   const SUBTYPE_KEYWORDS: Record<string, string[]> = {
