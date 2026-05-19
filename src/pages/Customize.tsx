@@ -1286,7 +1286,7 @@ function RoomViewPanel({
             style={{
               maxWidth:"min(900px, 95vw)", maxHeight:"90vh",
               objectFit:"contain", borderRadius:8,
-              boxShadow:"0 20px 60px rgba(0,0,0,.6)", background:"#fff",
+              boxShadow:"0 20px 60px rgba(0,0,0,.6)",
             }}/>
           <button onClick={() => setSizeGuideOpen(false)} style={{
             position:"absolute", top:18, right:18,
@@ -4846,7 +4846,7 @@ export default function Customize() {
             style={{
               maxWidth:"min(900px, 95vw)", maxHeight:"90vh",
               objectFit:"contain", borderRadius:8,
-              boxShadow:"0 20px 60px rgba(0,0,0,.6)", background:"#fff",
+              boxShadow:"0 20px 60px rgba(0,0,0,.6)",
             }}/>
           <button onClick={() => setSizeGuideModalOpen(false)} style={{
             position:"absolute", top:18, right:18,
