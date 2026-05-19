@@ -3099,8 +3099,11 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         const card = baseCards.find(c => c.id === selected.id);
         onConfirm({ styles: [selected.id], templatePrompt: subTypePromptContext, styleRefUrl: await getStyleRef(card?.img) });
       } else {
-        const tmpl = tmplCards.find(t => t.id === selected.id) || templates.find(t => t.id === selected.id);
-        const card = tmplCards.find(c => c.id === selected.id);
+        const tmpl = tmplCards.find(t => t.id === selected.id)
+          || premiumCoupleCards.find(t => t.id === selected.id)
+          || templates.find(t => t.id === selected.id);
+        const card = tmplCards.find(c => c.id === selected.id)
+          || premiumCoupleCards.find(c => c.id === selected.id);
         const base = [subTypePromptContext, tmpl?.prompt].filter(Boolean).join(" ");
         const variants = cat === "pets"
           ? [
