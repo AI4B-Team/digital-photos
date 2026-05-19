@@ -111,6 +111,51 @@ serve(async (req) => {
       ? (await Promise.all(extraPhotoUrls.filter((u: string) => typeof u === "string" && u.length > 0).map(toDataUrl))).filter((u) => u.length > 0)
       : [];
 
+    // COUPLES: Pre-analyze both partner photos so each style generation gets
+    // a precise written description of each partner's identifying features.
+    // This dramatically improves face-likeness and prevents face-swapping.
+    let couplesAnalysis = "";
+    if (category === "couples" && subjectMainData && subjectExtraData[0]) {
+      try {
+        const analyzeRes = await fetch(
+          "https://ai.gateway.lovable.dev/v1/chat/completions",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${LOVABLE_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "google/gemini-2.5-flash",
+              messages: [
+                {
+                  role: "user",
+                  content: [
+                    {
+                      type: "text",
+                      text: `Analyze the two photos below. IMAGE 1 = PARTNER A. IMAGE 2 = PARTNER B.\n\nFor EACH partner, write a precise, factual physical description focused on identity-defining features ONLY (ignore clothes/background/lighting). Cover: perceived gender presentation, approximate age range, skin tone, face shape, hair color, hair length and style, eye color, eyebrow shape, nose shape, lip shape, facial hair (if any), distinctive marks (freckles, moles, glasses, piercings).\n\nReply in this EXACT format (no extra commentary):\nPARTNER A: <one tight paragraph>\nPARTNER B: <one tight paragraph>`,
+                    },
+                    { type: "image_url", image_url: { url: subjectMainData } },
+                    { type: "image_url", image_url: { url: subjectExtraData[0] } },
+                  ],
+                },
+              ],
+            }),
+          }
+        );
+        if (analyzeRes.ok) {
+          const aj = await analyzeRes.json();
+          couplesAnalysis = (aj?.choices?.[0]?.message?.content || "").toString().trim();
+          console.log("Couples analysis:", couplesAnalysis.slice(0, 400));
+        } else {
+          console.warn("Couples analysis failed:", analyzeRes.status, await analyzeRes.text());
+        }
+      } catch (e) {
+        console.warn("Couples analysis error:", e);
+      }
+    }
+
+
     const generateOne = async (style: string, idx: number): Promise<{ style: string; url: string; url_hd: string } | null> => {
       const prompt = STYLE_PROMPTS[style] || GENERIC_PHOTO_PROMPT;
       const perVariantPrompt = (Array.isArray(templatePrompts) && templatePrompts[idx]) || templatePrompt;
