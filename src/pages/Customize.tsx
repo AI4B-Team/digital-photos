@@ -2709,7 +2709,7 @@ export default function Customize() {
             ? `${sd?.label || it.size}${canvasAttrLabel(it)}`
             : it.productType === "print"
               ? `${sd?.label || it.size} · ${(!it.border || it.border === "none") ? "Unframed" : `${(BORDERS.find(b => b.id === it.border)?.label) || "Slim"} Mat`}`
-              : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
+              : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + (it.frameColor.charAt(0).toUpperCase() + it.frameColor.slice(1)) : ""}`;
         lineItems.push({
           name: ptLabel,
           description: desc,
