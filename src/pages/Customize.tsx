@@ -1920,7 +1920,7 @@ export default function Customize() {
     const gross = (unit + addon) * (snapshot.qty || 1);
     return Math.max(0, gross - (discountAmt || 0));
   })();
-  const headerTotal = total > 0 ? total : pendingUnitPrice;
+  const headerTotal = total > 0 ? total : (stagedTotalAfterPromo > 0 ? stagedTotalAfterPromo : pendingUnitPrice);
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
