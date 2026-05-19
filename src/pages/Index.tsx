@@ -3172,6 +3172,34 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         onChange={setCollection}
       />
 
+      {/* Premium Couple — matching outfits & jerseys */}
+      {premiumCoupleCards.length > 0 && (
+        <>
+          <div style={{ margin:"0 auto", padding:"18px 24px 4px" }}>
+            <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
+              color:T.gold, fontWeight:700 }}>Premium Couple</p>
+            <p style={{ fontSize:13, color:T.muted, marginTop:4,
+              fontFamily:"'Poppins',sans-serif" }}>
+              Matching jerseys, tailored sets & coordinated looks
+            </p>
+          </div>
+          <div style={{ margin:"0 auto", padding:"8px 24px 22px" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
+              {applyCollection(premiumCoupleCards, collection).map(card => {
+                const isSelected = selected?.type === "template" && selected?.id === card.id;
+                return (
+                  <StyleCard key={`pc-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
+                    confirming={confirming}
+                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
+                    onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
+                    onConfirm={handleConfirm}/>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Sub-type selector (People + Occasions only) */}
       {needsSubType && (
         <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 24px 24px" }}>
@@ -3288,35 +3316,6 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           </div>
         </>
       )}
-
-      {/* Premium Couple — matching outfits & jerseys */}
-      {premiumCoupleCards.length > 0 && (
-        <>
-          <div style={{ margin:"0 auto", padding:"36px 24px 4px" }}>
-            <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
-              color:T.gold, fontWeight:700 }}>Premium Couple</p>
-            <p style={{ fontSize:13, color:T.muted, marginTop:4,
-              fontFamily:"'Poppins',sans-serif" }}>
-              Matching jerseys, tailored sets & coordinated looks
-            </p>
-          </div>
-          <div style={{ margin:"0 auto", padding:"8px 24px 0" }}>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-              {applyCollection(premiumCoupleCards, collection).map(card => {
-                const isSelected = selected?.type === "template" && selected?.id === card.id;
-                return (
-                  <StyleCard key={`pc-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
-                    confirming={confirming}
-                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
-                    onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
-                    onConfirm={handleConfirm}/>
-                );
-              })}
-            </div>
-          </div>
-        </>
-      )}
-
 
       {/* Themed sections — Seasons / Holidays / Occasions */}
       {THEMES[cat] && (Object.keys(THEMES[cat]) as Array<keyof typeof THEMES[typeof cat]>).map(group => {
