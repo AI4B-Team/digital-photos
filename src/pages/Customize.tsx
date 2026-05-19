@@ -1617,17 +1617,19 @@ export default function Customize() {
     cartItems.find(ci => ci.photoUrl === it.photoUrl);
   const isItemInCart = (it: any) => stagedIds.has(it.id) || !!cartItemForItem(it);
   const toggleItemInCart = (it: any) => {
+    const wasStaged = stagedIds.has(it.id);
     setStagedIds(prev => {
       const n = new Set(prev);
       if (n.has(it.id)) n.delete(it.id); else n.add(it.id);
       return n;
     });
-    // If the item is already in the real cart, unchecking should remove it.
-    if (!stagedIds.has(it.id)) {
+    // Unchecking should also remove the item from the real cart if it was committed.
+    if (wasStaged) {
       const existing = cartItemForItem(it);
       if (existing) removeCartItem(existing.id);
     }
   };
+
 
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
