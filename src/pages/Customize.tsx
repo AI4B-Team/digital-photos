@@ -3587,14 +3587,19 @@ export default function Customize() {
                                     display:"inline-flex", alignItems:"center",
                                     border:`1px solid ${BORDER}`, borderRadius:6, background:"#fff",
                                   }}>
-                                    <button onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty - 1); }}
-                                      disabled={qty <= 1} aria-label="Decrease"
+                                    <button onClick={(e) => {
+                                        e.stopPropagation();
+                                        // Remove the last duplicate of this photo (mirrors + which duplicates).
+                                        const dupIds = items.filter(x => x.photoUrl === it.photoUrl).map(x => x.id);
+                                        if (dupIds.length > 1) removeItem(dupIds[dupIds.length - 1]);
+                                      }}
+                                      disabled={items.filter(x => x.photoUrl === it.photoUrl).length <= 1} aria-label="Decrease"
                                       style={{ width:20, height:20, border:"none", background:"transparent",
-                                        cursor: qty <= 1 ? "not-allowed" : "pointer",
-                                        opacity: qty <= 1 ? .35 : 1, color:INK, fontSize:12, fontWeight:600,
+                                        cursor: items.filter(x => x.photoUrl === it.photoUrl).length <= 1 ? "not-allowed" : "pointer",
+                                        opacity: items.filter(x => x.photoUrl === it.photoUrl).length <= 1 ? .35 : 1, color:INK, fontSize:12, fontWeight:600,
                                         display:"flex", alignItems:"center", justifyContent:"center" }}>−</button>
                                     <span style={{ minWidth:16, textAlign:"center", fontSize:11, fontWeight:600, color:INK }}>{qty}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty + 1); }}
+                                    <button onClick={(e) => { e.stopPropagation(); duplicateItem(it.id); }}
                                       aria-label="Increase"
                                       style={{ width:20, height:20, border:"none", background:"transparent",
                                         cursor:"pointer", color:INK, fontSize:12, fontWeight:600,
