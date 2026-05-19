@@ -2093,7 +2093,8 @@ export default function Customize() {
     const isAcrylic   = item.productType === "acrylic";
     const isCanvas    = fd.id === "canvas" || item.productType === "canvas";
     // BUG-01: acrylic must be treated as frameless so no frame background bleeds
-    const isFrameless = fd.id === "frameless" || fd.id === "digital" || isAcrylic;
+    const isPrintItem = item.productType === "print";
+    const isFrameless = fd.id === "frameless" || fd.id === "digital" || isAcrylic || isPrintItem || item.productType === "digital";
     const woodPad     = fd.w || 0;
     // Resolve actual selected frame color (so all 8 swatches render distinctly)
     const itemFrameColorDef = (FRAME_COLORS[item.productType] || []).find(c => c.id === item.frameColor);
