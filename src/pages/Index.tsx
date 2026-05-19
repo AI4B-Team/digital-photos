@@ -2655,6 +2655,28 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
   }, [zoomImg]);
 
+  // Pickup pending generation from CollectionPage's "Create Selected" handoff.
+  useEffect(() => {
+    const raw = sessionStorage.getItem("pendingTemplateConfirm");
+    if (!raw) return;
+    sessionStorage.removeItem("pendingTemplateConfirm");
+    try {
+      const payload = JSON.parse(raw);
+      (async () => {
+        setConfirming(true);
+        try {
+          onConfirm({
+            styles: ["v1","v2","v3","v4","v5","v6"],
+            templatePrompt: payload.templatePrompt || "",
+            templatePrompts: payload.templatePrompts || [],
+            styleRefUrl: await getStyleRef(payload.styleRefImg),
+          });
+        } finally { setConfirming(false); }
+      })();
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const needsSubType = cat === "people" || cat === "occasions";
   const subTypeDefs = SUBTYPES[cat] || [];
   const filteredSubs = stSearch
