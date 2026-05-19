@@ -2178,11 +2178,14 @@ export default function Customize() {
             <div style={{
               background: (isCanvas || isAcrylic)
                 ? (isCanvas && liveCanvasFloat ? "#1a1a1a" : "transparent")
-                : (bd.px === 0 ? "transparent" : bcd.bg),
-              padding: (isCanvas || isAcrylic) ? (isCanvas && liveCanvasFloat ? 5 : 0) : bd.px,
+                : isPrintItem
+                  ? "transparent"
+                  : (bd.px === 0 ? "transparent" : bcd.bg),
+              padding: (isCanvas || isAcrylic) ? (isCanvas && liveCanvasFloat ? 5 : 0) : (isPrintItem ? 0 : bd.px),
               margin: 0,
               border: "none",
               display: "flex", alignItems: "center", justifyContent: "center",
+              position: "relative",
               // Sharp inner rabbet — the picture sits recessed INSIDE the frame
               boxShadow: (isFrameless || isCanvas || isAcrylic) ? "none" : `
                 0 0 0 1px rgba(0,0,0,.55),
@@ -2191,6 +2194,14 @@ export default function Customize() {
                 inset 0 -1px 2px rgba(255,255,255,.08)
               `,
             }}>
+              {isPrintItem && (
+                <div aria-hidden="true" style={{
+                  position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none",
+                  backgroundImage:
+                    "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.007) 2px, rgba(0,0,0,0.007) 3px), " +
+                    "repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.007) 2px, rgba(0,0,0,0.007) 3px)",
+                }}/>
+              )}
               {(() => {
                 const isDraggingThis = draggingId === item.id;
                 const imgStyle: React.CSSProperties = {
