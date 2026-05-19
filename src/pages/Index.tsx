@@ -3024,17 +3024,41 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     return kws.some(k => hay.includes(k));
   };
 
-  const tmplCards = (subType && SUBTYPE_TEMPLATES[subType]
+  // IDs that belong to the "Premium Couple" matching-outfits section
+  const PREMIUM_COUPLE_IDS = new Set([
+    "cpl-argentina","cpl-brazil","cpl-spain","cpl-england","cpl-germany",
+    "cpl-denim","cpl-leather","cpl-cozy-knit","cpl-hoodie",
+    "cpl-formal","cpl-blazer","cpl-minimal-tee",
+  ]);
+
+  const rawTmpls = (subType && SUBTYPE_TEMPLATES[subType]
     ? SUBTYPE_TEMPLATES[subType]
     : templates.filter(matchesSubType)
-  ).map((t, index) => ({
-    type: "template" as const,
-    id: t.id,
-    label: t.label,
-    desc: t.desc,
-    img: subType ? (FEATURED_SCENE_IMAGES[subType]?.[index] || t.img) : t.img,
-    prompt: t.prompt,
-  }));
+  );
+
+  const tmplCards = rawTmpls
+    .filter(t => !(cat === "couples" && PREMIUM_COUPLE_IDS.has(t.id)))
+    .map((t, index) => ({
+      type: "template" as const,
+      id: t.id,
+      label: t.label,
+      desc: t.desc,
+      img: subType ? (FEATURED_SCENE_IMAGES[subType]?.[index] || t.img) : t.img,
+      prompt: t.prompt,
+    }));
+
+  const premiumCoupleCards = cat === "couples"
+    ? rawTmpls
+        .filter(t => PREMIUM_COUPLE_IDS.has(t.id))
+        .map(t => ({
+          type: "template" as const,
+          id: t.id,
+          label: t.label,
+          desc: t.desc,
+          img: t.img,
+          prompt: t.prompt,
+        }))
+    : [];
 
   const toAbsUrl = (u?: string) => {
     if (!u) return "";
@@ -3075,8 +3099,11 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         const card = baseCards.find(c => c.id === selected.id);
         onConfirm({ styles: [selected.id], templatePrompt: subTypePromptContext, styleRefUrl: await getStyleRef(card?.img) });
       } else {
-        const tmpl = tmplCards.find(t => t.id === selected.id) || templates.find(t => t.id === selected.id);
-        const card = tmplCards.find(c => c.id === selected.id);
+        const tmpl = tmplCards.find(t => t.id === selected.id)
+          || premiumCoupleCards.find(t => t.id === selected.id)
+          || templates.find(t => t.id === selected.id);
+        const card = tmplCards.find(c => c.id === selected.id)
+          || premiumCoupleCards.find(c => c.id === selected.id);
         const base = [subTypePromptContext, tmpl?.prompt].filter(Boolean).join(" ");
         const variants = cat === "pets"
           ? [
@@ -3255,6 +3282,35 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
           </div>
         </>
       )}
+
+      {/* Premium Couple — matching outfits & jerseys */}
+      {premiumCoupleCards.length > 0 && (
+        <>
+          <div style={{ margin:"0 auto", padding:"36px 24px 4px" }}>
+            <p style={{ fontSize:10, letterSpacing:".26em", textTransform:"uppercase",
+              color:T.gold, fontWeight:700 }}>Premium Couple</p>
+            <p style={{ fontSize:13, color:T.muted, marginTop:4,
+              fontFamily:"'Poppins',sans-serif" }}>
+              Matching jerseys, tailored sets & coordinated looks
+            </p>
+          </div>
+          <div style={{ margin:"0 auto", padding:"8px 24px 0" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
+              {applyCollection(premiumCoupleCards, collection).map(card => {
+                const isSelected = selected?.type === "template" && selected?.id === card.id;
+                return (
+                  <StyleCard key={`pc-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
+                    confirming={confirming}
+                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
+                    onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
+                    onConfirm={handleConfirm}/>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
 
       {/* Themed sections — Seasons / Holidays / Occasions */}
       {THEMES[cat] && (Object.keys(THEMES[cat]) as Array<keyof typeof THEMES[typeof cat]>).map(group => {
