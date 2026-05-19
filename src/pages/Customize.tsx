@@ -2151,8 +2151,8 @@ export default function Customize() {
                   `,
             padding: isCanvas
               ? (liveCanvasFloat ? 12 : 0)
-              : (isAcrylic ? 0 : (isFrameless ? (isPrintItem ? bd.px : 6) : woodPad + 6)),
-            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? (isPrintItem ? 2 : 12) : 2)),
+              : (isAcrylic ? 0 : (isFrameless ? (isPrintItem ? 0 : 6) : woodPad + 6)),
+            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? (isPrintItem ? 0 : 12) : 2)),
             boxShadow: isCanvas
               ? (liveCanvasFloat
                   ? "0 4px 20px rgba(0,0,0,0.35)"
