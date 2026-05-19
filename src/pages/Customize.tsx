@@ -3655,6 +3655,47 @@ export default function Customize() {
                         })}
                       </div>
 
+                      {/* + Add same portrait at a different size / product */}
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); addPortraitVariant(); }}
+                        style={{
+                          width:"100%", padding:"9px 10px", marginBottom:10,
+                          border:`1px dashed ${BORDER}`, borderRadius:10,
+                          background:"#fff", cursor:"pointer",
+                          fontFamily:"'Poppins',sans-serif",
+                          display:"flex", alignItems:"center", gap:10, textAlign:"left",
+                        }}>
+                        <div style={{ width:18, height:18, borderRadius:"50%",
+                          border:`2px solid ${BORDER}`,
+                          display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                          <Plus size={11} color={INK} strokeWidth={3}/>
+                        </div>
+                        <div style={{ flex:1, minWidth:0 }}>
+                          <div style={{ fontSize:12.5, fontWeight:600, color:INK }}>Add At A Different Size Or Product</div>
+                          <div style={{ fontSize:11, color: bundlePct > 0 ? "#16a34a" : MUTED, fontWeight: bundlePct > 0 ? 700 : 500 }}>
+                            {bundlePct > 0
+                              ? `🎉 ${Math.round(bundlePct*100)}% Bundle Discount Applied!`
+                              : "Save 10% On 2+ Portraits"}
+                          </div>
+                        </div>
+                      </button>
+
+                      {/* CONFIGURING Portrait #N label */}
+                      {(() => {
+                        const selectedIndex = items.findIndex((i: any) => i.id === selectedId);
+                        const configLabel = selectedIndex >= 0 ? `Portrait #${selectedIndex + 1}` : "Your Portrait";
+                        return (
+                          <div style={{
+                            fontSize:10.5, fontWeight:700, color:MUTED,
+                            letterSpacing:".14em", textTransform:"uppercase",
+                            margin:"4px 0 10px", fontFamily:"'Poppins',sans-serif",
+                          }}>
+                            Configuring {configLabel}
+                          </div>
+                        );
+                      })()}
+
                       {card.id !== "digital" && (
                         <details className="cz-acc" open>
                           <summary>
