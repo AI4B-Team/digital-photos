@@ -195,6 +195,16 @@ import beforePetCatHug from "@/assets/before-pet-cat-hug.jpg";
 import scenePetCatHug from "@/assets/scene-pet-cat-hug.jpg";
 import beforeBabyChef from "@/assets/before-baby-chef.jpg";
 import sceneBabyChef from "@/assets/scene-baby-chef.jpg";
+import categoryBabyImg from "@/assets/generated-categories/category-baby.jpg";
+import categoryCoupleImg from "@/assets/generated-categories/category-couple.jpg";
+import categoryFamilyImg from "@/assets/generated-categories/category-family.jpg";
+import categoryIndividualImg from "@/assets/generated-categories/category-individual.jpg";
+import categoryGraduationImg from "@/assets/generated-categories/category-graduation.jpg";
+import categoryMaternityImg from "@/assets/generated-categories/category-maternity.jpg";
+import categoryGrandparentsImg from "@/assets/generated-categories/category-grandparents.jpg";
+import categoryFriendsImg from "@/assets/generated-categories/category-friends.jpg";
+import categoryProfessionalImg from "@/assets/generated-categories/category-professional.jpg";
+import categoryCreatorImg from "@/assets/generated-categories/category-creator.jpg";
 
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
