@@ -2690,13 +2690,48 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     })
     .filter(Boolean) as { type:"style"; id:string; label:string; desc:string; img:string }[];
 
-  const tmplCards = templates.map(t => ({
-    type: "template" as const,
-    id: t.id,
-    label: t.label,
-    desc: t.desc,
-    img: t.img,
-  }));
+  // Keyword tags per sub-type — used to actually filter templates/themes below
+  const SUBTYPE_KEYWORDS: Record<string, string[]> = {
+    baby:         ["baby","newborn","infant","toddler","child","kid","nursery","cradle"],
+    couple:       ["couple","partner","lover","romance","romantic","two ","pair"],
+    family:       ["family","parents","kids","children","group","generation"],
+    individual:   ["solo","portrait","individual","single","headshot","self"],
+    graduation:   ["graduation","graduate","cap","gown","academic","diploma","scholar"],
+    maternity:    ["maternity","pregnant","expecting","mother-to-be","bump"],
+    grandparents: ["grandparent","senior","elder","grandma","grandpa","wisdom"],
+    friends:      ["friend","bff","squad","crew","group","buddies"],
+    professional: ["professional","headshot","business","corporate","executive","linkedin","brand"],
+    creator:      ["creator","artist","influencer","editorial","creative","studio"],
+    birthday:     ["birthday","cake","candle","celebration","party"],
+    wedding:      ["wedding","bride","groom","bridal","veil","altar"],
+    anniversary:  ["anniversary","years","together","enduring"],
+    memorial:     ["memorial","memory","tribute","loving","remembrance"],
+    "mothers-day":["mother","mom","mum","maternal"],
+    "fathers-day":["father","dad","paternal"],
+    christmas:    ["christmas","holiday","santa","festive","winter","snow"],
+    valentines:   ["valentine","love","heart","romance","romantic"],
+    retirement:   ["retirement","career","golden years"],
+    engagement:   ["engagement","propose","ring","engaged"],
+    "new-home":   ["home","house","housewarming","moving","new chapter"],
+  };
+
+  const matchesSubType = (item: { label?:string; desc?:string; prompt?:string }) => {
+    if (!subType) return true;
+    const kws = SUBTYPE_KEYWORDS[subType] || [];
+    if (!kws.length) return true;
+    const hay = `${item.label||""} ${item.desc||""} ${item.prompt||""}`.toLowerCase();
+    return kws.some(k => hay.includes(k));
+  };
+
+  const tmplCards = templates
+    .filter(matchesSubType)
+    .map(t => ({
+      type: "template" as const,
+      id: t.id,
+      label: t.label,
+      desc: t.desc,
+      img: t.img,
+    }));
 
   const toAbsUrl = (u?: string) => {
     if (!u) return "";
@@ -2920,8 +2955,9 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
 
       {/* Themed sections — Seasons / Holidays / Occasions */}
       {THEMES[cat] && (Object.keys(THEMES[cat]) as Array<keyof typeof THEMES[typeof cat]>).map(group => {
-        const items = THEMES[cat][group];
-        if (!items || !items.length) return null;
+        const rawItems = THEMES[cat][group];
+        const items = (rawItems || []).filter(matchesSubType);
+        if (!items.length) return null;
         return (
           <div key={group}>
             <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
