@@ -76,7 +76,7 @@ export default function Legal() {
 
   return (
     <div style={{ minHeight:"100vh", background:BG }}>
-      <SiteHeader current="upload" onBack={() => navigate("/")} />
+      <LandingHeader />
 
       <div style={{ maxWidth:900, margin:"0 auto", padding:"40px 22px 80px" }}>
         <div style={{ textAlign:"center", marginBottom:28 }}>
