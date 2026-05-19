@@ -3024,17 +3024,41 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     return kws.some(k => hay.includes(k));
   };
 
-  const tmplCards = (subType && SUBTYPE_TEMPLATES[subType]
+  // IDs that belong to the "Premium Couple" matching-outfits section
+  const PREMIUM_COUPLE_IDS = new Set([
+    "cpl-argentina","cpl-brazil","cpl-spain","cpl-england","cpl-germany",
+    "cpl-denim","cpl-leather","cpl-cozy-knit","cpl-hoodie",
+    "cpl-formal","cpl-blazer","cpl-minimal-tee",
+  ]);
+
+  const rawTmpls = (subType && SUBTYPE_TEMPLATES[subType]
     ? SUBTYPE_TEMPLATES[subType]
     : templates.filter(matchesSubType)
-  ).map((t, index) => ({
-    type: "template" as const,
-    id: t.id,
-    label: t.label,
-    desc: t.desc,
-    img: subType ? (FEATURED_SCENE_IMAGES[subType]?.[index] || t.img) : t.img,
-    prompt: t.prompt,
-  }));
+  );
+
+  const tmplCards = rawTmpls
+    .filter(t => !(cat === "couples" && PREMIUM_COUPLE_IDS.has(t.id)))
+    .map((t, index) => ({
+      type: "template" as const,
+      id: t.id,
+      label: t.label,
+      desc: t.desc,
+      img: subType ? (FEATURED_SCENE_IMAGES[subType]?.[index] || t.img) : t.img,
+      prompt: t.prompt,
+    }));
+
+  const premiumCoupleCards = cat === "couples"
+    ? rawTmpls
+        .filter(t => PREMIUM_COUPLE_IDS.has(t.id))
+        .map(t => ({
+          type: "template" as const,
+          id: t.id,
+          label: t.label,
+          desc: t.desc,
+          img: t.img,
+          prompt: t.prompt,
+        }))
+    : [];
 
   const toAbsUrl = (u?: string) => {
     if (!u) return "";
