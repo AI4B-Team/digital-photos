@@ -389,12 +389,12 @@ const CAT_REQS: Record<string, {
 const reqFor = (c?: string) => (c && CAT_REQS[c]) || CAT_REQS.people;
 
 const STYLES = [
-  { id:"royal",       label:"Royal",       desc:"Regal · Golden Era",       preview:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=520&h=650&fit=crop&q=80" },
-  { id:"renaissance", label:"Renaissance", desc:"Old Masters · Rich Tones",  preview:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=520&h=650&fit=crop&q=80" },
-  { id:"storybook",   label:"Storybook",   desc:"Whimsical · Illustrated",   preview:"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=520&h=650&fit=crop&q=80" },
-  { id:"fantasy",     label:"Fantasy",     desc:"Ethereal · Otherworldly",   preview:"https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=520&h=650&fit=crop&q=80" },
-  { id:"cinematic",   label:"Cinematic",   desc:"Moody · Film Quality",      preview:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=520&h=650&fit=crop&q=80" },
-  { id:"minimal",     label:"Minimal",     desc:"Clean · Modern Fine Art",   preview:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=520&h=650&fit=crop&q=80" },
+  { id:"royal",       label:"Royal",       desc:"Regal · Golden Era",       preview:portraitPeopleRoyal },
+  { id:"renaissance", label:"Renaissance", desc:"Old Masters · Rich Tones",  preview:portraitPeopleRen },
+  { id:"storybook",   label:"Storybook",   desc:"Whimsical · Illustrated",   preview:portraitPeopleStory },
+  { id:"fantasy",     label:"Fantasy",     desc:"Ethereal · Otherworldly",   preview:portraitGiftsFan },
+  { id:"cinematic",   label:"Cinematic",   desc:"Moody · Film Quality",      preview:portraitPeopleCine },
+  { id:"minimal",     label:"Minimal",     desc:"Clean · Modern Fine Art",   preview:portraitPeopleMin },
 ];
 
 /* TEMPLATE SETS — category-specific scene/costume prompts.
