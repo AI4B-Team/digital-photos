@@ -20,6 +20,7 @@ import FAQ                     from "./pages/FAQ";
 import GiftCards               from "./pages/GiftCards";
 import Reviews                 from "./pages/Reviews";
 import NotFound                from "./pages/NotFound";
+import CollectionPage          from "./pages/CollectionPage";
 
 const queryClient = new QueryClient();
 
