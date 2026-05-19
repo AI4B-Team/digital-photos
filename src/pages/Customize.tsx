@@ -2700,7 +2700,9 @@ export default function Customize() {
           ? "High-resolution digital download"
           : it.productType === "canvas"
             ? `${sd?.label || it.size}${canvasAttrLabel(it)}`
-            : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
+            : it.productType === "print"
+              ? `${sd?.label || it.size} · ${(!it.border || it.border === "none") ? "Unframed" : `${(BORDERS.find(b => b.id === it.border)?.label) || "Slim"} Mat`}`
+              : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
         lineItems.push({
           name: ptLabel,
           description: desc,
