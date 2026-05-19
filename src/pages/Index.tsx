@@ -392,6 +392,26 @@ const STYLES = [
   { id:"minimal",     label:"Minimal",     desc:"Clean · Modern Fine Art",   preview:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=520&h=650&fit=crop&q=80" },
 ];
 
+/* Shared pool of pop-art pet portrait scenes — every pop-art card slideshows
+   through these so users see 6+ variants per collection. To add more variants
+   in the future, just push another image into this array. */
+const PET_POPART_SCENES: string[] = [
+  new URL("@/assets/templates/pets/pet-popart-cat-orange.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-cat-tabby.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-doodle.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-husky.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-siamese.jpg", import.meta.url).href,
+  new URL("@/assets/templates/pets/pet-popart-frenchie.jpg", import.meta.url).href,
+  petPopartGolden,
+  petPopartPug,
+  petPopartCorgi,
+  petPopartTuxedo,
+  petPopartShepherd,
+];
+/* Put the card's own image first, then the rest of the pool. */
+const popartScenes = (ownUrl: string) =>
+  [ownUrl, ...PET_POPART_SCENES.filter(u => u !== ownUrl)];
+
 /* TEMPLATE SETS — category-specific scene/costume prompts.
    Each adds an "Additionally, depict the subject ..." clause to every style.
    NOTE: For new templates, include a `scenes: string[]` of 6+ UNFRAMED, full-bleed
