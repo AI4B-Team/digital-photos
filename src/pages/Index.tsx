@@ -2803,7 +2803,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         </h1>
         <p style={{ fontSize:16, color:T.muted, fontFamily:"'Poppins',sans-serif",
           maxWidth:680, margin:"0 auto", lineHeight:1.55 }}>
-          Explore Hundreds Of Curated Styles Designed For Every Memory, Personality, And Occasion.
+          Explore Hundreds Of Curated Styles Designed For Every Memory, Personality &amp; Occasion.
         </p>
       </div>
 
