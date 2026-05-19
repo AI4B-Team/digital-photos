@@ -105,7 +105,7 @@ export default function Styles() {
             Find Your Perfect Style
           </h1>
           <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:16, color:MUTED, marginTop:10 }}>
-            6 art styles · 34 templates · Crafted for every subject
+            Crafted for every subject
           </p>
         </div>
 
