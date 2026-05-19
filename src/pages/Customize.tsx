@@ -1070,22 +1070,28 @@ function RoomViewPanel({
                     ? (canvasFloatFrame
                         ? "0 14px 30px rgba(0,0,0,0.45), 0 4px 10px rgba(0,0,0,0.3)"
                         : "4px 8px 24px rgba(0,0,0,0.45)")
-                    : isStaged
-                      ? "4px 8px 24px rgba(0,0,0,0.45)"
-                      : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                    : isPrint
+                      ? "0 6px 18px rgba(0,0,0,0.30), 0 2px 6px rgba(0,0,0,0.18)"
+                      : isStaged
+                        ? "4px 8px 24px rgba(0,0,0,0.45)"
+                        : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
                 borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
                 borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
                 border: isAcrylic
                   ? undefined
-                  : isCanvas
-                    ? (canvasFloatFrame ? `${Math.max(4, wallW*0.4)}px solid ${cFloatColor}` : "none")
-                    : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+                  : isPrint
+                    ? "none"
+                    : isCanvas
+                      ? (canvasFloatFrame ? `${Math.max(4, wallW*0.4)}px solid ${cFloatColor}` : "none")
+                      : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
                 background: isAcrylic
                   ? "transparent"
-                  : isCanvas
-                    ? (canvasFloatFrame ? "#1a1a1a" : "transparent")
-                    : mountPx,
-                padding: isCanvas && canvasFloatFrame ? `${cFramePadPct}%` : `${mountPad}px`,
+                  : isPrint
+                    ? "#FFFFFF"
+                    : isCanvas
+                      ? (canvasFloatFrame ? "#1a1a1a" : "transparent")
+                      : mountPx,
+                padding: isCanvas && canvasFloatFrame ? `${cFramePadPct}%` : (isPrint ? 0 : `${mountPad}px`),
                 boxSizing: "border-box",
                 transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
                 containerType: "inline-size",
