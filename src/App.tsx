@@ -20,7 +20,6 @@ import FAQ                     from "./pages/FAQ";
 import GiftCards               from "./pages/GiftCards";
 import Reviews                 from "./pages/Reviews";
 import NotFound                from "./pages/NotFound";
-import CollectionPage          from "./pages/CollectionPage";
 
 const queryClient = new QueryClient();
 
@@ -51,7 +50,6 @@ const App = () => (
               <Route path="/terms"          element={<Legal />} />
               <Route path="/refund"         element={<Legal />} />
               <Route path="/styles-:cat"   element={<Index />} />
-              <Route path="/collection/:templateId" element={<CollectionPage />} />
               <Route path="*"              element={<NotFound />} />
             </Routes>
           </BrowserRouter>

@@ -122,11 +122,6 @@ import petKitchenTails from "@/assets/pet-kitchen-tails.jpg";
 import petNineToFive from "@/assets/pet-nine-to-five.jpg";
 import petCleanFluffy from "@/assets/pet-clean-fluffy.jpg";
 import petSports from "@/assets/pet-sports.jpg";
-import petPopartGolden from "@/assets/templates/pets/pet-popart-golden.jpg";
-import petPopartPug from "@/assets/templates/pets/pet-popart-pug.jpg";
-import petPopartCorgi from "@/assets/templates/pets/pet-popart-corgi.jpg";
-import petPopartTuxedo from "@/assets/templates/pets/pet-popart-tuxedo.jpg";
-import petPopartShepherd from "@/assets/templates/pets/pet-popart-shepherd.jpg";
 import portraitBabies from "@/assets/portrait-babies.jpg";
 import portraitBabiesRoyal from "@/assets/portrait-babies-royal.jpg";
 import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
@@ -392,33 +387,9 @@ const STYLES = [
   { id:"minimal",     label:"Minimal",     desc:"Clean · Modern Fine Art",   preview:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=520&h=650&fit=crop&q=80" },
 ];
 
-/* Shared pool of pop-art pet portrait scenes — every pop-art card slideshows
-   through these so users see 6+ variants per collection. To add more variants
-   in the future, just push another image into this array. */
-const PET_POPART_SCENES: string[] = [
-  new URL("@/assets/templates/pets/pet-popart-cat-orange.jpg", import.meta.url).href,
-  new URL("@/assets/templates/pets/pet-popart-cat-tabby.jpg", import.meta.url).href,
-  new URL("@/assets/templates/pets/pet-popart-doodle.jpg", import.meta.url).href,
-  new URL("@/assets/templates/pets/pet-popart-husky.jpg", import.meta.url).href,
-  new URL("@/assets/templates/pets/pet-popart-siamese.jpg", import.meta.url).href,
-  new URL("@/assets/templates/pets/pet-popart-frenchie.jpg", import.meta.url).href,
-  petPopartGolden,
-  petPopartPug,
-  petPopartCorgi,
-  petPopartTuxedo,
-  petPopartShepherd,
-];
-/* Put the card's own image first, then the rest of the pool. */
-const popartScenes = (ownUrl: string) =>
-  [ownUrl, ...PET_POPART_SCENES.filter(u => u !== ownUrl)];
-
 /* TEMPLATE SETS — category-specific scene/costume prompts.
-   Each adds an "Additionally, depict the subject ..." clause to every style.
-   NOTE: For new templates, include a `scenes: string[]` of 6+ UNFRAMED, full-bleed
-   scene images (no frame, no wall). CollectionCard will slideshow through them
-   edge-to-edge. The legacy `img` (2×2 framed composite) is used as a fallback
-   and gets auto-cropped into the inner picture of each quadrant. */
-export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string; scenes?: string[]; isGrid?: boolean }[]> = {
+   Each adds an "Additionally, depict the subject ..." clause to every style. */
+export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string }[]> = {
   pets: [
     { id:"pet-bath",      label:"Bath Time",       desc:"Spa Day Bubbles",
       img: petBathTime,
@@ -2665,7 +2636,6 @@ function applyCollection<T extends { id?: string; label?: string; desc?: string 
    STYLE SELECT PAGE — between homepage and generation
 ═══════════════════════════════════════════════════════════ */
 function StyleSelectPage({ session, onConfirm, onBack }) {
-  const navigate = useNavigate();
   const { cat, heroName, photo, extraPhotos = [] } = session;
   const allPhotos = [photo, ...(extraPhotos || [])].filter(Boolean);
   const [selected, setSelected] = useState<{ type: "style"|"template"; id: string } | null>(null);
@@ -2683,28 +2653,6 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     document.body.style.overflow = "hidden";
     return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
   }, [zoomImg]);
-
-  // Pickup pending generation from CollectionPage's "Create Selected" handoff.
-  useEffect(() => {
-    const raw = sessionStorage.getItem("pendingTemplateConfirm");
-    if (!raw) return;
-    sessionStorage.removeItem("pendingTemplateConfirm");
-    try {
-      const payload = JSON.parse(raw);
-      (async () => {
-        setConfirming(true);
-        try {
-          onConfirm({
-            styles: ["v1","v2","v3","v4","v5","v6"],
-            templatePrompt: payload.templatePrompt || "",
-            templatePrompts: payload.templatePrompts || [],
-            styleRefUrl: await getStyleRef(payload.styleRefImg),
-          });
-        } finally { setConfirming(false); }
-      })();
-    } catch {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const needsSubType = cat === "people" || cat === "occasions";
   const subTypeDefs = SUBTYPES[cat] || [];
@@ -2738,7 +2686,6 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     label: t.label,
     desc: t.desc,
     img: t.img,
-    scenes: t.scenes || [],
   }));
 
   const toAbsUrl = (u?: string) => {
@@ -2833,7 +2780,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         </h1>
         <p style={{ fontSize:16, color:T.muted, fontFamily:"'Poppins',sans-serif",
           maxWidth:680, margin:"0 auto", lineHeight:1.55 }}>
-          Explore Hundreds Of Curated Styles Designed For Every Memory, Personality &amp; Occasion.
+          Explore Hundreds Of Curated Styles Designed For Every Memory, Personality, And Occasion.
         </p>
       </div>
 
@@ -2942,20 +2889,20 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         <>
           <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
             <p style={{ fontSize:11, letterSpacing:".04em",
-              color:T.muted, fontWeight:600 }}>Curated Collections</p>
+              color:T.muted, fontWeight:600 }}>Featured scenes</p>
           </div>
           <div style={{ margin:"0 auto", padding:"0 24px" }}>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(230px, 1fr))", gap:18 }}>
-              {applyCollection(tmplCards, collection).map(card => (
-                <CollectionCard
-                  key={`t-${card.id}`}
-                  card={card}
-                  originalPhotos={allPhotos}
-                  confirming={confirming}
-                  onView={() => navigate(`/collection/${card.id}`, { state: { card, category: cat } })}
-                  onCreate={() => { setSelected({ type:"template", id:card.id }); setTimeout(handleConfirm, 0); }}
-                />
-              ))}
+              {applyCollection(tmplCards, collection).map(card => {
+                const isSelected = selected?.type === "template" && selected?.id === card.id;
+                return (
+                  <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
+                    confirming={confirming}
+                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
+                    onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
+                    onConfirm={handleConfirm}/>
+                );
+              })}
             </div>
           </div>
         </>
@@ -3131,127 +3078,6 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [],
             <Sparkles size={15}/>{confirming ? "Preparing Reference..." : "Generate Free Preview"}
           </button>
         )}
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════
-   COLLECTION CARD — slideshow of 4 quadrants from a 2×2 composite
-═══════════════════════════════════════════════════════════ */
-const QUADRANT_POSITIONS = ["0% 0%", "100% 0%", "0% 100%", "100% 100%"];
-export const QUADRANT_HINTS = [
-  "front-facing pose, head tilted slightly, centered composition",
-  "side profile angle, looking off camera, soft cinematic light",
-  "tight close-up portrait crop, eyes engaged with viewer, shallow depth of field",
-  "wider shot showing more of the scene and props, dynamic composition",
-];
-function CollectionCard({ card, onView, onCreate, originalPhotos = [], confirming }: any) {
-  const [slideIdx, setSlideIdx] = useState(0);
-  const scenes: string[] = Array.isArray(card.scenes) ? card.scenes.filter(Boolean) : [];
-  const useScenes = scenes.length > 0;
-  const isGrid = !useScenes && (card.isGrid ?? true);
-  const slideCount = useScenes ? scenes.length : (isGrid ? 4 : 1);
-  const labels: string[] = card.sceneLabels || [];
-  const subLabel = labels[slideIdx] || card.desc;
-  const photos = (originalPhotos || []).filter(Boolean).slice(0, 1);
-  const prev = (e: any) => { e.stopPropagation(); setSlideIdx(i => (i - 1 + slideCount) % slideCount); };
-  const next = (e: any) => { e.stopPropagation(); setSlideIdx(i => (i + 1) % slideCount); };
-
-  // Fallback: zoom deeper into the 2×2 composite so the frame/wall is cropped
-  // out and only the inner picture fills the box.
-  const Z = 3.6; // 360% zoom — quadrant inner picture ≈ fills the card
-  const fx = [0.25, 0.75, 0.25, 0.75][slideIdx] ?? 0.5;
-  const fy = [0.25, 0.25, 0.75, 0.75][slideIdx] ?? 0.5;
-  const posX = ((0.5 - fx * Z) / (1 - Z)) * 100;
-  const posY = ((0.5 - fy * Z) / (1 - Z)) * 100;
-
-  return (
-    <div style={{
-      border:`1px solid ${T.border}`, borderRadius:16, overflow:"hidden",
-      background:T.bg, display:"flex", flexDirection:"column",
-    }}>
-      <div style={{ position:"relative", aspectRatio:"1/1", overflow:"hidden", background:"#1a1a1a" }}>
-        {useScenes ? (
-          <img
-            src={scenes[slideIdx]}
-            alt={subLabel || card.label}
-            style={{ position:"absolute", inset:0, width:"100%", height:"100%",
-              objectFit:"cover", objectPosition:"center", display:"block" }}
-          />
-        ) : (
-          <div style={{
-            position:"absolute", inset:0,
-            backgroundImage:`url(${card.img})`,
-            backgroundSize: isGrid ? `${Z*100}% ${Z*100}%` : "cover",
-            backgroundPosition: isGrid ? `${posX}% ${posY}%` : "50% 50%",
-            backgroundRepeat:"no-repeat",
-            transition:"background-position .25s ease",
-          }}/>
-        )}
-        {slideCount > 1 && (
-          <>
-            <button onClick={prev} aria-label="Previous"
-              style={{ position:"absolute", left:8, top:"50%", transform:"translateY(-50%)",
-                background:"rgba(0,0,0,0.45)", backdropFilter:"blur(4px)",
-                color:"#fff", border:"none", borderRadius:"50%", width:32, height:32,
-                fontSize:18, lineHeight:1, cursor:"pointer", display:"flex",
-                alignItems:"center", justifyContent:"center", zIndex:2 }}>‹</button>
-            <button onClick={next} aria-label="Next"
-              style={{ position:"absolute", right:8, top:"50%", transform:"translateY(-50%)",
-                background:"rgba(0,0,0,0.45)", backdropFilter:"blur(4px)",
-                color:"#fff", border:"none", borderRadius:"50%", width:32, height:32,
-                fontSize:18, lineHeight:1, cursor:"pointer", display:"flex",
-                alignItems:"center", justifyContent:"center", zIndex:2 }}>›</button>
-            <div style={{ position:"absolute", bottom:8, left:0, right:0,
-              display:"flex", justifyContent:"center", gap:6, zIndex:2, flexWrap:"wrap", padding:"0 8px" }}>
-              {Array.from({ length: slideCount }).map((_, i) => (
-                <button key={i} onClick={(e) => { e.stopPropagation(); setSlideIdx(i); }}
-                  aria-label={`Slide ${i+1}`}
-                  style={{ width:6, height:6, borderRadius:"50%", border:"none",
-                    background: i === slideIdx ? "#fff" : "rgba(255,255,255,0.45)",
-                    padding:0, cursor:"pointer" }}/>
-              ))}
-            </div>
-          </>
-        )}
-        {photos.length > 0 && (
-          <div style={{ position:"absolute", left:10, bottom:24, display:"flex", gap:6, zIndex:2 }}>
-            {photos.map((src, i) => (
-              <div key={i} style={{ width:48, height:48, borderRadius:8, overflow:"hidden",
-                border:"2px solid #fff", boxShadow:"0 2px 8px rgba(0,0,0,0.35)", background:"#222" }}>
-                <img src={src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      {slideCount > 1 && (
-        <div style={{ textAlign:"center", fontSize:10.5, color:T.muted, padding:"4px 0",
-          fontFamily:"'Poppins',sans-serif", letterSpacing:".06em" }}>
-          {slideIdx + 1} of {slideCount}
-        </div>
-      )}
-      <div style={{ padding:"6px 14px 10px" }}>
-        <h3 style={{ fontSize:15, fontWeight:700, color:T.cream, margin:0,
-          fontFamily:"'Poppins',sans-serif" }}>{card.label}</h3>
-        <p style={{ fontSize:12, color:T.muted, margin:"2px 0 0",
-          fontFamily:"'Poppins',sans-serif" }}>{subLabel}</p>
-      </div>
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, padding:"0 14px 14px" }}>
-        <button onClick={(e) => { e.stopPropagation(); onView?.(card); }}
-          style={{ padding:"10px 0", borderRadius:10, border:`1.5px solid ${T.border}`,
-            background:"transparent", color:T.cream, fontWeight:700, fontSize:12.5,
-            cursor:"pointer", fontFamily:"'Poppins',sans-serif" }}>View</button>
-        <button disabled={confirming}
-          onClick={(e) => { e.stopPropagation(); if (!confirming) onCreate?.(card); }}
-          style={{ padding:"10px 0", borderRadius:10, border:"none",
-            background:"#E61919", color:"#fff", fontWeight:700, fontSize:12.5,
-            cursor: confirming ? "wait" : "pointer", opacity: confirming ? .72 : 1,
-            fontFamily:"'Poppins',sans-serif", display:"flex", alignItems:"center",
-            justifyContent:"center", gap:6 }}>
-          {confirming ? "Preparing…" : <>Create <span>→</span></>}
-        </button>
       </div>
     </div>
   );
