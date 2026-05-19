@@ -1464,7 +1464,11 @@ function HomePage({ onGenerate }) {
   const { user, signOut } = useAuth();
   const { preview: photo, uploadedUrl, uploading, uploadErr, lowResWarning, loadFile, clearPhoto } = useUpload();
   const [extraLowRes, setExtraLowRes] = useState<boolean[]>([]);
-  const [cat,     setCat]     = useState("");
+  const [cat,     setCat]     = useState(() => {
+    if (typeof window === "undefined") return "";
+    const c = new URLSearchParams(window.location.search).get("cat");
+    return c && ["pets","people","occasions"].includes(c) ? c : "";
+  });
   const [preferredTeaser, setPreferredTeaser] = useState<string|null>(null);
   const [styles,  setStyles]  = useState(STYLES.map(s => s.id));
   const [selectedTemplate, setSelectedTemplate] = useState<string|null>(null);

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, CheckCircle, Instagram, Facebook, MessageCircle, Clock, Heart, Shield } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
+import LandingHeader from "@/components/LandingHeader";
 import { supabase } from "@/integrations/supabase/client";
 
 const RED = "#E61919";
@@ -39,7 +39,7 @@ export default function Contact() {
   if (submitted) {
     return (
       <div style={{ minHeight:"100vh", background:BG }}>
-        <SiteHeader current="upload" onBack={() => navigate("/")} />
+        <LandingHeader />
         <div style={{ maxWidth:560, margin:"0 auto", padding:"80px 22px", textAlign:"center" }}>
           <div style={{ width:80, height:80, borderRadius:"50%", background:"rgba(34,197,94,.12)", display:"inline-flex", alignItems:"center", justifyContent:"center", marginBottom:20 }}>
             <CheckCircle size={42} color="#16a34a"/>
@@ -61,7 +61,7 @@ export default function Contact() {
 
   return (
     <div style={{ minHeight:"100vh", background:BG }}>
-      <SiteHeader current="upload" onBack={() => navigate("/")} />
+      <LandingHeader />
 
       <div style={{ maxWidth:1140, margin:"0 auto", padding:"40px 22px 80px" }}>
         <div style={{ textAlign:"center", marginBottom:32 }}>

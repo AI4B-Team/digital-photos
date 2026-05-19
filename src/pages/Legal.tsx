@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Shield, FileText, RotateCcw, Mail } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
+import LandingHeader from "@/components/LandingHeader";
 
 const RED = "#E61919";
 const INK = "#0A0A0A";
@@ -76,7 +76,7 @@ export default function Legal() {
 
   return (
     <div style={{ minHeight:"100vh", background:BG }}>
-      <SiteHeader current="upload" onBack={() => navigate("/")} />
+      <LandingHeader />
 
       <div style={{ maxWidth:900, margin:"0 auto", padding:"40px 22px 80px" }}>
         <div style={{ textAlign:"center", marginBottom:28 }}>

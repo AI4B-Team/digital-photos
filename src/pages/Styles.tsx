@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Sparkles, Star, ArrowRight, X } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
+import LandingHeader from "@/components/LandingHeader";
 
 const RED = "#E61919";
 const INK = "#0A0A0A";
@@ -94,7 +94,7 @@ export default function Styles() {
 
   return (
     <div style={{ minHeight:"100vh", background:BG }}>
-      <SiteHeader current="upload" onBack={() => navigate("/")} />
+      <LandingHeader />
 
       <div style={{ maxWidth:1240, margin:"0 auto", padding:"40px 22px 80px" }}>
         <div style={{ textAlign:"center", marginBottom:32 }}>

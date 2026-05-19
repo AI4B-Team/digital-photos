@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Package, Clock, CheckCircle, Truck, AlertCircle, ChevronDown, Search } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
+import LandingHeader from "@/components/LandingHeader";
 import { supabase } from "@/integrations/supabase/client";
 
 const RED = "#E61919";
@@ -65,7 +65,7 @@ export default function Tracking() {
 
   return (
     <div style={{ minHeight:"100vh", background:BG }}>
-      <SiteHeader current="print" onBack={() => navigate("/")} />
+      <LandingHeader />
 
       <div style={{ maxWidth:880, margin:"0 auto", padding:"40px 22px 80px" }}>
         <div style={{ textAlign:"center", marginBottom:32 }}>
