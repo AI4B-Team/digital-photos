@@ -754,6 +754,7 @@ function RoomViewPanel({
   const effectDef = EFFECTS.find((e:any) => e.id === (selected as any)?.effect) || EFFECTS[0];
   const isCanvas = productType === "canvas";
   const isAcrylic = productType === "acrylic";
+  const isPrint = productType === "print";
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const [hintDismissed, setHintDismissed] = useState(() => {
     try { return localStorage.getItem("cz-room-hint-dismissed") === "1"; } catch { return false; }
@@ -1069,22 +1070,28 @@ function RoomViewPanel({
                     ? (canvasFloatFrame
                         ? "0 14px 30px rgba(0,0,0,0.45), 0 4px 10px rgba(0,0,0,0.3)"
                         : "4px 8px 24px rgba(0,0,0,0.45)")
-                    : isStaged
-                      ? "4px 8px 24px rgba(0,0,0,0.45)"
-                      : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
+                    : isPrint
+                      ? "0 6px 18px rgba(0,0,0,0.30), 0 2px 6px rgba(0,0,0,0.18)"
+                      : isStaged
+                        ? "4px 8px 24px rgba(0,0,0,0.45)"
+                        : "0 14px 28px rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.3)",
                 borderTop: isAcrylic ? "1px solid rgba(255,255,255,0.18)" : undefined,
                 borderLeft: isAcrylic ? "1px solid rgba(255,255,255,0.15)" : undefined,
                 border: isAcrylic
                   ? undefined
-                  : isCanvas
-                    ? (canvasFloatFrame ? `${Math.max(4, wallW*0.4)}px solid ${cFloatColor}` : "none")
-                    : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
+                  : isPrint
+                    ? "none"
+                    : isCanvas
+                      ? (canvasFloatFrame ? `${Math.max(4, wallW*0.4)}px solid ${cFloatColor}` : "none")
+                      : `${Math.max(6, wallW*0.6)}px solid ${framePx}`,
                 background: isAcrylic
                   ? "transparent"
-                  : isCanvas
-                    ? (canvasFloatFrame ? "#1a1a1a" : "transparent")
-                    : mountPx,
-                padding: isCanvas && canvasFloatFrame ? `${cFramePadPct}%` : `${mountPad}px`,
+                  : isPrint
+                    ? "#FFFFFF"
+                    : isCanvas
+                      ? (canvasFloatFrame ? "#1a1a1a" : "transparent")
+                      : mountPx,
+                padding: isCanvas && canvasFloatFrame ? `${cFramePadPct}%` : (isPrint ? 0 : `${mountPad}px`),
                 boxSizing: "border-box",
                 transition: isDragging ? "none" : "left .3s, top .3s, width .3s, height .3s",
                 containerType: "inline-size",
@@ -2093,7 +2100,8 @@ export default function Customize() {
     const isAcrylic   = item.productType === "acrylic";
     const isCanvas    = fd.id === "canvas" || item.productType === "canvas";
     // BUG-01: acrylic must be treated as frameless so no frame background bleeds
-    const isFrameless = fd.id === "frameless" || fd.id === "digital" || isAcrylic;
+    const isPrintItem = item.productType === "print";
+    const isFrameless = fd.id === "frameless" || fd.id === "digital" || isAcrylic || isPrintItem || item.productType === "digital";
     const woodPad     = fd.w || 0;
     // Resolve actual selected frame color (so all 8 swatches render distinctly)
     const itemFrameColorDef = (FRAME_COLORS[item.productType] || []).find(c => c.id === item.frameColor);
@@ -2135,7 +2143,7 @@ export default function Customize() {
             background: isCanvas
               ? (liveCanvasFloat ? liveCanvasFrameHex : "transparent")
               : isFrameless
-                ? "transparent"
+                ? (isPrintItem ? "#FFFFFF" : "transparent")
                 // Solid frame face with subtle edge vignette (frame moulding, not gradient bg)
                 : `
                     radial-gradient(ellipse at center, ${actualWood} 60%, color-mix(in srgb, ${actualWood} 85%, black) 100%),
@@ -2143,8 +2151,8 @@ export default function Customize() {
                   `,
             padding: isCanvas
               ? (liveCanvasFloat ? 12 : 0)
-              : (isAcrylic ? 0 : (isFrameless ? 6 : woodPad + 6)),
-            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? 12 : 2)),
+              : (isAcrylic ? 0 : (isFrameless ? (isPrintItem ? bd.px : 6) : woodPad + 6)),
+            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? (isPrintItem ? 2 : 12) : 2)),
             boxShadow: isCanvas
               ? (liveCanvasFloat
                   ? "0 4px 20px rgba(0,0,0,0.35)"
@@ -2152,7 +2160,7 @@ export default function Customize() {
               : isAcrylic
                 ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.10)"
                 : isFrameless
-                  ? "none"
+                  ? (isPrintItem ? "0 2px 12px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.10)" : "none")
                   : "0 0 0 1px rgba(0,0,0,.30)",
             border: isAcrylic ? "none" : undefined,
             // BUG-02: subtle polished-edge highlights on acrylic (match RoomViewPanel)
@@ -2177,11 +2185,14 @@ export default function Customize() {
             <div style={{
               background: (isCanvas || isAcrylic)
                 ? (isCanvas && liveCanvasFloat ? "#1a1a1a" : "transparent")
-                : (bd.px === 0 ? "transparent" : bcd.bg),
-              padding: (isCanvas || isAcrylic) ? (isCanvas && liveCanvasFloat ? 5 : 0) : bd.px,
+                : isPrintItem
+                  ? "transparent"
+                  : (bd.px === 0 ? "transparent" : bcd.bg),
+              padding: (isCanvas || isAcrylic) ? (isCanvas && liveCanvasFloat ? 5 : 0) : (isPrintItem ? 0 : bd.px),
               margin: 0,
               border: "none",
               display: "flex", alignItems: "center", justifyContent: "center",
+              position: "relative",
               // Sharp inner rabbet — the picture sits recessed INSIDE the frame
               boxShadow: (isFrameless || isCanvas || isAcrylic) ? "none" : `
                 0 0 0 1px rgba(0,0,0,.55),
@@ -2190,6 +2201,14 @@ export default function Customize() {
                 inset 0 -1px 2px rgba(255,255,255,.08)
               `,
             }}>
+              {isPrintItem && (
+                <div aria-hidden="true" style={{
+                  position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none",
+                  backgroundImage:
+                    "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.007) 2px, rgba(0,0,0,0.007) 3px), " +
+                    "repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.007) 2px, rgba(0,0,0,0.007) 3px)",
+                }}/>
+              )}
               {(() => {
                 const isDraggingThis = draggingId === item.id;
                 const imgStyle: React.CSSProperties = {
@@ -2688,7 +2707,9 @@ export default function Customize() {
           ? "High-resolution digital download"
           : it.productType === "canvas"
             ? `${sd?.label || it.size}${canvasAttrLabel(it)}`
-            : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
+            : it.productType === "print"
+              ? `${sd?.label || it.size} · ${(!it.border || it.border === "none") ? "Unframed" : `${(BORDERS.find(b => b.id === it.border)?.label) || "Slim"} Mat`}`
+              : `${sd?.label || it.size}${it.frameColor && it.productType !== "acrylic" ? " · " + it.frameColor : ""}`;
         lineItems.push({
           name: ptLabel,
           description: desc,
@@ -4456,7 +4477,9 @@ export default function Customize() {
                           ? (it.canvasFloatFrame
                               ? ` · Float Frame${(CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor)?.label) ? " (" + CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor)!.label + ")" : ""}`
                               : ` · ${CANVAS_EDGES.find(e => e.id === (it.canvasEdge || "gallery"))?.label || "Gallery Wrap"}`)
-                          : (it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : "")}
+                          : it.productType === "print"
+                            ? ` · ${(!it.border || it.border === "none") ? "Unframed" : `${(BORDERS.find(b => b.id === it.border)?.label) || "Slim"} Mat`}`
+                            : (it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : "")}
                       </div>
                       {it.portraitName && (
                         <div style={{ display:"inline-flex", alignItems:"center", gap:4,
