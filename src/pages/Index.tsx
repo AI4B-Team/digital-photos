@@ -3048,8 +3048,9 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       prompt: t.prompt,
     }));
 
-  // Show Premium Couple section whenever the user has uploaded 2+ photos (couple intent)
-  const showPremiumCouple = (allPhotos?.length || 0) >= 2 || cat === "couples";
+  // Show Premium Couple section only when "couple" sub-type is selected (or couples category)
+  const showPremiumCouple = subType === "couple" || cat === "couples";
+
   const couplesTemplatePool = (TEMPLATES["couples"] || []).concat(
     (SUBTYPE_TEMPLATES["couple"] || []).filter(t => !((TEMPLATES["couples"] || []).some(c => c.id === t.id)))
   );
