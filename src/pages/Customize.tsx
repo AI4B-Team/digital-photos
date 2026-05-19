@@ -2679,6 +2679,43 @@ export default function Customize() {
 
 
 
+  // Unified "Add All to Cart" — commits every staged item in items[] at once and
+  // triggers the VIP upsell exactly once. Replaces the per-product-card buttons.
+  const addAllToCart = async () => {
+    if (!items.length) return;
+    for (const it of items) {
+      let finalPhotoUrl = (it as any).photoUrl;
+      // Only the currently-selected portrait carries the live name fields.
+      if (it.id === selectedId) {
+        const hasText = (portraitName || (!isPetSession && portraitNameLine2));
+        if (hasText && namePosition !== "none") {
+          try {
+            setNameCompositing(true);
+            finalPhotoUrl = await composeNameOnImage(
+              (it as any).photoUrl, portraitName,
+              namePosition as "top" | "bottom",
+              nameFontId, nameColorId, nameSizeId,
+              isPetSession ? "" : portraitNameLine2, isPetSession,
+            );
+          } finally { setNameCompositing(false); }
+        }
+        const snap: any = {
+          ...it, photoUrl: finalPhotoUrl,
+          portraitName:      portraitName || null,
+          portraitNameLine2: (!isPetSession && portraitNameLine2) ? portraitNameLine2 : null,
+          namePosition: hasText ? namePosition : null,
+          nameFontId:   hasText ? nameFontId   : null,
+          nameSizeId:   hasText ? nameSizeId   : null,
+          nameColorId:  hasText ? nameColorId  : null,
+        };
+        addToCart(snap, (it as any).qty || 1);
+      } else {
+        addToCart({ ...(it as any) }, (it as any).qty || 1);
+      }
+    }
+    setUpsellOpen(true);
+  };
+
   // Build Stripe line items from current cart and redirect to Checkout
   const checkoutCart = async () => {
     if (cartCount === 0) return;
