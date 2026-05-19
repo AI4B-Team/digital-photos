@@ -111,6 +111,51 @@ serve(async (req) => {
       ? (await Promise.all(extraPhotoUrls.filter((u: string) => typeof u === "string" && u.length > 0).map(toDataUrl))).filter((u) => u.length > 0)
       : [];
 
+    // COUPLES: Pre-analyze both partner photos so each style generation gets
+    // a precise written description of each partner's identifying features.
+    // This dramatically improves face-likeness and prevents face-swapping.
+    let couplesAnalysis = "";
+    if (category === "couples" && subjectMainData && subjectExtraData[0]) {
+      try {
+        const analyzeRes = await fetch(
+          "https://ai.gateway.lovable.dev/v1/chat/completions",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${LOVABLE_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "google/gemini-2.5-flash",
+              messages: [
+                {
+                  role: "user",
+                  content: [
+                    {
+                      type: "text",
+                      text: `Analyze the two photos below. IMAGE 1 = PARTNER A. IMAGE 2 = PARTNER B.\n\nFor EACH partner, write a precise, factual physical description focused on identity-defining features ONLY (ignore clothes/background/lighting). Cover: perceived gender presentation, approximate age range, skin tone, face shape, hair color, hair length and style, eye color, eyebrow shape, nose shape, lip shape, facial hair (if any), distinctive marks (freckles, moles, glasses, piercings).\n\nReply in this EXACT format (no extra commentary):\nPARTNER A: <one tight paragraph>\nPARTNER B: <one tight paragraph>`,
+                    },
+                    { type: "image_url", image_url: { url: subjectMainData } },
+                    { type: "image_url", image_url: { url: subjectExtraData[0] } },
+                  ],
+                },
+              ],
+            }),
+          }
+        );
+        if (analyzeRes.ok) {
+          const aj = await analyzeRes.json();
+          couplesAnalysis = (aj?.choices?.[0]?.message?.content || "").toString().trim();
+          console.log("Couples analysis:", couplesAnalysis.slice(0, 400));
+        } else {
+          console.warn("Couples analysis failed:", analyzeRes.status, await analyzeRes.text());
+        }
+      } catch (e) {
+        console.warn("Couples analysis error:", e);
+      }
+    }
+
+
     const generateOne = async (style: string, idx: number): Promise<{ style: string; url: string; url_hd: string } | null> => {
       const prompt = STYLE_PROMPTS[style] || GENERIC_PHOTO_PROMPT;
       const perVariantPrompt = (Array.isArray(templatePrompts) && templatePrompts[idx]) || templatePrompt;
@@ -137,7 +182,7 @@ serve(async (req) => {
                       type: "text",
                       text: styleRefDataUrl
                         ? (category === "babies" || category === "people" || category === "memorial" || category === "gifts" || category === "couples"
-                          ? `TASK: Recreate the reference scene from IMAGE 1 exactly, but replace the people with the SUBJECTS from IMAGE 2${subjectExtraData.length ? " and IMAGE 3" : ""}.\n\nIMAGE 1 = REFERENCE SCENE TEMPLATE. Copy from it: composition, camera angle, framing, poses, body positions, gestures, expressions, costumes/wardrobe, accessories, props, background, lighting, color grading.\n\n${category === "couples" && subjectExtraData.length ? `IMAGE 2 = PARTNER A (place on the LEFT person in the reference scene).\nIMAGE 3 = PARTNER B (place on the RIGHT person in the reference scene).\nUse ONLY the FACES from IMAGE 2 and IMAGE 3 — preserve face shape, skin tone, hair color, hair style, eye color, distinctive features of EACH partner. Both partners' faces MUST be clearly recognizable as the people in IMAGE 2 and IMAGE 3 respectively. Do NOT swap them. Do NOT blend them. Do NOT invent new faces. Do NOT copy any clothing/background/lighting from IMAGE 2 or IMAGE 3.` : category === "babies" && subjectExtraData.length ? `IMAGE 2 = BABY (the infant subject in the reference scene).\nIMAGE 3 = MOM (the adult woman in the reference scene).\nUse ONLY the FACE/identity from IMAGE 2 for the BABY — preserve face shape, skin tone, hair, eye color, distinctive features.\nUse ONLY the FACE/identity from IMAGE 3 for the MOM — preserve face shape, skin tone, hair color/style, eye color, distinctive features.\nBoth faces MUST be clearly recognizable. Do NOT swap them. Do NOT blend them. Do NOT copy any clothing/background/lighting from IMAGE 2 or IMAGE 3.` : `IMAGE 2 = SUBJECT. Use ONLY the face/identity from IMAGE 2 — preserve face shape, skin tone, hair, eye color, distinctive features. Do NOT copy IMAGE 2's clothing, background, or lighting.`}\n\n${categoryContext}${perVariantPrompt ? `\n\n>>> SCENE / VARIATION INSTRUCTION: ${perVariantPrompt} <<<` : ""}\n\nCRITICAL OUTPUT RULES:\n1. Output ONLY the photo content at full-bleed. NO frame, NO mat/border, NO mockup chrome.\n2. Hyper-realistic photograph matching the reference scene 1:1.\n3. Faces MUST match the subject images exactly.\n4. Wardrobe/scene/props/lighting come from IMAGE 1 ONLY.`
+                          ? `TASK: Recreate the reference scene from IMAGE 1 exactly, but replace the people with the SUBJECTS from IMAGE 2${subjectExtraData.length ? " and IMAGE 3" : ""}.\n\nIMAGE 1 = REFERENCE SCENE TEMPLATE. Copy from it: composition, camera angle, framing, poses, body positions, gestures, expressions, costumes/wardrobe, accessories, props, background, lighting, color grading.\n\n${category === "couples" && subjectExtraData.length ? `IMAGE 2 = PARTNER A (place on the LEFT person in the reference scene).\nIMAGE 3 = PARTNER B (place on the RIGHT person in the reference scene).\nUse ONLY the FACES from IMAGE 2 and IMAGE 3 — preserve face shape, skin tone, hair color, hair style, eye color, distinctive features of EACH partner. Both partners' faces MUST be clearly recognizable as the people in IMAGE 2 and IMAGE 3 respectively. Do NOT swap them. Do NOT blend them. Do NOT invent new faces. Do NOT copy any clothing/background/lighting from IMAGE 2 or IMAGE 3.${couplesAnalysis ? `\n\nVERIFIED IDENTITY REFERENCE (use this to double-check the faces match):\n${couplesAnalysis}` : ""}` : category === "babies" && subjectExtraData.length ? `IMAGE 2 = BABY (the infant subject in the reference scene).\nIMAGE 3 = MOM (the adult woman in the reference scene).\nUse ONLY the FACE/identity from IMAGE 2 for the BABY — preserve face shape, skin tone, hair, eye color, distinctive features.\nUse ONLY the FACE/identity from IMAGE 3 for the MOM — preserve face shape, skin tone, hair color/style, eye color, distinctive features.\nBoth faces MUST be clearly recognizable. Do NOT swap them. Do NOT blend them. Do NOT copy any clothing/background/lighting from IMAGE 2 or IMAGE 3.` : `IMAGE 2 = SUBJECT. Use ONLY the face/identity from IMAGE 2 — preserve face shape, skin tone, hair, eye color, distinctive features. Do NOT copy IMAGE 2's clothing, background, or lighting.`}\n\n${categoryContext}${perVariantPrompt ? `\n\n>>> SCENE / VARIATION INSTRUCTION: ${perVariantPrompt} <<<` : ""}\n\nCRITICAL OUTPUT RULES:\n1. Output ONLY the photo content at full-bleed. NO frame, NO mat/border, NO mockup chrome.\n2. Hyper-realistic photograph matching the reference scene 1:1.\n3. Faces MUST match the subject images exactly.\n4. Wardrobe/scene/props/lighting come from IMAGE 1 ONLY.`
                           : `TASK: Pick the SPECIFIC framed picture indicated in the variation instruction below from IMAGE 1 (a wall mockup containing multiple framed pet pictures). Recreate that ONE framed scene exactly, but replace the pet inside it with the pet from IMAGE 2.\n\nIMAGE 1 = REFERENCE TEMPLATE — a room/wall mockup containing 4 framed pet portraits in a 2x2 layout. You must look INSIDE the specific frame named in the variation instruction and copy the scene that is inside that frame:\n- Exact same pose, body position, head angle, and expression\n- Exact same costume, accessories, props (shower cap, newspaper, hairdryer, bathtub, soap, etc.)\n- Exact same background setting (tiled wall, toilet, plain backdrop, tub interior, etc.)\n- Exact same lighting, color grading, and photographic style\n- Exact same camera angle, framing, and crop\nThe output must look IDENTICAL to that one framed photo, just with a different pet breed/identity.\n\nIMAGE 2 = SUBJECT SOURCE. Use ONLY for identity: face/head shape, fur color/pattern, markings, eye color, breed/species. Do NOT copy IMAGE 2's background, lighting, or photo style.\n\n${categoryContext}${perVariantPrompt ? `\n\n>>> VARIATION INSTRUCTION (which frame to copy): ${perVariantPrompt} <<<` : ""}\n\nCRITICAL OUTPUT RULES:\n1. Output ONLY the artwork content INSIDE the chosen frame at full-bleed. NO frame, NO mat/border, NO wall, NO room, NO other frames, NO mockup chrome.\n2. The result must be a standalone hyper-realistic photograph that matches the chosen scene's style 1:1.\n3. Pet identity = IMAGE 2. Everything else (pose, props, scene, lighting, costume) = the chosen frame in IMAGE 1.\n4. Do not invent a new scene. Do not blend frames. Copy the chosen frame's scene exactly.`)
                         : `${prompt}\n\n${categoryContext}${perVariantPrompt ? `\n\nScene Direction: ${perVariantPrompt}` : ""}\n\nCreate a high-quality portrait transformation of the provided photo. Maintain the subject's likeness and key features while applying the artistic style described. The result should look like a professional portrait painting or artwork.`,
                     },
