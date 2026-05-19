@@ -1925,7 +1925,10 @@ export default function Customize() {
     const gross = (unit + addon) * (snapshot.qty || 1);
     return Math.max(0, gross - (discountAmt || 0));
   })();
-  const headerTotal = total;
+  // Staged (selected via checkbox but not yet committed) items add to the header total.
+  const stagedItems = items.filter(it => stagedIds.has(it.id) && !cartItemForItem(it));
+  const stagedTotal = stagedItems.reduce((sum, it) => sum + itemPrice(it), 0);
+  const headerTotal = total + stagedTotal;
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
