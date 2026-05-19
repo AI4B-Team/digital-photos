@@ -2769,20 +2769,21 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       <div style={{ maxWidth:1200, margin:"0 auto", padding:"40px 6vw 20px", textAlign:"center" }}>
         <h1 style={{ fontSize:"clamp(24px,3.5vw,42px)", fontWeight:800,
             color:T.cream, marginBottom:10, lineHeight:1.15,
-            fontFamily:"'Playfair Display', 'Poppins', serif", letterSpacing:".005em" }}>
+            fontFamily:"'Poppins',sans-serif", letterSpacing:".005em" }}>
           {heroName && subType
-            ? `${heroName}'s ${selectedSubDef?.label} portrait`
+            ? `${heroName}'s ${selectedSubDef?.label} Portrait`
             : heroName
-            ? `Choose your portrait style for ${heroName}`
+            ? `Choose Your Portrait Style For ${heroName}`
             : subType
-            ? `Choose your ${selectedSubDef?.label?.toLowerCase()} portrait style`
-            : "Choose your portrait style"}
+            ? `Choose Your ${selectedSubDef?.label} Portrait Style`
+            : "Choose Your Portrait Style"}
         </h1>
         <p style={{ fontSize:16, color:T.muted, fontFamily:"'Poppins',sans-serif",
           maxWidth:680, margin:"0 auto", lineHeight:1.55 }}>
-          Explore hundreds of curated styles designed for every memory, personality, and occasion.
+          Explore Hundreds Of Curated Styles Designed For Every Memory, Personality, And Occasion.
         </p>
       </div>
+
 
       {/* Curated collections rail */}
       <CollectionsRail
