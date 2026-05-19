@@ -4468,7 +4468,9 @@ export default function Customize() {
                           ? (it.canvasFloatFrame
                               ? ` · Float Frame${(CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor)?.label) ? " (" + CANVAS_FRAME_COLORS.find(c => c.id === it.frameColor)!.label + ")" : ""}`
                               : ` · ${CANVAS_EDGES.find(e => e.id === (it.canvasEdge || "gallery"))?.label || "Gallery Wrap"}`)
-                          : (it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : "")}
+                          : it.productType === "print"
+                            ? ` · ${(!it.border || it.border === "none") ? "Unframed" : `${(BORDERS.find(b => b.id === it.border)?.label) || "Slim"} Mat`}`
+                            : (it.frameColor && it.productType !== "digital" && it.productType !== "acrylic" ? ` · ${it.frameColor}` : "")}
                       </div>
                       {it.portraitName && (
                         <div style={{ display:"inline-flex", alignItems:"center", gap:4,
