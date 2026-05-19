@@ -1383,6 +1383,16 @@ export default function Customize() {
     const q = Math.max(1, Math.min(99, qty|0));
     setItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
   };
+  // Duplicate a workspace item — adds a NEW entry to items (and the canvas).
+  const duplicateItem = (id: string) => {
+    setItems(prev => {
+      const src = prev.find(i => i.id === id);
+      if (!src) return prev;
+      const copy = { ...src, id: crypto.randomUUID(), qty: 1 };
+      return [...prev, copy];
+    });
+  };
+
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragRef = useRef<{ id: string; startX: number; startY: number; baseX: number; baseY: number } | null>(null);
