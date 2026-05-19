@@ -2984,15 +2984,16 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
     return kws.some(k => hay.includes(k));
   };
 
-  const tmplCards = templates
-    .filter(matchesSubType)
-    .map(t => ({
-      type: "template" as const,
-      id: t.id,
-      label: t.label,
-      desc: t.desc,
-      img: t.img,
-    }));
+  const tmplCards = (subType && SUBTYPE_TEMPLATES[subType]
+    ? SUBTYPE_TEMPLATES[subType]
+    : templates.filter(matchesSubType)
+  ).map(t => ({
+    type: "template" as const,
+    id: t.id,
+    label: t.label,
+    desc: t.desc,
+    img: t.img,
+  }));
 
   const toAbsUrl = (u?: string) => {
     if (!u) return "";
