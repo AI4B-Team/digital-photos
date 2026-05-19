@@ -1601,6 +1601,19 @@ export default function Customize() {
     const q = Math.max(1, Math.min(99, qty|0));
     setCartItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
   };
+  // Quick toggle: add/remove a customization item to the cart by its photoUrl identity
+  const cartItemForItem = (it: any) =>
+    cartItems.find(ci => cartKey(ci) === cartKey(it)) ||
+    cartItems.find(ci => ci.photoUrl === it.photoUrl);
+  const isItemInCart = (it: any) => !!cartItemForItem(it);
+  const toggleItemInCart = (it: any) => {
+    const existing = cartItemForItem(it);
+    if (existing) {
+      removeCartItem(existing.id);
+    } else {
+      addToCart({ ...it }, it.qty || 1);
+    }
+  };
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
