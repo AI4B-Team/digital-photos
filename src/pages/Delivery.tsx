@@ -10,6 +10,15 @@ import {
   ExternalLink, RefreshCw, Users, Globe, Image, Award,
   Loader2
 } from "lucide-react";
+import portraitPeopleRoyal from "@/assets/portrait-people-royal.jpg";
+import portraitPeopleRen from "@/assets/portrait-people-renaissance.jpg";
+import portraitPeopleStory from "@/assets/portrait-people-storybook.jpg";
+import portraitPeopleCine from "@/assets/portrait-people-cinematic.jpg";
+import portraitPeopleMin from "@/assets/portrait-people-minimal.jpg";
+import portraitGiftsFan from "@/assets/portrait-gifts-fantasy.jpg";
+import roomLiving from "@/assets/room-living.jpg";
+import roomDining from "@/assets/room-dining.jpg";
+import roomBedroom from "@/assets/room-bedroom.jpg";
 
 // ── DESIGN TOKENS ───────────────────────────────────────────
 const C = {
@@ -110,18 +119,18 @@ const CSS = `
 // ── MOCK DATA ──────────────────────────────────────────────────
 // In production, these come from your API after purchase confirmation
 const UNLOCKED_PORTRAITS = [
-  { id:1, style:"Royal Portrait",      img:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=500&fit=crop", featured:true },
-  { id:2, style:"Renaissance",         img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=500&fit=crop", featured:false },
-  { id:3, style:"Storybook Fantasy",   img:"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=500&fit=crop", featured:false },
-  { id:4, style:"Cinematic Portrait",  img:"https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&h=500&fit=crop", featured:false },
-  { id:5, style:"Minimal Fine Art",    img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=500&fit=crop", featured:false },
-  { id:6, style:"Vintage Portrait",    img:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=400&h=500&fit=crop", featured:false },
+  { id:1, style:"Royal Portrait",      img:portraitPeopleRoyal, featured:true },
+  { id:2, style:"Renaissance",         img:portraitPeopleRen, featured:false },
+  { id:3, style:"Storybook Fantasy",   img:portraitPeopleStory, featured:false },
+  { id:4, style:"Cinematic Portrait",  img:portraitPeopleCine, featured:false },
+  { id:5, style:"Minimal Fine Art",    img:portraitPeopleMin, featured:false },
+  { id:6, style:"Vintage Portrait",    img:portraitGiftsFan, featured:false },
 ];
 
 const FRAME_UPSELLS = [
-  { id:"walnut",  name:"Walnut Classic",    price:49, size:'8"×10"', img:"https://images.unsplash.com/photo-1574180566232-aaad1b5b8450?w=160&h=200&fit=crop" },
-  { id:"gold",    name:"Gold Leaf Ornate",  price:79, size:'11"×14"', img:"https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?w=160&h=200&fit=crop" },
-  { id:"canvas",  name:"Canvas Print",      price:99, size:'12"×16"', img:"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=160&h=200&fit=crop" },
+  { id:"walnut",  name:"Walnut Classic",    price:49, size:'8"×10"', img:roomLiving },
+  { id:"gold",    name:"Gold Leaf Ornate",  price:79, size:'11"×14"', img:roomDining },
+  { id:"canvas",  name:"Canvas Print",      price:99, size:'12"×16"', img:roomBedroom },
 ];
 
 // ── CONFETTI ANIMATION ─────────────────────────────────────────

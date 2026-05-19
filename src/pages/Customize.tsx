@@ -25,6 +25,7 @@ import roomEntryway     from "@/assets/rooms/lux-entryway.jpg";
 import roomBedroomLux   from "@/assets/rooms/lux-bedroom.jpg";
 import roomCoastal      from "@/assets/rooms/lux-coastal.jpg";
 import roomCatalog      from "@/assets/rooms/lux-catalog-clean.jpg";
+import categoryIndividualImg from "@/assets/generated-categories/category-individual.jpg";
 
 // STYLED SPACES — each room carries an emotional subtitle + a
 // "recommendedFor" list of portrait style ids so the system can later
@@ -459,22 +460,22 @@ const GLAZE_OPTIONS = [
 // no existing art, no shelving directly above the placement spot.
 const ROOMS = [
   { label:"Modern Living Room",
-    url:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&h=900&fit=crop&q=85",
+    url:roomModernMin,
     wallX:50, wallY:14, wallW:24 },
   { label:"Warm Neutral Sofa",
-    url:"https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1400&h=900&fit=crop&q=85",
+    url:roomWarmOrganic,
     wallX:50, wallY:12, wallW:22 },
   { label:"Scandinavian Lounge",
-    url:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&h=900&fit=crop&q=85",
+    url:roomBrightEdit,
     wallX:48, wallY:14, wallW:26 },
   { label:"Minimalist Bedroom",
-    url:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1400&h=900&fit=crop&q=85",
+    url:roomBedroomLux,
     wallX:50, wallY:12, wallW:24 },
   { label:"Bright Dining Room",
-    url:"https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1400&h=900&fit=crop&q=85",
+    url:roomCatalog,
     wallX:50, wallY:14, wallW:24 },
   { label:"Cozy Reading Nook",
-    url:"https://images.unsplash.com/photo-1616627781809-781c12d0fb88?w=1400&h=900&fit=crop&q=85",
+    url:roomLibrary,
     wallX:50, wallY:14, wallW:22 },
 ] as const;
 
@@ -1308,7 +1309,7 @@ export default function Customize() {
 
   const params = new URLSearchParams(window.location.search);
   const styleId = params.get("style") || session.generatedPortraits?.[0]?.style || "";
-  const PLACEHOLDER = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=80";
+  const PLACEHOLDER = categoryIndividualImg;
   const initialPortraitUrl =
     session.generatedPortraits?.find(p => p.style === styleId)?.url
     || session.generatedPortraits?.[0]?.url

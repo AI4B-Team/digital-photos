@@ -3,6 +3,12 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Sparkles, Star, ArrowRight, X } from "lucide-react";
 import LandingHeader from "@/components/LandingHeader";
+import portraitPeopleRoyal from "@/assets/portrait-people-royal.jpg";
+import portraitPeopleRen from "@/assets/portrait-people-renaissance.jpg";
+import portraitPeopleStory from "@/assets/portrait-people-storybook.jpg";
+import portraitGiftsFan from "@/assets/portrait-gifts-fantasy.jpg";
+import portraitPeopleCine from "@/assets/portrait-people-cinematic.jpg";
+import portraitPeopleMin from "@/assets/portrait-people-minimal.jpg";
 
 const RED = "#E61919";
 const INK = "#0A0A0A";
@@ -11,12 +17,12 @@ const BG = "#FAF8F4";
 const BORDER = "rgba(0,0,0,.08)";
 
 const STYLES = [
-  { id: "royal",       name: "Royal",       mood: "Regal · Opulent",  desc: "Royal portraiture inspired by 18th-century European courts.", img: "https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=600" },
-  { id: "renaissance", name: "Renaissance", mood: "Classical · Rich", desc: "Old master oil-painting techniques with dramatic lighting.",   img: "https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?w=600" },
-  { id: "storybook",   name: "Storybook",   mood: "Whimsical · Soft", desc: "Hand-painted children's book aesthetic with warm tones.",     img: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=600" },
-  { id: "fantasy",     name: "Fantasy",     mood: "Epic · Heroic",    desc: "Mythic worlds, dragons, knights, and enchanted landscapes.",  img: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600" },
-  { id: "cinematic",   name: "Cinematic",   mood: "Dramatic · Bold",  desc: "Movie poster quality with depth, contrast, and atmosphere.",  img: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600" },
-  { id: "minimal",     name: "Minimal",     mood: "Clean · Modern",   desc: "Editorial portrait simplicity with negative space.",          img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600" },
+  { id: "royal",       name: "Royal",       mood: "Regal · Opulent",  desc: "Royal portraiture inspired by 18th-century European courts.", img: portraitPeopleRoyal },
+  { id: "renaissance", name: "Renaissance", mood: "Classical · Rich", desc: "Old master oil-painting techniques with dramatic lighting.",   img: portraitPeopleRen },
+  { id: "storybook",   name: "Storybook",   mood: "Whimsical · Soft", desc: "Hand-painted children's book aesthetic with warm tones.",     img: portraitPeopleStory },
+  { id: "fantasy",     name: "Fantasy",     mood: "Epic · Heroic",    desc: "Mythic worlds, dragons, knights, and enchanted landscapes.",  img: portraitGiftsFan },
+  { id: "cinematic",   name: "Cinematic",   mood: "Dramatic · Bold",  desc: "Movie poster quality with depth, contrast, and atmosphere.",  img: portraitPeopleCine },
+  { id: "minimal",     name: "Minimal",     mood: "Clean · Modern",   desc: "Editorial portrait simplicity with negative space.",          img: portraitPeopleMin },
 ];
 
 const CATS = [

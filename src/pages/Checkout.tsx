@@ -23,6 +23,12 @@ import {
   CreditCard, Mail, User, ArrowRight, Layers, Zap,
   Award, AlertCircle, Heart, Crown
 } from "lucide-react";
+import portraitPeopleRoyal from "@/assets/portrait-people-royal.jpg";
+import portraitPeopleRen from "@/assets/portrait-people-renaissance.jpg";
+import portraitPeopleStory from "@/assets/portrait-people-storybook.jpg";
+import portraitPeopleCine from "@/assets/portrait-people-cinematic.jpg";
+import portraitPeopleMin from "@/assets/portrait-people-minimal.jpg";
+import portraitGiftsFan from "@/assets/portrait-gifts-fantasy.jpg";
 
 // ── DESIGN TOKENS ───────────────────────────────────────────
 const C = {
@@ -248,17 +254,17 @@ const CANVAS_UPSELL = {
   offer:"Add Canvas Print (12\"×16\") for just $99",
   originalPrice:149,
   salePrice:99,
-  img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=280&h=340&fit=crop",
+  img:portraitPeopleCine,
 };
 
 // ── PORTRAIT THUMBNAILS (mock) ────────────────────────────────
 const PORTRAIT_THUMBS = [
-  { style:"Royal Portrait",     img:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=80&h=100&fit=crop" },
-  { style:"Renaissance",        img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=100&fit=crop" },
-  { style:"Storybook Fantasy",  img:"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=80&h=100&fit=crop" },
-  { style:"Cinematic",          img:"https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=80&h=100&fit=crop" },
-  { style:"Minimal Fine Art",   img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=100&fit=crop" },
-  { style:"Vintage",            img:"https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=80&h=100&fit=crop" },
+  { style:"Royal Portrait",     img:portraitPeopleRoyal },
+  { style:"Renaissance",        img:portraitPeopleRen },
+  { style:"Storybook Fantasy",  img:portraitPeopleStory },
+  { style:"Cinematic",          img:portraitPeopleCine },
+  { style:"Minimal Fine Art",   img:portraitPeopleMin },
+  { style:"Vintage",            img:portraitGiftsFan },
 ];
 
 // ── HELPERS ────────────────────────────────────────────────────
