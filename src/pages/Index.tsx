@@ -2955,8 +2955,9 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
 
       {/* Themed sections — Seasons / Holidays / Occasions */}
       {THEMES[cat] && (Object.keys(THEMES[cat]) as Array<keyof typeof THEMES[typeof cat]>).map(group => {
-        const items = THEMES[cat][group];
-        if (!items || !items.length) return null;
+        const rawItems = THEMES[cat][group];
+        const items = (rawItems || []).filter(matchesSubType);
+        if (!items.length) return null;
         return (
           <div key={group}>
             <div style={{ margin:"0 auto", padding:"36px 24px 8px" }}>
