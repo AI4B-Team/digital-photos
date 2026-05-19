@@ -3048,8 +3048,13 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       prompt: t.prompt,
     }));
 
-  const premiumCoupleCards = cat === "couples"
-    ? rawTmpls
+  // Show Premium Couple section whenever the user has uploaded 2+ photos (couple intent)
+  const showPremiumCouple = (allPhotos?.length || 0) >= 2 || cat === "couples";
+  const couplesTemplatePool = (SUBTYPE_TEMPLATES["couples"] || []).concat(
+    (templates || []).filter(t => !((SUBTYPE_TEMPLATES["couples"] || []).some(c => c.id === t.id)))
+  );
+  const premiumCoupleCards = showPremiumCouple
+    ? couplesTemplatePool
         .filter(t => PREMIUM_COUPLE_IDS.has(t.id))
         .map(t => ({
           type: "template" as const,
