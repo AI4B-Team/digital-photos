@@ -1416,20 +1416,20 @@ function LiveTeaser({ activeCat, onCatClick, preferredSlide }: { activeCat: stri
         <button
           onClick={() => setIdx((safeIdx - 1 + TEASERS.length) % TEASERS.length)}
           aria-label="Previous example"
-          style={{ width:44, height:44, borderRadius:22, border:`1px solid ${T.bGold}`,
+          style={{ width:44, height:44, borderRadius:10, border:`1px solid ${T.bGold}`,
             background:"#fff", cursor:"pointer", fontSize:18, color:T.gold, fontWeight:700,
             display:"flex", alignItems:"center", justifyContent:"center" }}>
           ‹
         </button>
         <div style={{ minWidth:180, textAlign:"center", padding:"10px 18px",
-          borderRadius:22, background:T.gold, color:"#fff",
+          borderRadius:10, background:T.gold, color:"#fff",
           fontSize:12, letterSpacing:".18em", textTransform:"uppercase", fontWeight:700 }}>
           {cur.cat} <span style={{ opacity:.7, marginLeft:6 }}>{safeIdx+1}/{TEASERS.length}</span>
         </div>
         <button
           onClick={() => setIdx((safeIdx + 1) % TEASERS.length)}
           aria-label="Next example"
-          style={{ width:44, height:44, borderRadius:22, border:`1px solid ${T.bGold}`,
+          style={{ width:44, height:44, borderRadius:10, border:`1px solid ${T.bGold}`,
             background:"#fff", cursor:"pointer", fontSize:18, color:T.gold, fontWeight:700,
             display:"flex", alignItems:"center", justifyContent:"center" }}>
           ›
