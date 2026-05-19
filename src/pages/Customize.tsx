@@ -2002,6 +2002,26 @@ export default function Customize() {
   /* ── Add a new image: file upload, then generate ── */
   const handleAddImage = () => fileInputRef.current?.click();
 
+  /* ── Add same portrait at a different size / product ── */
+  const addPortraitVariant = () => {
+    const src: any = selected || items[0];
+    if (!src) return;
+    const newItem = makeItem({
+      photoUrl:    src.photoUrl,
+      photoAspect: src.photoAspect,
+      style:       src.style,
+      lowRes:      src.lowRes,
+      // Start with default product config — user configures it
+    });
+    setItems((prev: any[]) => [...prev, newItem]);
+    setSelectedId(newItem.id);
+    setTimeout(() => {
+      const el = document.getElementById(newItem.id);
+      el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 80);
+  };
+
+
   const [tmplPickOpen, setTmplPickOpen] = useState(false);
   const [pendingNewItemId, setPendingNewItemId] = useState<string | null>(null);
   const [pendingDataUrl, setPendingDataUrl] = useState<string | null>(null);
