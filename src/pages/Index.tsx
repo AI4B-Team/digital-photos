@@ -3027,12 +3027,13 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
   const tmplCards = (subType && SUBTYPE_TEMPLATES[subType]
     ? SUBTYPE_TEMPLATES[subType]
     : templates.filter(matchesSubType)
-  ).map(t => ({
+  ).map((t, index) => ({
     type: "template" as const,
     id: t.id,
     label: t.label,
     desc: t.desc,
-    img: t.img,
+    img: subType ? (FEATURED_SCENE_IMAGES[subType]?.[index] || t.img) : t.img,
+    prompt: t.prompt,
   }));
 
   const toAbsUrl = (u?: string) => {
@@ -3074,7 +3075,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
         const card = baseCards.find(c => c.id === selected.id);
         onConfirm({ styles: [selected.id], templatePrompt: subTypePromptContext, styleRefUrl: await getStyleRef(card?.img) });
       } else {
-        const tmpl = templates.find(t => t.id === selected.id);
+        const tmpl = tmplCards.find(t => t.id === selected.id) || templates.find(t => t.id === selected.id);
         const card = tmplCards.find(c => c.id === selected.id);
         const base = [subTypePromptContext, tmpl?.prompt].filter(Boolean).join(" ");
         const variants = cat === "pets"
