@@ -388,8 +388,12 @@ const STYLES = [
 ];
 
 /* TEMPLATE SETS — category-specific scene/costume prompts.
-   Each adds an "Additionally, depict the subject ..." clause to every style. */
-export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string }[]> = {
+   Each adds an "Additionally, depict the subject ..." clause to every style.
+   NOTE: For new templates, include a `scenes: string[]` of 6+ UNFRAMED, full-bleed
+   scene images (no frame, no wall). CollectionCard will slideshow through them
+   edge-to-edge. The legacy `img` (2×2 framed composite) is used as a fallback
+   and gets auto-cropped into the inner picture of each quadrant. */
+export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string; scenes?: string[] }[]> = {
   pets: [
     { id:"pet-bath",      label:"Bath Time",       desc:"Spa Day Bubbles",
       img: petBathTime,
