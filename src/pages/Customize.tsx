@@ -1383,16 +1383,6 @@ export default function Customize() {
     const q = Math.max(1, Math.min(99, qty|0));
     setItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
   };
-  // Duplicate a workspace item — adds a NEW entry to items (and the canvas).
-  const duplicateItem = (id: string) => {
-    setItems(prev => {
-      const src = prev.find(i => i.id === id);
-      if (!src) return prev;
-      const copy = { ...src, id: crypto.randomUUID(), qty: 1 };
-      return [...prev, copy];
-    });
-  };
-
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragRef = useRef<{ id: string; startX: number; startY: number; baseX: number; baseY: number } | null>(null);
@@ -1618,29 +1608,19 @@ export default function Customize() {
     const q = Math.max(1, Math.min(99, qty|0));
     setCartItems(prev => prev.map(i => i.id === id ? { ...i, qty: q } : i));
   };
-  // Quick toggle: stage/unstage a workspace item for adding to cart via the
-  // bottom "Add to Cart" button. Selection here only affects the header total
-  // and what gets committed to the cart on click — it does NOT add to the cart.
-  const [stagedIds, setStagedIds] = useState<Set<string>>(new Set());
+  // Quick toggle: add/remove a customization item to the cart by its photoUrl identity
   const cartItemForItem = (it: any) =>
     cartItems.find(ci => cartKey(ci) === cartKey(it)) ||
     cartItems.find(ci => ci.photoUrl === it.photoUrl);
-  const isItemInCart = (it: any) => stagedIds.has(it.id) || !!cartItemForItem(it);
+  const isItemInCart = (it: any) => !!cartItemForItem(it);
   const toggleItemInCart = (it: any) => {
-    const wasStaged = stagedIds.has(it.id);
-    setStagedIds(prev => {
-      const n = new Set(prev);
-      if (n.has(it.id)) n.delete(it.id); else n.add(it.id);
-      return n;
-    });
-    // Unchecking should also remove the item from the real cart if it was committed.
-    if (wasStaged) {
-      const existing = cartItemForItem(it);
-      if (existing) removeCartItem(existing.id);
+    const existing = cartItemForItem(it);
+    if (existing) {
+      removeCartItem(existing.id);
+    } else {
+      addToCart({ ...it }, it.qty || 1);
     }
   };
-
-
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
@@ -1935,10 +1915,7 @@ export default function Customize() {
     const gross = (unit + addon) * (snapshot.qty || 1);
     return Math.max(0, gross - (discountAmt || 0));
   })();
-  // Staged (selected via checkbox but not yet committed) items add to the header total.
-  const stagedItems = items.filter(it => stagedIds.has(it.id) && !cartItemForItem(it));
-  const stagedTotal = stagedItems.reduce((sum, it) => sum + itemPrice(it), 0);
-  const headerTotal = total + stagedTotal;
+  const headerTotal = total > 0 ? total : pendingUnitPrice;
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
@@ -3587,19 +3564,14 @@ export default function Customize() {
                                     display:"inline-flex", alignItems:"center",
                                     border:`1px solid ${BORDER}`, borderRadius:6, background:"#fff",
                                   }}>
-                                    <button onClick={(e) => {
-                                        e.stopPropagation();
-                                        // Remove the last duplicate of this photo (mirrors + which duplicates).
-                                        const dupIds = items.filter(x => x.photoUrl === it.photoUrl).map(x => x.id);
-                                        if (dupIds.length > 1) removeItem(dupIds[dupIds.length - 1]);
-                                      }}
-                                      disabled={items.filter(x => x.photoUrl === it.photoUrl).length <= 1} aria-label="Decrease"
+                                    <button onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty - 1); }}
+                                      disabled={qty <= 1} aria-label="Decrease"
                                       style={{ width:20, height:20, border:"none", background:"transparent",
-                                        cursor: items.filter(x => x.photoUrl === it.photoUrl).length <= 1 ? "not-allowed" : "pointer",
-                                        opacity: items.filter(x => x.photoUrl === it.photoUrl).length <= 1 ? .35 : 1, color:INK, fontSize:12, fontWeight:600,
+                                        cursor: qty <= 1 ? "not-allowed" : "pointer",
+                                        opacity: qty <= 1 ? .35 : 1, color:INK, fontSize:12, fontWeight:600,
                                         display:"flex", alignItems:"center", justifyContent:"center" }}>−</button>
                                     <span style={{ minWidth:16, textAlign:"center", fontSize:11, fontWeight:600, color:INK }}>{qty}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); duplicateItem(it.id); }}
+                                    <button onClick={(e) => { e.stopPropagation(); setItemQty(it.id, qty + 1); }}
                                       aria-label="Increase"
                                       style={{ width:20, height:20, border:"none", background:"transparent",
                                         cursor:"pointer", color:INK, fontSize:12, fontWeight:600,
@@ -4227,11 +4199,6 @@ export default function Customize() {
                                 nameColorId:  hasText ? nameColorId  : null,
                               };
                               addToCart(namedSnapshot, lineQty);
-                              // Also commit any other staged items (checkboxes) to the cart.
-                              stagedItems.forEach(si => {
-                                if (si.id !== selectedId) addToCart({ ...si }, si.qty || 1);
-                              });
-                              setStagedIds(new Set());
                               setPendingCart({ snapshot: namedSnapshot, qty: lineQty });
                               setUpsellOpen(true);
                             }} className="cz-btn-red" style={{ width:"100%", padding:"14px 0",
