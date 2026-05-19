@@ -2136,7 +2136,7 @@ export default function Customize() {
             background: isCanvas
               ? (liveCanvasFloat ? liveCanvasFrameHex : "transparent")
               : isFrameless
-                ? "transparent"
+                ? (isPrintItem ? "#FFFFFF" : "transparent")
                 // Solid frame face with subtle edge vignette (frame moulding, not gradient bg)
                 : `
                     radial-gradient(ellipse at center, ${actualWood} 60%, color-mix(in srgb, ${actualWood} 85%, black) 100%),
@@ -2144,8 +2144,8 @@ export default function Customize() {
                   `,
             padding: isCanvas
               ? (liveCanvasFloat ? 12 : 0)
-              : (isAcrylic ? 0 : (isFrameless ? 6 : woodPad + 6)),
-            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? 12 : 2)),
+              : (isAcrylic ? 0 : (isFrameless ? (isPrintItem ? bd.px : 6) : woodPad + 6)),
+            borderRadius: isCanvas ? 0 : (isAcrylic ? 2 : (isFrameless ? (isPrintItem ? 2 : 12) : 2)),
             boxShadow: isCanvas
               ? (liveCanvasFloat
                   ? "0 4px 20px rgba(0,0,0,0.35)"
@@ -2153,7 +2153,7 @@ export default function Customize() {
               : isAcrylic
                 ? "0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.10)"
                 : isFrameless
-                  ? "none"
+                  ? (isPrintItem ? "0 2px 12px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.10)" : "none")
                   : "0 0 0 1px rgba(0,0,0,.30)",
             border: isAcrylic ? "none" : undefined,
             // BUG-02: subtle polished-edge highlights on acrylic (match RoomViewPanel)
