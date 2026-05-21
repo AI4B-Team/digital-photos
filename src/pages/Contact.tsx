@@ -153,7 +153,7 @@ export default function Contact() {
 
             <div style={{ background:`linear-gradient(135deg, ${RED} 0%, #B81313 100%)`, color:"#fff", borderRadius:14, padding:20, marginBottom:14 }}>
               <Shield size={22} style={{ marginBottom:10 }}/>
-              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:15, fontWeight:800, margin:"0 0 6px" }}>Satisfaction guarantee</h3>
+              <h3 style={{ fontFamily:"'Poppins',sans-serif", fontSize:15, fontWeight:800, margin:"0 0 6px" }}>100-Day Satisfaction Guarantee</h3>
               <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:12.5, opacity:.9, margin:0, lineHeight:1.5 }}>
                 Not happy? We'll redo it free or refund you fully. No fuss.
               </p>
