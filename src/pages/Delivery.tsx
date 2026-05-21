@@ -309,7 +309,7 @@ function PortraitGrid({ portraits, onFrameClick }) {
         <div>
           <span style={{ fontSize:13, color:C.cream }}>Want a different result on any style?</span>
           <span style={{ fontSize:13, color:C.creamMuted }}> Use your Regeneration Pass (if purchased) or{" "}
-            <span style={{ color:C.gold, cursor:"pointer" }}>contact us within 30 days</span> for a free redo.
+            <span style={{ color:C.gold, cursor:"pointer" }}>contact us within 100 days</span> for a free redo.
           </span>
         </div>
       </div>
@@ -419,7 +419,7 @@ function FrameUpsellSection({ onAddToCart }) {
         {[
           [Award,    "Archival Inks",     "100-year fade resistance"],
           [Package,  "White-Glove Pack",  "Arrives ready to hang"],
-          [Truck,    "Free Shipping",     "Orders over $75"],
+          [Truck,    "Free Shipping",     "All orders, no minimum"],
           [Globe,    "Ships Worldwide",   "180+ countries"],
         ].map(([Icon,title,sub]) => (
           <div key={title} style={{ textAlign:"center", padding:"20px 16px", border:`1px solid ${C.border}`, background:C.bgCard }}>
@@ -643,7 +643,7 @@ export default function DeliveryPage() {
               </div>
               <div style={{ fontSize:12, color:C.creamMuted, lineHeight:1.6 }}>
                 We've sent your portrait to our print studio. It will be printed,
-                quality-checked, and shipped to you within 5–7 business days.
+                quality-checked, and shipped to you within 5–9 business days.
                 {prodigiOrderId && (
                   <> Tracking reference: <span style={{ color:C.gold, fontWeight:500 }}>{prodigiOrderId}</span>.</>
                 )}

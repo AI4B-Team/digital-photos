@@ -179,7 +179,7 @@ const PRODUCTS = [
       "Museum-quality paper stock",
       "Ships in premium packaging",
     ],
-    deliveryNote:"Ships in 5–7 days · Free over $75",
+    deliveryNote:"Ships in 5–9 days · Free Worldwide Shipping",
     sizes:['8"×10"','11"×14"'],
   },
   {
@@ -274,7 +274,7 @@ function TrustBadges({ compact=false }) {
   const badges = [
     [Lock,    "Secure Checkout"],
     [Shield,  "SSL Encrypted"],
-    [RefreshCw,"30-Day Guarantee"],
+    [RefreshCw,"100-Day Guarantee"],
     [Truck,   "Ships Worldwide"],
   ];
   return (
@@ -673,7 +673,7 @@ function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack, sessionI
 
             <div style={{ marginTop:14, padding:"12px 14px", background:C.successBg, border:`1px solid rgba(76,175,119,0.2)`, display:"flex", gap:10, alignItems:"center" }}>
               <RefreshCw size={12} color={C.success}/>
-              <span style={{ fontSize:12, color:C.success }}>30-day money-back guarantee</span>
+              <span style={{ fontSize:12, color:C.success }}>100-day money-back guarantee</span>
             </div>
           </div>
 

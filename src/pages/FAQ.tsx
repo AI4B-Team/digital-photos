@@ -20,7 +20,7 @@ const CATS = [
   ["AI Generation", [
     ["How does the AI work?", "We use state-of-the-art generative models to reimagine your photo in each art style."],
     ["Can I choose my style?", "Yes - choose from Royal, Renaissance, Storybook, Fantasy, Cinematic, and Minimal."],
-    ["Can I regenerate a portrait?", "Yes - you can regenerate any style for free within 14 days of purchase."],
+    ["Can I regenerate a portrait?", "Yes - you can regenerate any style for free within 100 days of purchase."],
     ["What if I don't like the result?", "Contact support and we'll regenerate it free or refund you - your choice."],
     ["Do you store my photos?", "Photos are stored privately for portrait generation and auto-deleted after 30 days."],
   ]],
@@ -31,13 +31,13 @@ const CATS = [
     ["Do you ship internationally?", "Yes - we ship worldwide. Rates and timing vary by region."],
   ]],
   ["Shipping & Delivery", [
-    ["How fast is shipping?", "US: 3-5 business days standard. International: 7-14 business days."],
+    ["How fast is shipping?", "5–9 business days standard worldwide. International orders may take 7–14 business days. VIP orders ship in 2–3 business days."],
     ["Do you offer rush shipping?", "Yes - express options are available at checkout."],
     ["How do I track my order?", "Visit /tracking and enter your email or order number for live status."],
-    ["What if my order arrives damaged?", "Email a photo to support@realart.ai within 14 days for a free replacement."],
+    ["What if my order arrives damaged?", "Email a photo to support@realart.ai within 30 days for a free replacement."],
   ]],
   ["Refunds & Support", [
-    ["What's your refund policy?", "Full refunds available within 14 days. See our Refund Policy for details."],
+    ["What's your refund policy?", "Full refunds available within 100 days. See our Refund Policy for details."],
     ["How do I contact support?", "Use the Contact Us page or email support@realart.ai. We reply within a few hours."],
     ["Do you offer gift cards?", "Yes - visit our Gift Cards page to purchase one in any amount."],
   ]],

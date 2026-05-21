@@ -301,7 +301,7 @@ export default function Styles() {
             ["70+","Templates"],
             ["6","Art Styles"],
             ["5,000+","Happy Customers"],
-            ["24–48h","Delivery"],
+            ["5–9 Days","Worldwide Delivery"],
           ].map(([n,l])=>(
             <div key={l}>
               <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:28, fontWeight:800, color:RED }}>{n}</div>

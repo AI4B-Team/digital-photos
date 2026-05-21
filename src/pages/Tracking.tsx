@@ -29,7 +29,7 @@ function statusToStep(s) {
 }
 
 const FAQ = [
-  ["How long does production take?", "Most orders ship within 3-5 business days after generation. Custom framed pieces may take 5-7 days."],
+  ["How long does production take?", "Most orders ship within 5–9 business days from order date. VIP orders ship in 2–3 business days."],
   ["When will my order ship?",       "You'll receive an email with tracking as soon as your order leaves our facility."],
   ["How do I get a tracking number?","Tracking is sent via email when your order ships. Check your spam folder if you don't see it."],
   ["My status hasn't updated, why?", "Statuses update once per day. If you haven't seen progress in 48 hours, contact support."],

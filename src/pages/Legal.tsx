@@ -52,8 +52,8 @@ const CONTENT = {
     title: "Refund Policy",
     sections: [
       ["Our Promise", "We stand behind every portrait. If you're not happy, we'll make it right - free reprint or full refund."],
-      ["Digital Portraits", "Free regeneration within 14 days. Full refund available if no portrait meets your expectations."],
-      ["Printed Products", "Damaged or misprinted items are replaced free of charge. Notify us within 14 days of delivery."],
+      ["Digital Portraits", "Free regeneration within 100 days. Full refund available if no portrait meets your expectations."],
+      ["Printed Products", "Damaged or misprinted items are replaced free of charge. Notify us within 30 days of delivery."],
       ["How To Request", "Email support@realart.ai with your order number and a brief description (and photos for damaged items)."],
       ["Stripe Disputes", "Please contact us before opening a Stripe dispute - it's almost always faster to resolve directly."],
       ["Exceptions", "We cannot refund orders where the wrong subject was uploaded or where requests violate our Acceptable Use policy."],

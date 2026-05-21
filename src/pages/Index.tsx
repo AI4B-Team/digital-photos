@@ -1891,7 +1891,7 @@ function HomePage({ onGenerate }) {
           <Truck size={13} strokeWidth={2}/> Free Worldwide Shipping
         </span>
         <span style={{ opacity:.5 }}>·</span>
-        <span>30-Day Guarantee</span>
+        <span>100-Day Guarantee</span>
         <span style={{ opacity:.5 }}>·</span>
         <span>4.9★ Rated</span>
       </div>
@@ -2017,7 +2017,7 @@ function HomePage({ onGenerate }) {
               gap:9, flexWrap:"wrap", justifyContent:"center" }}>
               <Stars n={5}/>
               <span style={{ fontSize:12, color:T.muted }}>
-                <strong style={{ color:T.cream }}>4.9★ Rated</strong> · Thousands Of Portraits Created
+                <strong style={{ color:T.cream }}>4.9★ Rated</strong> · 5,000+ Portraits Created
               </span>
             </div>
 
@@ -2433,7 +2433,7 @@ function HomePage({ onGenerate }) {
               { Icon:Droplets, title:"Archival Pigment Inks",       body:"Giclée printing with pigment-based inks that resist fading for over a century when displayed indoors — the gold standard in fine art reproduction." },
               { Icon:FileText, title:"Museum-Grade Fine Art Paper", body:"200gsm enhanced matte art paper with a velvety surface that brings exceptional depth, detail, and color to every portrait." },
               { Icon:Package,  title:"Beautifully Packaged",        body:"Ships in rigid, protective packaging with no third-party branding — just REAL ART, beautifully presented and ready to gift." },
-              { Icon:Globe,    title:"Free Global Delivery",        body:"Produced at certified fine art studios and shipped free worldwide. Every portrait arrives in 5–7 business days, ready to hang." },
+              { Icon:Globe,    title:"Free Global Delivery",        body:"Produced at certified fine art studios and shipped free worldwide. Every portrait arrives in 5–9 business days, ready to hang." },
             ].map(spec => (
               <div key={spec.title} style={{ display:"flex", gap:14, padding:"20px 22px", background:T.bg, border:`1px solid ${T.border}`, borderRadius:14 }}>
                 <div style={{ flexShrink:0, width:34, height:34, borderRadius:10, background:"rgba(230,25,25,.08)", display:"flex", alignItems:"center", justifyContent:"center" }}>
@@ -2457,7 +2457,7 @@ function HomePage({ onGenerate }) {
               <Star size={14} color="#00B67A" fill="#00B67A"/> Trustpilot Reviews
             </span>
           </div>
-          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>4.9 Stars · Thousands Of Portraits Created</h2>
+          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>4.9 Stars · 5,000+ Portraits Created</h2>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
               { q:"I ordered the Royal portrait of my golden retriever for my mom's birthday and she cried the moment she opened it. The quality blew me away — it looks like it belongs in a museum.", author:"Sarah M.", tag:"Pet Portrait" },
@@ -2489,7 +2489,7 @@ function HomePage({ onGenerate }) {
               { q:"How Does The AI Generation Work?",      a:"You upload a photo and our AI studies every detail to generate an original portrait across six art styles — in 30–60 seconds. You receive a free watermarked preview of every style before purchasing, so you only pay for what you love." },
               { q:"What Photo Works Best?",                a:"Clear, well-lit photos where the subject's face is fully visible work best. Front-facing is ideal. Avoid heavy shadows, sunglasses, or blur. Any recent smartphone photo taken in natural daylight is usually perfect." },
               { q:"What Sizes And Formats Do You Offer?",  a:"Fine Art Prints from 8×10\" to 24×36\". Framed Prints from 8×10\" to 20×24\" in 8 frame color options. Canvas Prints from 10×10\" to 24×36\". Every physical order includes a full digital download of all six portrait styles." },
-              { q:"How Long Does Shipping Take?",          a:"Physical prints are produced and shipped within 3–5 business days, typically arriving in 5–7 business days in the US. International orders may take 7–14 days. All orders include free worldwide shipping with tracking." },
+              { q:"How Long Does Shipping Take?",          a:"Physical prints ship in 5–9 business days worldwide from order date. International orders may take 7–14 days. All orders include free worldwide shipping with tracking. VIP orders ship in 2–3 business days." },
               { q:"What Is Your Happiness Guarantee?",     a:"We offer a 100-day happiness guarantee. If you're not completely satisfied for any reason — quality, damage in transit, or simply not what you expected — we'll reprint or refund in full. No questions asked." },
             ].map((item, i) => (
               <div key={i} style={{ border:`1px solid ${T.border}`, borderRadius:12, overflow:"hidden", background:T.bg }}>
