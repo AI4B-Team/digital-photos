@@ -20,7 +20,7 @@ const CATS = [
   ["AI Generation", [
     ["How does the AI work?", "We use state-of-the-art generative models to reimagine your photo in each art style."],
     ["Can I choose my style?", "Yes - choose from Royal, Renaissance, Storybook, Fantasy, Cinematic, and Minimal."],
-    ["Can I regenerate a portrait?", "Yes - you can regenerate any style for free within 14 days of purchase."],
+    ["Can I regenerate a portrait?", "Yes - you can regenerate any style for free within 100 days of purchase."],
     ["What if I don't like the result?", "Contact support and we'll regenerate it free or refund you - your choice."],
     ["Do you store my photos?", "Photos are stored privately for portrait generation and auto-deleted after 30 days."],
   ]],
