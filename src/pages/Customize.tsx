@@ -1846,7 +1846,8 @@ export default function Customize() {
     const glazeAdd = (pt === "classic-frame" || pt === "box-frame")
       ? (GLAZE_OPTIONS.find(g => g.id === (it.glazeType || "perspex"))?.add || 0)
       : 0;
-    return (sd?.price || 97) + glazeAdd;
+    const floatAdd = (pt === "canvas" && (it as any).canvasFloatFrame) ? 49 : 0;
+    return (sd?.price || 97) + glazeAdd + floatAdd;
   };
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   // Strikethrough = retail price (only shown when discount is active)
