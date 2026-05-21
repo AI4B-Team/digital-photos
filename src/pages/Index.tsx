@@ -2433,7 +2433,7 @@ function HomePage({ onGenerate }) {
               { Icon:Droplets, title:"Archival Pigment Inks",       body:"Giclée printing with pigment-based inks that resist fading for over a century when displayed indoors — the gold standard in fine art reproduction." },
               { Icon:FileText, title:"Museum-Grade Fine Art Paper", body:"200gsm enhanced matte art paper with a velvety surface that brings exceptional depth, detail, and color to every portrait." },
               { Icon:Package,  title:"Beautifully Packaged",        body:"Ships in rigid, protective packaging with no third-party branding — just REAL ART, beautifully presented and ready to gift." },
-              { Icon:Globe,    title:"Free Global Delivery",        body:"Produced at certified fine art studios and shipped free worldwide. Every portrait arrives in 5–7 business days, ready to hang." },
+              { Icon:Globe,    title:"Free Global Delivery",        body:"Produced at certified fine art studios and shipped free worldwide. Every portrait arrives in 5–9 business days, ready to hang." },
             ].map(spec => (
               <div key={spec.title} style={{ display:"flex", gap:14, padding:"20px 22px", background:T.bg, border:`1px solid ${T.border}`, borderRadius:14 }}>
                 <div style={{ flexShrink:0, width:34, height:34, borderRadius:10, background:"rgba(230,25,25,.08)", display:"flex", alignItems:"center", justifyContent:"center" }}>
