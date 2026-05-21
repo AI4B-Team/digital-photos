@@ -80,7 +80,7 @@ export default function Contact() {
             [Clock, "Response time", "2–4 hours"],
             [Mail, "Email support", "Mon–Fri 9am–6pm EST"],
             [MessageCircle, "Live chat", "Coming soon"],
-            [Heart, "Satisfaction", "100% guaranteed"],
+            [Heart, "100-Day Guarantee", "Satisfaction guaranteed"],
           ].map(([Icon, l, v], i)=>(
             <div key={i} style={{ background:"#fff", border:`1px solid ${BORDER}`, borderRadius:14, padding:18, textAlign:"center" }}>
               <Icon size={22} color={RED} style={{ marginBottom:8 }}/>
