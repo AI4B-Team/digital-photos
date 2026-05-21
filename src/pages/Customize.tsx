@@ -4870,7 +4870,7 @@ export default function Customize() {
                     const vipItem = {
                       id: "vip-package",
                       productType: "vip",
-                      photoUrl: pendingCart?.snapshot?.photoUrl || "",
+                      photoUrl: vipPackageThumb,
                       sku: "VIP-PACKAGE",
                       qty: 1,
                       price: 17,
