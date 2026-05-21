@@ -26,6 +26,7 @@ import roomBedroomLux   from "@/assets/rooms/lux-bedroom.jpg";
 import roomCoastal      from "@/assets/rooms/lux-coastal.jpg";
 import roomCatalog      from "@/assets/rooms/lux-catalog-clean.jpg";
 import categoryIndividualImg from "@/assets/generated-categories/category-individual.jpg";
+import vipPackageThumb from "@/assets/vip-package-thumb.jpg";
 
 // STYLED SPACES — each room carries an emotional subtitle + a
 // "recommendedFor" list of portrait style ids so the system can later
@@ -4869,7 +4870,7 @@ export default function Customize() {
                     const vipItem = {
                       id: "vip-package",
                       productType: "vip",
-                      photoUrl: pendingCart?.snapshot?.photoUrl || "",
+                      photoUrl: vipPackageThumb,
                       sku: "VIP-PACKAGE",
                       qty: 1,
                       price: 17,
