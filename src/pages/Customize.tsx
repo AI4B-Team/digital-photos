@@ -1903,6 +1903,10 @@ export default function Customize() {
   const stagedBundleAddition = Math.max(0, projectedBundleSave - bundleSave);
   const stagedPromoAddition = Math.max(0, projectedPromoSave - cartPromoSave);
   const stagedTotalAfterPromo = Math.max(0, stagedTotal - stagedPromoAddition - stagedBundleAddition);
+  const listSubtotal = cartPrintsListSubtotal
+    + cartItems.filter(it => it.productType === "vip" || it.productType === "digital")
+        .reduce((sum, it) => sum + itemListPrice(it), 0)
+    + packsSubtotal;
 
   // Live preview price for the currently-active product card (so the header TOTAL
   // pill reflects the user's selection even before they add it to the cart)
