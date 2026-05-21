@@ -3536,15 +3536,9 @@ export default function Customize() {
                           const unitPrice = itemUnitPrice(it);
                           const qty = it.qty || 1;
                           const listP = unitPrice * qty;
-                          const maxPrintPrice = printItems.length > 0
-                            ? Math.max(...printItems.map(x => itemUnitPrice(x)))
-                            : 0;
-                          const itemGetsDiscount = discountAmt > 0
-                            && it.productType !== "vip"
-                            && it.productType !== "digital"
-                            && itemUnitPrice(it) >= maxPrintPrice;
-                          const unitDisc = itemGetsDiscount ? Math.max(0, unitPrice - discountAmt) : unitPrice;
-                          const lineP = unitDisc * qty;
+                          const itemGetsDiscount = discountAmt > 0 && it.id === promoItemId;
+                          // Promo applies ONCE per order, not per unit
+                          const lineP = Math.max(0, listP - (itemGetsDiscount ? Math.min(discountAmt, unitPrice) : 0));
                           const isSel = it.id === selectedId;
                           const inCart = isItemInCart(it);
                           return (
