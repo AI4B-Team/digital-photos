@@ -179,7 +179,7 @@ const PRODUCTS = [
       "Museum-quality paper stock",
       "Ships in premium packaging",
     ],
-    deliveryNote:"Ships in 5–7 days · Free over $75",
+    deliveryNote:"Ships in 5–9 days · Free Worldwide Shipping",
     sizes:['8"×10"','11"×14"'],
   },
   {
