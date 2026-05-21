@@ -1887,15 +1887,20 @@ export default function Customize() {
   // is building before they commit it. Projects bundle savings as if they were added.
   const stagedTotal = items.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
   const stagedPrintItems = (items as any[]).filter(it => it.productType !== "vip" && it.productType !== "digital");
-  const stagedPrintsSubtotal = stagedPrintItems.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
-  const projectedDistinct = cartDistinctPhotos + stagedPrintItems.length;
+  // FIX-R01: Exclude already-committed items so checking a checkbox doesn't double-count.
+  const uncommittedStagedPrints = stagedPrintItems.filter(it => !isItemInCart(it as any));
+  const uncommittedStagedAll = (items as any[])
+    .filter(it => !isItemInCart(it))
+    .reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
+  const stagedPrintsSubtotal = uncommittedStagedPrints.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
+  const projectedDistinct = cartDistinctPhotos + uncommittedStagedPrints.length;
   const projectedBundlePct = projectedDistinct >= 3 ? 0.15 : projectedDistinct >= 2 ? 0.10 : 0;
   // Promo will land on whichever print is most-expensive in the combined cart.
   const projectedMaxPrice = Math.max(
     maxPrintPrice,
-    stagedPrintItems.length > 0 ? Math.max(...stagedPrintItems.map(it => itemUnitPrice(it))) : 0,
+    uncommittedStagedPrints.length > 0 ? Math.max(...uncommittedStagedPrints.map(it => itemUnitPrice(it))) : 0,
   );
-  const projectedPromoSave = (discountAmt > 0 && (printItems.length + stagedPrintItems.length) > 0)
+  const projectedPromoSave = (discountAmt > 0 && (printItems.length + uncommittedStagedPrints.length) > 0)
     ? Math.min(discountAmt, projectedMaxPrice) : 0;
   const projectedBundleSave = Math.round(
     Math.max(0, cartPrintsSubtotal + stagedPrintsSubtotal - projectedPromoSave) * projectedBundlePct
@@ -1903,7 +1908,7 @@ export default function Customize() {
   // Only count the *new* savings the button is responsible for (those beyond what cart already shows).
   const stagedBundleAddition = Math.max(0, projectedBundleSave - bundleSave);
   const stagedPromoAddition = Math.max(0, projectedPromoSave - cartPromoSave);
-  const stagedTotalAfterPromo = Math.max(0, stagedTotal - stagedPromoAddition - stagedBundleAddition);
+  const stagedTotalAfterPromo = Math.max(0, uncommittedStagedAll - stagedPromoAddition - stagedBundleAddition);
 
   // Promo item within the staging items[] (so YOUR ORDER preview shows the
   // $10 discount on exactly one row — the most expensive print).
@@ -1915,8 +1920,8 @@ export default function Customize() {
 
   // Unified projected total — represents the FULL order (committed + staged),
   // used by the header pill, the "Add All to Cart" button, and BNPL math so
-  // every number on the page agrees.
-  const projectedFullSubtotal = cartFullSubtotal + stagedTotal;
+  // every number on the page agrees. FIX-R01: uses uncommittedStagedAll.
+  const projectedFullSubtotal = cartFullSubtotal + uncommittedStagedAll;
   const projectedPromoCodeSave = Math.round(
     Math.max(0, projectedFullSubtotal - projectedPromoSave - projectedBundleSave) * promoPct
   );
