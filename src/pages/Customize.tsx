@@ -4639,10 +4639,9 @@ export default function Customize() {
                             // Promo applies ONCE per order — only the cart's promoItemId row
                             // shows the discounted line price.
                             const itemGetsDiscount = discountAmt > 0 && it.id === promoItemId;
-                            const unitDisc = itemGetsDiscount
-                              ? Math.max(0, unit - Math.min(discountAmt, unit) / qty)
-                              : unit;
-                            const lineP = unitDisc * qty;
+                            const lineP = itemGetsDiscount
+                              ? Math.max(0, listP - Math.min(discountAmt, listP))
+                              : listP;
                             return (
                               <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
                                 {itemGetsDiscount && lineP < listP && (
