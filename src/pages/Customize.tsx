@@ -3481,7 +3481,7 @@ export default function Customize() {
               const price = basePrice + frameAdd - cardDiscount;
               const origPrice = basePrice;
               const digitalOrig = 37;
-              const digitalPrice = Math.max(0, 37 - discountAmt);
+              const digitalPrice = 37;
 
               return (
                  <div key={card.id} style={{
