@@ -643,7 +643,7 @@ export default function DeliveryPage() {
               </div>
               <div style={{ fontSize:12, color:C.creamMuted, lineHeight:1.6 }}>
                 We've sent your portrait to our print studio. It will be printed,
-                quality-checked, and shipped to you within 5–7 business days.
+                quality-checked, and shipped to you within 5–9 business days.
                 {prodigiOrderId && (
                   <> Tracking reference: <span style={{ color:C.gold, fontWeight:500 }}>{prodigiOrderId}</span>.</>
                 )}
