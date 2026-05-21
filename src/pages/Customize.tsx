@@ -1857,35 +1857,52 @@ export default function Customize() {
   const printItems             = cartItems.filter(it => it.productType !== "vip" && it.productType !== "digital");
   const cartPrintsSubtotal     = printItems.reduce((sum, it) => sum + itemPrice(it), 0);
   const cartPrintsListSubtotal = printItems.reduce((sum, it) => sum + itemListPrice(it), 0);
-  // Bundle discount counts only physical print items
-  const cartPhotoCount = printItems.reduce((sum, it) => sum + (it.qty || 1), 0);
+  // Bundle discount tiers by DISTINCT photos in the cart (matches the "Save 10% on 2+ Portraits" copy).
+  const cartDistinctPhotos = printItems.length;
+  const cartPhotoCount = cartDistinctPhotos;
   // Full cart subtotal still includes VIP/digital for the displayed Subtotal line
   const cartFullSubtotal = cartItems.reduce((sum, it) => sum + itemPrice(it), 0);
   const packsSubtotal  = addedPacks.reduce((sum, p) => sum + p.price * p.qty, 0);
   const subtotal     = cartFullSubtotal + packsSubtotal;
-  // Staged total = sum of items[] currently being configured (pre-cart). Used so the
-  // header TOTAL pill and the unified "Add All to Cart" button reflect what the user
-  // is building before they commit it.
-  const stagedTotal = items.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
-  const stagedTotalAfterPromo = Math.max(0, stagedTotal - (discountAmt || 0));
-  const listSubtotal = cartPrintsListSubtotal
-    + cartItems.filter(it => it.productType === "vip" || it.productType === "digital")
-        .reduce((sum, it) => sum + itemListPrice(it), 0)
-    + packsSubtotal;
   // Limited-time / welcome timer discount — applied ONCE per order (not per item),
-  // against the most-expensive eligible print. VIP & digital never discounted.
-  const cartPromoSave = (() => {
-    if (discountAmt <= 0 || printItems.length === 0) return 0;
-    const maxPrice = Math.max(...printItems.map(it => itemUnitPrice(it)));
-    return Math.min(discountAmt, maxPrice);
-  })();
+  // against the FIRST most-expensive eligible print. VIP & digital never discounted.
+  const maxPrintPrice = printItems.length > 0
+    ? Math.max(...printItems.map(it => itemUnitPrice(it)))
+    : 0;
+  const promoItemId = (discountAmt > 0 && printItems.length > 0)
+    ? printItems.find(it => itemUnitPrice(it) >= maxPrintPrice)?.id
+    : undefined;
+  const cartPromoSave = promoItemId ? Math.min(discountAmt, maxPrintPrice) : 0;
   const cartPrintsAfterPromo = Math.max(0, cartPrintsSubtotal - cartPromoSave);
-  const bundlePct    = cartPhotoCount >= 3 ? 0.15 : cartPhotoCount >= 2 ? 0.10 : 0;
+  const bundlePct    = cartDistinctPhotos >= 3 ? 0.15 : cartDistinctPhotos >= 2 ? 0.10 : 0;
   const bundleSave   = Math.round(cartPrintsAfterPromo * bundlePct);
   const promoPct     = promoApplied?.pct || 0;
   const promoSave    = Math.round((subtotal - cartPromoSave - bundleSave) * promoPct);
   const discountSave = cartPromoSave;
   const total        = Math.max(0, subtotal - bundleSave - promoSave - discountSave);
+
+  // Staged total = sum of items[] currently being configured (pre-cart). Used so the
+  // header TOTAL pill and the unified "Add All to Cart" button reflect what the user
+  // is building before they commit it. Projects bundle savings as if they were added.
+  const stagedTotal = items.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
+  const stagedPrintItems = (items as any[]).filter(it => it.productType !== "vip" && it.productType !== "digital");
+  const stagedPrintsSubtotal = stagedPrintItems.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
+  const projectedDistinct = cartDistinctPhotos + stagedPrintItems.length;
+  const projectedBundlePct = projectedDistinct >= 3 ? 0.15 : projectedDistinct >= 2 ? 0.10 : 0;
+  // Promo will land on whichever print is most-expensive in the combined cart.
+  const projectedMaxPrice = Math.max(
+    maxPrintPrice,
+    stagedPrintItems.length > 0 ? Math.max(...stagedPrintItems.map(it => itemUnitPrice(it))) : 0,
+  );
+  const projectedPromoSave = (discountAmt > 0 && (printItems.length + stagedPrintItems.length) > 0)
+    ? Math.min(discountAmt, projectedMaxPrice) : 0;
+  const projectedBundleSave = Math.round(
+    Math.max(0, cartPrintsSubtotal + stagedPrintsSubtotal - projectedPromoSave) * projectedBundlePct
+  );
+  // Only count the *new* savings the button is responsible for (those beyond what cart already shows).
+  const stagedBundleAddition = Math.max(0, projectedBundleSave - bundleSave);
+  const stagedPromoAddition = Math.max(0, projectedPromoSave - cartPromoSave);
+  const stagedTotalAfterPromo = Math.max(0, stagedTotal - stagedPromoAddition - stagedBundleAddition);
 
   // Live preview price for the currently-active product card (so the header TOTAL
   // pill reflects the user's selection even before they add it to the cart)
