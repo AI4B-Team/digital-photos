@@ -274,7 +274,7 @@ function TrustBadges({ compact=false }) {
   const badges = [
     [Lock,    "Secure Checkout"],
     [Shield,  "SSL Encrypted"],
-    [RefreshCw,"30-Day Guarantee"],
+    [RefreshCw,"100-Day Guarantee"],
     [Truck,   "Ships Worldwide"],
   ];
   return (
