@@ -23,7 +23,7 @@ const NAV = [
   { divider: true },
   { id: "privacy",  label: "Privacy Policy",  sub: "How we protect your data",           icon: Shield,     to: "/privacy" },
   { id: "terms",    label: "Terms of Service",sub: "Our terms and conditions",           icon: FileText,   to: "/terms" },
-  { id: "refund",   label: "Refund Policy",   sub: "100% money-back guarantee",          icon: RotateCcw,  to: "/refund" },
+  { id: "refund",   label: "Refund Policy",   sub: "100-Day Money-Back Guarantee",       icon: RotateCcw,  to: "/refund" },
 ];
 
 const CSS = `
