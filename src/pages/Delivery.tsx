@@ -309,7 +309,7 @@ function PortraitGrid({ portraits, onFrameClick }) {
         <div>
           <span style={{ fontSize:13, color:C.cream }}>Want a different result on any style?</span>
           <span style={{ fontSize:13, color:C.creamMuted }}> Use your Regeneration Pass (if purchased) or{" "}
-            <span style={{ color:C.gold, cursor:"pointer" }}>contact us within 30 days</span> for a free redo.
+            <span style={{ color:C.gold, cursor:"pointer" }}>contact us within 100 days</span> for a free redo.
           </span>
         </div>
       </div>
