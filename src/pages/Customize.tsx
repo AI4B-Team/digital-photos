@@ -3519,9 +3519,9 @@ export default function Customize() {
                         <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:1 }}>
                           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
                             <span style={{ fontSize:13, color:MUTED, marginRight:2 }}>from</span>
-                            {discountAmt > 0 && (
+                            {discountAmt > 0 && card.id !== "digital" && (
                               <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                                ${card.id==="digital" ? digitalOrig : origPrice}
+                                ${origPrice}
                               </span>
                             )}
                             <span style={{ fontSize:15, fontWeight:800, color:RED, fontFamily:"'Poppins',sans-serif" }}>
