@@ -419,7 +419,7 @@ function FrameUpsellSection({ onAddToCart }) {
         {[
           [Award,    "Archival Inks",     "100-year fade resistance"],
           [Package,  "White-Glove Pack",  "Arrives ready to hang"],
-          [Truck,    "Free Shipping",     "Orders over $75"],
+          [Truck,    "Free Shipping",     "All orders, no minimum"],
           [Globe,    "Ships Worldwide",   "180+ countries"],
         ].map(([Icon,title,sub]) => (
           <div key={title} style={{ textAlign:"center", padding:"20px 16px", border:`1px solid ${C.border}`, background:C.bgCard }}>
