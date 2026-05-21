@@ -1846,7 +1846,8 @@ export default function Customize() {
     const glazeAdd = (pt === "classic-frame" || pt === "box-frame")
       ? (GLAZE_OPTIONS.find(g => g.id === (it.glazeType || "perspex"))?.add || 0)
       : 0;
-    return (sd?.price || 97) + glazeAdd;
+    const floatAdd = (pt === "canvas" && (it as any).canvasFloatFrame) ? 49 : 0;
+    return (sd?.price || 97) + glazeAdd + floatAdd;
   };
   const itemPrice = (it) => itemUnitPrice(it) * (it.qty || 1);
   // Strikethrough = retail price (only shown when discount is active)
@@ -1886,15 +1887,20 @@ export default function Customize() {
   // is building before they commit it. Projects bundle savings as if they were added.
   const stagedTotal = items.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
   const stagedPrintItems = (items as any[]).filter(it => it.productType !== "vip" && it.productType !== "digital");
-  const stagedPrintsSubtotal = stagedPrintItems.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
-  const projectedDistinct = cartDistinctPhotos + stagedPrintItems.length;
+  // FIX-R01: Exclude already-committed items so checking a checkbox doesn't double-count.
+  const uncommittedStagedPrints = stagedPrintItems.filter(it => !isItemInCart(it as any));
+  const uncommittedStagedAll = (items as any[])
+    .filter(it => !isItemInCart(it))
+    .reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
+  const stagedPrintsSubtotal = uncommittedStagedPrints.reduce((s, it) => s + itemUnitPrice(it) * (it.qty || 1), 0);
+  const projectedDistinct = cartDistinctPhotos + uncommittedStagedPrints.length;
   const projectedBundlePct = projectedDistinct >= 3 ? 0.15 : projectedDistinct >= 2 ? 0.10 : 0;
   // Promo will land on whichever print is most-expensive in the combined cart.
   const projectedMaxPrice = Math.max(
     maxPrintPrice,
-    stagedPrintItems.length > 0 ? Math.max(...stagedPrintItems.map(it => itemUnitPrice(it))) : 0,
+    uncommittedStagedPrints.length > 0 ? Math.max(...uncommittedStagedPrints.map(it => itemUnitPrice(it))) : 0,
   );
-  const projectedPromoSave = (discountAmt > 0 && (printItems.length + stagedPrintItems.length) > 0)
+  const projectedPromoSave = (discountAmt > 0 && (printItems.length + uncommittedStagedPrints.length) > 0)
     ? Math.min(discountAmt, projectedMaxPrice) : 0;
   const projectedBundleSave = Math.round(
     Math.max(0, cartPrintsSubtotal + stagedPrintsSubtotal - projectedPromoSave) * projectedBundlePct
@@ -1902,7 +1908,7 @@ export default function Customize() {
   // Only count the *new* savings the button is responsible for (those beyond what cart already shows).
   const stagedBundleAddition = Math.max(0, projectedBundleSave - bundleSave);
   const stagedPromoAddition = Math.max(0, projectedPromoSave - cartPromoSave);
-  const stagedTotalAfterPromo = Math.max(0, stagedTotal - stagedPromoAddition - stagedBundleAddition);
+  const stagedTotalAfterPromo = Math.max(0, uncommittedStagedAll - stagedPromoAddition - stagedBundleAddition);
 
   // Promo item within the staging items[] (so YOUR ORDER preview shows the
   // $10 discount on exactly one row — the most expensive print).
@@ -1914,8 +1920,8 @@ export default function Customize() {
 
   // Unified projected total — represents the FULL order (committed + staged),
   // used by the header pill, the "Add All to Cart" button, and BNPL math so
-  // every number on the page agrees.
-  const projectedFullSubtotal = cartFullSubtotal + stagedTotal;
+  // every number on the page agrees. FIX-R01: uses uncommittedStagedAll.
+  const projectedFullSubtotal = cartFullSubtotal + uncommittedStagedAll;
   const projectedPromoCodeSave = Math.round(
     Math.max(0, projectedFullSubtotal - projectedPromoSave - projectedBundleSave) * promoPct
   );
@@ -1962,7 +1968,10 @@ export default function Customize() {
     const unit = itemUnitPrice(snapshot);
     const addon = hasCanvasAddon && canvasFrame ? 49 : 0;
     const gross = (unit + addon) * (snapshot.qty || 1);
-    return Math.max(0, gross - (discountAmt || 0));
+    // FIX-R04: Don't double-apply the $10 promo if a committed item already claimed it.
+    const discountAlreadyUsed = cartPromoSave > 0;
+    const pendingPromoSave = discountAlreadyUsed ? 0 : Math.min(discountAmt || 0, unit + addon);
+    return Math.max(0, gross - pendingPromoSave);
   })();
   const headerTotal = projectedTotal > 0 ? projectedTotal : pendingUnitPrice;
   const totalSavings = listSubtotal - total;
@@ -3472,7 +3481,7 @@ export default function Customize() {
               const price = basePrice + frameAdd - cardDiscount;
               const origPrice = basePrice;
               const digitalOrig = 37;
-              const digitalPrice = Math.max(0, 37 - discountAmt);
+              const digitalPrice = 37;
 
               return (
                  <div key={card.id} style={{
@@ -3510,9 +3519,9 @@ export default function Customize() {
                         <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:1 }}>
                           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
                             <span style={{ fontSize:13, color:MUTED, marginRight:2 }}>from</span>
-                            {discountAmt > 0 && (
+                            {discountAmt > 0 && card.id !== "digital" && (
                               <span style={{ fontSize:11, color:MUTED, textDecoration:"line-through" }}>
-                                ${card.id==="digital" ? digitalOrig : origPrice}
+                                ${origPrice}
                               </span>
                             )}
                             <span style={{ fontSize:15, fontWeight:800, color:RED, fontFamily:"'Poppins',sans-serif" }}>
