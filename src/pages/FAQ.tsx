@@ -37,7 +37,7 @@ const CATS = [
     ["What if my order arrives damaged?", "Email a photo to support@realart.ai within 30 days for a free replacement."],
   ]],
   ["Refunds & Support", [
-    ["What's your refund policy?", "Full refunds available within 14 days. See our Refund Policy for details."],
+    ["What's your refund policy?", "Full refunds available within 100 days. See our Refund Policy for details."],
     ["How do I contact support?", "Use the Contact Us page or email support@realart.ai. We reply within a few hours."],
     ["Do you offer gift cards?", "Yes - visit our Gift Cards page to purchase one in any amount."],
   ]],
