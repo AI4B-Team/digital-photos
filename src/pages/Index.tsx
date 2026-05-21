@@ -2457,7 +2457,7 @@ function HomePage({ onGenerate }) {
               <Star size={14} color="#00B67A" fill="#00B67A"/> Trustpilot Reviews
             </span>
           </div>
-          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>4.9 Stars · Thousands Of Portraits Created</h2>
+          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>4.9 Stars · 5,000+ Portraits Created</h2>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
               { q:"I ordered the Royal portrait of my golden retriever for my mom's birthday and she cried the moment she opened it. The quality blew me away — it looks like it belongs in a museum.", author:"Sarah M.", tag:"Pet Portrait" },
