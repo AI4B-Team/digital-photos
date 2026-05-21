@@ -2017,7 +2017,7 @@ function HomePage({ onGenerate }) {
               gap:9, flexWrap:"wrap", justifyContent:"center" }}>
               <Stars n={5}/>
               <span style={{ fontSize:12, color:T.muted }}>
-                <strong style={{ color:T.cream }}>4.9★ Rated</strong> · Thousands Of Portraits Created
+                <strong style={{ color:T.cream }}>4.9★ Rated</strong> · 5,000+ Portraits Created
               </span>
             </div>
 
