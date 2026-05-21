@@ -673,7 +673,7 @@ function CheckoutScreen({ product, bumps, setBumps, onComplete, onBack, sessionI
 
             <div style={{ marginTop:14, padding:"12px 14px", background:C.successBg, border:`1px solid rgba(76,175,119,0.2)`, display:"flex", gap:10, alignItems:"center" }}>
               <RefreshCw size={12} color={C.success}/>
-              <span style={{ fontSize:12, color:C.success }}>30-day money-back guarantee</span>
+              <span style={{ fontSize:12, color:C.success }}>100-day money-back guarantee</span>
             </div>
           </div>
 
