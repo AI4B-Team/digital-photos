@@ -4692,7 +4692,7 @@ export default function Customize() {
               )}
               {bundleSave > 0 && (
                 <div style={{ display:"flex", justifyContent:"space-between", fontSize:12.5, color:"#16a34a", marginBottom:4, fontWeight:600 }}>
-                  <span>Bundle Discount ({Math.round(bundlePct * 100)}% off {cartPhotoCount}+ prints)</span>
+                  <span>Bundle Discount ({Math.round(bundlePct * 100)}% off {cartPhotoCount}+ photos)</span>
                   <span>−${bundleSave}</span>
                 </div>
               )}
