@@ -1903,6 +1903,27 @@ export default function Customize() {
   const stagedBundleAddition = Math.max(0, projectedBundleSave - bundleSave);
   const stagedPromoAddition = Math.max(0, projectedPromoSave - cartPromoSave);
   const stagedTotalAfterPromo = Math.max(0, stagedTotal - stagedPromoAddition - stagedBundleAddition);
+
+  // Promo item within the staging items[] (so YOUR ORDER preview shows the
+  // $10 discount on exactly one row — the most expensive print).
+  const stagedMaxPrice = stagedPrintItems.length > 0
+    ? Math.max(...stagedPrintItems.map(it => itemUnitPrice(it))) : 0;
+  const stagedPromoItemId = (discountAmt > 0 && stagedPrintItems.length > 0)
+    ? stagedPrintItems.find(it => itemUnitPrice(it) >= stagedMaxPrice)?.id
+    : undefined;
+
+  // Unified projected total — represents the FULL order (committed + staged),
+  // used by the header pill, the "Add All to Cart" button, and BNPL math so
+  // every number on the page agrees.
+  const projectedFullSubtotal = cartFullSubtotal + stagedTotal;
+  const projectedPromoCodeSave = Math.round(
+    Math.max(0, projectedFullSubtotal - projectedPromoSave - projectedBundleSave) * promoPct
+  );
+  const projectedTotal = Math.max(
+    0,
+    projectedFullSubtotal - projectedBundleSave - projectedPromoSave - projectedPromoCodeSave,
+  );
+
   const listSubtotal = cartPrintsListSubtotal
     + cartItems.filter(it => it.productType === "vip" || it.productType === "digital")
         .reduce((sum, it) => sum + itemListPrice(it), 0)
@@ -1943,7 +1964,7 @@ export default function Customize() {
     const gross = (unit + addon) * (snapshot.qty || 1);
     return Math.max(0, gross - (discountAmt || 0));
   })();
-  const headerTotal = total > 0 ? total : (stagedTotalAfterPromo > 0 ? stagedTotalAfterPromo : pendingUnitPrice);
+  const headerTotal = projectedTotal > 0 ? projectedTotal : pendingUnitPrice;
   const totalSavings = listSubtotal - total;
   const savingsPct   = listSubtotal > 0 ? Math.round((totalSavings / listSubtotal) * 100) : 0;
   const lowResCount  = items.filter(i => i.lowRes).length;
@@ -2727,6 +2748,8 @@ export default function Customize() {
   const addAllToCart = async () => {
     if (!items.length) return;
     for (const it of items) {
+      // BUG-01: don't re-add items that are already in the cart — that creates duplicates.
+      if (isItemInCart(it)) continue;
       let finalPhotoUrl = (it as any).photoUrl;
       // Only the currently-selected portrait carries the live name fields.
       if (it.id === selectedId) {
@@ -3536,7 +3559,7 @@ export default function Customize() {
                           const unitPrice = itemUnitPrice(it);
                           const qty = it.qty || 1;
                           const listP = unitPrice * qty;
-                          const itemGetsDiscount = discountAmt > 0 && it.id === promoItemId;
+                          const itemGetsDiscount = discountAmt > 0 && it.id === stagedPromoItemId;
                           // Promo applies ONCE per order, not per unit
                           const lineP = Math.max(0, listP - (itemGetsDiscount ? Math.min(discountAmt, unitPrice) : 0));
                           const isSel = it.id === selectedId;
@@ -3821,14 +3844,25 @@ export default function Customize() {
                                 </div>
                                 <div style={{ fontSize:11.5, fontWeight:700, color:INK, whiteSpace:"nowrap" }}>{sz.dim}</div>
                                 <div style={{ fontSize:10, color:MUTED, marginTop:1, whiteSpace:"nowrap" }}>{sz.label}</div>
-                                {discountAmt > 0 && (
-                                  <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
-                                    ${sz.price}
-                                  </div>
-                                )}
-                                <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>
-                                  ${Math.max(0, sz.price - discountAmt)}
-                                </div>
+                                {(() => {
+                                  // Only the size that would actually receive the $10 promo
+                                  // shows a strikethrough — the promo applies once per order
+                                  // to the most-expensive print.
+                                  const qualifies = discountAmt > 0
+                                    && sz.price >= Math.max(stagedMaxPrice, maxPrintPrice, 0);
+                                  return (
+                                    <>
+                                      {qualifies && (
+                                        <div style={{ fontSize:10, color:MUTED, textDecoration:"line-through", marginTop:4 }}>
+                                          ${sz.price}
+                                        </div>
+                                      )}
+                                      <div style={{ fontSize:12.5, fontWeight:800, color:RED }}>
+                                        ${qualifies ? Math.max(0, sz.price - discountAmt) : sz.price}
+                                      </div>
+                                    </>
+                                  );
+                                })()}
                               </button>
                             );})}
                           </div>
@@ -4282,7 +4316,7 @@ export default function Customize() {
                         };
                         const lineQty = selected.qty || 1;
                         const linePrice = Math.max(0, itemUnitPrice(snapshot) - discountAmt) * lineQty;
-                        const allItemsTotal = stagedTotalAfterPromo;
+                        const allItemsTotal = projectedTotal;
                         const isMulti = items.length > 1;
                         const btnLabel = isMulti
                           ? `Add All ${items.length} To Cart`
@@ -4316,7 +4350,7 @@ export default function Customize() {
                         border:`1px solid ${BORDER}`, borderRadius:10, background:"#FAFAF7",
                       }}>
                         <div style={{ fontSize:11.5, color:INK, fontWeight:600, marginBottom:8, textAlign:"center" }}>
-                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(headerTotal/4).toFixed(2)}</span>
+                          Or 4 Interest-Free Payments Of <span className="cz-serif" style={{ fontWeight:700 }}>${(projectedTotal/4).toFixed(2)}</span>
                         </div>
                         <div style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0, 1fr))", alignItems:"center", gap:5 }}>
                           {[
@@ -4602,15 +4636,12 @@ export default function Customize() {
                           {(() => {
                             const qty = it.qty || 1;
                             const listP = unit * qty;
-                            const maxPrintPrice = printItems.length > 0
-                              ? Math.max(...printItems.map(x => itemUnitPrice(x)))
-                              : 0;
-                            const itemGetsDiscount = discountAmt > 0
-                              && it.productType !== "vip"
-                              && it.productType !== "digital"
-                              && unit >= maxPrintPrice;
-                            const unitDisc = itemGetsDiscount ? Math.max(0, unit - discountAmt) : unit;
-                            const lineP = unitDisc * qty;
+                            // Promo applies ONCE per order — only the cart's promoItemId row
+                            // shows the discounted line price.
+                            const itemGetsDiscount = discountAmt > 0 && it.id === promoItemId;
+                            const lineP = itemGetsDiscount
+                              ? Math.max(0, listP - Math.min(discountAmt, listP))
+                              : listP;
                             return (
                               <div style={{ display:"flex", alignItems:"baseline", gap:5 }}>
                                 {itemGetsDiscount && lineP < listP && (
