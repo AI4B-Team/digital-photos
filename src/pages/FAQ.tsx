@@ -34,7 +34,7 @@ const CATS = [
     ["How fast is shipping?", "5–9 business days standard worldwide. International orders may take 7–14 business days. VIP orders ship in 2–3 business days."],
     ["Do you offer rush shipping?", "Yes - express options are available at checkout."],
     ["How do I track my order?", "Visit /tracking and enter your email or order number for live status."],
-    ["What if my order arrives damaged?", "Email a photo to support@realart.ai within 14 days for a free replacement."],
+    ["What if my order arrives damaged?", "Email a photo to support@realart.ai within 30 days for a free replacement."],
   ]],
   ["Refunds & Support", [
     ["What's your refund policy?", "Full refunds available within 14 days. See our Refund Policy for details."],
