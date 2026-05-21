@@ -4282,7 +4282,7 @@ export default function Customize() {
                         };
                         const lineQty = selected.qty || 1;
                         const linePrice = Math.max(0, itemUnitPrice(snapshot) - discountAmt) * lineQty;
-                        const allItemsTotal = Math.max(0, stagedTotal - (discountAmt || 0));
+                        const allItemsTotal = stagedTotalAfterPromo;
                         const isMulti = items.length > 1;
                         const btnLabel = isMulti
                           ? `Add All ${items.length} To Cart`
