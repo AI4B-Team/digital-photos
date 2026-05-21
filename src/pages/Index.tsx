@@ -1891,7 +1891,7 @@ function HomePage({ onGenerate }) {
           <Truck size={13} strokeWidth={2}/> Free Worldwide Shipping
         </span>
         <span style={{ opacity:.5 }}>·</span>
-        <span>30-Day Guarantee</span>
+        <span>100-Day Guarantee</span>
         <span style={{ opacity:.5 }}>·</span>
         <span>4.9★ Rated</span>
       </div>
