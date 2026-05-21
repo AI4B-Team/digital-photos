@@ -1968,7 +1968,10 @@ export default function Customize() {
     const unit = itemUnitPrice(snapshot);
     const addon = hasCanvasAddon && canvasFrame ? 49 : 0;
     const gross = (unit + addon) * (snapshot.qty || 1);
-    return Math.max(0, gross - (discountAmt || 0));
+    // FIX-R04: Don't double-apply the $10 promo if a committed item already claimed it.
+    const discountAlreadyUsed = cartPromoSave > 0;
+    const pendingPromoSave = discountAlreadyUsed ? 0 : Math.min(discountAmt || 0, unit + addon);
+    return Math.max(0, gross - pendingPromoSave);
   })();
   const headerTotal = projectedTotal > 0 ? projectedTotal : pendingUnitPrice;
   const totalSavings = listSubtotal - total;
