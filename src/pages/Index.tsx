@@ -3426,6 +3426,12 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
 
 function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [], confirming, onZoom }) {
   const photos = (originalPhotos || []).filter(Boolean).slice(0, 2);
+  const slides: string[] = Array.isArray(card.slides) && card.slides.length > 0 ? card.slides : [];
+  const hasSlides = slides.length > 1;
+  const [slideIdx, setSlideIdx] = useState(0);
+  const currentImg = hasSlides ? slides[slideIdx % slides.length] : (slides[0] || card.img);
+  const goPrev = (e) => { e.stopPropagation(); setSlideIdx(i => (i - 1 + slides.length) % slides.length); };
+  const goNext = (e) => { e.stopPropagation(); setSlideIdx(i => (i + 1) % slides.length); };
   return (
     <div onClick={onSelect}
       style={{
@@ -3439,8 +3445,52 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [],
         boxShadow: isSelected ? "0 8px 24px rgba(0,0,0,0.3)" : "none",
       }}>
       <div style={{ position:"relative", aspectRatio:"4/5", overflow:"hidden", background:"#111" }}>
-        <img src={card.img} alt={card.label}
+        <img src={currentImg} alt={card.label} loading="lazy"
           style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+
+        {hasSlides && (
+          <>
+            <button
+              onClick={goPrev}
+              aria-label="Previous photo"
+              style={{ position:"absolute", left:8, top:"50%", transform:"translateY(-50%)",
+                width:34, height:34, borderRadius:"50%",
+                background:"rgba(0,0,0,0.55)", border:"1px solid rgba(255,255,255,0.18)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                cursor:"pointer", color:"#fff", padding:0,
+                backdropFilter:"blur(4px)", transition:"background .15s" }}
+              onMouseOver={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.8)"; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.55)"; }}>
+              <ChevronLeft size={18}/>
+            </button>
+            <button
+              onClick={goNext}
+              aria-label="Next photo"
+              style={{ position:"absolute", right:8, top:"50%", transform:"translateY(-50%)",
+                width:34, height:34, borderRadius:"50%",
+                background:"rgba(0,0,0,0.55)", border:"1px solid rgba(255,255,255,0.18)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                cursor:"pointer", color:"#fff", padding:0,
+                backdropFilter:"blur(4px)", transition:"background .15s" }}
+              onMouseOver={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.8)"; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.55)"; }}>
+              <ChevronRight size={18}/>
+            </button>
+            <div style={{
+              position:"absolute", bottom:10, left:"50%", transform:"translateX(-50%)",
+              display:"flex", gap:5, padding:"5px 8px", borderRadius:999,
+              background:"rgba(0,0,0,0.45)", backdropFilter:"blur(4px)",
+            }}>
+              {slides.map((_, i) => (
+                <span key={i} style={{
+                  width: i === slideIdx ? 16 : 6, height:6, borderRadius:3,
+                  background: i === slideIdx ? "#fff" : "rgba(255,255,255,0.5)",
+                  transition:"all .2s",
+                }}/>
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Small original photo thumbnails (Mixtiles-style) */}
         {photos.length > 0 && (
