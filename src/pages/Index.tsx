@@ -152,6 +152,17 @@ import petKitchenTails from "@/assets/pet-kitchen-tails.jpg";
 import petNineToFive from "@/assets/pet-nine-to-five.jpg";
 import petCleanFluffy from "@/assets/pet-clean-fluffy.jpg";
 import petSports from "@/assets/pet-sports.jpg";
+
+// Per-scene slide images (4 per card) for the first 9 pet cards
+const PET_SLIDE_FILES = import.meta.glob("@/assets/templates/pets/slides/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
+const petSlides = (key: string): string[] => {
+  const out: string[] = [];
+  for (let i = 1; i <= 4; i++) {
+    const match = Object.entries(PET_SLIDE_FILES).find(([p]) => p.endsWith(`/${key}-${i}.jpg`));
+    if (match) out.push(match[1]);
+  }
+  return out;
+};
 import portraitBabies from "@/assets/portrait-babies.jpg";
 import portraitBabiesRoyal from "@/assets/portrait-babies-royal.jpg";
 import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
@@ -433,31 +444,31 @@ const STYLES = [
 export const TEMPLATES: Record<string, { id:string; label:string; desc:string; img:string; prompt:string }[]> = {
   pets: [
     { id:"pet-bath",      label:"Bath Time",       desc:"Spa Day Bubbles",
-      img: petBathTime,
+      img: petBathTime, slides: petSlides("pet-bath"),
       prompt:"taking a bubble bath in a white tile bathroom, with a fluffy white towel wrapped on its head like a turban, two cucumber slices over its eyes spa-style, surrounded by foamy bubbles and a yellow rubber duck floating nearby, soft warm bathroom lighting, cozy hyper-realistic photograph" },
     { id:"pet-sleepy",    label:"Sleepy",          desc:"Tucked-In Cozy",
-      img: petSleepy,
+      img: petSleepy, slides: petSlides("pet-sleepy"),
       prompt:"tucked into a bed with white blankets and a pillow under its head, cuddling a small brown teddy bear, soft warm bedroom lighting, dreamy sleepy mood, cozy hyper-realistic pet photograph" },
     { id:"pet-society",   label:"High Society",    desc:"Aristocrat Oil Painting",
-      img: petHighSociety,
+      img: petHighSociety, slides: petSlides("pet-society"),
       prompt:"as a regal 18th century aristocrat in a classical oil painting. The reference image shows FOUR framed scenes in a 2x2 layout — pick one of the four scenes and recreate it exactly with the subject's identity. TOP-LEFT: sitting in a red velvet armchair in a Victorian library reading an old leather book, brass lamp on side table, bookshelves behind. TOP-RIGHT: sitting upright on a green velvet draped table beside a glowing fireplace with lit candlesticks. BOTTOM-LEFT: leaning over an antique chess board mid-game in a study with deep green curtain backdrop and bookshelves. BOTTOM-RIGHT: wearing an embroidered burgundy velvet coat with white lace cravat, posed formally in front of a deep burgundy curtain holding a quill pen at a writing desk. Warm earthy color palette, classical oil painting with painterly brushstrokes, gallery-quality fine art portrait. Output ONLY the painting content (no frame, no wall, no mockup chrome)." },
     { id:"pet-guilty",    label:"Guilty As Charged", desc:"Caught Red-Pawed",
-      img: petGuilty,
+      img: petGuilty, slides: petSlides("pet-guilty"),
       prompt:"standing guilty next to an overturned kitchen trash can with chewed paper and food scraps spilled around, ears back and big innocent guilty eyes, soft natural daylight in a clean kitchen, humorous hyper-realistic pet photograph" },
     { id:"pet-extreme",   label:"Extreme Sports",  desc:"Skydive Adventure",
-      img: petExtremeSports,
+      img: petExtremeSports, slides: petSlides("pet-extreme"),
       prompt:"skydiving through bright blue sky and white clouds wearing aviator goggles and a parachute harness with a tiny GoPro camera, paws spread wide, action sports hyper-realistic photograph" },
     { id:"pet-kitchen",   label:"Kitchen Tails",   desc:"Master Chef",
-      img: petKitchenTails,
+      img: petKitchenTails, slides: petSlides("pet-kitchen"),
       prompt:"as a master chef wearing a tall white chef hat and red bandana, standing at a rustic wooden kitchen counter with flour, dough and baking ingredients, warm kitchen lighting, humorous hyper-realistic pet photograph" },
     { id:"pet-office",    label:"Nine To Five",    desc:"Office Life",
-      img: petNineToFive,
+      img: petNineToFive, slides: petSlides("pet-office"),
       prompt:"as a serious office worker wearing reading glasses, sitting at a modern desk between two laptops with a coffee mug, colorful sticky notes covering the wall behind, corporate office lighting, humorous hyper-realistic pet photograph" },
     { id:"pet-laundry",   label:"Clean & Fluffy",  desc:"Laundry Day",
-      img: petCleanFluffy,
+      img: petCleanFluffy, slides: petSlides("pet-laundry"),
       prompt:"sitting inside a wicker laundry basket full of fluffy white folded towels, wearing a blue shower cap, with soft soap suds, bright clean laundry room background, cute hyper-realistic pet photograph" },
      { id:"pet-sports",    label:"Sports Star",     desc:"Stadium MVP",
-       img: petSports,
+       img: petSports, slides: petSlides("pet-sports"),
        prompt:"dressed as an American football star wearing helmet and team jersey, running with a football across a stadium field under bright stadium lights, blurred crowd in the background, dynamic hyper-realistic sports photograph" },
      { id:"pet-popart-splash", label:"Pop Art Splash", desc:"Vibrant Paint Drips",
        img: new URL("@/assets/templates/pets/pet-popart-cat-orange.jpg", import.meta.url).href,
@@ -3415,6 +3426,12 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
 
 function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [], confirming, onZoom }) {
   const photos = (originalPhotos || []).filter(Boolean).slice(0, 2);
+  const slides: string[] = Array.isArray(card.slides) && card.slides.length > 0 ? card.slides : [];
+  const hasSlides = slides.length > 1;
+  const [slideIdx, setSlideIdx] = useState(0);
+  const currentImg = hasSlides ? slides[slideIdx % slides.length] : (slides[0] || card.img);
+  const goPrev = (e) => { e.stopPropagation(); setSlideIdx(i => (i - 1 + slides.length) % slides.length); };
+  const goNext = (e) => { e.stopPropagation(); setSlideIdx(i => (i + 1) % slides.length); };
   return (
     <div onClick={onSelect}
       style={{
@@ -3428,8 +3445,52 @@ function StyleCard({ card, isSelected, onSelect, onConfirm, originalPhotos = [],
         boxShadow: isSelected ? "0 8px 24px rgba(0,0,0,0.3)" : "none",
       }}>
       <div style={{ position:"relative", aspectRatio:"4/5", overflow:"hidden", background:"#111" }}>
-        <img src={card.img} alt={card.label}
+        <img src={currentImg} alt={card.label} loading="lazy"
           style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+
+        {hasSlides && (
+          <>
+            <button
+              onClick={goPrev}
+              aria-label="Previous photo"
+              style={{ position:"absolute", left:8, top:"50%", transform:"translateY(-50%)",
+                width:34, height:34, borderRadius:"50%",
+                background:"rgba(0,0,0,0.55)", border:"1px solid rgba(255,255,255,0.18)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                cursor:"pointer", color:"#fff", padding:0,
+                backdropFilter:"blur(4px)", transition:"background .15s" }}
+              onMouseOver={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.8)"; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.55)"; }}>
+              <ChevronLeft size={18}/>
+            </button>
+            <button
+              onClick={goNext}
+              aria-label="Next photo"
+              style={{ position:"absolute", right:8, top:"50%", transform:"translateY(-50%)",
+                width:34, height:34, borderRadius:"50%",
+                background:"rgba(0,0,0,0.55)", border:"1px solid rgba(255,255,255,0.18)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                cursor:"pointer", color:"#fff", padding:0,
+                backdropFilter:"blur(4px)", transition:"background .15s" }}
+              onMouseOver={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.8)"; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.55)"; }}>
+              <ChevronRight size={18}/>
+            </button>
+            <div style={{
+              position:"absolute", bottom:10, left:"50%", transform:"translateX(-50%)",
+              display:"flex", gap:5, padding:"5px 8px", borderRadius:999,
+              background:"rgba(0,0,0,0.45)", backdropFilter:"blur(4px)",
+            }}>
+              {slides.map((_, i) => (
+                <span key={i} style={{
+                  width: i === slideIdx ? 16 : 6, height:6, borderRadius:3,
+                  background: i === slideIdx ? "#fff" : "rgba(255,255,255,0.5)",
+                  transition:"all .2s",
+                }}/>
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Small original photo thumbnails (Mixtiles-style) */}
         {photos.length > 0 && (
