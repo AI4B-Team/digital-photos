@@ -152,6 +152,17 @@ import petKitchenTails from "@/assets/pet-kitchen-tails.jpg";
 import petNineToFive from "@/assets/pet-nine-to-five.jpg";
 import petCleanFluffy from "@/assets/pet-clean-fluffy.jpg";
 import petSports from "@/assets/pet-sports.jpg";
+
+// Per-scene slide images (4 per card) for the first 9 pet cards
+const PET_SLIDE_FILES = import.meta.glob("@/assets/templates/pets/slides/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
+const petSlides = (key: string): string[] => {
+  const out: string[] = [];
+  for (let i = 1; i <= 4; i++) {
+    const match = Object.entries(PET_SLIDE_FILES).find(([p]) => p.endsWith(`/${key}-${i}.jpg`));
+    if (match) out.push(match[1]);
+  }
+  return out;
+};
 import portraitBabies from "@/assets/portrait-babies.jpg";
 import portraitBabiesRoyal from "@/assets/portrait-babies-royal.jpg";
 import portraitBabiesRen from "@/assets/portrait-babies-renaissance.jpg";
