@@ -154,7 +154,7 @@ import petCleanFluffy from "@/assets/pet-clean-fluffy.jpg";
 import petSports from "@/assets/pet-sports.jpg";
 
 // Per-scene slide images (4 per card) for the first 9 pet cards
-const PET_SLIDE_FILES = import.meta.glob("@/assets/templates/pets/slides/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
+const PET_SLIDE_FILES = import.meta.glob("../assets/templates/pets/slides/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
 const petSlides = (key: string): string[] => {
   const out: string[] = [];
   for (let i = 1; i <= 4; i++) {
