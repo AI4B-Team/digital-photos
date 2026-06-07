@@ -3057,6 +3057,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
       desc: t.desc,
       img: subType ? (FEATURED_SCENE_IMAGES[subType]?.[index] || t.img) : t.img,
       prompt: t.prompt,
+      slides: (t as any).slides,
     }));
 
   // Show Premium Couple section only when "couple" sub-type is selected (or couples category)
