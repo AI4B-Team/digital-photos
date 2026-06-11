@@ -3274,7 +3274,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
             return (
               <StyleCard key={`s-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                 confirming={confirming}
-                onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
+                onZoom={(src) => setZoomImg({ src, label: card.label, desc: card.desc })}
                 onSelect={() => setSelected(isSelected ? null : { type:"style", id:card.id })}
                 onConfirm={handleConfirm}/>
             );
@@ -3296,7 +3296,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                 return (
                   <StyleCard key={`t-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                     confirming={confirming}
-                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
+                    onZoom={(src) => setZoomImg({ src, label: card.label, desc: card.desc })}
                     onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
                     onConfirm={handleConfirm}/>
                 );
@@ -3324,7 +3324,7 @@ function StyleSelectPage({ session, onConfirm, onBack }) {
                 return (
                   <StyleCard key={`pc-${card.id}`} card={card} isSelected={isSelected} originalPhotos={allPhotos}
                     confirming={confirming}
-                    onZoom={() => setZoomImg({ src: card.img, label: card.label, desc: card.desc })}
+                    onZoom={(src) => setZoomImg({ src, label: card.label, desc: card.desc })}
                     onSelect={() => setSelected(isSelected ? null : { type:"template", id:card.id })}
                     onConfirm={handleConfirm}/>
                 );
