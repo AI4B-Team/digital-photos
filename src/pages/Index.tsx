@@ -1581,11 +1581,10 @@ function Stars({ n = 5, size = 14 }) {
   return (
     <span style={{ display:"inline-flex", gap:2 }}>
       {Array(n).fill(0).map((_,i) => (
-        <span key={i} style={{ width:size, height:size, background:"#00B67A", display:"inline-flex", alignItems:"center", justifyContent:"center" }}>
-          <svg viewBox="0 0 12 12" width={size*.58} height={size*.58} fill="#fff"><path d="M6 1l1.5 3 3.5.5-2.5 2.5.6 3.5L6 9 2.9 10.5l.6-3.5L1 4.5 4.5 4z"/></svg>
-        </span>
+        <svg key={i} viewBox="0 0 24 24" width={size} height={size} fill="#FFD600"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       ))}
     </span>
+
   );
 }
 
