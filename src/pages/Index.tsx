@@ -2465,7 +2465,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:14 }}>
             <span style={{ display:"inline-flex", alignItems:"center", gap:6, fontSize:11, color:T.muted, fontFamily:"'Poppins',sans-serif", fontWeight:600, letterSpacing:".18em", textTransform:"uppercase" }}>
-              <Star size={14} color="#00B67A" fill="#00B67A"/> Trustpilot Reviews
+              <Star size={14} color="#FFD600" fill="#FFD600"/> Customer Reviews
             </span>
           </div>
           <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>4.9 Stars · 5,000+ Portraits Created</h2>
@@ -2477,7 +2477,7 @@ function HomePage({ onGenerate }) {
             ].map((rev, i) => (
               <div key={i} style={{ border:`1px solid ${T.border}`, borderRadius:16, padding:"24px 22px", background:T.bg }}>
                 <div style={{ marginBottom:12 }}>
-                  {Array(5).fill(0).map((_,j)=>(<span key={j} style={{ color:"#00B67A", fontSize:15 }}>★</span>))}
+                  {Array(5).fill(0).map((_,j)=>(<span key={j} style={{ color:"#FFD600", fontSize:15 }}>★</span>))}
                 </div>
                 <p style={{ fontSize:13.5, color:T.cream, lineHeight:1.7, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>"{rev.q}"</p>
                 <div style={{ fontSize:12, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
