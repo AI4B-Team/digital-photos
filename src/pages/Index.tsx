@@ -2477,7 +2477,7 @@ function HomePage({ onGenerate }) {
             ].map((rev, i) => (
               <div key={i} style={{ border:`1px solid ${T.border}`, borderRadius:16, padding:"24px 22px", background:T.bg }}>
                 <div style={{ marginBottom:12 }}>
-                  {Array(5).fill(0).map((_,j)=>(<span key={j} style={{ color:"#00B67A", fontSize:15 }}>★</span>))}
+                  {Array(5).fill(0).map((_,j)=>(<span key={j} style={{ color:"#FFD600", fontSize:15 }}>★</span>))}
                 </div>
                 <p style={{ fontSize:13.5, color:T.cream, lineHeight:1.7, marginBottom:14, fontFamily:"'Poppins',sans-serif" }}>"{rev.q}"</p>
                 <div style={{ fontSize:12, color:T.muted, fontFamily:"'Poppins',sans-serif" }}>
