@@ -2465,7 +2465,7 @@ function HomePage({ onGenerate }) {
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:14 }}>
             <span style={{ display:"inline-flex", alignItems:"center", gap:6, fontSize:11, color:T.muted, fontFamily:"'Poppins',sans-serif", fontWeight:600, letterSpacing:".18em", textTransform:"uppercase" }}>
-              <Star size={14} color="#00B67A" fill="#00B67A"/> Trustpilot Reviews
+              <Star size={14} color="#FFD600" fill="#FFD600"/> Customer Reviews
             </span>
           </div>
           <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>4.9 Stars · 5,000+ Portraits Created</h2>
