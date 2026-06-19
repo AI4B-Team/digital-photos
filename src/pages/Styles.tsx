@@ -300,7 +300,7 @@ export default function Styles() {
           {[
             ["70+","Templates"],
             ["6","Art Styles"],
-            ["5,000+","Happy Customers"],
+            ["100-Day","Happiness Guarantee"],
             ["5–9 Days","Worldwide Delivery"],
           ].map(([n,l])=>(
             <div key={l}>

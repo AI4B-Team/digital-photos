@@ -1902,8 +1902,6 @@ function HomePage({ onGenerate }) {
         </span>
         <span style={{ opacity:.5 }}>·</span>
         <span>100-Day Guarantee</span>
-        <span style={{ opacity:.5 }}>·</span>
-        <span>4.9★ Rated</span>
       </div>
 
       {/* ── NAV ── */}
@@ -2023,13 +2021,6 @@ function HomePage({ onGenerate }) {
 
           {/* FULL-WIDTH HEADLINE + SUBHEADLINE */}
           <div style={{ display:"flex", flexDirection:"column", gap:14, textAlign:"center", alignItems:"center" }}>
-            <div className="fu" style={{ animationDelay:".05s", display:"flex", alignItems:"center",
-              gap:9, flexWrap:"wrap", justifyContent:"center" }}>
-              <Stars n={5}/>
-              <span style={{ fontSize:12, color:T.muted }}>
-                <strong style={{ color:T.cream }}>4.9★ Rated</strong> · 5,000+ Portraits Created
-              </span>
-            </div>
 
             <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Poppins',sans-serif",
               fontWeight:700, lineHeight:1.05, marginBottom:0, color:T.cream,
@@ -2467,7 +2458,7 @@ function HomePage({ onGenerate }) {
               <Star size={14} color="#FFD600" fill="#FFD600"/> Customer Reviews
             </span>
           </div>
-          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>4.9 Stars · 5,000+ Portraits Created</h2>
+          <h2 style={{ fontSize:36, fontWeight:800, color:T.cream, textAlign:"center", lineHeight:1.15, marginBottom:48, fontFamily:"'Poppins',sans-serif" }}>Customer Reviews</h2>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:18 }} className="pg3">
             {[
               { q:"I ordered the Royal portrait of my golden retriever for my mom's birthday and she cried the moment she opened it. The quality blew me away — it looks like it belongs in a museum.", author:"Sarah M.", tag:"Pet Portrait" },
@@ -2524,7 +2515,7 @@ function HomePage({ onGenerate }) {
         <button onClick={scrollToHero} style={{ background:"#FFFFFF", color:T.gold, border:"none", padding:"16px 36px", borderRadius:12, fontWeight:700, fontSize:15, cursor:"pointer", fontFamily:"'Poppins',sans-serif", display:"inline-flex", alignItems:"center", gap:10, letterSpacing:".01em" }}>
           <Upload size={17}/> Upload A Photo — It's Free
         </button>
-        <p style={{ fontSize:11.5, color:"rgba(255,255,255,.85)", marginTop:18, letterSpacing:".06em", fontFamily:"'Poppins',sans-serif" }}>4.9 ★ Rated · Free Worldwide Shipping · 100-Day Guarantee</p>
+        <p style={{ fontSize:11.5, color:"rgba(255,255,255,.85)", marginTop:18, letterSpacing:".06em", fontFamily:"'Poppins',sans-serif" }}>Free Worldwide Shipping · 100-Day Guarantee</p>
       </section>
 
       {/* ■■ Expanded Footer ■■ */}

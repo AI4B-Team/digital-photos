@@ -9,12 +9,6 @@ const MUTED = "#8C8C8C";
 const BG = "#FAF8F4";
 const BORDER = "rgba(0,0,0,.08)";
 
-const STATS = [
-  ["4.9", "Average Rating"],
-  ["12+", "Reviews Shown"],
-  ["5,000+", "Total Orders"],
-  ["92%", "5-Star Reviews"],
-];
 
 const REVIEWS = [
   ["Sarah M.", "Austin, TX", 5, "I cried when I opened it. My golden retriever Bailey looks like a Renaissance noble in the canvas - my wife framed it above the fireplace.", "Canvas Print 24×36\"", "Apr 28, 2026"],
@@ -43,24 +37,11 @@ export default function Reviews() {
             ⭐ CUSTOMER REVIEWS
           </div>
           <h1 style={{ fontFamily:"'Poppins',sans-serif", fontSize:44, fontWeight:800, color:INK, margin:0, letterSpacing:"-.02em" }}>
-            Loved By 5,000+ Customers
+            Customer Reviews
           </h1>
           <div style={{ display:"flex", justifyContent:"center", gap:3, marginTop:12 }}>
             {[1,2,3,4,5].map(i=>(<Star key={i} size={20} fill="#FFD600" color="#FFD600"/>))}
           </div>
-        </div>
-
-        {/* Stats */}
-        <div style={{
-          background:"#fff", border:`1px solid ${BORDER}`, borderRadius:16, padding:"24px",
-          display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(160px,1fr))", gap:20, marginBottom:36, textAlign:"center",
-        }}>
-          {STATS.map(([n,l])=>(
-            <div key={l}>
-              <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:30, fontWeight:800, color:RED }}>{n}</div>
-              <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:11.5, color:MUTED, letterSpacing:".1em", textTransform:"uppercase", marginTop:4, fontWeight:600 }}>{l}</div>
-            </div>
-          ))}
         </div>
 
         {/* Reviews grid */}
@@ -100,7 +81,7 @@ export default function Reviews() {
           background:"linear-gradient(135deg, #1A1614 0%, #0A0A0A 100%)",
           color:"#fff", textAlign:"center",
         }}>
-          <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:28, fontWeight:800, margin:0 }}>Join Thousands Of Happy Customers</h2>
+          <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:28, fontWeight:800, margin:0 }}>Create Your Own Portrait</h2>
           <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, color:"rgba(255,255,255,.7)", marginTop:8 }}>
             Upload one photo. See six stunning portraits in seconds.
           </p>
