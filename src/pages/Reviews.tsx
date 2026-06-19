@@ -9,12 +9,6 @@ const MUTED = "#8C8C8C";
 const BG = "#FAF8F4";
 const BORDER = "rgba(0,0,0,.08)";
 
-const STATS = [
-  ["4.9", "Average Rating"],
-  ["12+", "Reviews Shown"],
-  ["5,000+", "Total Orders"],
-  ["92%", "5-Star Reviews"],
-];
 
 const REVIEWS = [
   ["Sarah M.", "Austin, TX", 5, "I cried when I opened it. My golden retriever Bailey looks like a Renaissance noble in the canvas - my wife framed it above the fireplace.", "Canvas Print 24×36\"", "Apr 28, 2026"],
