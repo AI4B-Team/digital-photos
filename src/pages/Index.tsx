@@ -1902,8 +1902,6 @@ function HomePage({ onGenerate }) {
         </span>
         <span style={{ opacity:.5 }}>·</span>
         <span>100-Day Guarantee</span>
-        <span style={{ opacity:.5 }}>·</span>
-        <span>4.9★ Rated</span>
       </div>
 
       {/* ── NAV ── */}
