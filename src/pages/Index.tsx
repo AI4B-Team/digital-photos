@@ -2021,13 +2021,6 @@ function HomePage({ onGenerate }) {
 
           {/* FULL-WIDTH HEADLINE + SUBHEADLINE */}
           <div style={{ display:"flex", flexDirection:"column", gap:14, textAlign:"center", alignItems:"center" }}>
-            <div className="fu" style={{ animationDelay:".05s", display:"flex", alignItems:"center",
-              gap:9, flexWrap:"wrap", justifyContent:"center" }}>
-              <Stars n={5}/>
-              <span style={{ fontSize:12, color:T.muted }}>
-                <strong style={{ color:T.cream }}>4.9★ Rated</strong> · 5,000+ Portraits Created
-              </span>
-            </div>
 
             <h1 className="fu" style={{ animationDelay:".07s", fontFamily:"'Poppins',sans-serif",
               fontWeight:700, lineHeight:1.05, marginBottom:0, color:T.cream,
