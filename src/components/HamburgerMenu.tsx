@@ -19,7 +19,7 @@ const NAV = [
   { id: "contact",  label: "Contact Us",      sub: "We reply within a few hours",        icon: Mail,       to: "/contact" },
   { id: "gifts",    label: "Gift Cards",      sub: "Give the perfect custom portrait",   icon: Gift,       to: "/gift-cards" },
   { divider: true },
-  { id: "reviews",  label: "Reviews",         sub: "5,000+ verified five-star reviews",  icon: Star,       to: "/reviews" },
+  { id: "reviews",  label: "Reviews",         sub: "Read what customers say",  icon: Star,       to: "/reviews" },
   { divider: true },
   { id: "privacy",  label: "Privacy Policy",  sub: "How we protect your data",           icon: Shield,     to: "/privacy" },
   { id: "terms",    label: "Terms of Service",sub: "Our terms and conditions",           icon: FileText,   to: "/terms" },
