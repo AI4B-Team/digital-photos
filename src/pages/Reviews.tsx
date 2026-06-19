@@ -81,7 +81,7 @@ export default function Reviews() {
           background:"linear-gradient(135deg, #1A1614 0%, #0A0A0A 100%)",
           color:"#fff", textAlign:"center",
         }}>
-          <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:28, fontWeight:800, margin:0 }}>Join Thousands Of Happy Customers</h2>
+          <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:28, fontWeight:800, margin:0 }}>Create Your Own Portrait</h2>
           <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:14, color:"rgba(255,255,255,.7)", marginTop:8 }}>
             Upload one photo. See six stunning portraits in seconds.
           </p>
