@@ -210,6 +210,39 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          approved: boolean
+          created_at: string
+          id: string
+          location: string | null
+          name: string
+          product: string | null
+          quote: string
+          rating: number
+        }
+        Insert: {
+          approved?: boolean
+          created_at?: string
+          id?: string
+          location?: string | null
+          name: string
+          product?: string | null
+          quote: string
+          rating: number
+        }
+        Update: {
+          approved?: boolean
+          created_at?: string
+          id?: string
+          location?: string | null
+          name?: string
+          product?: string | null
+          quote?: string
+          rating?: number
+        }
+        Relationships: []
+      }
       room_images: {
         Row: {
           regenerated_at: string
