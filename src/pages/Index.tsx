@@ -2540,15 +2540,33 @@ function HomePage({ onGenerate }) {
             </div>
           </div>
           {[
-            { title:"Create",   links:["Pet Portraits","Baby Portraits","Couples Portraits","Memorial Portraits","Gift Portraits"] },
-            { title:"Products", links:["Fine Art Prints","Framed Prints","Canvas Prints","Digital Download","Size Guide"] },
-            { title:"Help",     links:["FAQ","Shipping Info","Returns & Refunds","Contact Us","Privacy Policy"] },
+            { title:"Create",   links:[
+              { label:"Pet Portraits",      href:"/styles" },
+              { label:"Baby Portraits",     href:"/styles" },
+              { label:"Couples Portraits",  href:"/styles" },
+              { label:"Memorial Portraits", href:"/styles" },
+              { label:"Gift Cards",         href:"/gift-cards" },
+            ]},
+            { title:"Products", links:[
+              { label:"Fine Art Prints",  href:"/customize" },
+              { label:"Framed Prints",    href:"/customize" },
+              { label:"Canvas Prints",    href:"/customize" },
+              { label:"Digital Download", href:"/customize" },
+              { label:"All Styles",       href:"/styles" },
+            ]},
+            { title:"Help",     links:[
+              { label:"FAQ",                href:"/faq" },
+              { label:"Order Tracking",     href:"/tracking" },
+              { label:"Returns & Refunds",  href:"/refund" },
+              { label:"Contact Us",         href:"/contact" },
+              { label:"Privacy Policy",     href:"/privacy" },
+            ]},
           ].map(col => (
             <div key={col.title}>
               <h4 style={{ fontSize:10.5, letterSpacing:".22em", textTransform:"uppercase", color:T.dim, fontWeight:600, marginBottom:16, fontFamily:"'Poppins',sans-serif" }}>{col.title}</h4>
               <ul style={{ listStyle:"none", padding:0, margin:0, display:"flex", flexDirection:"column", gap:10 }}>
                 {col.links.map(l => (
-                  <li key={l}><a href="#" style={{ fontSize:13, color:T.cream, textDecoration:"none", fontFamily:"'Poppins',sans-serif" }}>{l}</a></li>
+                  <li key={l.label}><a href={l.href} style={{ fontSize:13, color:T.cream, textDecoration:"none", fontFamily:"'Poppins',sans-serif" }}>{l.label}</a></li>
                 ))}
               </ul>
             </div>
