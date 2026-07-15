@@ -2566,7 +2566,15 @@ function HomePage({ onGenerate }) {
               <h4 style={{ fontSize:10.5, letterSpacing:".22em", textTransform:"uppercase", color:T.dim, fontWeight:600, marginBottom:16, fontFamily:"'Poppins',sans-serif" }}>{col.title}</h4>
               <ul style={{ listStyle:"none", padding:0, margin:0, display:"flex", flexDirection:"column", gap:10 }}>
                 {col.links.map(l => (
-                  <li key={l.label}><a href={l.href} style={{ fontSize:13, color:T.cream, textDecoration:"none", fontFamily:"'Poppins',sans-serif" }}>{l.label}</a></li>
+                  <li key={l.label}>
+                    <Link
+                      to={l.href}
+                      onClick={() => window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior })}
+                      style={{ fontSize:13, color:T.cream, textDecoration:"none", fontFamily:"'Poppins',sans-serif", cursor:"pointer" }}
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             </div>
