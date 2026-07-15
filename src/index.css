@@ -107,3 +107,12 @@ All colors MUST be HSL.
 /* Hide scrollbars globally */
 html { scrollbar-width: none; -ms-overflow-style: none; }
 html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+/* Title-case all headings and button text.
+   Inline text-transform: uppercase (used for eyebrow labels) still wins. */
+h1, h2, h3, h4, h5, h6,
+button, .btn, [role="button"],
+input[type="button"], input[type="submit"] {
+  text-transform: capitalize;
+}
+
