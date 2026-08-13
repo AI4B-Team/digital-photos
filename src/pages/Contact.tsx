@@ -31,7 +31,14 @@ export default function Contact() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError("Please enter a valid email."); return; }
     setSending(true);
     try {
-      try { await supabase.from("contact_messages" as any).insert({ ...form, created_at: new Date().toISOString() }); } catch {}
+      const { error: insertErr } = await supabase.from("contact_messages" as any).insert({
+        name: form.name,
+        email: form.email,
+        order_id: form.order_id || null,
+        topic: form.topic,
+        message: form.message,
+      });
+      if (insertErr) { setError("We couldn't send your message right now. Please try again or email us directly."); return; }
       setSubmitted({ name: form.name, email: form.email });
     } finally { setSending(false); }
   }

@@ -49,9 +49,16 @@ export default function Tracking() {
     if (!email && !orderId) { setError("Enter an email or order number to look up."); return; }
     setLoading(true);
     try {
-      let q: any = supabase.from("sessions").select("*").limit(1);
-      if (orderId) q = q.ilike("id", `%${orderId}%`);
-      else q = q.eq("email", email);
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(orderId.trim());
+      let q: any = supabase.from("sessions").select("*").order("created_at", { ascending: false }).limit(1);
+      if (orderId) {
+        const t = orderId.trim();
+        q = isUuid
+          ? q.eq("id", t)
+          : q.or(`order_id.ilike.%${t}%,stripe_session_id.ilike.%${t}%,prodigi_order_id.ilike.%${t}%`);
+      } else {
+        q = q.or(`customer_email.eq.${email.trim()},user_email.eq.${email.trim()}`);
+      }
       const { data, error: e } = await q;
       if (e) throw e;
       if (!data || data.length === 0) { setError("We couldn't find an order with those details. Double-check and try again."); }

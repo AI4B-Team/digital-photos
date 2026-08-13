@@ -2363,7 +2363,7 @@ function HomePage({ onGenerate }) {
               { cat:"memorial", img:sceneMemorialGrandmother, imgs:[sceneMemorialGrandmother, sceneMemorialVintageFamily, sceneMemorialPet, sceneMemorialFather, sceneMemorialCatAngel], Icon:Flower2, title:"Memorial", body:"Heavenly · Renaissance · Watercolor · Classic · +25 more", cta:"Create A Memorial Portrait" },
               { cat:"gifts",    img:sceneFathersShoulders, imgs:[sceneFathersShoulders, sceneFathersFamilyEmbrace, sceneFathersGenerations, sceneFathersReading, sceneFathersExecutive, sceneFathersRanch], Icon:Gift, title:"Father's Day", body:"Royal · Cinematic · Renaissance · Classic · +25 more", cta:"Create A Father's Day Portrait" },
             ].map(item => (
-              <div key={item.cat} onClick={() => { setCat(item.cat); scrollToHero(); }}
+              <div key={item.title} onClick={() => { setCat(item.cat); scrollToHero(); }}
                 style={{ border:`1px solid ${T.border}`, borderRadius:18, overflow:"hidden",
                   cursor:"pointer", background:T.bg, transition:"all .25s",
                   display:"flex", flexDirection:"column" }}
