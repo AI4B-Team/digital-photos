@@ -49,9 +49,9 @@ export default function Tracking() {
     if (!email && !orderId) { setError("Enter an email or order number to look up."); return; }
     setLoading(true);
     try {
-      let q: any = supabase.from("sessions").select("*").limit(1);
+      let q: any = supabase.from("sessions").select("*").order("created_at", { ascending: false }).limit(1);
       if (orderId) q = q.ilike("id", `%${orderId}%`);
-      else q = q.eq("email", email);
+      else q = q.or(`customer_email.eq.${email},user_email.eq.${email}`);
       const { data, error: e } = await q;
       if (e) throw e;
       if (!data || data.length === 0) { setError("We couldn't find an order with those details. Double-check and try again."); }
