@@ -2532,12 +2532,16 @@ function HomePage({ onGenerate }) {
               AI-powered portrait art printed on archival fine art paper. Delivered to your door, anywhere in the world.
             </p>
             <div style={{ display:"flex", gap:12 }}>
-              {[Instagram, Facebook].map((Icon, i) => (
-                <a key={i} href="#" style={{ width:34, height:34, borderRadius:"50%", border:`1px solid ${T.border}`, display:"flex", alignItems:"center", justifyContent:"center", background:T.bg }}>
+              {[
+                { Icon: Instagram, href:"https://instagram.com/realartportraits", label:"Instagram" },
+                { Icon: Facebook,  href:"https://facebook.com/realartportraits",  label:"Facebook" },
+              ].map(({ Icon, href, label }) => (
+                <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} style={{ width:34, height:34, borderRadius:"50%", border:`1px solid ${T.border}`, display:"flex", alignItems:"center", justifyContent:"center", background:T.bg }}>
                   <Icon size={16} color={T.dim}/>
                 </a>
               ))}
             </div>
+
           </div>
           {[
             { title:"Create",   links:[
