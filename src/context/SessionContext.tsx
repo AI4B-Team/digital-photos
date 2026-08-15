@@ -20,7 +20,8 @@ export interface SessionState {
   upsellAdded:  boolean;         // fantasy pack upsell
 
   // Post-purchase
-  orderId:      string | null;
+  orderId:      string | null;   // DB session UUID
+  orderNumber?: string | null;   // human-friendly display number
   orderProduct: string | null;   // what they actually bought
   paymentVerified?: boolean;     // true only after Stripe verification succeeds
 
@@ -58,6 +59,7 @@ const DEFAULT: SessionState = {
   addedBumps:         [],
   upsellAdded:        false,
   orderId:            null,
+  orderNumber:        null,
   orderProduct:       null,
   paymentVerified:    false,
 
