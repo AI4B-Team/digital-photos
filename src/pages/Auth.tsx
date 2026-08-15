@@ -53,7 +53,15 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, signInWithGoogle } = useAuth();
+
+  const handleGoogle = async () => {
+    setError("");
+    setLoading(true);
+    const { error } = await signInWithGoogle();
+    if (error) { setError(error.message); setLoading(false); }
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
