@@ -2547,10 +2547,10 @@ function HomePage({ onGenerate }) {
           </div>
           {[
             { title:"Create",   links:[
-              { label:"Pet Portraits",      href:"/styles" },
-              { label:"Baby Portraits",     href:"/styles" },
-              { label:"Couples Portraits",  href:"/styles" },
-              { label:"Memorial Portraits", href:"/styles" },
+              { label:"Pet Portraits",      href:"/styles?cat=pets" },
+              { label:"Baby Portraits",     href:"/styles?cat=babies" },
+              { label:"Couples Portraits",  href:"/styles?cat=couples" },
+              { label:"Memorial Portraits", href:"/styles?cat=memorial" },
               { label:"Gift Cards",         href:"/gift-cards" },
             ]},
             { title:"Products", links:[

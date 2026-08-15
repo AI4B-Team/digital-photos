@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Search, Sparkles, Star, ArrowRight, X } from "lucide-react";
 import LandingHeader from "@/components/LandingHeader";
 import portraitPeopleRoyal from "@/assets/portrait-people-royal.jpg";
@@ -124,9 +124,19 @@ const T = [
 
 export default function Styles() {
   const navigate = useNavigate();
-  const [style, setStyle] = useState("all");
-  const [cat, setCat] = useState("all");
+  const [params] = useSearchParams();
+  const catParam   = params.get("cat");
+  const styleParam = params.get("style");
+  const [style, setStyle] = useState(styleParam || "all");
+  const [cat, setCat] = useState(catParam || "all");
   const [q, setQ] = useState("");
+
+  // Keep filters in sync when the URL changes (e.g. footer/nav links)
+  useEffect(() => {
+    setCat(catParam || "all");
+    setStyle(styleParam || "all");
+  }, [catParam, styleParam]);
+
 
   const templates = useMemo(() => {
     return T.filter(([id, label, st, ct, desc]) => {
