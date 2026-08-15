@@ -120,12 +120,12 @@ export default function GiftCards() {
                 style={{ width:"100%", marginTop:6, padding:"11px 14px", borderRadius:10, border:`1px solid ${BORDER}`, fontFamily:"'Poppins',sans-serif", fontSize:14, outline:"none" }}/>
             </div>
 
-            <button onClick={()=>navigate("/contact")} style={{
+            <button onClick={submitGiftCard} disabled={submitting} style={{
               width:"100%", padding:"14px 18px", borderRadius:12, background:RED, color:"#fff",
-              border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
+              border:"none", cursor:submitting?"not-allowed":"pointer", opacity:submitting?0.6:1, fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
               boxShadow:"0 8px 22px rgba(230,25,25,.28)",
               display:"flex", alignItems:"center", justifyContent:"center", gap:8,
-            }}><Gift size={16}/> Purchase gift card · ${displayAmount || 0}</button>
+            }}><Gift size={16}/> {submitting ? "Sending…" : `Purchase gift card · $${displayAmount || 0}`}</button>
 
             <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:11.5, color:MUTED, marginTop:10, textAlign:"center", lineHeight:1.6 }}>
               Note: Gift cards are currently fulfilled manually within 1 business day.
