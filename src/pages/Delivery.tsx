@@ -530,12 +530,18 @@ export default function DeliveryPage() {
   const [prodigiOrderId, setProdigiOrderId] = useState<string | null>(null);
   const [isPrint, setIsPrint] = useState(false);
 
+  const [accessDenied, setAccessDenied] = useState(false);
+
   // On mount, verify payment and fetch portraits
   useEffect(() => {
     const stripeSessionId = searchParams.get("session_id");
     if (!stripeSessionId) {
-      // No stripe session — use mock data or context
-      setPortraits(UNLOCKED_PORTRAITS);
+      // No Stripe session — only allow if this browser session already completed an order
+      if (session.orderId) {
+        setPortraits(UNLOCKED_PORTRAITS);
+      } else {
+        setAccessDenied(true);
+      }
       setLoading(false);
       return;
     }
@@ -567,17 +573,18 @@ export default function DeliveryPage() {
             setPortraits(UNLOCKED_PORTRAITS);
           }
         } else {
-          // Payment not verified — still show page but with notice
-          setPortraits(UNLOCKED_PORTRAITS);
+          // Payment could not be verified — do not unlock
+          setAccessDenied(true);
         }
       } catch (err) {
         console.error("Payment verification failed:", err);
-        setPortraits(UNLOCKED_PORTRAITS);
+        setAccessDenied(true);
       } finally {
         setLoading(false);
       }
     })();
   }, []);
+
 
   const handleAddToCart = (frame) => {
     setCartMessage(`${frame.name} added to your order!`);
@@ -596,6 +603,26 @@ export default function DeliveryPage() {
       </>
     );
   }
+
+  if (accessDenied) {
+    return (
+      <>
+        <style>{CSS}</style>
+        <div style={{ background:C.bg, minHeight:"100vh", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:"center", padding:24 }}>
+          <h1 style={{ color:C.gold, fontFamily:"'Playfair Display',serif", fontSize:28, marginBottom:12 }}>No Order Found</h1>
+          <p style={{ color:C.creamMuted, fontSize:15, maxWidth:460, lineHeight:1.6 }}>
+            This delivery page unlocks after a completed purchase. If you just paid, use the link in your confirmation email, or look up your order below.
+          </p>
+          <div style={{ display:"flex", gap:12, marginTop:24, flexWrap:"wrap", justifyContent:"center" }}>
+            <button onClick={() => navigate("/tracking")} style={{ background:C.gold, color:"#1a1206", border:"none", borderRadius:999, padding:"12px 24px", fontWeight:700, cursor:"pointer" }}>Track My Order</button>
+            <button onClick={() => navigate("/")} style={{ background:"transparent", color:C.cream, border:`1px solid ${C.gold}`, borderRadius:999, padding:"12px 24px", fontWeight:600, cursor:"pointer" }}>Back To Home</button>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+
 
   return (
     <>
