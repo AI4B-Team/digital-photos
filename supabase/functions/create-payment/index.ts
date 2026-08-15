@@ -33,6 +33,7 @@ serve(async (req) => {
       printGlaze = "perspex",
       vipPurchased = false,
       productType = "",
+      promoCode = "",
       printItems = null, // BUG-09: full multi-item snapshot for Prodigi fulfillment
     } = await req.json();
 
@@ -142,6 +143,30 @@ serve(async (req) => {
           vip_purchased: vipPurchased,
         })
         .eq("id", sessionId);
+    }
+
+    // Count promo redemptions so `max_uses` is actually enforced.
+    if (promoCode) {
+      try {
+        const admin = createClient(
+          Deno.env.get("SUPABASE_URL")!,
+          Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+        );
+        const code = String(promoCode).trim().toUpperCase();
+        const { data: promo } = await admin
+          .from("promo_codes")
+          .select("used_count")
+          .eq("code", code)
+          .maybeSingle();
+        if (promo) {
+          await admin
+            .from("promo_codes")
+            .update({ used_count: (promo.used_count || 0) + 1 })
+            .eq("code", code);
+        }
+      } catch (e) {
+        console.error("promo increment failed (non-fatal)", e);
+      }
     }
 
     return new Response(JSON.stringify({ url: checkoutSession.url }), {
