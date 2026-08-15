@@ -14,6 +14,7 @@ import ResetPassword           from "./pages/ResetPassword";
 import Admin                   from "./pages/Admin";
 import Styles                  from "./pages/Styles";
 import Tracking                from "./pages/Tracking";
+import Account                 from "./pages/Account";
 import Contact                 from "./pages/Contact";
 import Legal                   from "./pages/Legal";
 import FAQ                     from "./pages/FAQ";
@@ -42,6 +43,8 @@ const App = () => (
               <Route path="/admin"          element={<Admin />} />
               <Route path="/styles"         element={<Styles />} />
               <Route path="/tracking"       element={<Tracking />} />
+              <Route path="/account"        element={<Account />} />
+
               <Route path="/contact"        element={<Contact />} />
               <Route path="/faq"            element={<FAQ />} />
               <Route path="/gift-cards"     element={<GiftCards />} />

@@ -114,7 +114,7 @@ export default function LandingHeader() {
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           {user ? (
             <>
-              <button onClick={() => navigate("/customize")} style={{
+              <button onClick={() => navigate("/account")} style={{
                 fontSize: 11, color: "#E61919", background: "none", cursor: "pointer",
                 letterSpacing: ".08em", textTransform: "uppercase",
                 padding: "6px 14px", border: `1px solid ${T.muted}`, borderRadius: 8,
