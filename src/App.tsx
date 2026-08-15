@@ -46,7 +46,9 @@ const App = () => (
               <Route path="/faq"            element={<FAQ />} />
               <Route path="/gift-cards"     element={<GiftCards />} />
               <Route path="/reviews"        element={<Reviews />} />
+              <Route path="/legal"          element={<Legal />} />
               <Route path="/privacy"        element={<Legal />} />
+
               <Route path="/terms"          element={<Legal />} />
               <Route path="/refund"         element={<Legal />} />
               <Route path="/styles-:cat"   element={<Index />} />
