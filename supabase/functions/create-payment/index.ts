@@ -121,7 +121,10 @@ serve(async (req) => {
     const checkoutSession = await stripe.checkout.sessions.create(sessionParams);
 
     // Store stripe_session_id + print details in our DB session
-    if (sessionId) {
+    const isUuid = (v: unknown) =>
+      typeof v === "string" &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
+    if (isUuid(sessionId)) {
       const supabase = createClient(
         Deno.env.get("SUPABASE_URL")!,
         Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
