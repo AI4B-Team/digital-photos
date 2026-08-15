@@ -61,8 +61,10 @@ export default function LandingHeader() {
         borderBottom: `1px solid ${T.border}`,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
-          <a href="/" aria-label="Real Art home" style={{
-            display: "block", textDecoration: "none",
+          <a href="/" aria-label="Real Art home"
+            onClick={(e) => { e.preventDefault(); navigate("/"); }}
+            style={{
+            display: "block", textDecoration: "none", cursor: "pointer",
             background: "#E61919", padding: 6, width: 110,
           }}>
             <div style={{
