@@ -45,40 +45,7 @@ export async function createSession(params: {
   return id;
 }
 
-/* ── Update session status ──────────────────────────────────── */
-export async function updateSessionStatus(
-  sessionId: string,
-  status: "pending" | "generating" | "ready" | "purchased",
-  extras?: Partial<{ order_id: string; order_product: string; stripe_session_id: string }>
-) {
-  const { error } = await supabase
-    .from("sessions")
-    .update({ status, ...extras })
-    .eq("id", sessionId);
-
-  if (error) throw error;
-}
-
-/* ── Save generated portrait URLs ──────────────────────────── */
-export async function savePortraits(sessionId: string, portraits: { style: string; url: string; url_hd: string }[]) {
-  const rows = portraits.map(p => ({
-    session_id: sessionId,
-    style:      p.style,
-    url:        p.url,
-    url_hd:     p.url_hd,
-  }));
-
-  const { error } = await supabase.from("portraits").insert(rows);
-  if (error) throw error;
-}
-
-/* ── Fetch portraits for a session (post-purchase) ─────────── */
-export async function getPortraits(sessionId: string) {
-  const { data, error } = await supabase
-    .from("portraits")
-    .select("*")
-    .eq("session_id", sessionId);
-
-  if (error) throw error;
-  return data;
-}
+/* NOTE: Portrait persistence and session status updates happen server-side in
+   the `generate-portraits` edge function (service role). Client-side helpers for
+   those were removed: RLS denies anon INSERT on `portraits` and guest UPDATE on
+   `sessions`, so they failed silently. */
