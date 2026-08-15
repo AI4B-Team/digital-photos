@@ -1961,7 +1961,7 @@ function HomePage({ onGenerate }) {
         <div style={{ display:"flex", gap:10, alignItems:"center" }}>
           {user ? (
             <>
-              <Link to="/customize" style={{ fontSize:11, color:"#E61919", textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
+              <Link to="/account" style={{ fontSize:11, color:"#E61919", textDecoration:"none", letterSpacing:".08em", textTransform:"uppercase",
                 padding:"6px 14px", border:`1px solid ${T.muted}`, borderRadius:8, transition:"all .25s" }}
                 onMouseOver={e => { e.currentTarget.style.opacity = "0.8"; }}
                 onMouseOut={e => { e.currentTarget.style.opacity = "1"; }}>
@@ -1996,7 +1996,7 @@ function HomePage({ onGenerate }) {
               })),
               ...(user
                 ? [
-                    { id:"portraits", label:"My Portraits", href:"/customize" },
+                    { id:"portraits", label:"My Portraits", href:"/account" },
                     { id:"signout", label:"Sign Out", onClick: () => signOut() },
                   ]
                 : [{ id:"signin", label:"Sign In", href:"/auth" }]),
