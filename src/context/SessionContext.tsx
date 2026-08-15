@@ -57,6 +57,8 @@ const DEFAULT: SessionState = {
   upsellAdded:        false,
   orderId:            null,
   orderProduct:       null,
+  paymentVerified:    false,
+
   generatedPortraits: [],
 };
 
