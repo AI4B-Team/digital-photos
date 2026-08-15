@@ -1912,7 +1912,7 @@ function HomePage({ onGenerate }) {
         borderBottom:scrolled?`1px solid ${T.border}`:"none",
         transition:"all .4s" }}>
         <div style={{ display:"flex", alignItems:"flex-start", gap:16, alignSelf:"flex-start", paddingTop:8 }}>
-          <a href="/" aria-label="Real Art home" style={{
+          <Link to="/" aria-label="Real Art home" style={{
             display:"block", textDecoration:"none", flexShrink:0,
             background:"#E61919", padding:7, width:140,
 
