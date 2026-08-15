@@ -112,11 +112,12 @@ export default function LandingHeader() {
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           {user ? (
             <>
-              <a href="/customize" style={{
-                fontSize: 11, color: "#E61919", textDecoration: "none",
+              <button onClick={() => navigate("/customize")} style={{
+                fontSize: 11, color: "#E61919", background: "none", cursor: "pointer",
                 letterSpacing: ".08em", textTransform: "uppercase",
                 padding: "6px 14px", border: `1px solid ${T.muted}`, borderRadius: 8,
-              }}>My Portraits</a>
+                fontFamily: "'Poppins',sans-serif",
+              }}>My Portraits</button>
               <button onClick={() => signOut()} style={{
                 background: "none", fontSize: 11, color: T.muted, cursor: "pointer",
                 letterSpacing: ".08em", textTransform: "uppercase",
