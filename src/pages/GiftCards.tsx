@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Gift, Mail, Calendar, Sparkles, Check, Clock, Infinity as InfIcon, DollarSign } from "lucide-react";
 import LandingHeader from "@/components/LandingHeader";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 
 const RED = "#E61919";
