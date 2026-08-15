@@ -1927,7 +1927,7 @@ function HomePage({ onGenerate }) {
                 textTransform:"uppercase", textAlign:"center",
                 display:"block", marginTop:3 }}>ART</span>
             </div>
-          </a>
+          </Link>
 
           {/* Language switcher — immediate right of logo */}
           <LanguageSwitcher />
