@@ -553,7 +553,7 @@ export default function DeliveryPage() {
         if (result.verified) {
           setOrderProduct(result.orderProduct || "digital");
           if (result.sessionId) setOrderNumber(result.sessionId);
-          setSession({ orderProduct: result.orderProduct, orderId: result.sessionId });
+          setSession({ orderProduct: result.orderProduct, orderId: result.sessionId, paymentVerified: true });
 
           const NON_PHYSICAL = ["digital", "vip"];
           const physical = !NON_PHYSICAL.includes(result.orderProduct || "digital");
