@@ -40,9 +40,11 @@ export interface SessionState {
   };
 }
 
+type SessionUpdater = Partial<SessionState> | ((prev: SessionState) => Partial<SessionState>);
+
 interface SessionContextType {
   session:      SessionState;
-  setSession:   (updates: Partial<SessionState>) => void;
+  setSession:   (updates: SessionUpdater) => void;
   clearSession: () => void;
 }
 
@@ -68,8 +70,11 @@ const SessionContext = createContext<SessionContextType | null>(null);
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [session, setSessionState] = useState<SessionState>(DEFAULT);
 
-  const setSession = useCallback((updates: Partial<SessionState>) => {
-    setSessionState(prev => ({ ...prev, ...updates }));
+  const setSession = useCallback((updates: SessionUpdater) => {
+    setSessionState(prev => ({
+      ...prev,
+      ...(typeof updates === "function" ? updates(prev) : updates),
+    }));
   }, []);
 
   const clearSession = useCallback(() => setSessionState(DEFAULT), []);

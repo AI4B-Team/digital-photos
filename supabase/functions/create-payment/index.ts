@@ -67,10 +67,15 @@ serve(async (req) => {
         },
         quantity: Math.max(1, Math.min(99, parseInt(li.quantity) || 1)),
       }));
-      // Treat as physical if any item name suggests a print/canvas/frame
-      isPhysical = lineItems.some((li: any) =>
-        /print|canvas|frame/i.test(String(li.name || ""))
-      );
+      // Treat as physical when any cart item is a shippable product.
+      // Prefer the explicit printItems snapshot; fall back to item-name matching.
+      const NON_PHYSICAL = ["digital", "vip"];
+      const hasPhysicalItem = Array.isArray(printItems)
+        && printItems.some((it: any) => it && !NON_PHYSICAL.includes(String(it.productType)));
+      isPhysical = hasPhysicalItem
+        || (productType && !NON_PHYSICAL.includes(String(productType)))
+        || lineItems.some((li: any) =>
+             /print|canvas|frame|acrylic|poster|metal/i.test(String(li.name || "")));
       primaryProduct = isPhysical ? "bundle" : "digital";
     } else {
       const priceId = PRICE_IDS[product];
