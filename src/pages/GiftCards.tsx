@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Gift, Mail, Calendar, Sparkles, Check, Clock, Infinity as InfIcon, DollarSign } from "lucide-react";
 import LandingHeader from "@/components/LandingHeader";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 
 const RED = "#E61919";
@@ -22,8 +24,37 @@ export default function GiftCards() {
   const [recipientEmail, setRecipientEmail] = useState("");
   const [message, setMessage] = useState("");
   const [deliverOn, setDeliverOn] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const displayAmount = custom ? Number(custom) : amount;
+
+  const submitGiftCard = async () => {
+    const amt = Number(displayAmount);
+    if (!amt || amt < 10 || amt > 1000) { toast.error("Please choose an amount between $10 and $1,000."); return; }
+    if (!from.trim()) { toast.error("Please enter your name."); return; }
+    if (!/^\S+@\S+\.\S+$/.test(recipientEmail.trim())) { toast.error("Please enter a valid recipient email."); return; }
+
+    setSubmitting(true);
+    const { error } = await supabase.from("contact_messages").insert({
+      name: from.trim(),
+      email: recipientEmail.trim(),
+      topic: "gift_card",
+      message: [
+        `Gift card request — $${amt}`,
+        `From: ${from.trim()}`,
+        `To: ${to.trim() || "(not provided)"}`,
+        `Recipient email: ${recipientEmail.trim()}`,
+        `Deliver on: ${deliverOn || "instant"}`,
+        `Message: ${message.trim() || "(none)"}`,
+      ].join("\n"),
+    });
+    setSubmitting(false);
+
+    if (error) { toast.error("Something went wrong. Please try again or contact us."); return; }
+    toast.success("Gift card request received — we'll email the recipient within 1 business day.");
+    setFrom(""); setTo(""); setRecipientEmail(""); setMessage(""); setDeliverOn(""); setCustom(""); setAmount(50);
+  };
+
 
   return (
     <div style={{ minHeight:"100vh", background:BG }}>
@@ -89,12 +120,12 @@ export default function GiftCards() {
                 style={{ width:"100%", marginTop:6, padding:"11px 14px", borderRadius:10, border:`1px solid ${BORDER}`, fontFamily:"'Poppins',sans-serif", fontSize:14, outline:"none" }}/>
             </div>
 
-            <button onClick={()=>navigate("/contact")} style={{
+            <button onClick={submitGiftCard} disabled={submitting} style={{
               width:"100%", padding:"14px 18px", borderRadius:12, background:RED, color:"#fff",
-              border:"none", cursor:"pointer", fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
+              border:"none", cursor:submitting?"not-allowed":"pointer", opacity:submitting?0.6:1, fontFamily:"'Poppins',sans-serif", fontWeight:700, fontSize:14,
               boxShadow:"0 8px 22px rgba(230,25,25,.28)",
               display:"flex", alignItems:"center", justifyContent:"center", gap:8,
-            }}><Gift size={16}/> Purchase gift card · ${displayAmount || 0}</button>
+            }}><Gift size={16}/> {submitting ? "Sending…" : `Purchase gift card · $${displayAmount || 0}`}</button>
 
             <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:11.5, color:MUTED, marginTop:10, textAlign:"center", lineHeight:1.6 }}>
               Note: Gift cards are currently fulfilled manually within 1 business day.
