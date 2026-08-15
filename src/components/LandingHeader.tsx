@@ -126,11 +126,12 @@ export default function LandingHeader() {
               }}>Sign Out</button>
             </>
           ) : (
-            <a href="/auth" style={{
-              fontSize: 11, color: T.muted, textDecoration: "none",
+            <button onClick={() => navigate("/auth")} style={{
+              fontSize: 11, color: T.muted, background: "none", cursor: "pointer",
               letterSpacing: ".08em", textTransform: "uppercase",
               padding: "6px 14px", border: `1px solid ${T.muted}`, borderRadius: 8,
-            }}>Sign In</a>
+              fontFamily: "'Poppins',sans-serif",
+            }}>Sign In</button>
           )}
           <HamburgerMenu />
         </div>
