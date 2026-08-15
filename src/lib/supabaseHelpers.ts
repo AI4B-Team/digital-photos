@@ -23,20 +23,22 @@ export async function createSession(params: {
   photoUrl:  string;
   email?:    string;
 }): Promise<string> {
-  const { data, error } = await supabase
+  // Generate the id client-side so guests don't need SELECT access on sessions.
+  const id = crypto.randomUUID();
+
+  const { error } = await supabase
     .from("sessions")
     .insert({
+      id,
       category:   params.category,
       styles:     params.styles,
       photo_url:  params.photoUrl,
       user_email: params.email ?? null,
       status:     "pending",
-    })
-    .select("id")
-    .single();
+    });
 
   if (error) throw error;
-  return data.id as string;
+  return id;
 }
 
 /* ── Update session status ──────────────────────────────────── */

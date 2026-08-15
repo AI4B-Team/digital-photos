@@ -46,23 +46,16 @@ export default function Tracking() {
 
   async function lookup() {
     setError(""); setOrder(null);
-    if (!email && !orderId) { setError("Enter an email or order number to look up."); return; }
+    if (!email.trim()) { setError("Enter the email used on your order."); return; }
     setLoading(true);
     try {
-      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(orderId.trim());
-      let q: any = supabase.from("sessions").select("*").order("created_at", { ascending: false }).limit(1);
-      if (orderId) {
-        const t = orderId.trim();
-        q = isUuid
-          ? q.eq("id", t)
-          : q.or(`order_id.ilike.%${t}%,stripe_session_id.ilike.%${t}%,prodigi_order_id.ilike.%${t}%`);
-      } else {
-        q = q.or(`customer_email.eq.${email.trim()},user_email.eq.${email.trim()}`);
-      }
-      const { data, error: e } = await q;
+      const { data, error: e } = await supabase.functions.invoke("track-order", {
+        body: { email: email.trim(), orderId: orderId.trim() },
+      });
       if (e) throw e;
-      if (!data || data.length === 0) { setError("We couldn't find an order with those details. Double-check and try again."); }
-      else setOrder(data[0]);
+      if (data?.error) { setError(data.error); }
+      else if (!data?.order) { setError("We couldn't find an order with those details. Double-check and try again."); }
+      else setOrder(data.order);
     } catch (e:any) {
       setError("Lookup unavailable right now. Please contact support.");
     } finally { setLoading(false); }
