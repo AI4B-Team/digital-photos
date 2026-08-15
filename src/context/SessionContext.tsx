@@ -22,6 +22,8 @@ export interface SessionState {
   // Post-purchase
   orderId:      string | null;
   orderProduct: string | null;   // what they actually bought
+  paymentVerified?: boolean;     // true only after Stripe verification succeeds
+
 
   // Generated portrait URLs (Phase 4 — AI integration)
   generatedPortraits: { style: string; url: string }[];
