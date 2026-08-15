@@ -530,12 +530,18 @@ export default function DeliveryPage() {
   const [prodigiOrderId, setProdigiOrderId] = useState<string | null>(null);
   const [isPrint, setIsPrint] = useState(false);
 
+  const [accessDenied, setAccessDenied] = useState(false);
+
   // On mount, verify payment and fetch portraits
   useEffect(() => {
     const stripeSessionId = searchParams.get("session_id");
     if (!stripeSessionId) {
-      // No stripe session — use mock data or context
-      setPortraits(UNLOCKED_PORTRAITS);
+      // No Stripe session — only allow if this browser session already completed an order
+      if (session.orderId) {
+        setPortraits(UNLOCKED_PORTRAITS);
+      } else {
+        setAccessDenied(true);
+      }
       setLoading(false);
       return;
     }
@@ -567,17 +573,18 @@ export default function DeliveryPage() {
             setPortraits(UNLOCKED_PORTRAITS);
           }
         } else {
-          // Payment not verified — still show page but with notice
-          setPortraits(UNLOCKED_PORTRAITS);
+          // Payment could not be verified — do not unlock
+          setAccessDenied(true);
         }
       } catch (err) {
         console.error("Payment verification failed:", err);
-        setPortraits(UNLOCKED_PORTRAITS);
+        setAccessDenied(true);
       } finally {
         setLoading(false);
       }
     })();
   }, []);
+
 
   const handleAddToCart = (frame) => {
     setCartMessage(`${frame.name} added to your order!`);
