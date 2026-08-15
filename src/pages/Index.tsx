@@ -1812,13 +1812,14 @@ function HomePage({ onGenerate }) {
   const [heroNames, setHeroNames] = useState<string[]>([""]);
   const totalPhotos = (photo ? 1 : 0) + extraPhotos.length;
 
-  const handleSelectedFile = useCallback((f: File) => {
+  const handleSelectedFile = useCallback(async (f: File) => {
     const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif"];
     if (!ALLOWED.includes(f.type)) {
       alert("Please upload a PNG, JPEG, WebP, or GIF image.");
       return;
     }
     if (addSlot === "extra") {
+      const compressed = await compressImage(f);
       const reader = new FileReader();
       reader.onload = async ev => {
         const dataUrl = ev.target?.result as string;
@@ -1827,7 +1828,7 @@ function HomePage({ onGenerate }) {
         try { const { w, h } = await getImageDimensions(dataUrl); low = isLowRes(w, h); } catch {}
         setExtraLowRes(p => [...p, low]);
       };
-      reader.readAsDataURL(f);
+      reader.readAsDataURL(compressed);
     } else {
       loadFile(f);
     }
