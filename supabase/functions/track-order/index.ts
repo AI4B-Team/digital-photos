@@ -32,14 +32,21 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    const safeEmail = email.replace(/[,()"']/g, "");
+
     let q = supabase
       .from("sessions")
       .select(
         "id, created_at, status, order_id, prodigi_order_id, prodigi_status, shipped_at, tracking_url, print_size, print_frame, order_product",
       )
-      .or(`customer_email.eq.${email},user_email.eq.${email},shipping_email.eq.${email}`)
+      .or(`customer_email.eq.${safeEmail},user_email.eq.${safeEmail},shipping_email.eq.${safeEmail}`)
       .order("created_at", { ascending: false })
       .limit(1);
+
+    // Only real orders are trackable — preview-only sessions have no order_id.
+    if (!orderId) {
+      q = q.not("order_id", "is", null);
+    }
 
     if (orderId) {
       const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(orderId);

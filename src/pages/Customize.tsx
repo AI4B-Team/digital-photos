@@ -2886,6 +2886,7 @@ export default function Customize() {
           printMount: mountColor || "snow-white",
           printGlaze: primaryCartItem?.glazeType || "perspex",
           vipPurchased: cartItems.some((i: any) => i.productType === "vip"),
+          promoCode: promoApplied?.code || "",
           // BUG-09: send ALL cart items for fulfillment, not just the first
           printItems: cartItems.map((it: any) => ({
             photoUrl:    it.photoUrl,
