@@ -996,7 +996,7 @@ export const THEMES: Record<string, ThemeGroups> = {
         prompt:"in a tender anniversary memorial portrait with soft golden light, candles and reverent flowers" },
       { id:"mm-celeb", label:"Celebration Of Life", desc:"Joyful Tribute", img:categoryIndividualImg,
         prompt:"in a joyful celebration-of-life portrait with bright florals, warm sunshine and a hopeful uplifting atmosphere" },
-      { id:"mm-petloss", label:"Pet Tribute", desc:"Beloved Companion", img:categoryIndividualImg,
+      { id:"mm-petloss", label:"Pet Tribute", desc:"Beloved Companion", img:sceneMemorialPet,
         prompt:"in a tender pet memorial portrait with celestial light, soft flowers and a peaceful 'forever loved' atmosphere" },
     ],
   },
