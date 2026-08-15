@@ -125,15 +125,17 @@ const T = [
 export default function Styles() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const [style, setStyle] = useState(() => params.get("style") || "all");
-  const [cat, setCat] = useState(() => params.get("cat") || "all");
+  const catParam   = params.get("cat");
+  const styleParam = params.get("style");
+  const [style, setStyle] = useState(styleParam || "all");
+  const [cat, setCat] = useState(catParam || "all");
   const [q, setQ] = useState("");
 
   // Keep filters in sync when the URL changes (e.g. footer/nav links)
   useEffect(() => {
-    setCat(params.get("cat") || "all");
-    setStyle(params.get("style") || "all");
-  }, [params]);
+    setCat(catParam || "all");
+    setStyle(styleParam || "all");
+  }, [catParam, styleParam]);
 
 
   const templates = useMemo(() => {
