@@ -828,7 +828,9 @@ export default function CheckoutPage() {
 
   const handlePaymentComplete = () => {
     setSession({
-      orderId,
+      // Keep the DB session UUID in orderId — overwriting it breaks Stripe
+      // → session → Prodigi linkage. Display number lives in orderNumber.
+      orderNumber: orderId,
       orderProduct: product,
       addedBumps: bumps,
     });

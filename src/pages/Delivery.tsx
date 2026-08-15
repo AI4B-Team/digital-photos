@@ -526,7 +526,7 @@ export default function DeliveryPage() {
   const [loading, setLoading] = useState(true);
   const [portraits, setPortraits] = useState([]);
   const [orderProduct, setOrderProduct] = useState(session.orderProduct || "digital");
-  const [orderNumber, setOrderNumber] = useState(session.orderId || "");
+  const [orderNumber, setOrderNumber] = useState((session as any).orderNumber || session.orderId || "");
   const [prodigiOrderId, setProdigiOrderId] = useState<string | null>(null);
   const [isPrint, setIsPrint] = useState(false);
 
