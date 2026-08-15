@@ -2,7 +2,16 @@ import { supabase } from "@/integrations/supabase/client";
 
 /* ── Upload a photo to Supabase Storage ─────────────────────── */
 export async function uploadPhoto(file: File): Promise<string> {
-  const path = `uploads/${Date.now()}-${file.name.replace(/\s/g, "_")}`;
+  // Storage keys only allow a safe ASCII subset — strip accents/emoji/parens etc.
+  const ext = (file.name.match(/\.[^.]+$/)?.[0] ?? ".jpg").toLowerCase().replace(/[^a-z0-9.]/g, "");
+  const base = file.name
+    .replace(/\.[^.]+$/, "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60) || "photo";
+  const path = `uploads/${Date.now()}-${base}${ext || ".jpg"}`;
   const { data, error } = await supabase.storage
     .from("portraits")
     .upload(path, file, { cacheControl: "3600", upsert: false });
