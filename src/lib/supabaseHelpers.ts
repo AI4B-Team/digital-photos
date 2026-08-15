@@ -26,6 +26,9 @@ export async function createSession(params: {
   // Generate the id client-side so guests don't need SELECT access on sessions.
   const id = crypto.randomUUID();
 
+  // Link the session to the signed-in user (if any) so it shows up in My Account.
+  const { data: { user } } = await supabase.auth.getUser();
+
   const { error } = await supabase
     .from("sessions")
     .insert({
@@ -33,7 +36,8 @@ export async function createSession(params: {
       category:   params.category,
       styles:     params.styles,
       photo_url:  params.photoUrl,
-      user_email: params.email ?? null,
+      user_email: params.email ?? user?.email ?? null,
+      user_id:    user?.id ?? null,
       status:     "pending",
     });
 
