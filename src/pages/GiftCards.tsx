@@ -24,8 +24,37 @@ export default function GiftCards() {
   const [recipientEmail, setRecipientEmail] = useState("");
   const [message, setMessage] = useState("");
   const [deliverOn, setDeliverOn] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const displayAmount = custom ? Number(custom) : amount;
+
+  const submitGiftCard = async () => {
+    const amt = Number(displayAmount);
+    if (!amt || amt < 10 || amt > 1000) { toast.error("Please choose an amount between $10 and $1,000."); return; }
+    if (!from.trim()) { toast.error("Please enter your name."); return; }
+    if (!/^\S+@\S+\.\S+$/.test(recipientEmail.trim())) { toast.error("Please enter a valid recipient email."); return; }
+
+    setSubmitting(true);
+    const { error } = await supabase.from("contact_messages").insert({
+      name: from.trim(),
+      email: recipientEmail.trim(),
+      topic: "gift_card",
+      message: [
+        `Gift card request — $${amt}`,
+        `From: ${from.trim()}`,
+        `To: ${to.trim() || "(not provided)"}`,
+        `Recipient email: ${recipientEmail.trim()}`,
+        `Deliver on: ${deliverOn || "instant"}`,
+        `Message: ${message.trim() || "(none)"}`,
+      ].join("\n"),
+    });
+    setSubmitting(false);
+
+    if (error) { toast.error("Something went wrong. Please try again or contact us."); return; }
+    toast.success("Gift card request received — we'll email the recipient within 1 business day.");
+    setFrom(""); setTo(""); setRecipientEmail(""); setMessage(""); setDeliverOn(""); setCustom(""); setAmount(50);
+  };
+
 
   return (
     <div style={{ minHeight:"100vh", background:BG }}>
