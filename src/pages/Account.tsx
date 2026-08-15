@@ -55,11 +55,11 @@ export default function Account() {
           .includes(String(s.status || "").toLowerCase())
       );
       let pics = [];
-      if (rows.length) {
+      if (all.length) {
         const { data: p } = await supabase
           .from("portraits")
           .select("id, url, style, session_id, created_at")
-          .in("session_id", rows.map(r => r.id))
+          .in("session_id", all.map(r => r.id))
           .order("created_at", { ascending: false })
           .limit(60);
         pics = p || [];
