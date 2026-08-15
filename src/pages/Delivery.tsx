@@ -536,12 +536,13 @@ export default function DeliveryPage() {
   useEffect(() => {
     const stripeSessionId = searchParams.get("session_id");
     if (!stripeSessionId) {
-      // No Stripe session — only allow if this browser session already completed an order
-      if (session.orderId) {
+      // No Stripe session — only allow if this browser already completed a verified payment
+      if (session.orderId && session.paymentVerified) {
         setPortraits(UNLOCKED_PORTRAITS);
       } else {
         setAccessDenied(true);
       }
+
       setLoading(false);
       return;
     }
@@ -552,7 +553,7 @@ export default function DeliveryPage() {
         if (result.verified) {
           setOrderProduct(result.orderProduct || "digital");
           if (result.sessionId) setOrderNumber(result.sessionId);
-          setSession({ orderProduct: result.orderProduct, orderId: result.sessionId });
+          setSession({ orderProduct: result.orderProduct, orderId: result.sessionId, paymentVerified: true });
 
           const NON_PHYSICAL = ["digital", "vip"];
           const physical = !NON_PHYSICAL.includes(result.orderProduct || "digital");
