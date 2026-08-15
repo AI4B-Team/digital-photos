@@ -48,7 +48,12 @@ export default function Account() {
         .select("id, created_at, status, order_id, order_product, print_size, print_frame, tracking_url, photo_url, category")
         .order("created_at", { ascending: false })
         .limit(50);
-      const rows = sessions || [];
+      const all = sessions || [];
+      // Only real orders belong in Order History — plain preview sessions don't.
+      const rows = all.filter(
+        s => s.order_id || ["purchased", "paid", "complete", "completed", "shipped", "delivered"]
+          .includes(String(s.status || "").toLowerCase())
+      );
       let pics = [];
       if (rows.length) {
         const { data: p } = await supabase
