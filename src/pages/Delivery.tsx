@@ -436,8 +436,8 @@ function FrameUpsellSection({ onAddToCart }) {
 // ── CREATE AGAIN SECTION ───────────────────────────────────────
 function CreateAgainSection() {
   const navigate = useNavigate();
-  const goCreate = () => navigate('/create');
-  const goGift = () => navigate('/create');
+  const goCreate = () => navigate('/');
+  const goGift = () => navigate('/gift-cards');
 
   return (
     <div style={{ maxWidth:1280, margin:"0 auto", padding:"0 40px 80px" }}>

@@ -61,8 +61,10 @@ export default function LandingHeader() {
         borderBottom: `1px solid ${T.border}`,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
-          <a href="/" aria-label="Real Art home" style={{
-            display: "block", textDecoration: "none",
+          <a href="/" aria-label="Real Art home"
+            onClick={(e) => { e.preventDefault(); navigate("/"); }}
+            style={{
+            display: "block", textDecoration: "none", cursor: "pointer",
             background: "#E61919", padding: 6, width: 110,
           }}>
             <div style={{
@@ -112,11 +114,12 @@ export default function LandingHeader() {
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           {user ? (
             <>
-              <a href="/customize" style={{
-                fontSize: 11, color: "#E61919", textDecoration: "none",
+              <button onClick={() => navigate("/customize")} style={{
+                fontSize: 11, color: "#E61919", background: "none", cursor: "pointer",
                 letterSpacing: ".08em", textTransform: "uppercase",
                 padding: "6px 14px", border: `1px solid ${T.muted}`, borderRadius: 8,
-              }}>My Portraits</a>
+                fontFamily: "'Poppins',sans-serif",
+              }}>My Portraits</button>
               <button onClick={() => signOut()} style={{
                 background: "none", fontSize: 11, color: T.muted, cursor: "pointer",
                 letterSpacing: ".08em", textTransform: "uppercase",
@@ -125,11 +128,12 @@ export default function LandingHeader() {
               }}>Sign Out</button>
             </>
           ) : (
-            <a href="/auth" style={{
-              fontSize: 11, color: T.muted, textDecoration: "none",
+            <button onClick={() => navigate("/auth")} style={{
+              fontSize: 11, color: T.muted, background: "none", cursor: "pointer",
               letterSpacing: ".08em", textTransform: "uppercase",
               padding: "6px 14px", border: `1px solid ${T.muted}`, borderRadius: 8,
-            }}>Sign In</a>
+              fontFamily: "'Poppins',sans-serif",
+            }}>Sign In</button>
           )}
           <HamburgerMenu />
         </div>
