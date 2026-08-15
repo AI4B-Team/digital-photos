@@ -48,6 +48,8 @@ export default function AdminPage() {
   const [portraits, setPortraits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [reviews, setReviews] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -60,12 +62,16 @@ export default function AdminPage() {
 
   const fetchData = async () => {
     setLoading(true);
-    const [sessRes, portRes] = await Promise.all([
+    const [sessRes, portRes, revRes, msgRes] = await Promise.all([
       supabase.from("sessions").select("*").order("created_at", { ascending: false }).limit(200),
       supabase.from("portraits").select("*").order("created_at", { ascending: false }).limit(500),
+      supabase.from("reviews").select("*").order("created_at", { ascending: false }).limit(200),
+      supabase.from("contact_messages").select("*").order("created_at", { ascending: false }).limit(200),
     ]);
     setSessions(sessRes.data || []);
     setPortraits(portRes.data || []);
+    setReviews(revRes.data || []);
+    setMessages(msgRes.data || []);
     setLoading(false);
   };
 
@@ -96,11 +102,25 @@ export default function AdminPage() {
 
   const filteredSessions = sessions.filter(s => {
     if (filter !== "all" && s.status !== filter) return false;
-    if (search && !s.user_email?.toLowerCase().includes(search.toLowerCase()) &&
+    const email = s.customer_email || s.user_email || "";
+    if (search && !email.toLowerCase().includes(search.toLowerCase()) &&
         !s.id?.toLowerCase().includes(search.toLowerCase()) &&
         !s.category?.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
+
+  const approveReview = async (id, approved) => {
+    await supabase.from("reviews").update({ approved }).eq("id", id);
+    setReviews(rs => rs.map(r => (r.id === id ? { ...r, approved } : r)));
+  };
+  const deleteReview = async (id) => {
+    await supabase.from("reviews").delete().eq("id", id);
+    setReviews(rs => rs.filter(r => r.id !== id));
+  };
+  const toggleHandled = async (id, handled) => {
+    await supabase.from("contact_messages").update({ handled }).eq("id", id);
+    setMessages(ms => ms.map(m => (m.id === id ? { ...m, handled } : m)));
+  };
 
   const statusColor = (status) => {
     if (status === "purchased") return C.success;
@@ -184,7 +204,7 @@ export default function AdminPage() {
                 {filteredSessions.map(s => (
                   <tr key={s.id} style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td style={{ padding: "12px 16px", color: C.creamMuted, fontFamily: "monospace", fontSize: 11 }}>{s.id?.slice(0, 8)}</td>
-                    <td style={{ padding: "12px 16px", color: C.cream }}>{s.user_email || "—"}</td>
+                    <td style={{ padding: "12px 16px", color: C.cream }}>{s.customer_email || s.user_email || "—"}</td>
                     <td style={{ padding: "12px 16px", color: C.creamMuted, textTransform: "capitalize" }}>{s.category || "—"}</td>
                     <td style={{ padding: "12px 16px", color: C.creamMuted }}>{s.styles?.length || 0} styles</td>
                     <td style={{ padding: "12px 16px" }}>
@@ -203,6 +223,74 @@ export default function AdminPage() {
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* Reviews moderation */}
+          <div style={{ marginTop: 40 }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 26, color: C.cream, fontWeight: 400, marginBottom: 4 }}>Reviews</h2>
+            <p style={{ color: C.creamMuted, fontSize: 13, marginBottom: 16 }}>{reviews.filter(r => !r.approved).length} awaiting approval · {reviews.filter(r => r.approved).length} live</p>
+            <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, overflow: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ borderBottom: `1px solid ${C.border}` }}>
+                    {["Name", "Rating", "Review", "Status", "Actions"].map(h => (
+                      <th key={h} style={{ padding: "14px 16px", textAlign: "left", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: C.creamMuted, fontWeight: 500 }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {reviews.map(r => (
+                    <tr key={r.id} style={{ borderBottom: `1px solid ${C.border}` }}>
+                      <td style={{ padding: "12px 16px", color: C.cream }}>{r.name}{r.location ? `, ${r.location}` : ""}</td>
+                      <td style={{ padding: "12px 16px", color: C.gold }}>{"★".repeat(r.rating)}</td>
+                      <td style={{ padding: "12px 16px", color: C.creamMuted, maxWidth: 420 }}>{r.quote}</td>
+                      <td style={{ padding: "12px 16px", color: r.approved ? C.success : C.creamMuted, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em" }}>{r.approved ? "Live" : "Pending"}</td>
+                      <td style={{ padding: "12px 16px", display: "flex", gap: 8 }}>
+                        <button onClick={() => approveReview(r.id, !r.approved)} style={{ background: "none", border: `1px solid ${C.border}`, color: C.gold, padding: "6px 12px", cursor: "pointer", fontFamily: "'Outfit',sans-serif", fontSize: 11 }}>{r.approved ? "Unpublish" : "Approve"}</button>
+                        <button onClick={() => deleteReview(r.id)} style={{ background: "none", border: `1px solid ${C.border}`, color: C.error, padding: "6px 12px", cursor: "pointer", fontFamily: "'Outfit',sans-serif", fontSize: 11 }}>Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                  {reviews.length === 0 && (
+                    <tr><td colSpan={5} style={{ padding: "32px 16px", textAlign: "center", color: C.creamMuted }}>No reviews yet</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Contact messages */}
+          <div style={{ marginTop: 40, marginBottom: 60 }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 26, color: C.cream, fontWeight: 400, marginBottom: 4 }}>Contact Messages</h2>
+            <p style={{ color: C.creamMuted, fontSize: 13, marginBottom: 16 }}>{messages.filter(m => !m.handled).length} open</p>
+            <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, overflow: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ borderBottom: `1px solid ${C.border}` }}>
+                    {["Received", "Name", "Email", "Topic", "Message", "Status"].map(h => (
+                      <th key={h} style={{ padding: "14px 16px", textAlign: "left", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: C.creamMuted, fontWeight: 500 }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {messages.map(m => (
+                    <tr key={m.id} style={{ borderBottom: `1px solid ${C.border}` }}>
+                      <td style={{ padding: "12px 16px", color: C.creamMuted, fontSize: 11 }}>{new Date(m.created_at).toLocaleDateString()}</td>
+                      <td style={{ padding: "12px 16px", color: C.cream }}>{m.name}</td>
+                      <td style={{ padding: "12px 16px", color: C.creamMuted }}>{m.email}</td>
+                      <td style={{ padding: "12px 16px", color: C.creamMuted }}>{m.topic || "—"}</td>
+                      <td style={{ padding: "12px 16px", color: C.creamMuted, maxWidth: 420 }}>{m.message}</td>
+                      <td style={{ padding: "12px 16px" }}>
+                        <button onClick={() => toggleHandled(m.id, !m.handled)} style={{ background: "none", border: `1px solid ${C.border}`, color: m.handled ? C.success : C.gold, padding: "6px 12px", cursor: "pointer", fontFamily: "'Outfit',sans-serif", fontSize: 11 }}>{m.handled ? "Handled" : "Mark Handled"}</button>
+                      </td>
+                    </tr>
+                  ))}
+                  {messages.length === 0 && (
+                    <tr><td colSpan={6} style={{ padding: "32px 16px", textAlign: "center", color: C.creamMuted }}>No messages</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
