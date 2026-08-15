@@ -70,7 +70,6 @@ export function useUpload() {
     setUploadErr("");
     setLowResWarning("");
 
-    const original = file;
     file = await compressImage(file);
 
     // Show instant preview via FileReader
@@ -80,7 +79,6 @@ export function useUpload() {
       setPreview(dataUrl);
       try {
         const { w, h } = await getImageDimensions(dataUrl);
-        void original;
         if (isLowRes(w, h)) {
           setLowResWarning(
             `Low-resolution photo (${w}×${h}px). For best results, upload an image at least ${LOW_RES_THRESHOLD}×${LOW_RES_THRESHOLD}px. Recreations may appear blurry or less detailed.`
