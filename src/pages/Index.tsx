@@ -849,33 +849,34 @@ type ThemeGroups = { Seasons:ThemeItem[]; Holidays:ThemeItem[]; Occasions:ThemeI
 export const THEMES: Record<string, ThemeGroups> = {
   pets: {
     Seasons: [
-      { id:"pet-winter", label:"Winter Wonder", desc:"Snowy Pet Portrait", img:categoryIndividualImg,
+      { id:"pet-winter", label:"Winter Wonder", desc:"Snowy Pet Portrait", img:scenePetsBrutus,
         prompt:"in a magical winter wonderland with soft snowfall, cozy knit scarf, pine forest and twinkling fairy lights" },
-      { id:"pet-autumn", label:"Autumn Leaves", desc:"Cozy Fall Portrait", img:categoryIndividualImg,
+      { id:"pet-autumn", label:"Autumn Leaves", desc:"Cozy Fall Portrait", img:scenePetsPitbull,
         prompt:"surrounded by golden and crimson autumn leaves, pumpkins and warm afternoon light, cozy fall portrait" },
       { id:"pet-spring", label:"Spring Bloom", desc:"Cherry Blossom Pet", img:scenePets,
         prompt:"in a blooming spring meadow with cherry blossoms, soft pastel petals and warm sunlight" },
-      { id:"pet-summer", label:"Summer Sun", desc:"Beach Day Portrait", img:categoryIndividualImg,
+      { id:"pet-summer", label:"Summer Sun", desc:"Beach Day Portrait", img:scenePetsHorseLavender,
         prompt:"enjoying a sunny summer beach with golden sand, gentle waves, palm shade and bright tropical light" },
     ],
     Holidays: [
       { id:"pet-xmas", label:"Christmas Pup", desc:"Santa Hat & Lights", img:scenePets,
         prompt:"wearing a tiny Santa hat beside a decorated Christmas tree with twinkling lights, presents and cozy fireplace" },
-      { id:"pet-halloween", label:"Halloween Spook", desc:"Pumpkin Patch", img:scenePets,
+      { id:"pet-halloween", label:"Halloween Spook", desc:"Pumpkin Patch", img:scenePetsGallery,
         prompt:"in a spooky Halloween pumpkin patch with carved jack-o-lanterns, candlelight and a wizard hat" },
-      { id:"pet-easter", label:"Easter Bunny", desc:"Pastel Spring Festive", img:categoryFamilyImg,
+      { id:"pet-easter", label:"Easter Bunny", desc:"Pastel Spring Festive", img:scenePetsCatShoulder,
         prompt:"in a cheerful Easter scene with pastel eggs, fresh tulips, bunny ears and soft spring light" },
-      { id:"pet-thanksgiving", label:"Thanksgiving Feast", desc:"Harvest Table", img:categoryFamilyImg,
+      { id:"pet-thanksgiving", label:"Thanksgiving Feast", desc:"Harvest Table", img:scenePetsShepherdFlag,
         prompt:"at a Thanksgiving harvest table with autumn gourds, golden corn and warm candlelight" },
     ],
     Occasions: [
       { id:"pet-birthday", label:"Pet Birthday", desc:"Party Hat & Treats", img:scenePets,
         prompt:"wearing a colorful birthday party hat surrounded by balloons, confetti and a doggy birthday cake" },
-      { id:"pet-adoption", label:"Adoption Day", desc:"Gotcha Day Portrait", img:categoryIndividualImg,
+      { id:"pet-adoption", label:"Adoption Day", desc:"Gotcha Day Portrait", img:scenePetsDogCoverEyes,
         prompt:"in a heartwarming gotcha-day celebration scene with a 'forever home' banner, paw heart bunting and warm golden light" },
-      { id:"pet-wedding", label:"Ring Bearer", desc:"Wedding Day Pup", img:scenePets,
+      { id:"pet-wedding", label:"Ring Bearer", desc:"Wedding Day Pup", img:scenePetsBrutus,
         prompt:"as a wedding ring bearer in a tiny floral collar with wedding florals, soft white draping and romantic golden light" },
     ],
+
   },
   babies: {
     Seasons: [
